@@ -479,12 +479,12 @@ public class Stats3 extends Fragment {
                 if (lineChart.getVisibility() == View.VISIBLE){
                     lineChart.setVisibility(View.INVISIBLE);
                     barchart.setVisibility(View.VISIBLE);
-                    ((ImageView)v).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.line_graph));
+                    ((ImageView)v).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.bar_graph));
 
                 }else{
                     lineChart.setVisibility(View.VISIBLE);
                     barchart.setVisibility(View.INVISIBLE);
-                    ((ImageView)v).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.bar_graph));
+                    ((ImageView)v).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.line_graph));
                 }
 
                 getData();
