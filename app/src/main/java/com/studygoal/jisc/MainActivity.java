@@ -1,5 +1,6 @@
 package com.studygoal.jisc;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,6 +12,8 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,7 +21,9 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.view.GravityCompat;
@@ -37,9 +42,8 @@ import android.widget.TextView;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.activeandroid.util.Log;
 import com.bumptech.glide.Glide;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.lb.auto_fit_textview.AutoResizeTextView;
 import com.studygoal.jisc.Adapters.DrawerAdapter;
 import com.studygoal.jisc.Fragments.AddTarget;
@@ -48,21 +52,27 @@ import com.studygoal.jisc.Fragments.FeedFragment;
 import com.studygoal.jisc.Fragments.Friends;
 import com.studygoal.jisc.Fragments.LogActivityHistory;
 import com.studygoal.jisc.Fragments.LogNewActivity;
-import com.studygoal.jisc.Fragments.Settings;
-import com.studygoal.jisc.Fragments.Stats;
-import com.studygoal.jisc.Fragments.Stats2;
+import com.studygoal.jisc.Fragments.SettingsFragment;
+import com.studygoal.jisc.Fragments.Stats3;
+import com.studygoal.jisc.Fragments.StatsAttainment;
+import com.studygoal.jisc.Fragments.StatsAttedance;
+import com.studygoal.jisc.Fragments.StatsEventAttendance;
+import com.studygoal.jisc.Fragments.StatsLeaderBoard;
+import com.studygoal.jisc.Fragments.StatsPoints;
 import com.studygoal.jisc.Fragments.TargetFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
-import com.studygoal.jisc.Models.ActivityHistory;
 import com.studygoal.jisc.Models.CurrentUser;
 import com.studygoal.jisc.Models.Module;
 import com.studygoal.jisc.Models.ReceivedRequest;
 import com.studygoal.jisc.Models.RunningActivity;
 import com.studygoal.jisc.Utils.CircleTransform;
+import com.studygoal.jisc.Utils.Event.EventReloadImage;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.CrashManagerListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,10 +80,13 @@ import java.io.OutputStream;
 import java.util.Locale;
 
 public class MainActivity extends FragmentActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    public static final int CAMERA_REQUEST_CODE = 100;
 
     public DrawerLayout drawer;
     public RelativeLayout friend, settings, addTarget, send, timer, back;
-    Settings settings_fragment;
+    SettingsFragment settings_fragment;
     LogActivityHistory logFragment;
     public FeedFragment feedFragment;
     public boolean isLandscape = DataManager.getInstance().isLandscape;
@@ -82,33 +95,35 @@ public class MainActivity extends FragmentActivity {
     public DrawerAdapter adapter;
     View menu, blackout;
 
+    private Context context;
+    private int statOpenedNum = 4;
+    //statOpenedNum should be variable depending on whether or not attendance is being shown. This is a temp fix only.
+
+    public String mCurrentPhotoPath;
+
     @Override
     protected void onResume() {
         super.onResume();
         DataManager.getInstance().checkForbidden = true;
 
         try {
-            Glide.with(DataManager.getInstance().mainActivity).load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic).transform(new CircleTransform(DataManager.getInstance().mainActivity)).into(DataManager.getInstance().mainActivity.adapter.profile_pic);
+            Glide.with(DataManager.getInstance().mainActivity)
+                    .load(NetworkManager.getInstance().no_https_host + DataManager.getInstance().user.profile_pic)
+                    .transform(new CircleTransform(DataManager.getInstance().mainActivity))
+                    .into(DataManager.getInstance().mainActivity.adapter.profile_pic);
         } catch (Exception ignored) {
         }
     }
 
     public void refreshDrawer() {
         if (adapter != null) {
-            if(DataManager.getInstance().user.isSocial) {
-                adapter.values = new String[]{"0", getString(R.string.feed), getString(R.string.log), getString(R.string.target), getString(R.string.logout)};
-            } else {
-                adapter.values = new String[]{"0", getString(R.string.feed), getString(R.string.check_in), getString(R.string.stats), getString(R.string.log), getString(R.string.target), getString(R.string.logout)};
-//                adapter.values = new String[]{"0", getString(R.string.feed), getString(R.string.stats), getString(R.string.log), getString(R.string.target), getString(R.string.logout)};
-            }
-
             adapter.notifyDataSetChanged();
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        Log.setEnabled(true);
         isLandscape = DataManager.getInstance().isLandscape;
         DataManager.getInstance().checkForbidden = true;
         super.onCreate(savedInstanceState);
@@ -153,7 +168,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
 
-                if(DataManager.getInstance().user.isDemo) {
+                if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
                     alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_postfeed) + "</font>"));
                     alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
@@ -178,7 +193,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
 
-                if(v.getTag() != null && v.getTag().equals("from_list")) {
+                if (v.getTag() != null && v.getTag().equals("from_list")) {
 
                     v.setTag("");
                     final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
@@ -244,7 +259,7 @@ public class MainActivity extends FragmentActivity {
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                     startActivity(intent);
                 } else {
-                    settings_fragment = new Settings();
+                    settings_fragment = new SettingsFragment();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, settings_fragment)
                             .addToBackStack(null)
@@ -256,31 +271,31 @@ public class MainActivity extends FragmentActivity {
 
         DataManager.getInstance().mainActivity = this;
 
-        NetworkManager.getInstance().getAppSettings(DataManager.getInstance().user.id);
-        NetworkManager.getInstance().getMyTrophies();
-
-        if (new Select().from(ActivityHistory.class).count() == 0) {
-            NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
-        }
+//        NetworkManager.getInstance().getAppSettings(DataManager.getInstance().user.id);
+//        NetworkManager.getInstance().getMyTrophies();
+//
+//        if (new Select().from(ActivityHistory.class).count() == 0) {
+//            NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
+//        }
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
-                if(DataManager.getInstance().user.isStaff) {
+                if (DataManager.getInstance().user.isStaff) {
                     ActiveAndroid.beginTransaction();
                     new Delete().from(Module.class).execute();
                     for (int i = 0; i < 3; i++) {
                         Module modules = new Module();
-                        modules.id = "DUMMY_"+(i+1);
-                        modules.name = "Dummy Module "+(i+1);
+                        modules.id = "DUMMY_" + (i + 1);
+                        modules.name = "Dummy Module " + (i + 1);
                         modules.save();
                     }
                     ActiveAndroid.setTransactionSuccessful();
                     ActiveAndroid.endTransaction();
                 } else {
-                    if(DataManager.getInstance().user.isSocial) {
+                    if (DataManager.getInstance().user.isSocial) {
                         NetworkManager.getInstance().getSocialModules();
                     } else {
                         NetworkManager.getInstance().getModules();
@@ -290,6 +305,19 @@ public class MainActivity extends FragmentActivity {
                 NetworkManager.getInstance().getStretchTargets(DataManager.getInstance().user.id);
                 NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
                 NetworkManager.getInstance().getFriendRequests(DataManager.getInstance().user.id);
+                NetworkManager.getInstance().getSettings(getString(R.string.attendanceData));
+                NetworkManager.getInstance().getSettings(getString(R.string.studyGoalAttendance));
+                NetworkManager.getInstance().getSettings(getString(R.string.attainmentData));
+                NetworkManager.getInstance().getWeeklyAttendance();
+
+                // change left menu after login
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new DrawerAdapter(MainActivity.this);
+                        navigationView.setAdapter(adapter);
+                    }
+                });
             }
         }).start();
 
@@ -306,20 +334,14 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, new FeedFragment())
                     .commit();
-        }
-        if (DataManager.getInstance().home_screen.toLowerCase().equals("feed")) {
+        } else if (DataManager.getInstance().home_screen.toLowerCase().equals("feed")) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, new FeedFragment())
                     .commit();
         } else if (DataManager.getInstance().home_screen.toLowerCase().equals("stats")) {
-            if (isLandscape)
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, new Stats())
-                        .commit();
-            else
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, new Stats2())
-                        .commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, new Stats3())
+                    .commit();
         } else if (DataManager.getInstance().home_screen.toLowerCase().equals("log")) {
             logFragment = new LogActivityHistory();
             getSupportFragmentManager().beginTransaction()
@@ -337,7 +359,7 @@ public class MainActivity extends FragmentActivity {
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        if (DataManager.getInstance().language.toLowerCase().equals("english") || DataManager.getInstance().language.toLowerCase().equals("SAESNEG".toLowerCase())) {
+        if (DataManager.getInstance().language == null || DataManager.getInstance().language.toLowerCase().equals("english") || DataManager.getInstance().language.toLowerCase().equals("SAESNEG".toLowerCase())) {
             Locale locale = new Locale("en");
             Locale.setDefault(locale);
             Configuration config = new Configuration();
@@ -377,33 +399,50 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                if(adapter.values[selectedPosition].equals(MainActivity.this.getString(R.string.feed))) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.main_fragment, new FeedFragment())
-                                    .commit();
-                } else if(adapter.values[selectedPosition].equals(MainActivity.this.getString(R.string.check_in))) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.main_fragment, new CheckInFragment())
-                                    .commit();
-                } else if(adapter.values[selectedPosition].equals(MainActivity.this.getString(R.string.stats))) {
-                            if (isLandscape)
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.main_fragment, new Stats())
-                                        .commit();
-                            else
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.main_fragment, new Stats2())
-                                        .commit();
+                if (selectedPosition < 0) {
+                    return;
+                }
 
-                } else if(adapter.values[selectedPosition].equals(MainActivity.this.getString(R.string.log))) {
-                            logFragment = new LogActivityHistory();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.main_fragment, logFragment)
-                                    .commit();
-                } else if(adapter.values[selectedPosition].equals(MainActivity.this.getString(R.string.target))) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.main_fragment, new TargetFragment())
-                                    .commit();
+                String selection = adapter.values[selectedPosition];
+                Fragment destination = null;
+
+                if (selection.equals(getString(R.string.feed))) {
+                    destination = new FeedFragment();
+                } else if (selection.equals(getString(R.string.check_in))) {
+                    destination = new CheckInFragment();
+                } else if (selection.equals(getString(R.string.attainment))) {
+                    destination = new StatsAttainment();
+                } else if (selection.equals(getString(R.string.friends))) {
+                    destination = new Friends();
+                } else if (selection.equals(getString(R.string.settings))) {
+                    destination = new SettingsFragment();
+                } else if (selection.equals(getString(R.string.graphs))) {
+                    destination = new Stats3();
+                } else if (selection.equals(getString(R.string.points))) {
+                    destination = new StatsPoints();
+                } else if (selection.equals(getString(R.string.log))) {
+                    logFragment = new LogActivityHistory();
+                    destination = logFragment;
+                } else if (selection.equals(getString(R.string.target))) {
+                    destination = new TargetFragment();
+                } else if (selection.equals(getString(R.string.leader_board))) {
+                    destination = new StatsLeaderBoard();
+                } else if (selection.equals(getString(R.string.events_attended))) {
+                    destination = new StatsEventAttendance();
+                } else if (selection.equals(getString(R.string.attendance))) {
+                    destination = new StatsAttedance();
+                }
+
+                if (destination != null) {
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, destination);
+
+                    // allows back
+                    if (isInsideStats(selection)) {
+                        fragmentTransaction.addToBackStack(null);
+                    }
+                    fragmentTransaction.commit();
+//                            .commit();
                 }
             }
 
@@ -416,10 +455,18 @@ public class MainActivity extends FragmentActivity {
         adapter = new DrawerAdapter(this);
         navigationView = (ListView) findViewById(R.id.nav_view);
         navigationView.setAdapter(adapter);
+        navigationView.setDivider(null);
+        navigationView.setDividerHeight(0);
         navigationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 if (position != 0) {
+
+                    if (adapter.values[position].equals(getString(R.string.stats))) {
+                        adapter.statsOpened = !adapter.statsOpened;
+                        adapter.notifyDataSetChanged();
+                    }
+
                     adapter.selected_image.setColorFilter(0x00FFFFFF);
                     adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.light_grey));
                     adapter.selected_image = (ImageView) view.findViewById(R.id.drawer_item_icon);
@@ -427,14 +474,35 @@ public class MainActivity extends FragmentActivity {
                     adapter.selected_image.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
                     adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
 
+                     int staticMenuItems = 8;
+                        for(String menuItem: adapter.values){
+                            if (menuItem.equals(getString(R.string.check_in))){
+                                staticMenuItems++;
+                            }
+                        }
+                        int statOpenedNum = adapter.values.length - staticMenuItems;
+
+                    
+                    if (adapter.values[position].equals(getString(R.string.stats))) {
+                        return;
+                    }
+
                     for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
                         getSupportFragmentManager().popBackStackImmediate();
                     }
 
                     selectedPosition = position;
+                    if (!adapter.statsOpened && position > 3) {
+                        selectedPosition = position + statOpenedNum;
+                    }
                     drawer.closeDrawer(GravityCompat.START);
 
-                    if(adapter.selected_text.getText().toString().equals(MainActivity.this.getString(R.string.logout))) {
+                    if (!isInsideStats(adapter.values[selectedPosition])) {
+                        lastSelected = selectedPosition;
+                    }
+
+
+                    if (adapter.selected_text.getText().toString().equals(MainActivity.this.getString(R.string.logout))) {
                         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.confirmation_dialog);
@@ -464,10 +532,8 @@ public class MainActivity extends FragmentActivity {
                         dialog.findViewById(R.id.dialog_ok).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
                                 dialog.dismiss();
-
-                                android.webkit.CookieManager.getInstance().removeAllCookies(null);
+                                android.webkit.CookieManager.getInstance().removeAllCookie();
                                 DataManager.getInstance().checkForbidden = false;
                                 DataManager.getInstance().set_jwt("");
 
@@ -475,6 +541,9 @@ public class MainActivity extends FragmentActivity {
                                 getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_checked", "").apply();
                                 getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_staff", "").apply();
                                 getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", "").apply();
+
+                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                        .edit().remove("trophies").apply();
 
                                 new Delete().from(CurrentUser.class).execute();
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -494,10 +563,27 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        updateDeviceInfo();
+    }
 
-        if(sharedPreferences.contains("push_token")
-                && sharedPreferences.getString("push_token","").length() > 0) {
+
+    private int lastSelected = 1;
+
+    private boolean isInsideStats(String selection) {
+        if (selection.equals(getString(R.string.attainment))
+                || (selection.equals(getString(R.string.graphs)))
+                || (selection.equals(getString(R.string.points)))
+                || (selection.equals(getString(R.string.events_attended)))
+                || (selection.equals(getString(R.string.attendance)))) {
+            return true;
+        }
+        return false;
+    }
+
+    private void updateDeviceInfo() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPreferences.contains("push_token")
+                && sharedPreferences.getString("push_token", "").length() > 0) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -506,11 +592,7 @@ public class MainActivity extends FragmentActivity {
             }).start();
         }
 
-    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     public void setTitle(String title) {
@@ -556,6 +638,9 @@ public class MainActivity extends FragmentActivity {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 backpressed = 0;
                 getSupportFragmentManager().popBackStackImmediate();
+                selectedPosition = lastSelected;
+                DataManager.getInstance().fragment = lastSelected;
+                adapter.notifyDataSetChanged();
             } else if (backpressed == 0) {
                 backpressed = 1;
                 Snackbar.make(findViewById(R.id.main_fragment), R.string.press_back_again_to_exit_app, Snackbar.LENGTH_LONG).show();
@@ -566,7 +651,7 @@ public class MainActivity extends FragmentActivity {
 
 
     public void showProgressBar(@Nullable String text) {
-        if(blackout != null) {
+        if (blackout != null) {
             blackout.setVisibility(View.VISIBLE);
             blackout.requestLayout();
             blackout.setOnClickListener(null);
@@ -574,10 +659,10 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void showProgressBar2(@Nullable String text) {
-        if(blackout != null) {
+        if (blackout != null) {
             blackout.setVisibility(View.VISIBLE);
 
-            if(blackout.findViewById(R.id.progress_bar) != null)
+            if (blackout.findViewById(R.id.progress_bar) != null)
                 blackout.findViewById(R.id.progressbar).setVisibility(View.GONE);
 
             blackout.requestLayout();
@@ -668,7 +753,7 @@ public class MainActivity extends FragmentActivity {
             }
             case 5: {
                 menu.setVisibility(View.VISIBLE);
-                settings.setVisibility(View.VISIBLE);
+//                settings.setVisibility(View.VISIBLE);
                 break;
             }
             case 6: {
@@ -687,30 +772,29 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private void savebitmap(Bitmap bmp) {
+    private void saveBitmap(Bitmap bmp) {
         String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
         OutputStream outStream;
+        File file = new File(extStorageDirectory, Constants.TEMP_IMAGE_FILE);
 
-        File file = new File(extStorageDirectory, "temp.png");
         if (file.exists()) {
             file.delete();
-            file = new File(extStorageDirectory, "temp.png");
+            file = new File(extStorageDirectory, Constants.TEMP_IMAGE_FILE);
         }
 
         try {
-
             int w = bmp.getWidth();
             int h = bmp.getHeight();
             int nw;
             int nh;
 
-            if(w >= 500 && h >= 500) {
-                if(w > h) {
-                    nw = 500;
-                    nh = (500 * h/w);
+            if (w >= Constants.DEFAULT_PROFILE_IMAGE_SIZE && h >= Constants.DEFAULT_PROFILE_IMAGE_SIZE) {
+                if (w > h) {
+                    nw = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
+                    nh = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * h / w);
                 } else {
-                    nh = 500;
-                    nw = (500 * w/h);
+                    nh = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
+                    nw = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * w / h);
                 }
             } else {
                 nw = w;
@@ -718,11 +802,10 @@ public class MainActivity extends FragmentActivity {
             }
 
             outStream = new FileOutputStream(file);
-            bmp = Bitmap.createScaledBitmap(bmp,nw,nh,false);
+            bmp = Bitmap.createScaledBitmap(bmp, nw, nh, false);
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
             outStream.flush();
             outStream.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -732,72 +815,101 @@ public class MainActivity extends FragmentActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        if (requestCode == 100) {
-            Bitmap photo = (Bitmap)intent.getExtras().get("data");
-            savebitmap(photo);
-
-            final String imagePath = Environment.getExternalStorageDirectory().toString() + "/temp.png";
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             showProgressBar(null);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+            Bitmap bitmap = null;
+            String path = mCurrentPhotoPath;
+
+            if (path != null) {
+                bitmap = BitmapFactory.decodeFile(path);
+            } else if (intent.getExtras() != null && intent.getExtras().containsKey("data")) {
+                bitmap = (Bitmap) intent.getExtras().get("data");
+            }
+
+            if (bitmap != null) {
+                bitmap = fixOrientation(path, bitmap);
+                saveBitmap(bitmap);
+                final String imagePath = Environment.getExternalStorageDirectory().toString() + "/" + Constants.TEMP_IMAGE_FILE;
+
+                new Thread(() -> {
                     if (NetworkManager.getInstance().updateProfileImage(imagePath)) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                settings_fragment.refresh_image();
-                                hideProgressBar();
-                            }
+                        MainActivity.this.runOnUiThread(() -> {
+                            //settings_fragment.refresh_image();
+                            EventBus.getDefault().post(new EventReloadImage());
+                            hideProgressBar();
                         });
                     }
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            hideProgressBar();
-                        }
-                    });
-                }
-            }).start();
+                    MainActivity.this.runOnUiThread(() -> hideProgressBar());
+                }).start();
+            }
+
+            mCurrentPhotoPath = null;
         } else if (requestCode == 101) {
-
-            if (intent != null) {
-
-                final String imagePath = getRealPathFromURI(MainActivity.this, intent.getData());
+            if (intent != null && intent.getData() != null) {
                 showProgressBar(null);
-
+                final String path = getRealPathFromURI(MainActivity.this, intent.getData());
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
-                savebitmap(bitmap);
+                Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                saveBitmap(bitmap);
+                final String imagePath = Environment.getExternalStorageDirectory().toString() + "/" + Constants.TEMP_IMAGE_FILE;
 
-                final String imagePath1 = Environment.getExternalStorageDirectory().toString() + "/temp.png";
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (NetworkManager.getInstance().updateProfileImage(imagePath1)) {
-                            MainActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    settings_fragment.refresh_image();
-                                    hideProgressBar();
-                                }
-                            });
-                        } else {
-
-                        }
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                hideProgressBar();
-                            }
+                new Thread(() -> {
+                    if (NetworkManager.getInstance().updateProfileImage(imagePath)) {
+                        MainActivity.this.runOnUiThread(() -> {
+                            //settings_fragment.refresh_image();
+                            EventBus.getDefault().post(new EventReloadImage());
+                            hideProgressBar();
                         });
                     }
+
+                    MainActivity.this.runOnUiThread(() -> hideProgressBar());
                 }).start();
             }
         }
     }
+
+    private Bitmap fixOrientation(String filePath, Bitmap bitmap) {
+        Bitmap result = bitmap;
+
+        try {
+            if (bitmap != null) {
+                if (isLandscape) {
+                    // no need rotate
+                } else {
+                    File imageFile = new File(filePath);
+                    ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                    int rotate = 0;
+
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            rotate = 270;
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            rotate = 180;
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            rotate = 90;
+                            break;
+                    }
+
+                    if (rotate > 0) {
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(rotate);
+                        result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return result;
+    }
+
     public static String getRealPathFromURI(Context context, Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
+        String[] proj = {MediaStore.Images.Media.DATA};
         CursorLoader cursorLoader = new CursorLoader(context, contentUri, proj, null, null, null);
         Cursor cursor = cursorLoader.loadInBackground();
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

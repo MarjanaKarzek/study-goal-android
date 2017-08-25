@@ -108,7 +108,11 @@
     <string name="language">Language</string>
     <string name="course_engagement">Course Engagement</string>
     <string name="attainment">Attainment</string>
+    <string name="points">Points</string>
     <string name="activity_points">Activity Points</string>
+    <string name="leader_board">Leader Board</string>
+    <string name="events_attended">Events Attended</string>
+    <string name="attendance">Attendance</string>
     <string name="this_week">This Week</string>
     <string name="period">Period</string>
     <string name="compare_to">Compare to</string>
@@ -122,12 +126,15 @@
     <string name="Overall">Overall</string>
     <string name="anymodule">All Activity</string>
     <string name="last_7_days">Last 7 days</string>
+    <string name="last_7_days_short">7d</string>
+    <string name="last_28_days_short">28d</string>
+    <string name="all_days">All</string>
     <string name="no_one">No One</string>
     <string name="top10">Top 10</string>
     <string name="average">Average</string>
     <string name="last_30_days">Last 30 days</string>
     <string name="overall">Overall</string>
-    <string name="engagement_graph">Engagement Graph</string>
+    <string name="engagement_graph">VLE Activity</string>
     <string name="last_24_hours">Last 24 hours</string>
     <string name="add">Add</string>
     <string name="report_activity">Start Activity Now (Timed)</string>
@@ -329,6 +336,10 @@
     <string name="coursework_exams">Coursework/Exams</string>
     <string name="attending">Attending</string>
 
+    <string name="attendanceData">attendanceData</string>
+    <string name="studyGoalAttendance">studyGoalAttendance</string>
+    <string name="attainmentData">attainmentData</string>
+
     <string name="week">Week</string>
     <string name="me">Me</string>
     <string name="sun">Sun</string>
@@ -346,6 +357,7 @@
 
     <string name="confirm_logout_message">Are you sure you want to logout?</string>
     <string name="no_internet">Check your internet connection and try again later</string>
+    <string name="slow_internet">Weak internet connectivity; trying to connect.</string>
 
     <string name="target_saved">Target saved. To edit or delete this target, swipe left across the target title in your target list.</string>
     <string name="failed_tochangefriend">Failed to change friend settings</string>
@@ -353,7 +365,8 @@
     <string name="friend_privacy_settings">Friend Privacy Settings</string>
     <string name="less_than_1_minute">less than 1 minute</string>
     <string name="of">of</string>
-    <string name="graphs">Graphs</string>
+    <string name="graphs">"Graphs: VLE Activity"</string>
+
     <string name="attainment_refreshed">Attainments refreshed!</string>
     <string name="activity_paused">Activity paused</string>
     <string name="activity_resumed">Activity resumed</string>
@@ -381,6 +394,7 @@
 
     <string name="select_source">Select source</string>
     <string name="report_feature_bug">Report Feature/Bug</string>
+    <string name="privacy_statement">Privacy statement</string>
     <string name="send_friend_request">Send Friend Request</string>
     <string name="please_search_for_friend">Search for friend by email address</string>
     <string name="friend_request_sent">Friend request sent</string>
@@ -410,6 +424,7 @@
     <string name="login_search_institution">SEARCH INSTITUTION</string>
     <string name="login_institution_not_listed">Institution not listed?</string>
     <string name="login_institution_signinwith">Sign in with</string>
+    <string name="login_back_to_first_page">Back to first page</string>
     <string name="check_in">Check-in</string>
     <string name="send_pin_title">Send PIN</string>
     <string name="alert_invalid_pin">Oops. PIN wasn\'t recognised. Please try again.</string>
@@ -428,6 +443,7 @@
     <string name="demo_mode_edittarget">Targets can\’t be edited in demo mode.</string>
     <string name="demo_mode_changeappsettings">Demo mode only. You can\’t change the settings.</string>
     <string name="demo_mode_deletefeedlog">You can\’t delete items from feed in demo mode.</string>
+    <string name="demo_mode_updateprofileimage">You can\’t update your profile image in demo mode.</string>
     <string name="social_login_error">This email is already registered in our system. Please try again with a different social platform!</string>
     <string name="add_module">Add Module</string>
     <string name="module_name_invalid">Please add a valid Module Name</string>
@@ -439,5 +455,7 @@
     <string name="send_to">Send to</string>
     <string name="gps_network_not_enabled">Turn on location services to use this feature.</string>
     <string name="open_location_settings">Take me to settings</string>
+
+    <string name="attainment_not_data">There is no attainment data to show</string>
 
 </resources>

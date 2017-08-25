@@ -33,15 +33,16 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
-    ImageView profile_image;
+    private ImageView mProfileImage;
     public Uri imageUri;
 
     @Override
     public void onResume() {
-        super.onResume();
-        ((SettingsActivity)getActivity()).fragmentTitle.setText("Profile");
 
+        super.onResume();
+        ((SettingsActivity) getActivity()).fragmentTitle.setText("Profile");
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.profile_screen, container, false);
@@ -54,7 +55,6 @@ public class ProfileFragment extends Fragment {
         email.setTypeface(DataManager.getInstance().myriadpro_regular);
         email.setText(DataManager.getInstance().user.email + " | " + getContext().getString(R.string.student_id) + " : " + DataManager.getInstance().user.jisc_student_id);
 
-
         mainView.findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.custom_spinner_layout);
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                if(DataManager.getInstance().mainActivity.isLandscape) {
+                if (DataManager.getInstance().mainActivity.isLandscape) {
                     DisplayMetrics displaymetrics = new DisplayMetrics();
                     DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
                     int width = (int) (displaymetrics.widthPixels * 0.3);
@@ -125,25 +125,26 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profile_image = (ImageView) mainView.findViewById(R.id.profile_picture);
-        Glide.with(DataManager.getInstance().mainActivity).load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic).into(profile_image);
+        mProfileImage = (ImageView) mainView.findViewById(R.id.profile_picture);
+        Glide.with(DataManager.getInstance().mainActivity).load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic).into(mProfileImage);
 
         return mainView;
     }
+
     public void refresh_image() {
 //        NetworkManager.getInstance().fn_view_student(DataManager.getInstance().user.id);
-        if(NetworkManager.getInstance().login()) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Glide.with(DataManager.getInstance().mainActivity).load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic).into(profile_image);
-                    }
-                });
-            }
-        }).start();
+        if (NetworkManager.getInstance().login()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Glide.with(DataManager.getInstance().mainActivity).load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic).into(mProfileImage);
+                        }
+                    });
+                }
+            }).start();
         }
     }
 }

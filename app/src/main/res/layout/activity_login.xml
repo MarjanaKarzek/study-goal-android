@@ -107,22 +107,22 @@
             android:id="@+id/login_next_button"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
             android:layout_above="@+id/login_demomode"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/login_next_arrow"/>
+            android:src="@drawable/login_next_arrow" />
 
         <TextView
             android:id="@+id/login_demomode"
             android:layout_width="280dp"
             android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/rounded_corners_transparent_4"
             android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
             android:text="@string/demo_mode"
             android:textColor="#ffffff"
             android:textSize="18sp" />
@@ -191,6 +191,7 @@
             android:background="@drawable/round_corners_transparent_3" />
 
         <LinearLayout
+            android:id="@+id/social_login_region_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -225,7 +226,7 @@
                 <ImageView
                     android:id="@+id/login_with_facebook"
                     android:layout_width="0dp"
-                    android:layout_height="55dp"
+                    android:layout_height="35dp"
                     android:layout_weight="1"
                     android:paddingEnd="7dp"
                     android:paddingStart="7dp"
@@ -243,13 +244,24 @@
                 <ImageView
                     android:id="@+id/login_with_google"
                     android:layout_width="0dp"
-                    android:layout_height="55dp"
+                    android:layout_height="35dp"
                     android:layout_weight="1"
                     android:paddingEnd="7dp"
                     android:paddingStart="7dp"
                     android:src="@drawable/gp_icon" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/back_to_firstpage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:text="@string/login_back_to_first_page"
+                android:textAlignment="center"
+                android:textColor="#FFF"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -260,7 +272,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#88000000"
-        android:visibility="invisible"/>
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="20dp"
+            android:indeterminate="true" />
+    </RelativeLayout>
 
     <WebView
         android:id="@+id/webview"

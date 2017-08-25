@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.activeandroid.query.Select;
 import com.studygoal.jisc.Fragments.LogNewActivity;
@@ -14,7 +15,9 @@ import com.studygoal.jisc.Models.TrophyMy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,23 +45,36 @@ public class Syncronize extends IntentService {
             @Override
             public void run() {
                 List<TrophyMy> currentList = new Select().from(TrophyMy.class).execute();
-                List<String> listOfIds  = new ArrayList<>();
-                for(TrophyMy trophyMy : currentList)
+                List<String> listOfIds = new ArrayList<>();
+                for (TrophyMy trophyMy : currentList)
                     listOfIds.add(trophyMy.trophy_id);
-                if(NetworkManager.getInstance().getMyTrophies()) {
+                if (NetworkManager.getInstance().getMyTrophies()) {
                     List<TrophyMy> newList = new Select().from(TrophyMy.class).execute();
-                    for(final TrophyMy trophyMy : newList)
-                        if(!listOfIds.contains(trophyMy.trophy_id)) {
-                           DataManager.getInstance().showTrophyNotification(trophyMy);
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = prefs.edit();
+                    Set<String> trophiesShown = prefs.getStringSet("trophies", new HashSet<String>());
+                    boolean alwaysShowTrophy = true;
+                    // only show new trophy
+                    if (trophiesShown.isEmpty()) {
+                        alwaysShowTrophy = false;
+                    }
+                    for (final TrophyMy trophyMy : newList)
+                        if (!listOfIds.contains(trophyMy.trophy_id)) {
+                            trophiesShown.add(trophyMy.trophy_id);
+                            if (alwaysShowTrophy) { //  show new trophy only
+                                DataManager.getInstance().showTrophyNotification(trophyMy);
+                            }
+                            editor.putStringSet("trophies", trophiesShown);
+                            editor.apply();
                         }
                 }
 
-                if(new Select().from(RunningActivity.class).count() > 0) {
+                if (new Select().from(RunningActivity.class).count() > 0) {
                     SharedPreferences saves = getSharedPreferences("jisc", Context.MODE_PRIVATE);
                     Long timestamp = saves.getLong("timer", 0);
                     RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
                     timestamp = System.currentTimeMillis() - timestamp;
-                    if(timestamp / 60000 >= 180) {//180) {
+                    if (timestamp / 60000 >= 180) {//180) {
                         HashMap<String, String> params = new HashMap<>();
                         params.put("student_id", DataManager.getInstance().user.id);
                         params.put("module_id", activity.module_id);
@@ -67,11 +83,11 @@ public class Syncronize extends IntentService {
                         params.put("activity_date", activity.activity_date);
                         params.put("time_spent", "180");
 
-                        if(NetworkManager.getInstance().addActivity(params).equals("200")) {
+                        if (NetworkManager.getInstance().addActivity(params).equals("200")) {
                             activity.delete();
                             NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
                         }
-                        if(DataManager.getInstance().mainActivity != null) {
+                        if (DataManager.getInstance().mainActivity != null) {
                             LogNewActivity fragment = (LogNewActivity) DataManager.getInstance().mainActivity.getSupportFragmentManager().findFragmentByTag("newActivity");
                             if (fragment != null)
                                 DataManager.getInstance().mainActivity.onBackPressed();
@@ -79,9 +95,9 @@ public class Syncronize extends IntentService {
                         saves.edit().putLong("timer", 0).apply();
                     }
                 }
-                if(new Select().from(com.studygoal.jisc.Models.Activity.class).count() > 0) {
+                if (new Select().from(com.studygoal.jisc.Models.Activity.class).count() > 0) {
                     List<com.studygoal.jisc.Models.Activity> list = new Select().from(com.studygoal.jisc.Models.Activity.class).execute();
-                    for(int i=0; i < list.size(); i++) {
+                    for (int i = 0; i < list.size(); i++) {
                         com.studygoal.jisc.Models.Activity activity = list.get(i);
                         HashMap<String, String> params = new HashMap<>();
                         params.put("student_id", activity.student_id);
@@ -91,7 +107,7 @@ public class Syncronize extends IntentService {
                         params.put("activity_date", activity.activity_date);
                         params.put("time_spent", activity.time_spent);
 
-                        if(NetworkManager.getInstance().addActivity(params).equals("200"))
+                        if (NetworkManager.getInstance().addActivity(params).equals("200"))
                             activity.delete();
                     }
                 }
@@ -102,6 +118,6 @@ public class Syncronize extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent,flags,startId);
+        return super.onStartCommand(intent, flags, startId);
     }
 }

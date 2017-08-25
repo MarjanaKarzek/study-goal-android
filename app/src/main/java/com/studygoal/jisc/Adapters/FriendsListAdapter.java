@@ -192,7 +192,7 @@ public class FriendsListAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
 
-                        if(DataManager.getInstance().user.isDemo) {
+                        if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
                             attendant.delete();
                             list.remove(attendant);
                             notifyDataSetChanged();
@@ -241,7 +241,7 @@ public class FriendsListAdapter extends BaseAdapter {
         hide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(DataManager.getInstance().user.isDemo) {
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     attendant.hidden = true;
                     attendant.save();
                     hide.setVisibility(View.INVISIBLE);
@@ -274,7 +274,7 @@ public class FriendsListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                if(DataManager.getInstance().user.isDemo) {
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     attendant.hidden = false;
                     attendant.save();
                     unhide.setVisibility(View.INVISIBLE);

@@ -15,20 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InstitutionsAdapter extends BaseAdapter {
+    private List<Institution> mInstitutions;
+    private LayoutInflater mInflater;
+    private Context mContext;
 
-    public List<Institution> institutions;
-    LayoutInflater inflater;
-    Context context;
+    public InstitutionsAdapter(Context context) {
+        mContext = context;
+        mInstitutions = new ArrayList<>();
+        mInflater = LayoutInflater.from(context);
+    }
 
-    public InstitutionsAdapter(Context c) {
-        context = c;
-        institutions = new ArrayList<>();
-        inflater = LayoutInflater.from(c);
+    public void updateItems(List<Institution> items) {
+        if (items != null && items.size() > 0) {
+            mInstitutions.clear();
+            mInstitutions.addAll(items);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
     public int getCount() {
-        return institutions.size();
+        return mInstitutions.size();
     }
 
     @Override
@@ -43,16 +50,36 @@ public class InstitutionsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        if(view == null) {
-            view = inflater.inflate(R.layout.institution_item, viewGroup, false);
+        if (view == null) {
+            view = mInflater.inflate(R.layout.institution_item, viewGroup, false);
         }
 
         TextView name = (TextView) view.findViewById(R.id.name);
         name.setTypeface(DataManager.getInstance().myriadpro_regular);
-        name.setText(institutions.get(i).name);
-        name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-        view.setTag(institutions.get(i));
 
+        // set manually to change university name
+        // original code
+        // name.setText(mInstitutions.get(i).name);
+        //it's hard coded part. so after web service updated.  it need to be removed.
+        //hard code start
+        String temp_name = mInstitutions.get(i).name;
+
+        if (temp_name.toLowerCase().contains("Gloucestershire".toLowerCase())) {
+            name.setText("University of Gloucestershire");
+        } else if (temp_name.toLowerCase().contains("Oxford Brookes".toLowerCase())) {
+            name.setText("Oxford Brookes University");
+        } else if (temp_name.toLowerCase().contains("South Wales".toLowerCase())) {
+            name.setText("University of South Wales | Prifysgol De Cymru");
+        } else if (temp_name.toLowerCase().contains("Strathclyde".toLowerCase())) {
+            name.setText("University of Strathclyde");
+        } else {
+            name.setText(mInstitutions.get(i).name);
+        }
+
+        //hard code end
+
+        name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+        view.setTag(mInstitutions.get(i));
         return view;
     }
 }

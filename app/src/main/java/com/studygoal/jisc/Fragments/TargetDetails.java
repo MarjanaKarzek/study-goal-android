@@ -18,6 +18,8 @@ import com.activeandroid.query.Select;
 import com.studygoal.jisc.Adapters.TargetPagerAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
+import com.studygoal.jisc.Managers.xApi.LogActivityEvent;
+import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.Targets;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.PageControl;
@@ -43,13 +45,15 @@ public class TargetDetails extends Fragment {
         DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.target));
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(4);
-        if(pager != null && mAdapter != null && mAdapter.list.size() != new Select().from(Targets.class).count()) {
-                mAdapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
-                mAdapter.reference = this;
-                mAdapter.list = new Select().from(Targets.class).execute();
-                mAdapter.notifyDataSetChanged();
-                pager.setAdapter(mAdapter);
+        if (pager != null && mAdapter != null && mAdapter.list.size() != new Select().from(Targets.class).count()) {
+            mAdapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
+            mAdapter.reference = this;
+            mAdapter.list = new Select().from(Targets.class).execute();
+            mAdapter.notifyDataSetChanged();
+            pager.setAdapter(mAdapter);
         }
+
+        XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsGraphs);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -61,7 +65,7 @@ public class TargetDetails extends Fragment {
         pager = (ViewPager) mainView.findViewById(R.id.pager);
         mAdapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
         mAdapter.reference = this;
-        if(list == null) {
+        if (list == null) {
             mAdapter.list = new Select().from(Targets.class).execute();
         } else {
             mAdapter.list = list;
@@ -99,7 +103,7 @@ public class TargetDetails extends Fragment {
 
     public void deleteTarget(final Targets target, final int finalPosition) {
 
-        if(DataManager.getInstance().user.isDemo) {
+        if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TargetDetails.this.getActivity());
             alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_deletetarget) + "</font>"));
             alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
@@ -119,7 +123,7 @@ public class TargetDetails extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(NetworkManager.getInstance().deleteTarget(params)) {
+                if (NetworkManager.getInstance().deleteTarget(params)) {
                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -130,8 +134,7 @@ public class TargetDetails extends Fragment {
                             Snackbar.make(mainView.findViewById(R.id.parent), R.string.target_deleted_successfully, Snackbar.LENGTH_LONG).show();
                         }
                     });
-                }
-                else {
+                } else {
                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

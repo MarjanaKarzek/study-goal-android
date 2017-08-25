@@ -1,13 +1,14 @@
 package com.studygoal.jisc;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
@@ -34,7 +35,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -55,41 +55,41 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.twitter.sdk.android.core.models.ImageValue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import io.fabric.sdk.android.Fabric;
+import io.fabric.sdk.android.services.common.SafeToast;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TWITTER_KEY = "M0NKXVGquYoclGTcG81u49hka";
     private static final String TWITTER_SECRET = "CCpca8rm2GuJFkuHmTdTiwBsTcWdv7Ybi5Qqi7POIA6BvCObY6";
-    TwitterAuthClient mTwitterAuthClient;
+    private TwitterAuthClient mTwitterAuthClient;
 
-    CallbackManager callbackManager;
+    private CallbackManager mCallbackManager;
+    private WebView mWebView;
+    private RelativeLayout mLoginContent;
+    private LinearLayout mLoginStep1;
+    private LinearLayout mLoginStep3;
+    private ImageView mLoginNextButton;
+    private ProgressDialog mProgressDialog;
 
-    int socialType;
+    private boolean mIsStaff;
+    private boolean mRememberMe;
+    private int mSocialType;
+    private int mRefreshCounter = 0;
+    private String mEmail;
+    private String mSocialID;
+    private boolean mIsRefreshing = false;
+    private boolean mFistTimeConnectionProblem = true;
 
-    String email;
-    String socialID;
-
-    private WebView webView;
-
-    RelativeLayout loginContent;
-
-    LinearLayout loginStep1;
-    LinearLayout loginStep3;
-    ImageView login_next_button;
-
-    boolean isStaff;
-    boolean rememberMe;
-
-    Institution selectedInstitution;
+    private Institution mSelectedInstitution;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +99,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         DataManager.getInstance().init();
         DataManager.getInstance().currActivity = this;
 
-        isStaff = false;
-        rememberMe = false;
-        selectedInstitution = null;
+        mIsStaff = false;
+        mRememberMe = false;
+        mSelectedInstitution = null;
 
         if (getResources().getBoolean(R.bool.landscape_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -121,12 +121,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage(R.string.session_expired_message);
             alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.session_expired_title) + "</font>"));
-            alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            alertDialogBuilder.setNegativeButton("Ok", (dialog, which) -> dialog.dismiss());
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
             DataManager.getInstance().toast = false;
@@ -138,70 +133,92 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         DataManager.getInstance().guid = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("guid", "");
 
-        loginContent = (RelativeLayout) findViewById(R.id.login_content);
-        loginStep1 = (LinearLayout) findViewById(R.id.login_step_1);
-        loginStep3 = (LinearLayout) findViewById(R.id.login_step_3);
+        mLoginContent = (RelativeLayout) findViewById(R.id.login_content);
+        mLoginStep1 = (LinearLayout) findViewById(R.id.login_step_1);
+        mLoginStep3 = (LinearLayout) findViewById(R.id.login_step_3);
 
-        login_next_button = (ImageView)findViewById(R.id.login_next_button);
-        login_next_button.setVisibility(View.GONE);
-        loginContent.setVisibility(View.VISIBLE);
-        loginStep1.setVisibility(View.VISIBLE);
-        loginStep3.setVisibility(View.GONE);
+        mLoginNextButton = (ImageView) findViewById(R.id.login_next_button);
+        mLoginNextButton.setVisibility(View.GONE);
+        mLoginContent.setVisibility(View.VISIBLE);
+        mLoginStep1.setVisibility(View.VISIBLE);
+        mLoginStep3.setVisibility(View.GONE);
 
         ((TextView) findViewById(R.id.login_logo_text)).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/mmrtext.ttf"));
         ((TextView) findViewById(R.id.login_step_1_imastudent)).setTypeface(DataManager.getInstance().myriadpro_bold);
         ((TextView) findViewById(R.id.login_step_1_imastaff)).setTypeface(DataManager.getInstance().myriadpro_bold);
 
-        login_next_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginContent.setVisibility(View.GONE);
-                loginStep1.setVisibility(View.GONE);
-                loginStep3.setVisibility(View.VISIBLE);
+        mLoginNextButton.setOnClickListener(v -> {
+            final InstitutionsAdapter adapter = (InstitutionsAdapter) ((ListView) findViewById(R.id.list)).getAdapter();
+
+            if (adapter.getCount() == 0) {
+                final String dialogText;
+
+                if (isConnected()) {
+                    dialogText = getString(R.string.slow_internet);
+                } else {
+                    dialogText = getString(R.string.no_internet);
+                }
+
+                LoginActivity.this.runOnUiThread(() -> {
+                    if (!isFinishing()) {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
+                        alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + dialogText + "</font>"));
+                        alertDialogBuilder.setNegativeButton("Ok", (dialog, which) -> {
+                            mRefreshCounter = 0;
+
+                            if (mRefreshCounter >= Constants.LOGIN_COUNT_CONNECTION_TRY) {
+                                refreshData();
+                            }
+
+                            dialog.dismiss();
+                        });
+
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                        DataManager.getInstance().toast = false;
+                    }
+                });
+            } else {
+                mLoginContent.setVisibility(View.GONE);
+                mLoginStep1.setVisibility(View.GONE);
+                mLoginStep3.setVisibility(View.VISIBLE);
             }
         });
 
-        findViewById(R.id.login_step_1_imastudent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginActivity.this.isStaff = false;
+        final TextView tvStudent = (TextView) findViewById(R.id.login_step_1_imastudent);
+        final TextView tvStaff = (TextView) findViewById(R.id.login_step_1_imastaff);
+        tvStudent.setOnClickListener(view -> {
+            LoginActivity.this.mIsStaff = false;
 
-                login_next_button.setVisibility(View.VISIBLE);
+            mLoginNextButton.setVisibility(View.VISIBLE);
 
-                findViewById(R.id.login_step_1_imastudent).setBackgroundResource(R.drawable.round_corners_transparent_2_selected);
-                ((TextView) findViewById(R.id.login_step_1_imastudent)).setTextColor(Color.parseColor("#ff5000"));
+            tvStudent.setBackgroundResource(R.drawable.round_corners_transparent_2_selected);
+            tvStudent.setTextColor(Color.parseColor("#ffffff"));
 
-                findViewById(R.id.login_step_1_imastaff).setBackgroundResource(R.drawable.round_corners_transparent_2);
-                ((TextView) findViewById(R.id.login_step_1_imastaff)).setTextColor(Color.parseColor("#ffffff"));
-            }
+            tvStaff.setBackgroundResource(R.drawable.round_corners_transparent_2);
+            tvStaff.setTextColor(Color.parseColor("#ffffff"));
         });
 
-        findViewById(R.id.login_step_1_imastaff).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginActivity.this.isStaff = true;
+        tvStaff.setOnClickListener(v -> {
+            LoginActivity.this.mIsStaff = true;
 
-                login_next_button.setVisibility(View.VISIBLE);
+            mLoginNextButton.setVisibility(View.VISIBLE);
 
-                findViewById(R.id.login_step_1_imastudent).setBackgroundResource(R.drawable.round_corners_transparent_2);
-                ((TextView) findViewById(R.id.login_step_1_imastudent)).setTextColor(Color.parseColor("#ffffff"));
+            tvStudent.setBackgroundResource(R.drawable.round_corners_transparent_2);
+            tvStudent.setTextColor(Color.parseColor("#ffffff"));
 
-                findViewById(R.id.login_step_1_imastaff).setBackgroundResource(R.drawable.round_corners_transparent_2_selected);
-                ((TextView) findViewById(R.id.login_step_1_imastaff)).setTextColor(Color.parseColor("#ff5000"));
-            }
+            tvStaff.setBackgroundResource(R.drawable.round_corners_transparent_2_selected);
+            tvStaff.setTextColor(Color.parseColor("#ffffff"));
         });
 
         ((CheckBox) findViewById(R.id.login_check_rememberme)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
-        findViewById(R.id.login_check_rememberme).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginActivity.this.rememberMe = true;
+        findViewById(R.id.login_check_rememberme).setOnClickListener(v -> {
+            LoginActivity.this.mRememberMe = true;
 
-//                loginContent.setVisibility(View.GONE);
-//                loginStep1.setVisibility(View.GONE);
-//                loginStep3.setVisibility(View.VISIBLE);
-            }
+//                mLoginContent.setVisibility(View.GONE);
+//                mLoginStep1.setVisibility(View.GONE);
+//                mLoginStep3.setVisibility(View.VISIBLE);
         });
 
         ((TextView) findViewById(R.id.login_searchinstitution_title)).setTypeface(DataManager.getInstance().myriadpro_bold);
@@ -210,32 +227,44 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         ((TextView) findViewById(R.id.login_signinwith)).setTypeface(DataManager.getInstance().myriadpro_bold);
         ((TextView) findViewById(R.id.login_demomode)).setTypeface(DataManager.getInstance().myriadpro_bold);
 
-        findViewById(R.id.login_demomode).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE0ODgzNjU2NzcsImp0aSI6IjFtbjhnU3YrWk9mVzJlYXV1NmVrN0Rzbm1MUjA0dDRyT0V0SEQ5Z1BGdk09IiwiaXNzIjoiaHR0cDpcL1wvc3AuZGF0YVwvYXV0aCIsIm5iZiI6MTQ4ODM2NTY2NywiZXhwIjoxNjYyNTY0NTY2NywiZGF0YSI6eyJlcHBuIjoiIiwicGlkIjoiZGVtb3VzZXJAZGVtby5hYy51ayIsImFmZmlsaWF0aW9uIjoic3R1ZGVudEBkZW1vLmFjLnVrIn19.xM6KkBFvHW7vtf6dF-X4f_6G3t_KGPVNylN_rMJROsh1MXIg9sK5j77L0Jzg1JR8fhXZf-0jFMnZz6FMotAeig";
+        findViewById(R.id.login_demomode).setOnClickListener(v -> {
+            String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE0ODgzNjU2NzcsImp0aSI6IjFtbjhnU3YrWk9mVzJlYXV1NmVrN0Rzbm1MUjA0dDRyT0V0SEQ5Z1BGdk09IiwiaXNzIjoiaHR0cDpcL1wvc3AuZGF0YVwvYXV0aCIsIm5iZiI6MTQ4ODM2NTY2NywiZXhwIjoxNjYyNTY0NTY2NywiZGF0YSI6eyJlcHBuIjoiIiwicGlkIjoiZGVtb3VzZXJAZGVtby5hYy51ayIsImFmZmlsaWF0aW9uIjoic3R1ZGVudEBkZW1vLmFjLnVrIn19.xM6KkBFvHW7vtf6dF-X4f_6G3t_KGPVNylN_rMJROsh1MXIg9sK5j77L0Jzg1JR8fhXZf-0jFMnZz6FMotAeig";
 //                String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE0ODg0NDkxNzksImp0aSI6IjdnOHFHVWlDKzRIdTdyN2ZUcTBOcldjaUpGTzByR1wvdUhpZVhvN0NBSjZvPSIsImlzcyI6Imh0dHA6XC9cL3NwLmRhdGFcL2F1dGgiLCJuYmYiOjE0ODg0NDkxNjksImV4cCI6MTQ5MjU5NjM2OSwiZGF0YSI6eyJlcHBuIjoiIiwicGlkIjoiczE1MTI0OTNAZ2xvcy5hYy51ayIsImFmZmlsaWF0aW9uIjoic3RhZmZAZ2xvcy5hYy51ayJ9fQ.xO_Yk6ZgTWgg0UHVXglFKD1tMP2wq98b8IU4alaGQvjtlYcjoz5W8gZbAX0Gcktl0nDs_bkvsB1g5OaYkkY6yg";
-                DataManager.getInstance().set_jwt(token);
+            DataManager.getInstance().set_jwt(token);
+
+            new Thread(() -> {
+                showProgressDialog(true);
 
                 if (NetworkManager.getInstance().checkIfUserRegistered()) {
                     if (NetworkManager.getInstance().login()) {
                         DataManager.getInstance().institution = "1";
-                        DataManager.getInstance().user.isDemo = true;
+                        DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk");
+                        showProgressDialog(false);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();
+                        return;
                     }
                 }
-            }
+
+                runOnUiThread(() -> SafeToast.makeText(getApplicationContext(),
+                        getString(R.string.slow_internet),
+                        Toast.LENGTH_SHORT).show());
+
+                showProgressDialog(false);
+            }).start();
+
+
         });
 
-        webView = (WebView) findViewById(R.id.webview);
-        webView.setVisibility(View.INVISIBLE);
-        webView.setWebViewClient(new WebViewClient() {
+        mWebView = (WebView) findViewById(R.id.webview);
+        mWebView.setVisibility(View.INVISIBLE);
+        mWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
                 if (url.contains("?{")) {
-                    webView.setVisibility(View.INVISIBLE);
+                    mWebView.setVisibility(View.INVISIBLE);
                     String json = url.split("\\?")[1];
+
                     try {
                         JSONObject jsonObject = new JSONObject(java.net.URLDecoder.decode(json, "UTF-8"));
 
@@ -243,50 +272,56 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         String token = jsonObject.getString("jwt");
                         DataManager.getInstance().set_jwt(token);
 
-                        if(LoginActivity.this.rememberMe) {
+                        if (LoginActivity.this.mRememberMe) {
                             getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("jwt", DataManager.getInstance().get_jwt()).apply();
                             getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_checked", "yes").apply();
-                            if(LoginActivity.this.isStaff) {
+
+                            if (LoginActivity.this.mIsStaff) {
                                 getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_staff", "yes").apply();
                             }
                         }
 
-                        if(LoginActivity.this.isStaff) {
-                            if (NetworkManager.getInstance().checkIfStaffRegistered()) {
-                                if (NetworkManager.getInstance().loginStaff()) {
-                                    DataManager.getInstance().institution = selectedInstitution.name;
-                                    getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", DataManager.getInstance().institution).apply();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    LoginActivity.this.finish();
+                        if (LoginActivity.this.mIsStaff) {
+                            new Thread(() -> {
+                                if (NetworkManager.getInstance().checkIfStaffRegistered()) {
+                                    if (NetworkManager.getInstance().loginStaff()) {
+                                        DataManager.getInstance().institution = mSelectedInstitution.name;
+                                        getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", DataManager.getInstance().institution).apply();
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        LoginActivity.this.finish();
+                                    } else {
+                                        //TODO: complete login staff workflow
+                                    }
                                 } else {
-                                    //TODO: complete login staff workflow
+                                    //TODO: register staff
                                 }
-                            } else {
-                                //TODO: register staff
-                            }
+                            }).start();
                         } else {
-                            if (NetworkManager.getInstance().checkIfUserRegistered()) {
-                                if (NetworkManager.getInstance().login()) {
-                                    DataManager.getInstance().institution = selectedInstitution.name;
-                                    getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", DataManager.getInstance().institution).apply();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    LoginActivity.this.finish();
+                            new Thread(() -> {
+                                if (NetworkManager.getInstance().checkIfUserRegistered()) {
+                                    if (NetworkManager.getInstance().login()) {
+                                        DataManager.getInstance().institution = mSelectedInstitution.name;
+                                        getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", DataManager.getInstance().institution).apply();
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        LoginActivity.this.finish();
+                                    } else {
+                                        //TODO: Need more information about the register flow so i can deal with other situations
+                                    }
                                 } else {
-                                    //TODO: Need more information about the register flow so i can deal with other situations
+                                    runOnUiThread(() -> {
+                                        //TODO: register student
+                                        mWebView.loadUrl("https://sp.data.alpha.jisc.ac.uk/Shibboleth.sso/Login?entityID=https://" + mSelectedInstitution.url +
+                                                "&target=https://sp.data.alpha.jisc.ac.uk/secure/register/form.php?u=" + DataManager.getInstance().get_jwt());
+                                        mWebView.setVisibility(View.VISIBLE);
+                                    });
                                 }
-
-                            } else {
-                                //TODO: register student
-                                webView.loadUrl("https://sp.data.alpha.jisc.ac.uk/Shibboleth.sso/Login?entityID=https://" + selectedInstitution.url +
-                                        "&target=https://sp.data.alpha.jisc.ac.uk/secure/register/form.php?u=" + DataManager.getInstance().get_jwt());
-                                webView.setVisibility(View.VISIBLE);
-                            }
+                            }).start();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        webView.setVisibility(View.INVISIBLE);
+                        mWebView.setVisibility(View.INVISIBLE);
                         hideProgressBar();
                     }
                 }
@@ -297,74 +332,75 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         ListView list = (ListView) findViewById(R.id.list);
         list.setAdapter(institutionsAdapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        list.setOnItemClickListener((parent, view, position, id) -> {
+            showProgressBar();
 
-                showProgressBar();
-
-                if (getCurrentFocus() != null) {
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                }
-
-                webView.loadUrl("about:blank");
-
-                LoginActivity.this.selectedInstitution = (Institution) view.getTag();
-
-                String url = "https://sp.data.alpha.jisc.ac.uk/Shibboleth.sso/Login?entityID=https://" +
-                        selectedInstitution.url + "&target=https://sp.data.alpha.jisc.ac.uk/secure/auth.php?u=" +
-                        DataManager.getInstance().guid;
-
-                if(LoginActivity.this.rememberMe) {
-                    url += "&lt=true";
-                }
-
-                webView.setVisibility(View.VISIBLE);
-                webView.clearCache(true);
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.loadUrl(url);
+            if (getCurrentFocus() != null) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
+
+            mWebView.loadUrl("about:blank");
+
+            LoginActivity.this.mSelectedInstitution = (Institution) view.getTag();
+
+            String url = "https://sp.data.alpha.jisc.ac.uk/Shibboleth.sso/Login?entityID=https://" +
+                    mSelectedInstitution.url + "&target=https://sp.data.alpha.jisc.ac.uk/secure/auth.php?u=" +
+                    DataManager.getInstance().guid;
+
+            if (LoginActivity.this.mRememberMe) {
+                url += "&lt=true";
+            }
+
+            mWebView.setVisibility(View.VISIBLE);
+            mWebView.clearCache(true);
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.loadUrl(url);
         });
 
         EditText editText = (EditText) findViewById(R.id.search_field);
         editText.setTypeface(DataManager.getInstance().myriadpro_regular);
         editText.addTextChangedListener(new TextWatcher() {
+
+            LinearLayout region = (LinearLayout) findViewById(R.id.social_login_region_ll);
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                region.setVisibility(View.GONE);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                institutionsAdapter.institutions = new Select()
+                institutionsAdapter.updateItems(new Select()
                         .from(Institution.class)
                         .where("name LIKE ?", "%" + s.toString() + "%")
                         .orderBy("name ASC")
-                        .execute();
-                institutionsAdapter.notifyDataSetChanged();
+                        .execute()
+                );
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    region.setVisibility(View.VISIBLE);
+                }
             }
         });
 
         //check if REMEMBER ME is active
-        String jwt = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("jwt","");
-        String is_checked = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("is_checked","");
-        String is_staff = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("is_staff","");
-        String is_institution = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("is_institution","");
-        if(is_checked.equals("yes") && jwt.length() > 0 ) {
+        String jwt = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("jwt", "");
+        String is_checked = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("is_checked", "");
+        String is_staff = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("is_staff", "");
+        String is_institution = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("is_institution", "");
+        if (is_checked.equals("yes") && jwt.length() > 0) {
             try {
                 String jwtDecoded = Utils.jwtDecoded(jwt);
                 JSONObject json = new JSONObject(jwtDecoded);
 
                 Long expiration = Long.parseLong(json.optString("exp"));
-                Long timestamp = System.currentTimeMillis()/1000;
+                Long timestamp = System.currentTimeMillis() / 1000;
 
-                if(expiration < timestamp) {
+                if (expiration < timestamp) {
                     // it is expired
                     getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("jwt", "").apply();
                     getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_checked", "").apply();
@@ -373,41 +409,44 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else {
                     //continue with login process
                     DataManager.getInstance().set_jwt(jwt);
+                    showProgressBar();
 
-                    if(is_staff.equals("yes")) {
-                        if (NetworkManager.getInstance().checkIfStaffRegistered()) {
-                            if (NetworkManager.getInstance().loginStaff()) {
-                                DataManager.getInstance().institution = is_institution;
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                LoginActivity.this.finish();
+                    new Thread(() -> {
+                        if (is_staff.equals("yes")) {
+                            if (NetworkManager.getInstance().checkIfStaffRegistered()) {
+                                if (NetworkManager.getInstance().loginStaff()) {
+                                    DataManager.getInstance().institution = is_institution;
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    LoginActivity.this.finish();
+                                } else {
+                                    //TODO: complete login staff workflow
+                                }
                             } else {
-                                //TODO: complete login staff workflow
+                                //TODO: register staff workflow
                             }
                         } else {
-                            //TODO: register staff workflow
-                        }
-                    } else {
-                        if (NetworkManager.getInstance().checkIfUserRegistered()) {
-                            if (NetworkManager.getInstance().login()) {
-                                DataManager.getInstance().institution = is_institution;
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                LoginActivity.this.finish();
-                            } else {
-                                //TODO: Need more information about the register flow so i can deal with other situations
-                            }
+                            if (NetworkManager.getInstance().checkIfUserRegistered()) {
+                                if (NetworkManager.getInstance().login()) {
+                                    DataManager.getInstance().institution = is_institution;
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    LoginActivity.this.finish();
+                                } else {
+                                    //TODO: Need more information about the register flow so i can deal with other situations
+                                }
 
-                        } else {
-                            //TODO: register student worflow
+                            } else {
+                                //TODO: register student worflow
+                            }
                         }
-                    }
+                    }).start();
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -417,95 +456,74 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        ImageView login_with_google = (ImageView)findViewById(R.id.login_with_google);
-        login_with_google.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                socialType = 3;
+        ImageView login_with_google = (ImageView) findViewById(R.id.login_with_google);
+        login_with_google.setOnClickListener(view -> {
+            mSocialType = 3;
 
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, 5005);
-            }
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, 5005);
         });
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
 
-        mTwitterAuthClient= new TwitterAuthClient();
-        ImageView login_with_twitter = (ImageView)findViewById(R.id.login_with_twitter);
-        login_with_twitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                socialType = 2;
-                socialID = "";
-                email = "";
+        mTwitterAuthClient = new TwitterAuthClient();
+        ImageView login_with_twitter = (ImageView) findViewById(R.id.login_with_twitter);
+        login_with_twitter.setOnClickListener(view -> {
+            mSocialType = 2;
+            mSocialID = "";
+            mEmail = "";
 
-                mTwitterAuthClient.authorize(LoginActivity.this, new Callback<TwitterSession>() {
-                    @Override
-                    public void success(Result<TwitterSession> twitterSessionResult) {
-                        // Success
-                        socialID = ""+twitterSessionResult.data.getUserId();
-                        mTwitterAuthClient.requestEmail(twitterSessionResult.data, new Callback<String>() {
-                            @Override
-                            public void success(Result<String> result) {
-                                email = result.data;
+            mTwitterAuthClient.authorize(LoginActivity.this, new Callback<TwitterSession>() {
+                @Override
+                public void success(Result<TwitterSession> twitterSessionResult) {
+                    // Success
+                    mSocialID = "" + twitterSessionResult.data.getUserId();
+                    mTwitterAuthClient.requestEmail(twitterSessionResult.data, new Callback<String>() {
+                        @Override
+                        public void success(Result<String> result) {
+                            mEmail = result.data;
+                            runOnUiThread(() -> loginSocial());
+                        }
 
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        loginSocial();
-                                    }
-                                });
-                            }
+                        @Override
+                        public void failure(TwitterException exception) {
+                            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
+                            alertDialogBuilder.setMessage(R.string.facebook_error_email);
+                            alertDialogBuilder.setNegativeButton("OK", (dialog, which) -> dialog.dismiss());
+                            android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                        }
+                    });
+                }
 
-                            @Override
-                            public void failure(TwitterException exception) {
-                                android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
-                                alertDialogBuilder.setMessage(R.string.facebook_error_email);
-                                alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                alertDialog.show();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failure(TwitterException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
+                @Override
+                public void failure(TwitterException e) {
+                    e.printStackTrace();
+                }
+            });
         });
 
-        callbackManager = CallbackManager.Factory.create();
 
-        ImageView login_with_facebook = (ImageView)findViewById(R.id.login_with_facebook);
-        login_with_facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                socialType = 1;
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email"));
-            }
+        TextView backToFirstPage = (TextView) findViewById(R.id.back_to_firstpage);
+        backToFirstPage.setOnClickListener(view -> onBackPressed());
+
+        mCallbackManager = CallbackManager.Factory.create();
+
+        ImageView login_with_facebook = (ImageView) findViewById(R.id.login_with_facebook);
+        login_with_facebook.setOnClickListener(view -> {
+            mSocialType = 1;
+            LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email"));
         });
 
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
-                if(!loginResult.getRecentlyGrantedPermissions().contains("email")) {
+                if (!loginResult.getRecentlyGrantedPermissions().contains("email")) {
                     android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
                     alertDialogBuilder.setMessage(R.string.facebook_error_email);
-                    alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                    alertDialogBuilder.setNegativeButton("OK", (dialog, which) -> dialog.dismiss());
                     android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                     return;
@@ -513,24 +531,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.e("LoginActivity", response.toString());
+                        (object, response) -> {
+                            Log.e("LoginActivity", response.toString());
 
-                                try {
-                                    socialID = object.getString("id");
-                                    email = object.getString("email");
+                            try {
+                                mSocialID = object.getString("id");
+                                mEmail = object.getString("email");
 
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            loginSocial();
-                                        }
-                                    });
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                runOnUiThread(() -> loginSocial());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         });
 
@@ -549,62 +559,103 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
+        Log.d("calling refresh", "onCreate: calling refresh ");
         refreshData();
     }
 
-    public void refreshData() {
+    private void showProgressDialog(final boolean show) {
+        runOnUiThread(() -> {
+            if (!isFinishing()) {
+                if (mProgressDialog == null) {
+                    mProgressDialog = new ProgressDialog(LoginActivity.this);
+                    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    mProgressDialog.setMessage("Logging in...");
+                    mProgressDialog.setCancelable(false);
+                }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                NetworkManager.getInstance().getAllTrophies();
-            }
-        }).start();
-
-        final InstitutionsAdapter adapter = (InstitutionsAdapter) ((ListView) findViewById(R.id.list)).getAdapter();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(NetworkManager.getInstance().downloadInstitutions()) {
-                    LoginActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.institutions = new Select().from(Institution.class).orderBy("name").execute();
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
+                if (show) {
+                    if (!mProgressDialog.isShowing()) {
+                        mProgressDialog.show();
+                    }
                 } else {
-                    LoginActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-                            alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.no_internet) + "</font>"));
-                            alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    refreshData();
-                                    dialog.dismiss();
-                                }
-                            });
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-                            alertDialog.show();
-                            DataManager.getInstance().toast = false;
-                        }
-                    });
+                    if (mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
                 }
             }
-        }).start();
+        });
+    }
+
+    public void refreshData() {
+        new Thread(() -> NetworkManager.getInstance().getAllTrophies()).start();
+        final InstitutionsAdapter adapter = (InstitutionsAdapter) ((ListView) findViewById(R.id.list)).getAdapter();
+
+        if (!mIsRefreshing) {
+            mIsRefreshing = true;
+            new Thread(() -> {
+                List<Institution> items = getInstitution();
+
+                if (items != null && items.size() > 0) {
+                    LoginActivity.this.runOnUiThread(() -> {
+                        adapter.updateItems(items);
+                    });
+
+                    mRefreshCounter = 0;
+                } else {
+                    boolean isConnectionIssue = false;
+
+                    //refreshCounter is increased to 99 to improve the chance of a connection being made.
+                    while (mRefreshCounter < Constants.LOGIN_COUNT_CONNECTION_TRY) {
+                        if (!isConnected()) {
+                            if (mFistTimeConnectionProblem) {
+                                showBadConnectDialog(getString(R.string.no_internet));
+                            }
+
+                            mFistTimeConnectionProblem = false;
+                            isConnectionIssue = true;
+                            mRefreshCounter++;
+                        } else {
+                            List<Institution> institution = getInstitution();
+
+                            if (institution != null && institution.size() > 0) {
+                                mRefreshCounter = 0;
+
+                                LoginActivity.this.runOnUiThread(() -> {
+                                    adapter.updateItems(institution);
+                                });
+
+                                mIsRefreshing = false;
+                                return;
+                            } else {
+                                mRefreshCounter++;
+                            }
+
+                            isConnectionIssue = false;
+                        }
+
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    final String dialogText = isConnectionIssue ? getString(R.string.no_internet) : getString(R.string.slow_internet);
+                    showBadConnectDialog(dialogText);
+                }
+
+                mIsRefreshing = false;
+            }).start();
+        }
     }
 
     @Override
     public void onBackPressed() {
+        if (mLoginStep3.getVisibility() == View.VISIBLE) {
+            mLoginStep3.setVisibility(View.GONE);
 
-        if (loginStep3.getVisibility() == View.VISIBLE) {
-            loginStep3.setVisibility(View.GONE);
-
-            loginContent.setVisibility(View.VISIBLE);
-            loginStep1.setVisibility(View.VISIBLE);
+            mLoginContent.setVisibility(View.VISIBLE);
+            mLoginStep1.setVisibility(View.VISIBLE);
         } else {
             super.onBackPressed();
         }
@@ -622,11 +673,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(socialType == 1) {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-        } else if (socialType == 2) {
+        if (mSocialType == 1) {
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        } else if (mSocialType == 2) {
             mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
-        } else if (socialType == 3) {
+        } else if (mSocialType == 3) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
@@ -637,15 +688,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            email = acct.getEmail();
-            socialID = acct.getId();
+            mEmail = acct.getEmail();
+            mSocialID = acct.getId();
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    loginSocial();
-                }
-            });
+            runOnUiThread(() -> loginSocial());
 
         } else {
             Log.e("JISC", "handleSignInResult:" + result.getStatus().getResolution());
@@ -654,14 +700,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("JISC","connection result: "+connectionResult);
+        Log.e("JISC", "connection result: " + connectionResult);
     }
 
     void loginSocial() {
+        Integer response = NetworkManager.getInstance().loginSocial(mEmail, mSocialID);
 
-        Integer response = NetworkManager.getInstance().loginSocial(email,socialID);
-
-        if(response == 200) {
+        if (response == 200) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             LoginActivity.this.finish();
@@ -671,25 +716,63 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (response == 403) {
             android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
             alertDialogBuilder.setMessage(R.string.social_login_error);
-            alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            alertDialogBuilder.setNegativeButton("OK", (dialog, which) -> dialog.dismiss());
             android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         } else {
             android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
             alertDialogBuilder.setMessage(R.string.something_went_wrong);
-            alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            alertDialogBuilder.setNegativeButton("OK", (dialog, which) -> dialog.dismiss());
             android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
+    }
+
+    private boolean isConnected() {
+        boolean result = false;
+
+        ConnectivityManager cm = (ConnectivityManager) LoginActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm != null) {
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            result = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        }
+
+        return result;
+    }
+
+    private List<Institution> getInstitution() {
+        List<Institution> result = null;
+
+        boolean requestResult = NetworkManager.getInstance().downloadInstitutions();
+        int institutionsCount = 0;
+
+        if (requestResult) {
+            institutionsCount = new Select().from(Institution.class).count();
+
+            if (institutionsCount > 0) {
+                result = new Select().from(Institution.class).orderBy("name").execute();
+            }
+        }
+
+        return result;
+    }
+
+    private void showBadConnectDialog(String message) {
+        LoginActivity.this.runOnUiThread(() -> {
+            if (!isFinishing()) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
+                alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + message + "</font>"));
+                alertDialogBuilder.setNegativeButton("Ok", (dialog, which) -> {
+                    mRefreshCounter = 0;
+                    refreshData();
+                    dialog.dismiss();
+                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                DataManager.getInstance().toast = false;
+            }
+        });
     }
 }

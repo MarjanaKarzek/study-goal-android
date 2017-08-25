@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,17 +14,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.facebook.TestUserManager;
 import com.studygoal.jisc.Adapters.AttainmentAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.SocialManager;
+import com.studygoal.jisc.Managers.xApi.LogActivityEvent;
+import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.Attainment;
 import com.studygoal.jisc.R;
 
 import java.util.Timer;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class Stats2 extends Fragment {
 
@@ -57,6 +55,8 @@ public class Stats2 extends Fragment {
                 });
             }
         }).start();
+
+        XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateStatsAllActivity);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Stats2 extends Fragment {
         final TextView activity_points_overall;
         (activity_points_overall = (TextView) mainView.findViewById(R.id.activity_points_2)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
-        NetworkManager.getInstance().getStudentActivityPoint();
+        NetworkManager.getInstance().getStudentActivityPoint("");
         activity_points_thisweek.setText(DataManager.getInstance().user.last_week_activity_points);
         activity_points_overall.setText(DataManager.getInstance().user.overall_activity_points);
 
@@ -90,7 +90,7 @@ public class Stats2 extends Fragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        NetworkManager.getInstance().getStudentActivityPoint();
+                        NetworkManager.getInstance().getStudentActivityPoint("");
                         NetworkManager.getInstance().getAssignmentRanking();
 
                         DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
@@ -158,7 +158,7 @@ public class Stats2 extends Fragment {
         mainView.findViewById(R.id.next).setVisibility(View.INVISIBLE);
 
         final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        if(DataManager.getInstance().user.isStaff && preferences.getBoolean("stats_alert",true)) {
+        if (DataManager.getInstance().user.isStaff && preferences.getBoolean("stats_alert", true)) {
 
             android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getActivity());
             alertDialogBuilder.setMessage(R.string.statistics_admin_view);
@@ -166,7 +166,7 @@ public class Stats2 extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("stats_alert",false);
+                    editor.putBoolean("stats_alert", false);
                     editor.apply();
                 }
             });
@@ -186,9 +186,9 @@ public class Stats2 extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(timer != null)
+        if (timer != null)
             timer.cancel();
-        if(timer2 != null)
+        if (timer2 != null)
             timer2.cancel();
     }
 }

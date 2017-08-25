@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -23,13 +24,13 @@ public class MyGcmListenerService extends FirebaseMessagingService {
      */
     // [START receive_message]
     @Override
-    public void onMessageReceived(RemoteMessage message){
-
+    public void onMessageReceived(RemoteMessage message) {
+        Log.e("onMessageReceived", "onMessageReceived: " + message.toString());
         Map data = message.getData();
 
         String m = (String) data.get("message");
 
-
+        Log.e("onMessageReceived", "Message: " + m);
         // [START_EXCLUDE]
         /**
          * Production applications would usually process the message here.

@@ -21,6 +21,8 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.LinguisticManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.SocialManager;
+import com.studygoal.jisc.Managers.xApi.LogActivityEvent;
+import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.Attainment;
 import com.studygoal.jisc.R;
 
@@ -119,7 +121,7 @@ public class Stats extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    NetworkManager.getInstance().getStudentActivityPoint();
+                    NetworkManager.getInstance().getStudentActivityPoint("");
                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -133,6 +135,8 @@ public class Stats extends Fragment {
 
         ((TextView) mainView.findViewById(R.id.title)).setText(getActivity().getString(R.string.course_engagement));
         ((TextView) mainView.findViewById(R.id.attainment)).setText(getActivity().getString(R.string.attainment));
+
+        XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateStatsAllActivity);
     }
 
     @Override
@@ -219,7 +223,7 @@ public class Stats extends Fragment {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            NetworkManager.getInstance().getStudentActivityPoint();
+                            NetworkManager.getInstance().getStudentActivityPoint("");
                             DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

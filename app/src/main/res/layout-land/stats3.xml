@@ -53,17 +53,11 @@
                     android:id="@+id/chart_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/chart"
-                        android:layout_width="550dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="3dp"/>
-                    <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/barchart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="invisible"
-                        android:layout_margin="0dp"/>/>
+                        <WebView
+                            android:id="@+id/chart_web"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="0dp"/>
                 </RelativeLayout>
             </LinearLayout>
 
