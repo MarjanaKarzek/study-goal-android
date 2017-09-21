@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,6 +116,7 @@ public class HomeScreen extends Fragment {
                         map.put("setting_type", "home_screen");
                         map.put("setting_value", en_menu.get(position));
                         if (NetworkManager.getInstance().changeAppSettings(map)) {
+                            Log.d("", "onItemClick: Works fine");
                             DataManager.getInstance().home_screen = en_menu.get(position);
                             SharedPreferences preferences = DataManager.getInstance().mainActivity.getSharedPreferences("jisc", Context.MODE_PRIVATE);
                             preferences.edit().putString("home_screen", DataManager.getInstance().home_screen).apply();

@@ -82,8 +82,16 @@ public class SettingsFragment extends Fragment {
                 selected_value = getActivity().getString(R.string.feed);
                 break;
             }
+            case "friends": {
+                selected_value = getActivity().getString(R.string.friends);
+                break;
+            }
             case "stats": {
                 selected_value = getActivity().getString(R.string.stats);
+                break;
+            }
+            case "checkin": {
+                selected_value = getActivity().getString(R.string.check_in);
                 break;
             }
             case "log": {
@@ -117,6 +125,14 @@ public class SettingsFragment extends Fragment {
         switch (DataManager.getInstance().home_screen.toLowerCase()) {
             case "feed": {
                 selected_value = getActivity().getString(R.string.feed);
+                break;
+            }
+            case "friends": {
+                selected_value = getActivity().getString(R.string.friends);
+                break;
+            }
+            case "checkin": {
+                selected_value = getActivity().getString(R.string.check_in);
                 break;
             }
             case "stats": {
@@ -201,7 +217,7 @@ public class SettingsFragment extends Fragment {
         mainView.findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Test", "Click Mamera");
+                Log.e("Test", "Click Camera");
                 if(ConnectionHandler.isConnected(getContext())) {
                     if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SettingsFragment.this.getActivity());
@@ -297,6 +313,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //1.4 feature
         /*mainView.findViewById(R.id.terms_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

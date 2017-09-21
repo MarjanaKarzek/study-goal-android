@@ -330,6 +330,7 @@ public class MainActivity extends FragmentActivity {
         Intent intentService = new Intent(this, Syncronize.class);
         startService(intentService);
 
+        android.util.Log.d(TAG, "onCreate: selected screen " + DataManager.getInstance().home_screen);
         if (DataManager.getInstance().home_screen == null) {
             DataManager.getInstance().home_screen = "feed";
             getSupportFragmentManager().beginTransaction()
@@ -360,6 +361,10 @@ public class MainActivity extends FragmentActivity {
         } else if (DataManager.getInstance().home_screen.toLowerCase().equals("checkin")) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, new CheckInFragment())
+                    .commit();
+        } else if (DataManager.getInstance().home_screen.toLowerCase().equals("friends")) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, new Friends())
                     .commit();
         }
 
@@ -474,13 +479,16 @@ public class MainActivity extends FragmentActivity {
                         adapter.statsOpened = !adapter.statsOpened;
                         adapter.notifyDataSetChanged();
                     }
-
-                    adapter.selected_image.setColorFilter(0x00FFFFFF);
-                    adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.light_grey));
-                    adapter.selected_image = (ImageView) view.findViewById(R.id.drawer_item_icon);
-                    adapter.selected_text = (TextView) view.findViewById(R.id.drawer_item_text);
-                    adapter.selected_image.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
-                    adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
+                    if(adapter.selected_image != null) {
+                        adapter.selected_image.setColorFilter(0x00FFFFFF);
+                        adapter.selected_image = (ImageView) view.findViewById(R.id.drawer_item_icon);
+                        adapter.selected_image.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
+                    }
+                    if(adapter.selected_text != null) {
+                        adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.light_grey));
+                        adapter.selected_text = (TextView) view.findViewById(R.id.drawer_item_text);
+                        adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
+                    }
 
                     int staticMenuItems = 8;
                     for (String menuItem : adapter.values) {
@@ -510,7 +518,7 @@ public class MainActivity extends FragmentActivity {
                     }
 
 
-                    if (adapter.selected_text.getText().toString().equals(MainActivity.this.getString(R.string.logout))) {
+                    if (adapter.selected_text != null && adapter.selected_text.getText().toString().equals(MainActivity.this.getString(R.string.logout))) {
                         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.dialog_confirmation);

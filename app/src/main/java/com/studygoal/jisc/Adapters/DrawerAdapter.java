@@ -199,12 +199,20 @@ public class DrawerAdapter extends BaseAdapter {
                         selected_value = context.getString(R.string.feed);
                         break;
                     }
+                    case "friends": {
+                        selected_value = context.getString(R.string.friends);
+                        break;
+                    }
                     case "stats": {
                         selected_value = context.getString(R.string.stats);
                         break;
                     }
                     case "log": {
                         selected_value = context.getString(R.string.log);
+                        break;
+                    }
+                    case "checkin": {
+                        selected_value = context.getString(R.string.check_in);
                         break;
                     }
                     case "target": {

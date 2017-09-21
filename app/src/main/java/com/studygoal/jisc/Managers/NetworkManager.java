@@ -1323,6 +1323,8 @@ public class NetworkManager {
                     return false;
                 }
 
+                Log.d("", "call: working");
+
                 System.out.println(urlParameters);
                 return true;
             } catch (Exception e) {

@@ -168,7 +168,6 @@ public class SettingsActivity extends AppCompatActivity {
         return cursor.getString(column_index);
     }
 
-
     private class SettingsItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
