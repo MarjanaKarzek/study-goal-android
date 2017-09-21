@@ -714,7 +714,14 @@ public class AddTarget extends BaseFragment {
                 return;
             }
 
-            int total_time = Integer.parseInt(mHours.getText().toString()) * 60 + Integer.parseInt(mMinutes.getText().toString());
+            String hours = mHours.getText().toString();
+            if (hours.equals(""))
+                hours = "0";
+            String minutes = mMinutes.getText().toString();
+            if (minutes.equals(""))
+                minutes = "0";
+
+            int total_time = Integer.parseInt(hours) * 60 + Integer.parseInt(minutes);
 
             if (total_time == 0) {
                 Snackbar.make(mRoot, R.string.fail_to_add_target_insufficient_time, Snackbar.LENGTH_LONG).show();

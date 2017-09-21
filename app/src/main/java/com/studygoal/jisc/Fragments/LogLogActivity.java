@@ -399,7 +399,15 @@ public class LogLogActivity extends Fragment implements View.OnClickListener {
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.no_module_selected, Snackbar.LENGTH_LONG).show();
                         return;
                     }
-                    int time_spent = Integer.parseInt(hours_spent.getText().toString()) * 60 + Integer.parseInt(minutes_spent.getText().toString());
+
+                    String hours = hours_spent.getText().toString();
+                    if (hours.equals(""))
+                        hours = "0";
+                    String minutes = minutes_spent.getText().toString();
+                    if (minutes.equals(""))
+                        minutes = "0";
+
+                    int time_spent = Integer.parseInt(hours) * 60 + Integer.parseInt(minutes);
                     if (time_spent == 0) {
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.spend_more_time_to_submit_activity, Snackbar.LENGTH_LONG).show();
                         return;
