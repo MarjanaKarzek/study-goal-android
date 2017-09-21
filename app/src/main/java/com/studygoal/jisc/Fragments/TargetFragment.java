@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.studygoal.jisc.Adapters.TargetAdapter;
 import com.studygoal.jisc.Adapters.ToDoTasksAdapter;
 import com.studygoal.jisc.Managers.DataManager;
@@ -70,9 +71,11 @@ public class TargetFragment extends BaseFragment {
             if (checkedId == R.id.target_recurring) {
                 mBinding.list.setVisibility(View.VISIBLE);
                 mBinding.listTodo.setVisibility(View.GONE);
+                DataManager.getInstance().mainActivity.displaySingleTarget = false;
             } else {
                 mBinding.list.setVisibility(View.GONE);
                 mBinding.listTodo.setVisibility(View.VISIBLE);
+                DataManager.getInstance().mainActivity.displaySingleTarget = true;
             }
 
             updateTutorialMessage();

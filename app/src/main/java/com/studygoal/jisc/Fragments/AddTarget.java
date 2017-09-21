@@ -171,6 +171,17 @@ public class AddTarget extends BaseFragment {
         DataManager.getInstance().reload();
         applyTypeface();
 
+        if(DataManager.getInstance().mainActivity.displaySingleTarget){
+            mBinding.targetSingle.setChecked(true);
+            mIsRecurringTarget = false;
+            mBinding.recurringLayout.setVisibility(View.GONE);
+            mBinding.singleLayout.setVisibility(View.VISIBLE);
+        } else {
+            mIsRecurringTarget = true;
+            mBinding.recurringLayout.setVisibility(View.VISIBLE);
+            mBinding.singleLayout.setVisibility(View.GONE);
+        }
+
         mBinding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.target_recurring) {
                 mIsRecurringTarget = true;
@@ -182,10 +193,6 @@ public class AddTarget extends BaseFragment {
                 mBinding.singleLayout.setVisibility(View.VISIBLE);
             }
         });
-
-        mIsRecurringTarget = true;
-        mBinding.recurringLayout.setVisibility(View.VISIBLE);
-        mBinding.singleLayout.setVisibility(View.GONE);
 
         mActivityType = ((AppCompatTextView) mRoot.findViewById(R.id.addtarget_activityType_textView));
         mActivityType.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));

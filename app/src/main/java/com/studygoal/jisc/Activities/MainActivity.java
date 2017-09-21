@@ -102,6 +102,7 @@ public class MainActivity extends FragmentActivity {
     ListView navigationView;
     public DrawerAdapter adapter;
     View menu, blackout;
+    public boolean displaySingleTarget = false;
 
     private Context context;
     private int statOpenedNum = 4;
