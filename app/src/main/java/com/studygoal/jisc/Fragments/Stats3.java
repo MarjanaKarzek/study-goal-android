@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
@@ -35,6 +36,7 @@ import com.studygoal.jisc.Models.ED;
 import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.Models.Module;
 import com.studygoal.jisc.R;
+import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import com.studygoal.jisc.Utils.Utils;
 
 import java.io.BufferedReader;
@@ -57,6 +59,7 @@ public class Stats3 extends Fragment {
     private TextView mDescription;
 
     private List<ED> mList;
+    private List<ED> offlineDemoData;
     private float mWebViewHeight;
     private boolean mIsBar;
     private boolean mIsSevenDays = false;
@@ -474,6 +477,46 @@ public class Stats3 extends Fragment {
                     filterValue,
                     isCourse
             );
+
+            if((mList.size() == 0 || mList == null) && DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk") && !ConnectionHandler.isConnected(getContext())){
+                Calendar currentDate = Calendar.getInstance();
+                if(!mIsSevenDays) {
+                    mList.add(new ED("08/24", 5));
+                    mList.add(new ED("08/25", 9));
+                    mList.add(new ED("08/26", 25));
+                    mList.add(new ED("08/27", 23));
+                    mList.add(new ED("08/28", 23));
+                    mList.add(new ED("08/29", 7));
+
+                    mList.add(new ED("08/30", 8));
+                    mList.add(new ED("08/31", 0));
+                    mList.add(new ED("09/01", 0));
+                    mList.add(new ED("09/02", 0));
+                    mList.add(new ED("09/03", 0));
+
+                    mList.add(new ED("09/04", 0));
+                    mList.add(new ED("09/05", 34));
+                    mList.add(new ED("09/06", 0));
+                    mList.add(new ED("09/07", 11));
+                    mList.add(new ED("09/08", 24));
+
+                    mList.add(new ED("09/09", 2));
+                    mList.add(new ED("09/10", 0));
+                    mList.add(new ED("09/11", 23));
+                    mList.add(new ED("09/12", 0));
+                    mList.add(new ED("09/13", 2));
+                }
+
+                mList.add(new ED("09/14", 3));
+                mList.add(new ED("09/15", 12));
+                mList.add(new ED("09/16", 3));
+                mList.add(new ED("09/17", 33));
+                mList.add(new ED("09/18", 10));
+
+                mList.add(new ED("09/19", 10));
+                mList.add(new ED("09/20", 20));
+            }
+
 
             runOnUiThread(() -> {
                 refreshUi();

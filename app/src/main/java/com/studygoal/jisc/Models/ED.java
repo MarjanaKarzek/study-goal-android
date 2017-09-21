@@ -14,4 +14,18 @@ public class ED {
     public Date realDate;
     public Integer activity_points;
     public Integer other_activity_points;
+
+
+    public ED(String day, Integer activity_points){
+        this.day = day;
+        this.activity_points = activity_points;
+    }
+
+    public ED(){
+
+    }
+
+    public String toString(){
+        return "" + date + " " + student_id + " " + position + " " + month + " " + week + " " + day + " " + realDate + " " + activity_points;
+    }
 }
