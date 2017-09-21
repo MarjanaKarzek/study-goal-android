@@ -479,44 +479,21 @@ public class Stats3 extends Fragment {
             );
 
             if((mList.size() == 0 || mList == null) && DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk") && !ConnectionHandler.isConnected(getContext())){
+                Random random = new Random();
+                SimpleDateFormat logDate = new SimpleDateFormat("MM/dd");
                 Calendar currentDate = Calendar.getInstance();
                 if(!mIsSevenDays) {
-                    mList.add(new ED("08/24", 5));
-                    mList.add(new ED("08/25", 9));
-                    mList.add(new ED("08/26", 25));
-                    mList.add(new ED("08/27", 23));
-                    mList.add(new ED("08/28", 23));
-                    mList.add(new ED("08/29", 7));
-
-                    mList.add(new ED("08/30", 8));
-                    mList.add(new ED("08/31", 0));
-                    mList.add(new ED("09/01", 0));
-                    mList.add(new ED("09/02", 0));
-                    mList.add(new ED("09/03", 0));
-
-                    mList.add(new ED("09/04", 0));
-                    mList.add(new ED("09/05", 34));
-                    mList.add(new ED("09/06", 0));
-                    mList.add(new ED("09/07", 11));
-                    mList.add(new ED("09/08", 24));
-
-                    mList.add(new ED("09/09", 2));
-                    mList.add(new ED("09/10", 0));
-                    mList.add(new ED("09/11", 23));
-                    mList.add(new ED("09/12", 0));
-                    mList.add(new ED("09/13", 2));
+                    for(int i = 28; i > 0; i--) {
+                        currentDate.add(Calendar.DATE, -1);
+                        mList.add(new ED(logDate.format(currentDate.getTime()), random.nextInt(25)));
+                    }
+                } else {
+                    for(int i = 7; i > 0; i--) {
+                        currentDate.add(Calendar.DATE, -1);
+                        mList.add(new ED(logDate.format(currentDate.getTime()), random.nextInt(25)));
+                    }
                 }
-
-                mList.add(new ED("09/14", 3));
-                mList.add(new ED("09/15", 12));
-                mList.add(new ED("09/16", 3));
-                mList.add(new ED("09/17", 33));
-                mList.add(new ED("09/18", 10));
-
-                mList.add(new ED("09/19", 10));
-                mList.add(new ED("09/20", 20));
             }
-
 
             runOnUiThread(() -> {
                 refreshUi();
