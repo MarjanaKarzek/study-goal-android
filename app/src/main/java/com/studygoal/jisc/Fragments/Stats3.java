@@ -59,7 +59,7 @@ public class Stats3 extends Fragment {
     private TextView mDescription;
 
     private List<ED> mList;
-    private List<ED> offlineDemoData;
+    private int[] offlineDemoData = {22,0,0,21,4,5,23,6,16,10,3,4,6,1,7,0,0,0,0,3,5,7,12,24,1,0,0,12,13,21};
     private float mWebViewHeight;
     private boolean mIsBar;
     private boolean mIsSevenDays = false;
@@ -479,18 +479,17 @@ public class Stats3 extends Fragment {
             );
 
             if((mList.size() == 0 || mList == null) && DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk") && !ConnectionHandler.isConnected(getContext())){
-                Random random = new Random();
                 SimpleDateFormat logDate = new SimpleDateFormat("MM/dd");
                 Calendar currentDate = Calendar.getInstance();
                 if(!mIsSevenDays) {
                     for(int i = 28; i > 0; i--) {
                         currentDate.add(Calendar.DATE, -1);
-                        mList.add(new ED(logDate.format(currentDate.getTime()), random.nextInt(25)));
+                        mList.add(new ED(logDate.format(currentDate.getTime()), offlineDemoData[i]));
                     }
                 } else {
-                    for(int i = 7; i > 0; i--) {
+                    for(int i = 28; i > 21; i--) {
                         currentDate.add(Calendar.DATE, -1);
-                        mList.add(new ED(logDate.format(currentDate.getTime()), random.nextInt(25)));
+                        mList.add(new ED(logDate.format(currentDate.getTime()), offlineDemoData[i]));
                     }
                 }
             }
