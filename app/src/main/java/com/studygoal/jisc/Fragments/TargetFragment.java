@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -164,6 +165,13 @@ public class TargetFragment extends BaseFragment {
             }
         });
 
+        mBinding.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.swipe_for_edit_delete, Snackbar.LENGTH_LONG).show();
+            }
+        });
+
         mBinding.listTodo.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -173,6 +181,13 @@ public class TargetFragment extends BaseFragment {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 int topRowVerticalPosition = (mBinding.listTodo == null || mBinding.listTodo.getChildCount() == 0) ? 0 : mBinding.listTodo.getChildAt(0).getTop();
                 mLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+            }
+        });
+
+        mBinding.listTodo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.swipe_for_done_edit_delete, Snackbar.LENGTH_LONG).show();
             }
         });
 
