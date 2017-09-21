@@ -130,8 +130,7 @@ public class StatsEventAttendance extends BaseFragment {
             }
         }).start();
 
-        //1.4 feature
-        /*all = (TextView) mainView.findViewById(R.id.segment_button_all_events);
+        all = (TextView) mainView.findViewById(R.id.segment_button_all_events);
         summary = (TextView) mainView.findViewById(R.id.segment_button_attendance_summary);
 
         SegmentClickListener l = new SegmentClickListener();
@@ -167,7 +166,7 @@ public class StatsEventAttendance extends BaseFragment {
             je.printStackTrace();
         }
 
-        loadWebView();*/
+        loadWebView();
 
         return mainView;
     }
@@ -180,8 +179,7 @@ public class StatsEventAttendance extends BaseFragment {
         }
     }
 
-    //1.4 feature
-    /*@SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
         WebSettings s = mWebView.getSettings();
         s.setJavaScriptEnabled(true);
@@ -248,5 +246,5 @@ public class StatsEventAttendance extends BaseFragment {
                 viewFlipper.showPrevious();
             }
         }
-    }*/
+    }
 }

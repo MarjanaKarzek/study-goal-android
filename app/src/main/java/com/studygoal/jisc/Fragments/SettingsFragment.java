@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -313,11 +314,10 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        //1.4 feature
-        /*mainView.findViewById(R.id.terms_layout).setOnClickListener(new View.OnClickListener() {
+        mainView.findViewById(R.id.terms_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ConnectionHandler.isConnected(getContext()){
+                if(ConnectionHandler.isConnected(getContext())) {
                     DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, new TermsScreen())
                             .addToBackStack(null)
@@ -326,7 +326,7 @@ public class SettingsFragment extends Fragment {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
             }
-        });*/
+        });
 
         mProfileImage = (ImageView) mainView.findViewById(R.id.profile_picture);
         mProfileSpinner = (ProgressBar) mainView.findViewById(R.id.profile_spinner);
