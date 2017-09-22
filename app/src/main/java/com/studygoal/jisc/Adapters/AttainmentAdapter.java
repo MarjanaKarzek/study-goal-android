@@ -47,31 +47,7 @@ public class AttainmentAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
-            //convertView = inflater.inflate(R.layout.attainment_item, parent, false);
             convertView = inflater.inflate(R.layout.item_attainment, parent, false);
-        }
-
-        if(position % 2 == 0) {
-            convertView.setBackgroundColor(Color.parseColor("#e3f0ff"));
-        } else {
-            convertView.setBackgroundColor(Color.parseColor("#f0f7ff"));
-        }
-
-        TextView name = (TextView) convertView.findViewById(R.id.name);
-        TextView percent = (TextView) convertView.findViewById(R.id.percent);
-        name.setTypeface(DataManager.getInstance().myriadpro_regular);
-        percent.setTypeface(DataManager.getInstance().myriadpro_regular);
-
-        if(position >= list.size() && DataManager.getInstance().user.affiliation.contains("glos.ac.uk")) {
-
-            name.setText(DataManager.getInstance().mainActivity.getString(R.string.attainment_info));
-            percent.setVisibility(View.GONE);
-
-        } else {
-            Attainment attainment = list.get(position);
-            percent.setVisibility(View.VISIBLE);
-            name.setText(Utils.attainmentDate(attainment.date) + " " + attainment.module);
-            percent.setText(attainment.percent);
         }
 
         TextView module = (TextView) convertView.findViewById(R.id.attainment_item_module);
