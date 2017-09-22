@@ -97,7 +97,8 @@ public class AppUsageFragment extends Fragment {
         data.put("set targets",DataManager.getInstance().appUsageData.setTargets);
         data.put("met targets",DataManager.getInstance().appUsageData.metTargets);
         data.put("failed targets",DataManager.getInstance().appUsageData.failedTargets);
-        adapter.notifyDataSetChanged();
+        if(adapter != null)
+            adapter.notifyDataSetChanged();
         DataManager.getInstance().mainActivity.hideProgressBar();
     }
 
