@@ -168,13 +168,6 @@ public class TargetFragment extends BaseFragment {
             }
         });
 
-        mBinding.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.swipe_for_edit_delete, Snackbar.LENGTH_LONG).show();
-            }
-        });
-
         mBinding.listTodo.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {

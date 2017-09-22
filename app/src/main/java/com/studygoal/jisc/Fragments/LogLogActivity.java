@@ -438,7 +438,7 @@ public class LogLogActivity extends Fragment implements View.OnClickListener {
                                 if (responseCode.equals("200")) {
                                     NetworkManager.getInstance().getAppUsage(null,null);
                                     NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
-                                            "" + Integer.valueOf((DataManager.getInstance().appUsageData.activities) + item.time_spent),
+                                            "" + (Integer.valueOf(DataManager.getInstance().appUsageData.activities) + (int)(time_spent/60)),
                                             DataManager.getInstance().appUsageData.setTargets,
                                             DataManager.getInstance().appUsageData.metTargets,
                                             DataManager.getInstance().appUsageData.failedTargets);
