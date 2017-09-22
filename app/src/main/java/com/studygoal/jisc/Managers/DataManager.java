@@ -41,6 +41,7 @@ public class DataManager {
     public String home_screen;
     public String language;
     public String first_time;
+    public boolean sessionLog = false;
 
     public NotificationManager mNotificationManager;
     public MainActivity mainActivity;
@@ -58,7 +59,6 @@ public class DataManager {
     public boolean checkForbidden = false;
 
     public boolean fromLogout = false;
-    public boolean reauthNecessary = false;
 
     public String selfie_url;
 

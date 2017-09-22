@@ -4701,15 +4701,20 @@ public class NetworkManager {
                 }
                 URL url = new URL(apiURL);
 
+                Log.d("", "call: Login call is " + apiURL);
+
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.addRequestProperty("Authorization", DataManager.getInstance().get_jwt());
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
 
+                Log.d("", "call: login" + "Authorization" + DataManager.getInstance().get_jwt());
+
                 int responseCode = urlConnection.getResponseCode();
                 forbidden(responseCode);
                 Log.d("", "call: get AppUsage " + responseCode);
                 if (responseCode != 200) {
+
                     return false;
                 }
                 InputStream is = new BufferedInputStream(urlConnection.getInputStream());

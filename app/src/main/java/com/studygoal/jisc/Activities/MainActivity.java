@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Network;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -134,6 +135,15 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!DataManager.getInstance().sessionLog){
+            NetworkManager.getInstance().getAppUsage(null,null);
+            NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+                    DataManager.getInstance().appUsageData.activities,
+                    DataManager.getInstance().appUsageData.setTargets,
+                    DataManager.getInstance().appUsageData.metTargets,
+                    DataManager.getInstance().appUsageData.failedTargets);
+            DataManager.getInstance().sessionLog = true;
+        }
         Log.setEnabled(true);
         isLandscape = DataManager.getInstance().isLandscape;
         DataManager.getInstance().checkForbidden = true;
