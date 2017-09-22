@@ -8,180 +8,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="7"
-        android:layout_marginTop="200px">
+        android:weightSum="2"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
 
         <TextView
             android:id="@+id/app_usage_start"
             android:layout_width="0px"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textColor="@color/pink"/>
-
-        <TextView
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:text="@string/to"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textSize="24sp"
-            android:textColor="@color/dark_grey" />
+            android:textSize="26sp"
+            android:text="Start"
+            android:textColor="@color/dark_grey"
+            android:background="@drawable/round_pink_corners"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp"
+            />
 
         <TextView
             android:id="@+id/app_usage_end"
             android:layout_width="0px"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
+            android:text="End"
             android:textAlignment="center"
-            android:textSize="24sp"
-            android:textColor="@color/pink" />
+            android:textSize="26sp"
+            android:textColor="@color/dark_grey"
+            android:background="@drawable/round_pink_corners"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp" />
     </LinearLayout>
-    <LinearLayout
+    <ListView
+        android:id="@+id/app_usage_data_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="50px">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="@string/session_on_app"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center" />
-            <TextView
-                android:id="@+id/app_usage_sessions"
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="200"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="@string/hours_of_activity_logged"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center"/>
-            <TextView
-                android:id="@+id/app_usage_activities"
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="1000"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="@string/targets_set"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center" />
-            <TextView
-                android:id="@+id/app_usage_set_targets"
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="50"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="@string/targets_met"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center" />
-            <TextView
-                android:id="@+id/app_usage_met_targets"
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="25"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
-            <TextView
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="@string/targets_failed_to_meet"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center" />
-            <TextView
-                android:id="@+id/app_usage_failed_targets"
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:text="1"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@color/dark_grey"
-                android:gravity="center" />
-        </LinearLayout>
-    </LinearLayout>
+        android:dividerHeight="2dp" />
 </LinearLayout>
