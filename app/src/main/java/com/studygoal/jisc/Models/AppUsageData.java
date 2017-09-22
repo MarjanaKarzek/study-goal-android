@@ -5,9 +5,9 @@ package com.studygoal.jisc.Models;
  */
 
 public class AppUsageData {
-    public String sessions;
-    public String activities;
-    public String setTargets;
-    public String metTargets;
-    public String failedTargets;
+    public String sessions = "0";
+    public String activities = "0";
+    public String setTargets = "0";
+    public String metTargets = "0";
+    public String failedTargets = "0";
 }

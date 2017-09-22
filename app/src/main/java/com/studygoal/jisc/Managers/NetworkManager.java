@@ -4714,7 +4714,6 @@ public class NetworkManager {
                 forbidden(responseCode);
                 Log.d("", "call: get AppUsage " + responseCode);
                 if (responseCode != 200) {
-
                     return false;
                 }
                 InputStream is = new BufferedInputStream(urlConnection.getInputStream());
