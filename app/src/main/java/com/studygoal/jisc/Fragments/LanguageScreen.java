@@ -33,13 +33,9 @@ public class LanguageScreen extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (DataManager.getInstance().mainActivity.isLandscape) {
-            ((SettingsActivity) getActivity()).fragmentTitle.setText(DataManager.getInstance().mainActivity.getString(R.string.language_title));
-        } else {
-            DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.language_title));
-            DataManager.getInstance().mainActivity.hideAllButtons();
-            DataManager.getInstance().mainActivity.showCertainButtons(7);
-        }
+        DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.language_title));
+        DataManager.getInstance().mainActivity.hideAllButtons();
+        DataManager.getInstance().mainActivity.showCertainButtons(7);
     }
 
     @Override
@@ -117,7 +113,7 @@ public class LanguageScreen extends Fragment {
                         list.add(getActivity().getString(R.string.english));
                         list.add(getActivity().getString(R.string.welsh));
                         listView.setAdapter(new GenericAdapter(getActivity(), selected.toUpperCase(), list));
-                        ((SettingsActivity) getActivity()).recreate();
+                        DataManager.getInstance().mainActivity.onBackPressed();
                     }
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
