@@ -237,8 +237,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 if (NetworkManager.getInstance().checkIfUserRegistered()) {
                     if (NetworkManager.getInstance().login()) {
-                        //TODO get amount of sessions first with getAppUsage
-                        NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
+                        NetworkManager.getInstance().getAppUsage(null,null);
+                        NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+                                DataManager.getInstance().appUsageData.activities,
+                                DataManager.getInstance().appUsageData.setTargets,
+                                DataManager.getInstance().appUsageData.metTargets,
+                                DataManager.getInstance().appUsageData.failedTargets);
                         DataManager.getInstance().institution = "1";
                         DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk");
                         showProgressDialog(false);
@@ -287,16 +291,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             new Thread(() -> {
                                 if (NetworkManager.getInstance().checkIfStaffRegistered()) {
                                     if (NetworkManager.getInstance().loginStaff()) {
-                                        //TODO get amount of sessions first with getAppUsage
-                                        NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
                                         DataManager.getInstance().institution = mSelectedInstitution.name;
                                         updateLastKnownUser();
                                         getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", DataManager.getInstance().institution).apply();
                                         String firstlogin = DataManager.getInstance().first_time;
                                         Intent intent = null;
                                         if (firstlogin.equals("yes")) {
+                                            NetworkManager.getInstance().updateAppUsage("1","0","0","0","0");
+                                            NetworkManager.getInstance().getAppUsage(null,null);
                                             intent = new Intent(LoginActivity.this, TermsActivity.class);
                                         } else {
+                                            NetworkManager.getInstance().getAppUsage(null,null);
+                                            if(DataManager.getInstance().appUsageData.sessions == null){
+                                                NetworkManager.getInstance().updateAppUsage("1","0","0","0","0");
+                                            }
+                                            NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+                                                    DataManager.getInstance().appUsageData.activities,
+                                                    DataManager.getInstance().appUsageData.setTargets,
+                                                    DataManager.getInstance().appUsageData.metTargets,
+                                                    DataManager.getInstance().appUsageData.failedTargets);
                                             intent = new Intent(LoginActivity.this, MainActivity.class);
                                         }
                                         startActivity(intent);
@@ -312,16 +325,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             new Thread(() -> {
                                 if (NetworkManager.getInstance().checkIfUserRegistered()) {
                                     if (NetworkManager.getInstance().login()) {
-                                        //TODO get amount of sessions first with getAppUsage
-                                        NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
                                         DataManager.getInstance().institution = mSelectedInstitution.name;
                                         updateLastKnownUser();
                                         getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", DataManager.getInstance().institution).apply();
                                         String firstlogin = DataManager.getInstance().first_time;
                                         Intent intent = null;
                                         if (firstlogin.equals("yes")) {
+                                            NetworkManager.getInstance().updateAppUsage("1","0","0","0","0");
+                                            NetworkManager.getInstance().getAppUsage(null,null);
                                             intent = new Intent(LoginActivity.this, TermsActivity.class);
                                         } else {
+                                            NetworkManager.getInstance().getAppUsage(null,null);
+                                            if(DataManager.getInstance().appUsageData.sessions == null){
+                                                NetworkManager.getInstance().updateAppUsage("0","0","0","0","0");
+                                            }
+                                            NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+                                                    DataManager.getInstance().appUsageData.activities,
+                                                    DataManager.getInstance().appUsageData.setTargets,
+                                                    DataManager.getInstance().appUsageData.metTargets,
+                                                    DataManager.getInstance().appUsageData.failedTargets);
                                             intent = new Intent(LoginActivity.this, MainActivity.class);
                                         }
                                         startActivity(intent);
@@ -435,8 +457,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if (is_staff.equals("yes")) {
                             if (NetworkManager.getInstance().checkIfStaffRegistered()) {
                                 if (NetworkManager.getInstance().loginStaff()) {
-                                    //TODO get amount of sessions first with getAppUsage
-                                    NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
+                                    NetworkManager.getInstance().getAppUsage(null,null);
+                                    NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+                                            DataManager.getInstance().appUsageData.activities,
+                                            DataManager.getInstance().appUsageData.setTargets,
+                                            DataManager.getInstance().appUsageData.metTargets,
+                                            DataManager.getInstance().appUsageData.failedTargets);
                                     DataManager.getInstance().institution = is_institution;
                                     updateLastKnownUser();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -451,8 +477,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         } else {
                             if (NetworkManager.getInstance().checkIfUserRegistered()) {
                                 if (NetworkManager.getInstance().login()) {
-                                    //TODO get amount of sessions first with getAppUsage
-                                    NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
+                                    NetworkManager.getInstance().getAppUsage(null,null);
+                                    if(DataManager.getInstance().appUsageData.sessions == null){
+                                        NetworkManager.getInstance().updateAppUsage("0","0","0","0","0");
+                                        NetworkManager.getInstance().getAppUsage(null,null);
+                                    }
+                                    NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+                                            DataManager.getInstance().appUsageData.activities,
+                                            DataManager.getInstance().appUsageData.setTargets,
+                                            DataManager.getInstance().appUsageData.metTargets,
+                                            DataManager.getInstance().appUsageData.failedTargets);
                                     DataManager.getInstance().institution = is_institution;
                                     updateLastKnownUser();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -756,8 +790,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     void loginSocial() {
         Integer response = NetworkManager.getInstance().loginSocial(mEmail, mSocialID);
         updateLastKnownUser();
-        //TODO get amount of sessions first with getAppUsage
-        NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
+        NetworkManager.getInstance().getAppUsage(null,null);
+        NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+                DataManager.getInstance().appUsageData.activities,
+                DataManager.getInstance().appUsageData.setTargets,
+                DataManager.getInstance().appUsageData.metTargets,
+                DataManager.getInstance().appUsageData.failedTargets);
 
         if (response == 200) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

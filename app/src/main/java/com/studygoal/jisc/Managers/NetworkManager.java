@@ -4634,46 +4634,40 @@ public class NetworkManager {
         }
     }
 
-    public boolean updateAppUsage(String entry, String value){
-        Future<Boolean> future_result = executorService.submit(new UpdateAppUsage(entry, value));
+    public boolean updateAppUsage(String sessionsOnApp, String hoursOfActivityLogged, String targetsSet, String targetsMet, String targetsFailed) {
+        RequestBody formBody = new FormBody.Builder()
+                .add("student_id", DataManager.getInstance().user.id)
+                .add("sessions_on_app", sessionsOnApp)
+                .add("hours_of_activity_logged", hoursOfActivityLogged)
+                .add("targets_set", targetsSet)
+                .add("targets_met", targetsMet)
+                .add("targets_failed", targetsFailed)
+                .build();
+        Request request = new Request.Builder()
+                .url(host + "fn_save_appusage")
+                .addHeader("Authorization", DataManager.getInstance().get_jwt())
+                .post(formBody)
+                .build();
+        Log.d("", "updateAppUsage: alice " + DataManager.getInstance().get_jwt());
         try {
-            return future_result.get(NETWORK_TIMEOUT, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private class UpdateAppUsage implements Callable<Boolean>{
-        private String entry;
-        private String value;
-
-        UpdateAppUsage(String entry, String value) {
-            this.entry = entry;
-            this.value = value;
-        }
-
-        @Override
-        public Boolean call() {
-            try {
-                String apiURL = host + "fn_save_appusage" + entry + "=" + value;
-                URL url = new URL(apiURL);
-
-                HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.addRequestProperty("Authorization", "Bearer " + DataManager.getInstance().get_jwt());
-                urlConnection.setSSLSocketFactory(context.getSocketFactory());
-
-                int responseCode = urlConnection.getResponseCode();
-                forbidden(responseCode);
-                if (responseCode != 200) {
-                    return false;
-                }
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String message = response.body().string();
+                Log.e(getClass().getCanonicalName(), "Updated App Usage Data: " + message);
+                //Update data in DataManager
+                DataManager.getInstance().appUsageData.sessions = sessionsOnApp;
+                DataManager.getInstance().appUsageData.activities = hoursOfActivityLogged;
+                DataManager.getInstance().appUsageData.setTargets = targetsSet;
+                DataManager.getInstance().appUsageData.metTargets = targetsMet;
+                DataManager.getInstance().appUsageData.failedTargets = targetsFailed;
                 return true;
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                Log.e(getClass().getCanonicalName(), "Error code: " + response.code());
                 return false;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -4700,41 +4694,42 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                //TODO add start and end date to call
                 String apiURL = host + "fn_get_appusage?student_id="
                         + DataManager.getInstance().user.id;
+                if(startDate != null && endDate != null){
+                    apiURL += "start_date=" + startDate + "end_date=" + endDate;
+                }
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
-                urlConnection.addRequestProperty("Authorization", "Bearer " + DataManager.getInstance().get_jwt());
+                urlConnection.addRequestProperty("Authorization", DataManager.getInstance().get_jwt());
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
 
                 int responseCode = urlConnection.getResponseCode();
                 forbidden(responseCode);
                 Log.d("", "call: get AppUsage " + responseCode);
                 if (responseCode != 200) {
-                    InputStream is = new BufferedInputStream(urlConnection.getInputStream());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                    is.close();
-
-                    Log.d("", "call: get AppUsage Response Data" + sb.toString());
-                    //store in DataManager
-                    JSONObject jsonObject = new JSONObject(sb.toString());
-
-                    DataManager.getInstance().appUsageData.sessions = jsonObject.getString("id");
-                    DataManager.getInstance().appUsageData.activities = jsonObject.getString("id");
-                    DataManager.getInstance().appUsageData.setTargets = jsonObject.getString("id");
-                    DataManager.getInstance().appUsageData.metTargets = jsonObject.getString("id");
-                    DataManager.getInstance().appUsageData.failedTargets = jsonObject.getString("id");
-
                     return false;
                 }
+                InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+                is.close();
+
+                Log.d("", "call: get AppUsage Response Data" + sb.toString());
+
+                JSONObject jsonObject = new JSONObject(sb.toString());
+                DataManager.getInstance().appUsageData.sessions = jsonObject.getString("number_of_sessions");
+                DataManager.getInstance().appUsageData.activities = jsonObject.getString("activity_logged_hours");
+                DataManager.getInstance().appUsageData.setTargets = jsonObject.getString("set_targets_number");
+                DataManager.getInstance().appUsageData.metTargets = jsonObject.getString("met_targets_number");
+                DataManager.getInstance().appUsageData.failedTargets = jsonObject.getString("failed_targets_number");
+
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();

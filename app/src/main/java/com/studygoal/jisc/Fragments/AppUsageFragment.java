@@ -81,23 +81,22 @@ public class AppUsageFragment extends Fragment {
         metTargets = (TextView) mainView.findViewById(R.id.app_usage_met_targets);
         failedTargets = (TextView) mainView.findViewById(R.id.app_usage_failed_targets);
 
-        loadData();
+        loadData(null,null);
         displayData();
 
         return mainView;
     }
 
-    private void loadData(){
-        NetworkManager.getInstance().getAppUsage(startDate.getText().toString(), endDate.getText().toString());
+    private void loadData(String startDate, String endDate){
+        NetworkManager.getInstance().getAppUsage(startDate, endDate);
     }
 
     private void displayData(){
-        SharedPreferences prefs = getContext().getSharedPreferences("jisc", getContext().MODE_PRIVATE);
-        sessions.setText(prefs.getString("app_usage_sessions", "0"));
-        activities.setText(prefs.getString("app_usage_activities", "0"));
-        setTargets.setText(prefs.getString("app_usage_set_targets", "0"));
-        metTargets.setText(prefs.getString("app_usage_met_targets", "0"));
-        failedTargets.setText(prefs.getString("app_usage_failed_targets", "0"));
+        sessions.setText(DataManager.getInstance().appUsageData.sessions);
+        activities.setText(DataManager.getInstance().appUsageData.activities);
+        setTargets.setText(DataManager.getInstance().appUsageData.setTargets);
+        metTargets.setText(DataManager.getInstance().appUsageData.metTargets);
+        failedTargets.setText(DataManager.getInstance().appUsageData.failedTargets);
     }
 
     private void setUpDatePicker(){

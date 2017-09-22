@@ -347,9 +347,12 @@ public class LogNewActivity extends Fragment implements View.OnClickListener {
                     activity.save();
                 } else {
 //                    NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
-                    //TODO get amount of activity hours first with getAppUsage
-                    NetworkManager.getInstance().updateAppUsage("hours_of_activity_logged","" + duration);
-
+                    NetworkManager.getInstance().getAppUsage(null,null);
+                    NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
+                            "" + Integer.valueOf((DataManager.getInstance().appUsageData.activities) + duration),
+                            DataManager.getInstance().appUsageData.setTargets,
+                            DataManager.getInstance().appUsageData.metTargets,
+                            DataManager.getInstance().appUsageData.failedTargets);
                 }
 
                 new Delete().from(RunningActivity.class).execute();

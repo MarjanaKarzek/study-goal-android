@@ -47,8 +47,8 @@ public class DrawerAdapter extends BaseAdapter {
             valuesList.add(con.getString(R.string.friends));
             valuesList.add(con.getString(R.string.stats));
             valuesList.add(con.getString(R.string.points));
-            //valuesList.add(con.getString(R.string.app_usage));
-            //statOpenedNum++;
+            valuesList.add(con.getString(R.string.app_usage));
+            statOpenedNum++;
 
             valuesList.add(con.getString(R.string.attainment));
             statOpenedNum++;

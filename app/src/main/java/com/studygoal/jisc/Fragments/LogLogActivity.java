@@ -357,9 +357,13 @@ public class LogLogActivity extends Fragment implements View.OnClickListener {
                                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            //TODO get amount of activity hours first with getAppUsage
+                                            NetworkManager.getInstance().getAppUsage(null,null);
                                             int activityTime = time_spent - Integer.valueOf(item.time_spent);
-                                            NetworkManager.getInstance().updateAppUsage("hours_of_activity_logged","" + activityTime);
+                                            NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
+                                                    "" + Integer.valueOf((DataManager.getInstance().appUsageData.activities) + activityTime),
+                                                    DataManager.getInstance().appUsageData.setTargets,
+                                                    DataManager.getInstance().appUsageData.metTargets,
+                                                    DataManager.getInstance().appUsageData.failedTargets);
                                             item.activity_date = date.getTag().toString();
                                             item.time_spent = time_spent + "";
                                             item.note = note.getText().toString();
@@ -432,8 +436,12 @@ public class LogLogActivity extends Fragment implements View.OnClickListener {
                             public void run() {
                                 String responseCode = NetworkManager.getInstance().addActivity(params);
                                 if (responseCode.equals("200")) {
-                                    //TODO get amount of activity hours first with getAppUsage
-                                    NetworkManager.getInstance().updateAppUsage("hours_of_activity_logged","" + item.time_spent);
+                                    NetworkManager.getInstance().getAppUsage(null,null);
+                                    NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
+                                            "" + Integer.valueOf((DataManager.getInstance().appUsageData.activities) + item.time_spent),
+                                            DataManager.getInstance().appUsageData.setTargets,
+                                            DataManager.getInstance().appUsageData.metTargets,
+                                            DataManager.getInstance().appUsageData.failedTargets);
 
                                     NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
                                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {

@@ -777,8 +777,12 @@ public class AddTarget extends BaseFragment {
 
                 new Thread(() -> {
                     if (NetworkManager.getInstance().addTarget(params)) {
-                        //TODO get amount of set targets first with getAppUsage
-                        NetworkManager.getInstance().updateAppUsage("targets_set","1");
+                        NetworkManager.getInstance().getAppUsage(null,null);
+                        NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
+                                DataManager.getInstance().appUsageData.activities,
+                                "" + Integer.valueOf((DataManager.getInstance().appUsageData.setTargets) + 1),
+                                DataManager.getInstance().appUsageData.metTargets,
+                                DataManager.getInstance().appUsageData.failedTargets);
 
                         NetworkManager.getInstance().getTargets(DataManager.getInstance().user.id);
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
@@ -902,8 +906,12 @@ public class AddTarget extends BaseFragment {
 
             new Thread(() -> {
                 if (NetworkManager.getInstance().addToDoTask(params)) {
-                    //TODO get amount of set targets first with getAppUsage
-                    NetworkManager.getInstance().updateAppUsage("targets_set","1");
+                    NetworkManager.getInstance().getAppUsage(null,null);
+                    NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
+                            DataManager.getInstance().appUsageData.activities,
+                            "" + Integer.valueOf((DataManager.getInstance().appUsageData.setTargets) + 1),
+                            DataManager.getInstance().appUsageData.metTargets,
+                            DataManager.getInstance().appUsageData.failedTargets);
                     NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);
 
                     runOnUiThread(() -> {
