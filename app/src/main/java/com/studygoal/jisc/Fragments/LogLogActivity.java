@@ -357,6 +357,9 @@ public class LogLogActivity extends Fragment implements View.OnClickListener {
                                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            //TODO get amount of activity hours first with getAppUsage
+                                            int activityTime = time_spent - Integer.valueOf(item.time_spent);
+                                            NetworkManager.getInstance().updateAppUsage("hours_of_activity_logged","" + activityTime);
                                             item.activity_date = date.getTag().toString();
                                             item.time_spent = time_spent + "";
                                             item.note = note.getText().toString();
@@ -429,6 +432,9 @@ public class LogLogActivity extends Fragment implements View.OnClickListener {
                             public void run() {
                                 String responseCode = NetworkManager.getInstance().addActivity(params);
                                 if (responseCode.equals("200")) {
+                                    //TODO get amount of activity hours first with getAppUsage
+                                    NetworkManager.getInstance().updateAppUsage("hours_of_activity_logged","" + item.time_spent);
+
                                     NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
                                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                                         @Override

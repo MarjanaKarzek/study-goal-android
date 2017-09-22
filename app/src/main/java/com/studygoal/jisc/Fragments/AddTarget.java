@@ -777,6 +777,9 @@ public class AddTarget extends BaseFragment {
 
                 new Thread(() -> {
                     if (NetworkManager.getInstance().addTarget(params)) {
+                        //TODO get amount of set targets first with getAppUsage
+                        NetworkManager.getInstance().updateAppUsage("targets_set","1");
+
                         NetworkManager.getInstance().getTargets(DataManager.getInstance().user.id);
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                             DataManager.getInstance().mainActivity.hideProgressBar();
@@ -899,6 +902,8 @@ public class AddTarget extends BaseFragment {
 
             new Thread(() -> {
                 if (NetworkManager.getInstance().addToDoTask(params)) {
+                    //TODO get amount of set targets first with getAppUsage
+                    NetworkManager.getInstance().updateAppUsage("targets_set","1");
                     NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);
 
                     runOnUiThread(() -> {

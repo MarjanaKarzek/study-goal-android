@@ -237,6 +237,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 if (NetworkManager.getInstance().checkIfUserRegistered()) {
                     if (NetworkManager.getInstance().login()) {
+                        //TODO get amount of sessions first with getAppUsage
+                        NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
                         DataManager.getInstance().institution = "1";
                         DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk");
                         showProgressDialog(false);
@@ -285,6 +287,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             new Thread(() -> {
                                 if (NetworkManager.getInstance().checkIfStaffRegistered()) {
                                     if (NetworkManager.getInstance().loginStaff()) {
+                                        //TODO get amount of sessions first with getAppUsage
+                                        NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
                                         DataManager.getInstance().institution = mSelectedInstitution.name;
                                         updateLastKnownUser();
                                         getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", DataManager.getInstance().institution).apply();
@@ -308,6 +312,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             new Thread(() -> {
                                 if (NetworkManager.getInstance().checkIfUserRegistered()) {
                                     if (NetworkManager.getInstance().login()) {
+                                        //TODO get amount of sessions first with getAppUsage
+                                        NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
                                         DataManager.getInstance().institution = mSelectedInstitution.name;
                                         updateLastKnownUser();
                                         getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", DataManager.getInstance().institution).apply();
@@ -429,6 +435,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if (is_staff.equals("yes")) {
                             if (NetworkManager.getInstance().checkIfStaffRegistered()) {
                                 if (NetworkManager.getInstance().loginStaff()) {
+                                    //TODO get amount of sessions first with getAppUsage
+                                    NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
                                     DataManager.getInstance().institution = is_institution;
                                     updateLastKnownUser();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -443,6 +451,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         } else {
                             if (NetworkManager.getInstance().checkIfUserRegistered()) {
                                 if (NetworkManager.getInstance().login()) {
+                                    //TODO get amount of sessions first with getAppUsage
+                                    NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
                                     DataManager.getInstance().institution = is_institution;
                                     updateLastKnownUser();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -746,6 +756,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     void loginSocial() {
         Integer response = NetworkManager.getInstance().loginSocial(mEmail, mSocialID);
         updateLastKnownUser();
+        //TODO get amount of sessions first with getAppUsage
+        NetworkManager.getInstance().updateAppUsage("sessions_on_app","1");
 
         if (response == 200) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
