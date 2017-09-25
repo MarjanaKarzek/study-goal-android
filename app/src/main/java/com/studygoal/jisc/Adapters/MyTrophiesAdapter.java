@@ -7,25 +7,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Fragments.Settings.AllTrophiesFragment;
-import com.studygoal.jisc.Models.Trophy;
+import com.studygoal.jisc.Fragments.Settings.MyTrophiesFragment;
+import com.studygoal.jisc.Models.TrophyMy;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 
 import java.util.List;
 
-public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener {
+/**
+ * Created by MarcelC on 1/14/16.
+ */
+public class MyTrophiesAdapter extends BaseAdapter implements View.OnClickListener {
 
     LayoutInflater inflater;
-    public List<Trophy> list;
+    public List<TrophyMy> list;
     private Context context;
     Fragment fragment;
 
-    public TrophiesAdapter(Context context,Fragment fr) {
+    public MyTrophiesAdapter(Context context, Fragment fr) {
         this.context = context;
-        list = new Select().from(Trophy.class).execute();
+        list = new Select().from(TrophyMy.class).execute();
         inflater = LayoutInflater.from(context);
         fragment = fr;
     }
@@ -58,10 +62,27 @@ public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener
         ImageView image = (ImageView) convertView.findViewById(R.id.trophy_image);
         image.setImageDrawable(null);
 
-        Trophy trophy = list.get(position);
+        TrophyMy trophy = list.get(position);
         GlideApp.with(context).load(trophy.getImageDrawable(context)).into(image);
 
-        convertView.setTag("" + position);
+        TextView text_silver = (TextView) convertView.findViewById(R.id.total_gold);
+        TextView text_gold = (TextView) convertView.findViewById(R.id.total_silver);
+        text_gold.setVisibility(View.GONE);
+        text_silver.setVisibility(View.GONE);
+        text_gold.setText(trophy.total);
+        text_silver.setText(trophy.total);
+
+        if(trophy.trophy_type.equals("silver"))
+        {
+            text_gold.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            text_silver.setVisibility(View.VISIBLE);
+
+        }
+
+        convertView.setTag(""+position);
         convertView.setOnClickListener(this);
 
         return convertView;
@@ -69,10 +90,7 @@ public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-
-        Trophy trophy = list.get(Integer.parseInt((String) v.getTag()));
-        ((AllTrophiesFragment)fragment).showTrophy(trophy);
-
+        TrophyMy trophy = list.get(Integer.parseInt((String) v.getTag()));
+        ((MyTrophiesFragment) fragment).showTrophy(trophy);
     }
-
 }

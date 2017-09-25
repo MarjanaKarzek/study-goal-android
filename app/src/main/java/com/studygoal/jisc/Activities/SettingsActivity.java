@@ -16,10 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.studygoal.jisc.Fragments.Friends;
-import com.studygoal.jisc.Fragments.HomeScreen;
-import com.studygoal.jisc.Fragments.LanguageScreen;
-import com.studygoal.jisc.Fragments.Trophies;
+import com.studygoal.jisc.Fragments.Friends.FriendsFragment;
+import com.studygoal.jisc.Fragments.Settings.HomeScreenFragment;
+import com.studygoal.jisc.Fragments.Settings.LanguageScreenFragment;
+import com.studygoal.jisc.Fragments.Settings.TrophiesFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.R;
@@ -185,19 +185,19 @@ public class SettingsActivity extends AppCompatActivity {
                         break;
                     }
                     case 1: {
-                        destination = new Friends();
+                        destination = new FriendsFragment();
                         break;
                     }
                     case 2: {
-                        destination = new HomeScreen();
+                        destination = new HomeScreenFragment();
                         break;
                     }
                     case 3: {
-                        destination = new Trophies();
+                        destination = new TrophiesFragment();
                         break;
                     }
                     case 4: {
-                        destination = new LanguageScreen();
+                        destination = new LanguageScreenFragment();
                         break;
                     }
                 }

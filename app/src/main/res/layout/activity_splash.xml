@@ -4,7 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#FEFEFD"
-                tools:context=".Activities.Splash">
+                tools:context=".Activities.SplashActivity">
     <VideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"

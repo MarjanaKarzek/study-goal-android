@@ -53,16 +53,16 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustUnspecified" />
         <activity android:name=".Activities.TermsActivity" />
         <activity
-            android:name=".Activities.TrophyDetails"
+            android:name=".Activities.TrophyDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.SettingsActivity" />
-        <activity android:name=".Activities.Splash">
+        <activity android:name=".Activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SplashCustom">
+        <activity android:name=".Activities.CustomSplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -75,7 +75,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.ForgotPassword" />
+        <activity android:name=".Activities.ForgotPasswordActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

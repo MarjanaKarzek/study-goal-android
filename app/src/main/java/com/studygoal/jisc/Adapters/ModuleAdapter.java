@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Fragments.AddTarget;
 import com.studygoal.jisc.Managers.DataManager;
+import com.studygoal.jisc.Models.Courses;
 import com.studygoal.jisc.Models.Module;
 import com.studygoal.jisc.R;
 
@@ -17,20 +17,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleAdapter extends BaseAdapter {
-    public ArrayList<String> moduleList;
+    private ArrayList<String> moduleList;
+    private ArrayList<String> coursesList;
     LayoutInflater inflater;
-    String selected;
+    private String selected;
 
     public ModuleAdapter(Context context, String selected) {
         this.selected = selected;
         this.moduleList = new ArrayList<>();
-        List<Module> moduleList = new Select().from(Module.class).execute();
-        for(int i = 0; i < moduleList.size(); i++) {
+        this.coursesList = new ArrayList<>();
+        List<Module> moduleList = new Select().from(Module.class).orderBy("module_name").execute();
+        List<Courses> coursesList = new Select().from(Courses.class).orderBy("course_name").execute();
+
+        for (int j = 0; j < coursesList.size(); j++) {
+            this.coursesList.add(coursesList.get(j).name);
+        }
+
+        for (int i = 0; i < moduleList.size(); i++) {
             this.moduleList.add(moduleList.get(i).name);
         }
-        if(DataManager.getInstance().user.isSocial) {
-            this.moduleList.add(context.getString(R.string.add_module));
-        }
+
+        this.moduleList.add(0, context.getString(R.string.anymodule));
+        this.moduleList.addAll(1, this.coursesList);
         inflater = LayoutInflater.from(context);
     }
 
@@ -51,14 +59,26 @@ public class ModuleAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.custom_spinner_layout_item, parent, false);
         }
-        TextView textView = (TextView)convertView.findViewById(R.id.dialog_item_name);
-        textView.setTypeface(DataManager.getInstance().myriadpro_regular);
-        textView.setText(moduleList.get(position));
 
-        if(moduleList.get(position).equals(selected)) {
+        TextView textView = (TextView) convertView.findViewById(R.id.dialog_item_name);
+        textView.setTypeface(DataManager.getInstance().myriadpro_regular);
+        textView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+
+        String titleString = moduleList.get(position);
+
+        if (!coursesList.contains(titleString) && position != 0){
+            textView.setText(" -" + moduleList.get(position));
+        } else if(coursesList.contains(titleString)) {
+            textView.setText(moduleList.get(position));
+            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        } else {
+            textView.setText(moduleList.get(position));
+        }
+
+        if (moduleList.get(position).equals(selected)) {
             convertView.findViewById(R.id.dialog_item_selected).setVisibility(View.VISIBLE);
         } else {
             convertView.findViewById(R.id.dialog_item_selected).setVisibility(View.GONE);

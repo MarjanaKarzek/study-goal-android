@@ -14,7 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.net.Network;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,21 +47,21 @@ import com.lb.auto_fit_textview.AutoResizeTextView;
 import com.studygoal.jisc.Adapters.DrawerAdapter;
 import com.studygoal.jisc.AppCore;
 import com.studygoal.jisc.Constants;
-import com.studygoal.jisc.Fragments.AddTarget;
-import com.studygoal.jisc.Fragments.AppUsageFragment;
-import com.studygoal.jisc.Fragments.CheckInFragment;
-import com.studygoal.jisc.Fragments.FeedFragment;
-import com.studygoal.jisc.Fragments.Friends;
-import com.studygoal.jisc.Fragments.LogActivityHistory;
-import com.studygoal.jisc.Fragments.LogNewActivity;
-import com.studygoal.jisc.Fragments.SettingsFragment;
-import com.studygoal.jisc.Fragments.Stats3;
-import com.studygoal.jisc.Fragments.StatsAttainment;
-import com.studygoal.jisc.Fragments.StatsAttedance;
-import com.studygoal.jisc.Fragments.StatsEventAttendance;
-import com.studygoal.jisc.Fragments.StatsLeaderBoard;
-import com.studygoal.jisc.Fragments.StatsPoints;
-import com.studygoal.jisc.Fragments.TargetFragment;
+import com.studygoal.jisc.Fragments.Target.AddTargetFragment;
+import com.studygoal.jisc.Fragments.Log.LogActivityHistoryFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsAppUsageFragment;
+import com.studygoal.jisc.Fragments.Checkin.CheckInFragment;
+import com.studygoal.jisc.Fragments.ActivityFeed.FeedFragment;
+import com.studygoal.jisc.Fragments.Friends.FriendsFragment;
+import com.studygoal.jisc.Fragments.Log.LogNewActivityFragment;
+import com.studygoal.jisc.Fragments.Settings.SettingsFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsVLEActivityFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsAttainmentFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsAttedanceFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsEventAttendanceFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsLeaderBoardFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsPointsFragment;
+import com.studygoal.jisc.Fragments.Target.TargetFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.xApi.XApiManager;
@@ -96,7 +95,7 @@ public class MainActivity extends FragmentActivity {
     public DrawerLayout drawer;
     public RelativeLayout friend, settings, addTarget, send, timer, back;
     SettingsFragment settings_fragment;
-    LogActivityHistory logFragment;
+    LogActivityHistoryFragment logFragment;
     public FeedFragment feedFragment;
     public boolean isLandscape = DataManager.getInstance().isLandscape;
     private int selectedPosition;
@@ -246,7 +245,7 @@ public class MainActivity extends FragmentActivity {
                     dialog.findViewById(R.id.dialog_ok).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Friends friendsFragment = new Friends();
+                            FriendsFragment friendsFragment = new FriendsFragment();
 
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.main_fragment, friendsFragment)
@@ -264,7 +263,7 @@ public class MainActivity extends FragmentActivity {
                     });
                     dialog.show();
                 } else {
-                    Friends friendsFragment = new Friends();
+                    FriendsFragment friendsFragment = new FriendsFragment();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, friendsFragment)
                             .addToBackStack(null)
@@ -357,10 +356,10 @@ public class MainActivity extends FragmentActivity {
                     .commit();
         } else if (DataManager.getInstance().home_screen.toLowerCase().equals("stats")) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new Stats3())
+                    .replace(R.id.main_fragment, new StatsVLEActivityFragment())
                     .commit();
         } else if (DataManager.getInstance().home_screen.toLowerCase().equals("log")) {
-            logFragment = new LogActivityHistory();
+            logFragment = new LogActivityHistoryFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, logFragment)
                     .commit();
@@ -374,7 +373,7 @@ public class MainActivity extends FragmentActivity {
                     .commit();
         } else if (DataManager.getInstance().home_screen.toLowerCase().equals("friends")) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new Friends())
+                    .replace(R.id.main_fragment, new FriendsFragment())
                     .commit();
         }
 
@@ -432,28 +431,28 @@ public class MainActivity extends FragmentActivity {
                 } else if (selection.equals(getString(R.string.check_in))) {
                     destination = new CheckInFragment();
                 } else if (selection.equals(getString(R.string.attainment))) {
-                    destination = new StatsAttainment();
+                    destination = new StatsAttainmentFragment();
                 } else if (selection.equals(getString(R.string.friends))) {
-                    destination = new Friends();
+                    destination = new FriendsFragment();
                 } else if (selection.equals(getString(R.string.settings))) {
                     destination = new SettingsFragment();
                 } else if (selection.equals(getString(R.string.graphs))) {
-                    destination = new Stats3();
+                    destination = new StatsVLEActivityFragment();
                 } else if (selection.equals(getString(R.string.points))) {
-                    destination = new StatsPoints();
+                    destination = new StatsPointsFragment();
                 } else if (selection.equals(getString(R.string.log))) {
-                    logFragment = new LogActivityHistory();
+                    logFragment = new LogActivityHistoryFragment();
                     destination = logFragment;
                 } else if (selection.equals(getString(R.string.target))) {
                     destination = new TargetFragment();
                 } else if (selection.equals(getString(R.string.leader_board))) {
-                    destination = new StatsLeaderBoard();
+                    destination = new StatsLeaderBoardFragment();
                 } else if (selection.equals(getString(R.string.events_attended))) {
-                    destination = new StatsEventAttendance();
+                    destination = new StatsEventAttendanceFragment();
                 } else if (selection.equals(getString(R.string.attendance))) {
-                    destination = new StatsAttedance();
+                    destination = new StatsAttedanceFragment();
                 } else if (selection.equals(getString(R.string.app_usage))) {
-                    destination = new AppUsageFragment();
+                    destination = new StatsAppUsageFragment();
                 }
 
                 if (destination != null) {
@@ -650,7 +649,7 @@ public class MainActivity extends FragmentActivity {
             for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
                 getSupportFragmentManager().popBackStackImmediate();
             }
-            logFragment = new LogActivityHistory();
+            logFragment = new LogActivityHistoryFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, logFragment)
                     .commit();
@@ -751,7 +750,7 @@ public class MainActivity extends FragmentActivity {
                         @Override
                         public void onClick(View v) {
                             DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.main_fragment, new LogNewActivity(), "newActivity")
+                                    .replace(R.id.main_fragment, new LogNewActivityFragment(), "newActivity")
                                     .addToBackStack(null)
                                     .commit();
                         }
@@ -782,7 +781,7 @@ public class MainActivity extends FragmentActivity {
                     public void onClick(View v) {
                         if(ConnectionHandler.isConnected(context)) {
                             getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.main_fragment, new AddTarget())
+                                    .replace(R.id.main_fragment, new AddTargetFragment())
                                     .addToBackStack(null)
                                     .commit();
                         } else {

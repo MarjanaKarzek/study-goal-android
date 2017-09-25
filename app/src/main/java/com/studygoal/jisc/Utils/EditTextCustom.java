@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-import com.studygoal.jisc.Fragments.FeedFragment;
+import com.studygoal.jisc.Fragments.ActivityFeed.FeedFragment;
 import com.studygoal.jisc.R;
 
 public class EditTextCustom extends EditText {

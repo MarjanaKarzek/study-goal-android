@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Fragments.LogActivityHistory;
-import com.studygoal.jisc.Fragments.LogLogActivity;
-import com.studygoal.jisc.Fragments.LogNewActivity;
+import com.studygoal.jisc.Fragments.Log.LogActivityHistoryFragment;
+import com.studygoal.jisc.Fragments.Log.LogLogActivityFragment;
+import com.studygoal.jisc.Fragments.Log.LogNewActivityFragment;
 import com.studygoal.jisc.Activities.MainActivity;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.LinguisticManager;
@@ -36,10 +36,10 @@ public class ActivitiesHistoryAdapter extends BaseAdapter {
     public List<ActivityHistory> historyList;
     LayoutInflater inflater;
     Context context;
-    LogActivityHistory fragment;
+    LogActivityHistoryFragment fragment;
     Boolean hasRunning = false;
 
-    public ActivitiesHistoryAdapter(LogActivityHistory fragment) {
+    public ActivitiesHistoryAdapter(LogActivityHistoryFragment fragment) {
         this.fragment = fragment;
         this.context = fragment.getActivity();
 
@@ -130,7 +130,7 @@ public class ActivitiesHistoryAdapter extends BaseAdapter {
                         public void onClick(View v) {
                             if(ConnectionHandler.isConnected(context)) {
                                 swipeLayout.close(true);
-                                LogLogActivity fragment = new LogLogActivity();
+                                LogLogActivityFragment fragment = new LogLogActivityFragment();
                                 fragment.isInEditMode = true;
                                 fragment.item = activityHistory;
                                 ((MainActivity) context).getSupportFragmentManager().beginTransaction()
@@ -214,7 +214,7 @@ public class ActivitiesHistoryAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.main_fragment, new LogNewActivity(), "newActivity")
+                                .replace(R.id.main_fragment, new LogNewActivityFragment(), "newActivity")
                                 .addToBackStack(null)
                                 .commit();
                     }
@@ -243,7 +243,7 @@ public class ActivitiesHistoryAdapter extends BaseAdapter {
                     public void onClick(View v) {
                         if(ConnectionHandler.isConnected(context)) {
                             swipeLayout.close(true);
-                            LogLogActivity fragment = new LogLogActivity();
+                            LogLogActivityFragment fragment = new LogLogActivityFragment();
                             fragment.isInEditMode = true;
                             fragment.item = activityHistory;
                             ((MainActivity) context).getSupportFragmentManager().beginTransaction()

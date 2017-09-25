@@ -5,8 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
-import com.studygoal.jisc.Fragments.TargetDetails;
-import com.studygoal.jisc.Fragments.TargetItem;
+import com.studygoal.jisc.Fragments.Target.TargetDetailsFragment;
+import com.studygoal.jisc.Fragments.Target.TargetItemFragment;
 import com.studygoal.jisc.Models.Targets;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class TargetPagerAdapter extends FragmentStatePagerAdapter {
 
     public List<Targets> list;
-    public TargetDetails reference;
+    public TargetDetailsFragment reference;
 
     public TargetPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -33,7 +33,7 @@ public class TargetPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         position = list.size() - 1 - position;
-        TargetItem fragment = new TargetItem();
+        TargetItemFragment fragment = new TargetItemFragment();
         fragment.target = list.get(position);
         fragment.position = position;
         fragment.reference = reference;
