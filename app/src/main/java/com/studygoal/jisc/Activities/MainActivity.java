@@ -136,11 +136,11 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         if(!DataManager.getInstance().sessionLog){
             NetworkManager.getInstance().getAppUsage(null,null);
-            /*NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+            NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
                     DataManager.getInstance().appUsageData.activities,
                     DataManager.getInstance().appUsageData.setTargets,
                     DataManager.getInstance().appUsageData.metTargets,
-                    DataManager.getInstance().appUsageData.failedTargets);*/
+                    DataManager.getInstance().appUsageData.failedTargets);
             DataManager.getInstance().sessionLog = true;
         }
         Log.setEnabled(true);
