@@ -4,19 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.studygoal.jisc.Adapters.ActivityPointsAdapter;
 import com.studygoal.jisc.Activities.MainActivity;
@@ -26,19 +24,25 @@ import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.ActivityPoints;
 import com.studygoal.jisc.R;
+import com.studygoal.jisc.Utils.SegmentController.SegmentClickListener;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class StatsPoints extends BaseFragment {
     private View mainView;
     private WebView piChartWebView;
-    private LinearLayout upperContainer;
-    private TextView activity_points_value;
+    private ViewFlipper upperContainer;
+    private TextView activityPointsValueWeek;
+    private TextView activityPointsValueAll;
     private Switch pieChartSwitch;
     private ActivityPointsAdapter adapter;
+    private SegmentClickListener segmentClickListener;
 
     private boolean isThisWeek = true;
+    private TextView segmentButtonThisWeek;
+    private TextView segmentButtonOverall;
 
     @Override
     public void onResume() {
@@ -57,11 +61,11 @@ public class StatsPoints extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.stats_points, container, false);
-        activity_points_value = (TextView) mainView.findViewById(R.id.activity_points_value);
+        activityPointsValueWeek = (TextView) mainView.findViewById(R.id.activity_points_value);
+        activityPointsValueAll = (TextView) mainView.findViewById(R.id.activity_points_value2);
         piChartWebView = (WebView) mainView.findViewById(R.id.pi_chart_web_view);
         piChartWebView.setVisibility(View.INVISIBLE);
-        upperContainer = (LinearLayout) mainView.findViewById(R.id.activity_points_container);
-        upperContainer.setVisibility(View.VISIBLE);
+        upperContainer = (ViewFlipper) mainView.findViewById(R.id.activity_points_container);
         pieChartSwitch = (Switch) mainView.findViewById(R.id.pie_chart_switch);
         pieChartSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             upperContainer.setVisibility(isChecked ? View.INVISIBLE : View.VISIBLE);
@@ -72,9 +76,24 @@ public class StatsPoints extends BaseFragment {
         adapter = new ActivityPointsAdapter(getContext());
         activity_points_list_view.setAdapter(adapter);
 
-        SegmentClickListener l = new SegmentClickListener();
-        mainView.findViewById(R.id.segment_button_this_week).setOnClickListener(l);
-        mainView.findViewById(R.id.segment_button_overall).setOnClickListener(l);
+        segmentButtonThisWeek = (TextView) mainView.findViewById(R.id.segment_button_this_week);
+        segmentButtonOverall = (TextView) mainView.findViewById(R.id.segment_button_overall);
+
+        ArrayList<TextView> segments = new ArrayList<>();
+        segments.add(segmentButtonThisWeek);
+        segments.add(segmentButtonOverall);
+
+        segmentClickListener = new SegmentClickListener(upperContainer, segments, getContext(), 0){
+            @Override
+            public void onClick(View view){
+                super.onClick(view);
+                isThisWeek = !isThisWeek;
+                call_refresh();
+            }
+        };
+
+        segmentButtonThisWeek.setOnClickListener(segmentClickListener);
+        segmentButtonOverall.setOnClickListener(segmentClickListener);
 
         showAlertDialog();
 
@@ -99,14 +118,6 @@ public class StatsPoints extends BaseFragment {
                 double d = getActivity().getResources().getDisplayMetrics().density;
                 int h = (int) (piChartWebView.getHeight() / d) - 20;
                 int w = (int) (piChartWebView.getWidth() / d) - 20;
-
-                /* data: [{
-                    name: 'Computer',
-                            y: 56.33
-                }, {
-                    name: 'English',
-                            y: 24.03
-                }] */
 
                 String data = "";
                 for (ActivityPoints p : DataManager.getInstance().user.points) {
@@ -169,7 +180,14 @@ public class StatsPoints extends BaseFragment {
         for (ActivityPoints p : DataManager.getInstance().user.points) {
             sum += Integer.parseInt(p.points);
         }
-        activity_points_value.setText(String.valueOf(sum));
+
+        Log.d("", "call_refresh: isThisWeek " + isThisWeek);
+
+        if(isThisWeek)
+            activityPointsValueWeek.setText(String.valueOf(sum));
+        else
+            activityPointsValueAll.setText(String.valueOf(sum));
+
     }
 
     private void showAlertDialog() {
@@ -191,36 +209,6 @@ public class StatsPoints extends BaseFragment {
             alertDialogBuilder.setNegativeButton("OK", (dialog, which) -> dialog.dismiss());
             android.app.AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-        }
-    }
-
-    private class SegmentClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            isThisWeek = !isThisWeek;
-
-            TextView segment_button_this_week = (TextView) mainView.findViewById(R.id.segment_button_this_week);
-            TextView segment_button_overall = (TextView) mainView.findViewById(R.id.segment_button_overall);
-
-            if (isThisWeek) {
-                Drawable activeDrawable = ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_active);
-                segment_button_this_week.setBackground(activeDrawable);
-                segment_button_this_week.setTextColor(Color.WHITE);
-
-                segment_button_overall.setBackground(null);
-                segment_button_overall.setBackgroundColor(Color.TRANSPARENT);
-                segment_button_overall.setTextColor(Color.parseColor("#3792ef"));
-            } else {
-                Drawable activeDrawable = ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_active_right);
-                segment_button_overall.setBackground(activeDrawable);
-                segment_button_overall.setTextColor(Color.WHITE);
-
-                segment_button_this_week.setBackground(null);
-                segment_button_this_week.setBackgroundColor(Color.TRANSPARENT);
-                segment_button_this_week.setTextColor(Color.parseColor("#3792ef"));
-            }
-
-            StatsPoints.this.refreshView();
         }
     }
 }

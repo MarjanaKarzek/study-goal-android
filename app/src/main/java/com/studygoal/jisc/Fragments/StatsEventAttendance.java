@@ -2,11 +2,8 @@ package com.studygoal.jisc.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,7 +12,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AbsListView;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -29,10 +25,10 @@ import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.Event;
 import com.studygoal.jisc.R;
+import com.studygoal.jisc.Utils.SegmentController.SegmentClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,6 +56,7 @@ public class StatsEventAttendance extends BaseFragment {
     private TextView summary;
     private Switch viewSwitch;
     private ViewFlipper viewFlipper;
+    private SegmentClickListener segmentClickListener;
 
     @Override
     public void onResume() {
@@ -77,7 +74,6 @@ public class StatsEventAttendance extends BaseFragment {
         mAdapter = new EventsAttendedAdapter(getContext());
 
         mListView = (ListView) mainView.findViewById(R.id.event_attendance_listView);
-        //LayoutInflater inflater2 = getActivity().getLayoutInflater();
         mListView.setAdapter(mAdapter);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -133,11 +129,15 @@ public class StatsEventAttendance extends BaseFragment {
         all = (TextView) mainView.findViewById(R.id.segment_button_all_events);
         summary = (TextView) mainView.findViewById(R.id.segment_button_attendance_summary);
 
-        SegmentClickListener l = new SegmentClickListener();
-        all.setOnClickListener(l);
-        summary.setOnClickListener(l);
-
         viewFlipper = (ViewFlipper) mainView.findViewById(R.id.viewFlipperEvents);
+
+        ArrayList<TextView> segments = new ArrayList<>();
+        segments.add(all);
+        segments.add(summary);
+
+        segmentClickListener = new SegmentClickListener(viewFlipper,segments,getContext(),0);
+        all.setOnClickListener(segmentClickListener);
+        summary.setOnClickListener(segmentClickListener);
 
         mWebView = (WebView) mainView.findViewById(R.id.webview_graph);
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -218,33 +218,6 @@ public class StatsEventAttendance extends BaseFragment {
             });
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private class SegmentClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            allSelected = !allSelected;
-
-            if (allSelected) {
-                Drawable activeDrawable = ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_active);
-                all.setBackground(activeDrawable);
-                all.setTextColor(Color.WHITE);
-
-                summary.setBackground(null);
-                summary.setBackgroundColor(Color.TRANSPARENT);
-                summary.setTextColor(Color.parseColor("#3792ef"));
-                viewFlipper.showNext();
-            } else {
-                Drawable activeDrawable = ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_active_right);
-                summary.setBackground(activeDrawable);
-                summary.setTextColor(Color.WHITE);
-
-                all.setBackground(null);
-                all.setBackgroundColor(Color.TRANSPARENT);
-                all.setTextColor(Color.parseColor("#3792ef"));
-                viewFlipper.showPrevious();
-            }
         }
     }
 }

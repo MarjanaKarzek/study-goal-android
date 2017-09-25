@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
@@ -37,6 +36,7 @@ import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.Models.Module;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
+import com.studygoal.jisc.Utils.SegmentController.SegmentClickListener;
 import com.studygoal.jisc.Utils.Utils;
 
 import java.io.BufferedReader;
@@ -64,6 +64,10 @@ public class Stats3 extends Fragment {
     private boolean mIsBar;
     private boolean mIsSevenDays = false;
     private boolean mIsOverall = false;
+
+    private SegmentClickListener segmentClickListener;
+    private TextView segmentButtonSevenDays;
+    private TextView segmentButtonTwentyeightDays;
 
     @Override
     public void onResume() {
@@ -98,9 +102,28 @@ public class Stats3 extends Fragment {
         mModule.setTypeface(DataManager.getInstance().myriadpro_regular);
         mModule.setText(R.string.anymodule);
 
-        SegmentClickListener listener = new SegmentClickListener();
-        mMainView.findViewById(R.id.segment_button_seven_days).setOnClickListener(listener);
-        mMainView.findViewById(R.id.segment_button_twentyeight_days).setOnClickListener(listener);
+        segmentButtonSevenDays = (TextView) mMainView.findViewById(R.id.segment_button_seven_days);
+        segmentButtonTwentyeightDays = (TextView) mMainView.findViewById(R.id.segment_button_twentyeight_days);
+
+        ArrayList<TextView> segments = new ArrayList<>();
+        segments.add(segmentButtonSevenDays);
+        segments.add(segmentButtonTwentyeightDays);
+
+        SegmentClickListener segmentClickListener = new SegmentClickListener(null, segments, getContext(), 1){
+            @Override
+            public void onClick(View view){
+                super.onClick(view);
+                if (mIsSevenDays) {
+                    mDescription.setText(R.string.last_week_engagement);
+                } else {
+                    mDescription.setText(R.string.last_month_engagement);
+                }
+
+                loadData();
+            }
+        };
+        segmentButtonSevenDays.setOnClickListener(segmentClickListener);
+        segmentButtonTwentyeightDays.setOnClickListener(segmentClickListener);
 
         mCompareTo = (AppCompatTextView) mMainView.findViewById(R.id.compareto);
         mCompareTo.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
@@ -790,7 +813,7 @@ public class Stats3 extends Fragment {
         }
     }
 
-    private class SegmentClickListener implements View.OnClickListener {
+    /*private class SegmentClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             mIsSevenDays = !mIsSevenDays;
@@ -824,5 +847,5 @@ public class Stats3 extends Fragment {
 
             loadData();
         }
-    }
+    }*/
 }
