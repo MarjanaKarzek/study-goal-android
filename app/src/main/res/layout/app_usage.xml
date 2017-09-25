@@ -3,44 +3,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/app_usage_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
+        android:layout_marginBottom="50dp"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp">
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-        <TextView
-            android:id="@+id/app_usage_start"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textSize="26sp"
-            android:text="Start"
-            android:textColor="@color/dark_grey"
-            android:background="@drawable/round_pink_corners"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="5dp"
-            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/app_usage_end"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="End"
-            android:textAlignment="center"
-            android:textSize="26sp"
-            android:textColor="@color/dark_grey"
-            android:background="@drawable/round_pink_corners"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="5dp" />
+            <TextView
+                android:id="@+id/app_usage_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/round_corner_pink_hallow_transparent"
+                android:padding="5dp"
+                android:text="Start"
+                android:textAlignment="center"
+                android:textColor="@color/dark_grey"
+                android:textSize="26sp" />
+
+            <Spinner
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/app_usage_start" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/app_usage_end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/round_corner_pink_hallow_transparent"
+                android:padding="5dp"
+                android:text="End"
+                android:textAlignment="center"
+                android:textColor="@color/dark_grey"
+                android:textSize="26sp" />
+
+            <Spinner
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/app_usage_end" />
+        </RelativeLayout>
     </LinearLayout>
+
     <ListView
         android:id="@+id/app_usage_data_list"
         android:layout_width="match_parent"

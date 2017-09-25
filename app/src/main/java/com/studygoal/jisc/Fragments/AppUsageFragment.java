@@ -57,7 +57,6 @@ public class AppUsageFragment extends Fragment {
         setUpDatePicker();
 
         startDate = (TextView) mainView.findViewById(R.id.app_usage_start);
-        //startDate.setText(dateFormat.format(pickedDate.getTime()));
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +67,6 @@ public class AppUsageFragment extends Fragment {
         });
 
         endDate = (TextView) mainView.findViewById(R.id.app_usage_end);
-        //endDate.setText(dateFormat.format(pickedDate.getTime()));
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
