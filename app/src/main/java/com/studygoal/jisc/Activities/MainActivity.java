@@ -47,20 +47,20 @@ import com.lb.auto_fit_textview.AutoResizeTextView;
 import com.studygoal.jisc.Adapters.DrawerAdapter;
 import com.studygoal.jisc.AppCore;
 import com.studygoal.jisc.Constants;
-import com.studygoal.jisc.Fragments.Target.AddTargetFragment;
-import com.studygoal.jisc.Fragments.Log.LogActivityHistoryFragment;
-import com.studygoal.jisc.Fragments.Stats.StatsAppUsageFragment;
-import com.studygoal.jisc.Fragments.Checkin.CheckInFragment;
 import com.studygoal.jisc.Fragments.ActivityFeed.FeedFragment;
+import com.studygoal.jisc.Fragments.Checkin.CheckInFragment;
 import com.studygoal.jisc.Fragments.Friends.FriendsFragment;
+import com.studygoal.jisc.Fragments.Log.LogActivityHistoryFragment;
 import com.studygoal.jisc.Fragments.Log.LogNewActivityFragment;
 import com.studygoal.jisc.Fragments.Settings.SettingsFragment;
-import com.studygoal.jisc.Fragments.Stats.StatsVLEActivityFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsAppUsageFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsAttainmentFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsAttedanceFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsEventAttendanceFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsLeaderBoardFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsPointsFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsVLEActivityFragment;
+import com.studygoal.jisc.Fragments.Target.AddTargetFragment;
 import com.studygoal.jisc.Fragments.Target.TargetFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
@@ -134,15 +134,19 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(!DataManager.getInstance().sessionLog){
-            NetworkManager.getInstance().getAppUsage(null,null);
-            NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
-                    DataManager.getInstance().appUsageData.activities,
-                    DataManager.getInstance().appUsageData.setTargets,
-                    DataManager.getInstance().appUsageData.metTargets,
-                    DataManager.getInstance().appUsageData.failedTargets);
-            DataManager.getInstance().sessionLog = true;
-        }
+        Thread t = new Thread(() -> {
+            if (!DataManager.getInstance().sessionLog) {
+                NetworkManager.getInstance().getAppUsage(null, null);
+                NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
+                        DataManager.getInstance().appUsageData.activities,
+                        DataManager.getInstance().appUsageData.setTargets,
+                        DataManager.getInstance().appUsageData.metTargets,
+                        DataManager.getInstance().appUsageData.failedTargets);
+                DataManager.getInstance().sessionLog = true;
+            }
+        });
+        t.start();
+
         Log.setEnabled(true);
         isLandscape = DataManager.getInstance().isLandscape;
         DataManager.getInstance().checkForbidden = true;
@@ -488,12 +492,12 @@ public class MainActivity extends FragmentActivity {
                         adapter.statsOpened = !adapter.statsOpened;
                         adapter.notifyDataSetChanged();
                     }
-                    if(adapter.selected_image != null) {
+                    if (adapter.selected_image != null) {
                         adapter.selected_image.setColorFilter(0x00FFFFFF);
                         adapter.selected_image = (ImageView) view.findViewById(R.id.drawer_item_icon);
                         adapter.selected_image.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
                     }
-                    if(adapter.selected_text != null) {
+                    if (adapter.selected_text != null) {
                         adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.light_grey));
                         adapter.selected_text = (TextView) view.findViewById(R.id.drawer_item_text);
                         adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
@@ -779,7 +783,7 @@ public class MainActivity extends FragmentActivity {
                 addTarget.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(ConnectionHandler.isConnected(context)) {
+                        if (ConnectionHandler.isConnected(context)) {
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.main_fragment, new AddTargetFragment())
                                     .addToBackStack(null)
