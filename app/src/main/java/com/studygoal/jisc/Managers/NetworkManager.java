@@ -4653,11 +4653,7 @@ public class NetworkManager {
             Response response = okHttpClient.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                // TODO: crash when call response.body().string()
-//                if(response.body() != null && response.body().contentLength() > 0) {
-//                    String message = response.body().string();
-//                    Log.e(getClass().getCanonicalName(), "Updated App Usage Data: " + message);
-//                }
+                Log.e(getClass().getCanonicalName(), "Updated App Usage Data: successful");
 
                 //Update data in DataManager
                 DataManager.getInstance().appUsageData.sessions = sessionsOnApp;
