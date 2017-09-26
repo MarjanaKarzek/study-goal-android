@@ -4697,7 +4697,7 @@ public class NetworkManager {
                 String apiURL = host + "fn_get_appusage?student_id="
                         + DataManager.getInstance().user.id;
                 if(startDate != null && endDate != null){
-                    apiURL += "start_date=" + startDate + "end_date=" + endDate;
+                    apiURL += "&start_date=" + startDate + "&end_date=" + endDate;
                 }
                 URL url = new URL(apiURL);
 
@@ -4733,6 +4733,11 @@ public class NetworkManager {
                 DataManager.getInstance().appUsageData.setTargets = jsonObject.getString("set_targets_number");
                 DataManager.getInstance().appUsageData.metTargets = jsonObject.getString("met_targets_number");
                 DataManager.getInstance().appUsageData.failedTargets = jsonObject.getString("failed_targets_number");
+                Log.d("NetworkManager", "call: get App Usage " + DataManager.getInstance().appUsageData.sessions
+                        + " " + DataManager.getInstance().appUsageData.activities
+                        + " " + DataManager.getInstance().appUsageData.setTargets
+                        + " " + DataManager.getInstance().appUsageData.metTargets
+                        + " " + DataManager.getInstance().appUsageData.failedTargets);
 
                 return true;
             } catch (Exception e) {

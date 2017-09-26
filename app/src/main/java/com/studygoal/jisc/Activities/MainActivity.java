@@ -135,14 +135,15 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Thread thread = new Thread(() -> {
-            if (!DataManager.getInstance().sessionLog) {
-                NetworkManager.getInstance().getAppUsage(null, null);
+            NetworkManager.getInstance().getAppUsage(null, null);
+            if (!DataManager.getInstance().sessionLogged) {
+                android.util.Log.d(TAG, "onCreate: Session about to get logged");
                 NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
                         DataManager.getInstance().appUsageData.activities,
                         DataManager.getInstance().appUsageData.setTargets,
                         DataManager.getInstance().appUsageData.metTargets,
                         DataManager.getInstance().appUsageData.failedTargets);
-                DataManager.getInstance().sessionLog = true;
+                DataManager.getInstance().sessionLogged = true;
             }
         });
         thread.start();
@@ -575,6 +576,8 @@ public class MainActivity extends FragmentActivity {
                                         .edit().remove("trophies").apply();
 
                                 DataManager.getInstance().fromLogout = true;
+                                DataManager.getInstance().sessionLogged = false;
+
                                 new Delete().from(CurrentUser.class).execute();
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                 startActivity(intent);

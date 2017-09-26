@@ -41,7 +41,7 @@ public class DataManager {
     public String home_screen;
     public String language;
     public String first_time;
-    public boolean sessionLog = false;
+    public boolean sessionLogged = false;
 
     public NotificationManager mNotificationManager;
     public MainActivity mainActivity;
