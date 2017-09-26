@@ -56,35 +56,32 @@ import java.util.Map;
 
 public class AddTargetFragment extends BaseFragment {
     private static final String TAG = AddTargetFragment.class.getSimpleName();
-    private static final SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public Boolean isInEditMode = false;
     public Boolean isSingleTarget = false;
-    private Boolean mIsRecurringTarget;
-    private TargetAddTargetBinding mBinding = null;
+    private Boolean isRecurringTarget;
+    private TargetAddTargetBinding binding = null;
 
-    private Calendar mToDoDate = null;
+    private Calendar toDoDate = null;
 
     public Targets item;
     public ToDoTasks itemToDo;
 
-    private AppCompatTextView mActivityType;
-    private AppCompatTextView mChooseActivity;
-    private AppCompatTextView mEvery;
-    private AppCompatTextView mIn;
+    private AppCompatTextView activityType;
+    private AppCompatTextView chooseActivity;
+    private AppCompatTextView every;
+    private AppCompatTextView in;
 
-    private EditText mHours;
-    private EditText mMinutes;
-    private EditText mBecause;
+    private EditText hours;
+    private EditText minutes;
+    private EditText because;
 
-    private View mRoot;
-    private RelativeLayout mAddModuleLayout;
+    private View root;
+    private RelativeLayout addModuleLayout;
 
-    public AddTargetFragment() {
-
-    }
-
-    private TextWatcher mHoursWatcher = new TextWatcher() {
+    private TextWatcher hoursWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -96,11 +93,11 @@ public class AddTargetFragment extends BaseFragment {
         @Override
         public void afterTextChanged(Editable s) {
             int maxValue = 8;
-            if (mEvery.getText().toString().equals(getActivity().getString(R.string.day))) {
+            if (every.getText().toString().equals(getActivity().getString(R.string.day))) {
                 maxValue = 8;
-            } else if (mEvery.getText().toString().equals(getActivity().getString(R.string.week))) {
+            } else if (every.getText().toString().equals(getActivity().getString(R.string.week))) {
                 maxValue = 40;
-            } else if (mEvery.getText().toString().equals(getActivity().getString(R.string.month))) {
+            } else if (every.getText().toString().equals(getActivity().getString(R.string.month))) {
                 maxValue = 99;
             }
 
@@ -109,15 +106,15 @@ public class AddTargetFragment extends BaseFragment {
             if (s.toString().length() != 0) {
                 int value = Integer.parseInt(s.toString());
                 if (value < 0)
-                    mHours.setText("0");
+                    hours.setText("0");
                 if (value > maxValue)
-                    mHours.setText("" + maxValue);
-                mHours.setSelection(mHours.getText().length());
+                    hours.setText("" + maxValue);
+                hours.setSelection(hours.getText().length());
             }
         }
     };
 
-    private TextWatcher mMinutesWatcher = new TextWatcher() {
+    private TextWatcher minutesWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -132,10 +129,10 @@ public class AddTargetFragment extends BaseFragment {
             if (s.toString().length() != 0) {
                 int value = Integer.parseInt(s.toString());
                 if (value < 0)
-                    mMinutes.setText("00");
+                    minutes.setText("00");
                 if (value > 59)
-                    mMinutes.setText("59");
-                mMinutes.setSelection(mMinutes.getText().length());
+                    minutes.setText("59");
+                minutes.setSelection(minutes.getText().length());
             }
         }
     };
@@ -145,12 +142,12 @@ public class AddTargetFragment extends BaseFragment {
         super.onResume();
         if (isInEditMode) {
             DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.edit_target));
-            mBinding.targetSelector.setVisibility(View.GONE);
+            binding.targetSelector.setVisibility(View.GONE);
 
             if (isSingleTarget) {
-                mBinding.targetSelector.check(mBinding.targetSingle.getId());
+                binding.targetSelector.check(binding.targetSingle.getId());
             } else {
-                mBinding.targetSelector.check(mBinding.targetRecurring.getId());
+                binding.targetSelector.check(binding.targetRecurring.getId());
             }
         } else {
             DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.add_target));
@@ -160,67 +157,67 @@ public class AddTargetFragment extends BaseFragment {
         DataManager.getInstance().mainActivity.showCertainButtons(8);
         DataManager.getInstance().addTarget = 1;
 
-        EditText module = ((EditText) mRoot.findViewById(R.id.add_module_edit_text));
+        EditText module = ((EditText) root.findViewById(R.id.add_module_edit_text));
         String moduleName = (module != null && module.getText() != null) ? module.getText().toString() : null;
         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.AddTarget, moduleName);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.target_add_target, container, false);
-        mRoot = mBinding.root;
+        binding = DataBindingUtil.inflate(inflater, R.layout.target_add_target, container, false);
+        root = binding.root;
 
         DataManager.getInstance().reload();
         applyTypeface();
 
         if(DataManager.getInstance().mainActivity.displaySingleTarget){
-            mBinding.targetSingle.setChecked(true);
-            mIsRecurringTarget = false;
-            mBinding.recurringLayout.setVisibility(View.GONE);
-            mBinding.singleLayout.setVisibility(View.VISIBLE);
+            binding.targetSingle.setChecked(true);
+            isRecurringTarget = false;
+            binding.recurringLayout.setVisibility(View.GONE);
+            binding.singleLayout.setVisibility(View.VISIBLE);
         } else {
-            mIsRecurringTarget = true;
-            mBinding.recurringLayout.setVisibility(View.VISIBLE);
-            mBinding.singleLayout.setVisibility(View.GONE);
+            isRecurringTarget = true;
+            binding.recurringLayout.setVisibility(View.VISIBLE);
+            binding.singleLayout.setVisibility(View.GONE);
         }
 
-        mBinding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
+        binding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.target_recurring) {
-                mIsRecurringTarget = true;
-                mBinding.recurringLayout.setVisibility(View.VISIBLE);
-                mBinding.singleLayout.setVisibility(View.GONE);
+                isRecurringTarget = true;
+                binding.recurringLayout.setVisibility(View.VISIBLE);
+                binding.singleLayout.setVisibility(View.GONE);
             } else {
-                mIsRecurringTarget = false;
-                mBinding.recurringLayout.setVisibility(View.GONE);
-                mBinding.singleLayout.setVisibility(View.VISIBLE);
+                isRecurringTarget = false;
+                binding.recurringLayout.setVisibility(View.GONE);
+                binding.singleLayout.setVisibility(View.VISIBLE);
             }
         });
 
-        mActivityType = ((AppCompatTextView) mRoot.findViewById(R.id.addtarget_activityType_textView));
-        mActivityType.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
+        activityType = ((AppCompatTextView) root.findViewById(R.id.addtarget_activityType_textView));
+        activityType.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
 
-        mChooseActivity = ((AppCompatTextView) mRoot.findViewById(R.id.addtarget_chooseActivity_textView));
-        mChooseActivity.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
+        chooseActivity = ((AppCompatTextView) root.findViewById(R.id.addtarget_chooseActivity_textView));
+        chooseActivity.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
 
-        mAddModuleLayout = (RelativeLayout) mRoot.findViewById(R.id.add_new_module_layout);
-        mAddModuleLayout.setVisibility(View.GONE);
+        addModuleLayout = (RelativeLayout) root.findViewById(R.id.add_new_module_layout);
+        addModuleLayout.setVisibility(View.GONE);
 
-        mRoot.findViewById(R.id.add_module_button_text).setOnClickListener(v -> onAddModule());
-        mBecause = ((EditText) mRoot.findViewById(R.id.addtarget_edittext_because));
+        root.findViewById(R.id.add_module_button_text).setOnClickListener(v -> onAddModule());
+        because = ((EditText) root.findViewById(R.id.addtarget_edittext_because));
 
-        mHours = ((EditText) mRoot.findViewById(R.id.addtarget_text_timer_1));
-        mMinutes = ((EditText) mRoot.findViewById(R.id.addtarget_text_timer_3));
+        hours = ((EditText) root.findViewById(R.id.addtarget_text_timer_1));
+        minutes = ((EditText) root.findViewById(R.id.addtarget_text_timer_3));
 
-        mHours.addTextChangedListener(mHoursWatcher);
-        mMinutes.addTextChangedListener(mMinutesWatcher);
+        hours.addTextChangedListener(hoursWatcher);
+        minutes.addTextChangedListener(minutesWatcher);
 
-        mEvery = ((AppCompatTextView) mRoot.findViewById(R.id.addtarget_every_textView));
-        mEvery.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
+        every = ((AppCompatTextView) root.findViewById(R.id.addtarget_every_textView));
+        every.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
 
-        mIn = ((AppCompatTextView) mRoot.findViewById(R.id.addtarget_in_textView));
-        mIn.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
+        in = ((AppCompatTextView) root.findViewById(R.id.addtarget_in_textView));
+        in.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
 
-        mBecause.setOnTouchListener((view, event) -> {
+        because.setOnTouchListener((view, event) -> {
             if (view.getId() == R.id.log_activity_edittext_note) {
                 view.getParent().requestDisallowInterceptTouchEvent(true);
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -232,23 +229,23 @@ public class AddTargetFragment extends BaseFragment {
             return false;
         });
 
-        mToDoDate = Calendar.getInstance();
-        mBinding.addtargetTextDate.setText(Utils.formatDate(mToDoDate.getTimeInMillis()));
-        mBinding.addtargetTextDate.setOnClickListener(v -> onSelectDate());
+        toDoDate = Calendar.getInstance();
+        binding.addtargetTextDate.setText(Utils.formatDate(toDoDate.getTimeInMillis()));
+        binding.addtargetTextDate.setOnClickListener(v -> onSelectDate());
 
         if (isInEditMode) {
             if (isSingleTarget) {
-                mBinding.addtargetEdittextMyGoalSingle.setText(itemToDo.description);
-                mBinding.addtargetEdittextBecauseSingle.setText(itemToDo.reason);
+                binding.addtargetEdittextMyGoalSingle.setText(itemToDo.description);
+                binding.addtargetEdittextBecauseSingle.setText(itemToDo.reason);
 
                 try {
-                    Date date = sDateFormat.parse(itemToDo.endDate);
-                    mToDoDate.setTimeInMillis(date.getTime());
+                    Date date = simpleDateFormat.parse(itemToDo.endDate);
+                    toDoDate.setTimeInMillis(date.getTime());
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
 
-                mBinding.addtargetTextDate.setText(Utils.formatDate(mToDoDate.getTimeInMillis()));
+                binding.addtargetTextDate.setText(Utils.formatDate(toDoDate.getTimeInMillis()));
                 String moduleName = "";
 
                 if (itemToDo.module != null && !itemToDo.module.isEmpty()) {
@@ -263,25 +260,25 @@ public class AddTargetFragment extends BaseFragment {
                     moduleName = DataManager.getInstance().mainActivity.getString(R.string.any_module);
                 }
 
-                mBinding.addtargetInTextViewSingle.setText(moduleName);
+                binding.addtargetInTextViewSingle.setText(moduleName);
             } else {
                 for (Map.Entry<String, String> entry : DataManager.getInstance().api_values.entrySet()) {
                     if (entry.getValue().equals(item.activity_type))
-                        mActivityType.setText(entry.getKey());
+                        activityType.setText(entry.getKey());
                 }
                 for (Map.Entry<String, String> entry : DataManager.getInstance().api_values.entrySet()) {
                     if (entry.getValue().equals(item.activity))
-                        mChooseActivity.setText(entry.getKey());
+                        chooseActivity.setText(entry.getKey());
                 }
 
-                mHours.setText(Integer.parseInt(item.total_time) / 60 > 10 ? "" + Integer.parseInt(item.total_time) / 60 : "0" + Integer.parseInt(item.total_time) / 60);
-                mMinutes.setText(Integer.parseInt(item.total_time) % 60 > 10 ? "" + Integer.parseInt(item.total_time) % 60 : "0" + Integer.parseInt(item.total_time) % 60);
+                hours.setText(Integer.parseInt(item.total_time) / 60 > 10 ? "" + Integer.parseInt(item.total_time) / 60 : "0" + Integer.parseInt(item.total_time) / 60);
+                minutes.setText(Integer.parseInt(item.total_time) % 60 > 10 ? "" + Integer.parseInt(item.total_time) % 60 : "0" + Integer.parseInt(item.total_time) % 60);
 
                 for (Map.Entry<String, String> entry : DataManager.getInstance().api_values.entrySet()) {
                     if (entry.getValue().toLowerCase().equals(item.time_span.toLowerCase())) {
                         String value = entry.getKey();
                         value = value.substring(0, 1).toUpperCase() + value.substring(1, value.length());
-                        mEvery.setText(value);
+                        every.setText(value);
                     }
                 }
 
@@ -293,67 +290,67 @@ public class AddTargetFragment extends BaseFragment {
                     moduleName = ((Module) (new Select().from(Module.class).where("module_id = ?", item.module_id).executeSingle())).name;
                 }
 
-                mIn.setText(moduleName);
-                mBecause.setText(item.because);
-                mActivityType.setOnClickListener(v -> onAddTargetActivityType());
-                mChooseActivity.setOnClickListener(v -> onAddTargetChooseActivity());
+                in.setText(moduleName);
+                because.setText(item.because);
+                activityType.setOnClickListener(v -> onAddTargetActivityType());
+                chooseActivity.setOnClickListener(v -> onAddTargetChooseActivity());
             }
         } else {
-            mActivityType.setText(DataManager.getInstance().activity_type.get(0));
-            mActivityType.setOnClickListener(v -> onAddTargetActivityType());
-            mChooseActivity.setText(DataManager.getInstance().choose_activity.get(DataManager.getInstance().activity_type.get(0)).get(0));
-            mChooseActivity.setOnClickListener(v -> onAddTargetChooseActivity());
-            mEvery.setText(DataManager.getInstance().period.get(0));
-            mIn.setText(DataManager.getInstance().mainActivity.getString(R.string.any_module));
-            mBinding.addtargetInTextViewSingle.setText(DataManager.getInstance().mainActivity.getString(R.string.any_module));
+            activityType.setText(DataManager.getInstance().activity_type.get(0));
+            activityType.setOnClickListener(v -> onAddTargetActivityType());
+            chooseActivity.setText(DataManager.getInstance().choose_activity.get(DataManager.getInstance().activity_type.get(0)).get(0));
+            chooseActivity.setOnClickListener(v -> onAddTargetChooseActivity());
+            every.setText(DataManager.getInstance().period.get(0));
+            in.setText(DataManager.getInstance().mainActivity.getString(R.string.any_module));
+            binding.addtargetInTextViewSingle.setText(DataManager.getInstance().mainActivity.getString(R.string.any_module));
         }
 
-        mEvery.setOnClickListener(v -> onAddTargetEvery());
-        mBinding.addtargetInTextViewSingle.setOnClickListener(v -> onAddTargetInSingle());
-        mBinding.addtargetInTextViewSingle.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
-        mBinding.addtargetSaveBtn.setOnClickListener(v -> onAddTargetSave());
-        mBinding.addtargetSaveBtnSingle.setOnClickListener(v -> onAddTargetSingleSave());
+        every.setOnClickListener(v -> onAddTargetEvery());
+        binding.addtargetInTextViewSingle.setOnClickListener(v -> onAddTargetInSingle());
+        binding.addtargetInTextViewSingle.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
+        binding.addtargetSaveBtn.setOnClickListener(v -> onAddTargetSave());
+        binding.addtargetSaveBtnSingle.setOnClickListener(v -> onAddTargetSingleSave());
 
-        mIn.setOnClickListener(v -> onAddTargetIn());
+        in.setOnClickListener(v -> onAddTargetIn());
 
         final View contentView = container;
         container.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            private int mPreviousHeight;
+            private int previousHeight;
 
             @Override
             public void onGlobalLayout() {
                 int newHeight = contentView.getHeight();
-                if (mPreviousHeight != 0) {
-                    if (mPreviousHeight > newHeight) {
+                if (previousHeight != 0) {
+                    if (previousHeight > newHeight) {
                         // Height decreased: keyboard was shown
-                        mRoot.findViewById(R.id.content_scroll).setPadding(0, 0, 0, 200);
+                        root.findViewById(R.id.content_scroll).setPadding(0, 0, 0, 200);
 
-                        if (mBecause.isFocused()) {
+                        if (because.isFocused()) {
                             final Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 //Do something after 100ms
-                                ScrollView scrollView = (ScrollView) mRoot.findViewById(R.id.addtarget_container);
-                                scrollView.scrollTo(0, mRoot.findViewById(R.id.content_scroll).getHeight());
+                                ScrollView scrollView = (ScrollView) root.findViewById(R.id.addtarget_container);
+                                scrollView.scrollTo(0, root.findViewById(R.id.content_scroll).getHeight());
                             }, 100);
                         }
-                    } else if (mPreviousHeight < newHeight) {
-                        mRoot.findViewById(R.id.content_scroll).setPadding(0, 0, 0, 0);
+                    } else if (previousHeight < newHeight) {
+                        root.findViewById(R.id.content_scroll).setPadding(0, 0, 0, 0);
                     } else {
                         // No change
                     }
                 }
-                mPreviousHeight = newHeight;
+                previousHeight = newHeight;
             }
         });
 
-        return mRoot;
+        return root;
     }
 
     private void onAddModule() {
-        EditText add_module_edit_text = (EditText) mAddModuleLayout.findViewById(R.id.add_module_edit_text);
-        final String moduleName = add_module_edit_text.getText().toString();
+        EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
+        final String moduleName = addModuleEditText.getText().toString();
         if (moduleName.length() == 0) {
-            Snackbar.make(mRoot, R.string.module_name_invalid, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(root, R.string.module_name_invalid, Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -369,12 +366,12 @@ public class AddTargetFragment extends BaseFragment {
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     (DataManager.getInstance().mainActivity).hideProgressBar();
-                    Snackbar.make(mRoot, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(root, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
                 });
             }
         }).start();
 
-        mAddModuleLayout.setVisibility(View.GONE);
+        addModuleLayout.setVisibility(View.GONE);
         return;
     }
 
@@ -396,10 +393,10 @@ public class AddTargetFragment extends BaseFragment {
         ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_activity_type);
 
         final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-        listView.setAdapter(new ActivityTypeAdapter(DataManager.getInstance().mainActivity, mActivityType.getText().toString()));
+        listView.setAdapter(new ActivityTypeAdapter(DataManager.getInstance().mainActivity, activityType.getText().toString()));
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            mActivityType.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
-            mChooseActivity.setText(DataManager.getInstance().choose_activity.get(mActivityType.getText().toString()).get(0));
+            activityType.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+            chooseActivity.setText(DataManager.getInstance().choose_activity.get(activityType.getText().toString()).get(0));
             dialog.dismiss();
         });
 
@@ -424,9 +421,9 @@ public class AddTargetFragment extends BaseFragment {
         ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_activity);
 
         final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-        listView.setAdapter(new ChooseActivityAdapter(DataManager.getInstance().mainActivity, mChooseActivity.getText().toString(), mActivityType.getText().toString()));
+        listView.setAdapter(new ChooseActivityAdapter(DataManager.getInstance().mainActivity, chooseActivity.getText().toString(), activityType.getText().toString()));
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            mChooseActivity.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+            chooseActivity.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
             dialog.dismiss();
         });
 
@@ -451,18 +448,18 @@ public class AddTargetFragment extends BaseFragment {
         final NumberPicker hourPicker = (NumberPicker) dialog.findViewById(R.id.hour_picker);
         hourPicker.setMinValue(0);
 
-        if (mEvery.getText().toString().equals(getString(R.string.daily))) {
+        if (every.getText().toString().equals(getString(R.string.daily))) {
             hourPicker.setMaxValue(23);
         } else {
             hourPicker.setMaxValue(71);
         }
 
-        hourPicker.setValue(Integer.parseInt(mHours.getText().toString()));
+        hourPicker.setValue(Integer.parseInt(hours.getText().toString()));
         hourPicker.setFormatter(value -> String.format("%02d", value));
         final NumberPicker minutePicker = (NumberPicker) dialog.findViewById(R.id.minute_picker);
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(59);
-        minutePicker.setValue(Integer.parseInt(mMinutes.getText().toString()));
+        minutePicker.setValue(Integer.parseInt(minutes.getText().toString()));
         minutePicker.setFormatter(value -> {
             if (value < 10) {
                 return "0" + value;
@@ -475,14 +472,14 @@ public class AddTargetFragment extends BaseFragment {
         dialog.findViewById(R.id.timespent_save_btn).setOnClickListener(v1 -> {
             int hour = hourPicker.getValue();
             if (hour < 10)
-                mHours.setText("0" + hour);
+                hours.setText("0" + hour);
             else
-                mHours.setText("" + hour);
+                hours.setText("" + hour);
             int minute = minutePicker.getValue();
             if (minute < 10)
-                mMinutes.setText("0" + minute);
+                minutes.setText("0" + minute);
             else
-                mMinutes.setText("" + minute);
+                minutes.setText("" + minute);
             dialog.dismiss();
         });
 
@@ -508,10 +505,10 @@ public class AddTargetFragment extends BaseFragment {
         ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_interval);
 
         final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, mEvery.getText().toString(), DataManager.getInstance().period));
+        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, every.getText().toString(), DataManager.getInstance().period));
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            mEvery.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
-            mHours.setText(mHours.getText().toString());
+            every.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+            hours.setText(hours.getText().toString());
             dialog.dismiss();
         });
 
@@ -551,16 +548,16 @@ public class AddTargetFragment extends BaseFragment {
             items.add(AddTargetFragment.this.getActivity().getString(R.string.add_module));
         }
 
-        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, mIn.getText().toString(), items));
+        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, in.getText().toString(), items));
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (DataManager.getInstance().user.isSocial && position == items.size() - 1) {
                 //add new module
-                EditText add_module_edit_text = (EditText) mAddModuleLayout.findViewById(R.id.add_module_edit_text);
-                add_module_edit_text.setText("");
-                mAddModuleLayout.setVisibility(View.VISIBLE);
+                EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
+                addModuleEditText.setText("");
+                addModuleLayout.setVisibility(View.VISIBLE);
                 dialog.dismiss();
             } else {
-                mIn.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                in.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
                 dialog.dismiss();
             }
         });
@@ -601,16 +598,16 @@ public class AddTargetFragment extends BaseFragment {
             items.add(AddTargetFragment.this.getActivity().getString(R.string.add_module));
         }
 
-        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, mBinding.addtargetInTextViewSingle.getText().toString(), items));
+        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, binding.addtargetInTextViewSingle.getText().toString(), items));
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (DataManager.getInstance().user.isSocial && position == items.size() - 1) {
                 //add new module
-                EditText add_module_edit_text = (EditText) mAddModuleLayout.findViewById(R.id.add_module_edit_text);
-                add_module_edit_text.setText("");
-                mAddModuleLayout.setVisibility(View.VISIBLE);
+                EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
+                addModuleEditText.setText("");
+                addModuleLayout.setVisibility(View.VISIBLE);
                 dialog.dismiss();
             } else {
-                mBinding.addtargetInTextViewSingle.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                binding.addtargetInTextViewSingle.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
                 dialog.dismiss();
             }
         });
@@ -635,21 +632,21 @@ public class AddTargetFragment extends BaseFragment {
                 return;
             }
 
-            final int total_time = Integer.parseInt(mHours.getText().toString()) * 60 + Integer.parseInt(mMinutes.getText().toString());
+            final int totalTime = Integer.parseInt(hours.getText().toString()) * 60 + Integer.parseInt(minutes.getText().toString());
 
-            if (total_time == Integer.parseInt(item.total_time)
-                    && mEvery.getText().toString().toLowerCase().equals(item.time_span.toLowerCase())
-                    && (item.because.equals(mBecause.getText().toString()))
-                    && (item.module_id.equals("") && mIn.getText().toString().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module)))) {
+            if (totalTime == Integer.parseInt(item.total_time)
+                    && every.getText().toString().toLowerCase().equals(item.time_span.toLowerCase())
+                    && (item.because.equals(because.getText().toString()))
+                    && (item.module_id.equals("") && in.getText().toString().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module)))) {
                 DataManager.getInstance().mainActivity.onBackPressed();
                 return;
             }
 
-            if (total_time == 0) {
-                Snackbar.make(mRoot, R.string.fail_to_edit_target_insuficient_time, Snackbar.LENGTH_LONG).show();
+            if (totalTime == 0) {
+                Snackbar.make(root, R.string.fail_to_edit_target_insuficient_time, Snackbar.LENGTH_LONG).show();
                 return;
             } else {
-                Module module = ((new Select().from(Module.class).where("module_name = ?", mIn.getText().toString()).executeSingle()));
+                Module module = ((new Select().from(Module.class).where("module_name = ?", in.getText().toString()).executeSingle()));
                 String id;
 
                 if (module == null) {
@@ -661,27 +658,27 @@ public class AddTargetFragment extends BaseFragment {
                 }
 
                 String selectedEvery = "";
-                if(mEvery.getText().toString().toLowerCase().equals("day")){
+                if(every.getText().toString().toLowerCase().equals("day")){
                     selectedEvery = "Daily";
                 } else {
-                    selectedEvery = mEvery.getText().toString() + "ly";
+                    selectedEvery = every.getText().toString() + "ly";
                 }
 
-                if (new Select().from(Targets.class).where("activity = ?", mChooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).exists()) {
-                    Snackbar.make(mRoot, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
+                if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).exists()) {
+                    Snackbar.make(root, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 final HashMap<String, String> params = new HashMap<>();
                 params.put("student_id", DataManager.getInstance().user.id);
                 params.put("target_id", item.target_id);
-                params.put("total_time", total_time + "");
+                params.put("total_time", totalTime + "");
                 params.put("time_span",selectedEvery);
 
-                if (!mIn.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase()))
-                    params.put("module", ((Module) (new Select().from(Module.class).where("module_name = ?", mIn.getText().toString()).executeSingle())).id);
-                if (mBecause.getText().toString().length() > 0)
-                    params.put("because", mBecause.getText().toString());
+                if (!in.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase()))
+                    params.put("module", ((Module) (new Select().from(Module.class).where("module_name = ?", in.getText().toString()).executeSingle())).id);
+                if (because.getText().toString().length() > 0)
+                    params.put("because", because.getText().toString());
                 Log.d(TAG, "EDIT_TARGET: " + params.toString());
                 DataManager.getInstance().mainActivity.showProgressBar(null);
 
@@ -692,23 +689,23 @@ public class AddTargetFragment extends BaseFragment {
                 new Thread(() -> {
                     if (NetworkManager.getInstance().editTarget(params)) {
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                            item.total_time = total_time + "";
-                            item.time_span = DataManager.getInstance().api_values.get(mEvery.getText().toString().toLowerCase());
-                            if (!mIn.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase()))
-                                item.module_id = ((Module) new Select().from(Module.class).where("module_name = ?", mIn.getText().toString()).executeSingle()).id;
+                            item.total_time = totalTime + "";
+                            item.time_span = DataManager.getInstance().api_values.get(every.getText().toString().toLowerCase());
+                            if (!in.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase()))
+                                item.module_id = ((Module) new Select().from(Module.class).where("module_name = ?", in.getText().toString()).executeSingle()).id;
                             else
                                 item.module_id = "";
-                            item.because = mBecause.getText().toString();
+                            item.because = because.getText().toString();
                             item.modified_date = finalModified_date;
 
                             DataManager.getInstance().mainActivity.hideProgressBar();
                             DataManager.getInstance().mainActivity.onBackPressed();
-//                          Snackbar.make(mRoot, R.string.target_saved, Snackbar.LENGTH_LONG).show();
+//                          Snackbar.make(root, R.string.target_saved, Snackbar.LENGTH_LONG).show();
                         });
                     } else {
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                             DataManager.getInstance().mainActivity.hideProgressBar();
-                            Snackbar.make(mRoot, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(root, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
                         });
                     }
                 }).start();
@@ -723,20 +720,20 @@ public class AddTargetFragment extends BaseFragment {
                 return;
             }
 
-            String hours = mHours.getText().toString();
-            if (hours.equals(""))
-                hours = "0";
-            String minutes = mMinutes.getText().toString();
-            if (minutes.equals(""))
-                minutes = "0";
+            String hoursValue = hours.getText().toString();
+            if (hoursValue.equals(""))
+                hoursValue = "0";
+            String minutesValue = this.minutes.getText().toString();
+            if (minutesValue.equals(""))
+                minutesValue = "0";
 
-            int total_time = Integer.parseInt(hours) * 60 + Integer.parseInt(minutes);
+            int total_time = Integer.parseInt(hoursValue) * 60 + Integer.parseInt(minutesValue);
 
             if (total_time == 0) {
-                Snackbar.make(mRoot, R.string.fail_to_add_target_insufficient_time, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(root, R.string.fail_to_add_target_insufficient_time, Snackbar.LENGTH_LONG).show();
                 return;
             } else {
-                Module module = ((new Select().from(Module.class).where("module_name = ?", mIn.getText().toString()).executeSingle()));
+                Module module = ((new Select().from(Module.class).where("module_name = ?", in.getText().toString()).executeSingle()));
                 String id;
 
                 if (module == null) {
@@ -748,30 +745,30 @@ public class AddTargetFragment extends BaseFragment {
                 }
 
                 String selectedEvery = "";
-                if(mEvery.getText().toString().toLowerCase().equals("day")){
+                if(every.getText().toString().toLowerCase().equals("day")){
                     selectedEvery = "Daily";
                 } else {
-                    selectedEvery = mEvery.getText().toString() + "ly";
+                    selectedEvery = every.getText().toString() + "ly";
                 }
 
-                if (new Select().from(Targets.class).where("activity = ?", mChooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).exists()) {
-                    Snackbar.make(mRoot, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
+                if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).exists()) {
+                    Snackbar.make(root, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 final HashMap<String, String> params = new HashMap<>();
                 params.put("student_id", DataManager.getInstance().user.id);
-                params.put("activity_type", DataManager.getInstance().api_values.get(mActivityType.getText().toString()));
-                params.put("activity", DataManager.getInstance().api_values.get(mChooseActivity.getText().toString()));
+                params.put("activity_type", DataManager.getInstance().api_values.get(activityType.getText().toString()));
+                params.put("activity", DataManager.getInstance().api_values.get(chooseActivity.getText().toString()));
                 params.put("total_time", total_time + "");
                 params.put("time_span",selectedEvery);
 
-                if (!mIn.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase())) {
-                    params.put("module", ((Module) (new Select().from(Module.class).where("module_name = ?", mIn.getText().toString()).executeSingle())).id);
+                if (!in.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase())) {
+                    params.put("module", ((Module) (new Select().from(Module.class).where("module_name = ?", in.getText().toString()).executeSingle())).id);
                 }
 
-                if (mBecause.getText().toString().length() > 0) {
-                    params.put("because", mBecause.getText().toString());
+                if (because.getText().toString().length() > 0) {
+                    params.put("because", because.getText().toString());
                 }
 
                 Log.d(TAG, "ADD_TARGET: " + params.toString());
@@ -790,12 +787,12 @@ public class AddTargetFragment extends BaseFragment {
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                             DataManager.getInstance().mainActivity.hideProgressBar();
                             DataManager.getInstance().mainActivity.onBackPressed();
-//                          Snackbar.make(mRoot, R.string.target_saved, Snackbar.LENGTH_LONG).show();
+//                          Snackbar.make(root, R.string.target_saved, Snackbar.LENGTH_LONG).show();
                         });
                     } else {
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                             (DataManager.getInstance().mainActivity).hideProgressBar();
-                            Snackbar.make(mRoot, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(root, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
                         });
                     }
                 }).start();
@@ -823,16 +820,16 @@ public class AddTargetFragment extends BaseFragment {
             }
 
             Date date = new Date();
-            date.setTime(mToDoDate.getTimeInMillis());
-            String endDate = sDateFormat.format(date);
+            date.setTime(toDoDate.getTimeInMillis());
+            String endDate = simpleDateFormat.format(date);
 
             final HashMap<String, String> params = new HashMap<>();
             params.put("student_id", DataManager.getInstance().user.id);
             params.put("end_date", endDate);
             params.put("record_id", itemToDo.taskId);
 
-            if (!mBinding.addtargetInTextViewSingle.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase())) {
-                Module module = new Select().from(Module.class).where("module_name = ?", mBinding.addtargetInTextViewSingle.getText().toString()).executeSingle();
+            if (!binding.addtargetInTextViewSingle.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase())) {
+                Module module = new Select().from(Module.class).where("module_name = ?", binding.addtargetInTextViewSingle.getText().toString()).executeSingle();
 
                 if (module != null) {
                     params.put("module", module.name);
@@ -843,12 +840,12 @@ public class AddTargetFragment extends BaseFragment {
                 params.put("module", "no_module");
             }
 
-            if (mBinding.addtargetEdittextMyGoalSingle.getText().toString().length() > 0) {
-                params.put("description", mBinding.addtargetEdittextMyGoalSingle.getText().toString());
+            if (binding.addtargetEdittextMyGoalSingle.getText().toString().length() > 0) {
+                params.put("description", binding.addtargetEdittextMyGoalSingle.getText().toString());
             }
 
-            if (mBinding.addtargetEdittextBecauseSingle.getText().toString().length() > 0) {
-                params.put("reason", mBinding.addtargetEdittextBecauseSingle.getText().toString());
+            if (binding.addtargetEdittextBecauseSingle.getText().toString().length() > 0) {
+                params.put("reason", binding.addtargetEdittextBecauseSingle.getText().toString());
             }
 
             new Thread(() -> {
@@ -860,7 +857,7 @@ public class AddTargetFragment extends BaseFragment {
                 } else {
                     DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                         DataManager.getInstance().mainActivity.hideProgressBar();
-                        Snackbar.make(mRoot, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(root, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
                     });
                 }
             }).start();
@@ -876,15 +873,15 @@ public class AddTargetFragment extends BaseFragment {
             }
 
             Date date = new Date();
-            date.setTime(mToDoDate.getTimeInMillis());
-            String endDate = sDateFormat.format(date);
+            date.setTime(toDoDate.getTimeInMillis());
+            String endDate = simpleDateFormat.format(date);
 
             final HashMap<String, String> params = new HashMap<>();
             params.put("student_id", DataManager.getInstance().user.id);
             params.put("end_date", endDate);
 
-            if (!mBinding.addtargetInTextViewSingle.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase())) {
-                Module module = new Select().from(Module.class).where("module_name = ?", mBinding.addtargetInTextViewSingle.getText().toString()).executeSingle();
+            if (!binding.addtargetInTextViewSingle.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase())) {
+                Module module = new Select().from(Module.class).where("module_name = ?", binding.addtargetInTextViewSingle.getText().toString()).executeSingle();
 
                 if (module != null) {
                     params.put("module", module.id);
@@ -895,12 +892,12 @@ public class AddTargetFragment extends BaseFragment {
                 params.put("module", "no_module");
             }
 
-            if (mBinding.addtargetEdittextMyGoalSingle.getText().toString().length() > 0) {
-                params.put("description", mBinding.addtargetEdittextMyGoalSingle.getText().toString());
+            if (binding.addtargetEdittextMyGoalSingle.getText().toString().length() > 0) {
+                params.put("description", binding.addtargetEdittextMyGoalSingle.getText().toString());
             }
 
-            if (mBinding.addtargetEdittextBecauseSingle.getText().toString().length() > 0) {
-                params.put("reason", mBinding.addtargetEdittextBecauseSingle.getText().toString());
+            if (binding.addtargetEdittextBecauseSingle.getText().toString().length() > 0) {
+                params.put("reason", binding.addtargetEdittextBecauseSingle.getText().toString());
             }
 
             Log.d(TAG, "ADD_SINGLE_TARGET: " + params.toString());
@@ -923,7 +920,7 @@ public class AddTargetFragment extends BaseFragment {
                 } else {
                     runOnUiThread(() -> {
                         (DataManager.getInstance().mainActivity).hideProgressBar();
-                        Snackbar.make(mRoot, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(root, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
                     });
                 }
             }).start();
@@ -931,43 +928,43 @@ public class AddTargetFragment extends BaseFragment {
     }
 
     private void applyTypeface() {
-        if (mRoot != null) {
-            mBinding.targetRecurring.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.targetSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetActivityTypeText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextChoose.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetEveryTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetActivityTypeText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetChooseActivityTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetEdittextBecause.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetEdittextBecauseSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetEdittextMyGoalSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextTimer1.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextTimer3.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextHours.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextMinutes.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addModuleEditText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addModuleButtonText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextFor.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetEveryText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetInText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetInText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetInTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetInTextSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetInTextViewSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextBecauseTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextBecauseTitleSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextDateTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            mBinding.addtargetTextDate.setTypeface(DataManager.getInstance().myriadpro_regular);
+        if (root != null) {
+            binding.targetRecurring.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.targetSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetActivityTypeText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextChoose.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEveryTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetActivityTypeText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetChooseActivityTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEdittextBecause.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEdittextBecauseSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEdittextMyGoalSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextTimer1.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextTimer3.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextHours.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextMinutes.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addModuleEditText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addModuleButtonText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextFor.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEveryText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInTextSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInTextViewSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextBecauseTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextBecauseTitleSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextDateTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextDate.setTypeface(DataManager.getInstance().myriadpro_regular);
         }
     }
 
     private void onSelectDate() {
         DatePickerForTargets newFragment = new DatePickerForTargets();
         newFragment.setListener((view, year, monthOfYear, dayOfMonth) -> {
-            mToDoDate.set(year, monthOfYear, dayOfMonth);
-            mBinding.addtargetTextDate.setText(Utils.formatDate(year, monthOfYear, dayOfMonth));
-            mBinding.addtargetTextDate.setTag(year + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
+            toDoDate.set(year, monthOfYear, dayOfMonth);
+            binding.addtargetTextDate.setText(Utils.formatDate(year, monthOfYear, dayOfMonth));
+            binding.addtargetTextDate.setTag(year + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
         });
 
         newFragment.show(DataManager.getInstance().mainActivity.getSupportFragmentManager(), "datePicker");

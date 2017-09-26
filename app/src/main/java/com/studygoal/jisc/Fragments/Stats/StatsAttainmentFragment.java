@@ -23,16 +23,13 @@ import com.studygoal.jisc.R;
 import java.util.ArrayList;
 
 public class StatsAttainmentFragment extends Fragment {
+    private static final String TAG = StatsAttainmentFragment.class.getSimpleName();
 
-    private ListView mList;
-
-    private AttainmentAdapter mAdapter;
-
-    private View mMainView;
-
-    private TextView mNowData;
-
-    private SwipeRefreshLayout mLayout;
+    private ListView listView;
+    private AttainmentAdapter adapter;
+    private View mainview;
+    private TextView nowData;
+    private SwipeRefreshLayout layout;
 
     @Override
     public void onResume() {
@@ -43,32 +40,32 @@ public class StatsAttainmentFragment extends Fragment {
 
         new Thread(() -> {
             if (NetworkManager.getInstance().getAssignmentRanking()) {
-                mAdapter.list = new Select().from(Attainment.class).execute();
+                adapter.list = new Select().from(Attainment.class).execute();
             } else {
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 String attainmentDataBackup = sharedPref.getString(getString(R.string.attainmentData), "no_data_stored");
-                mAdapter.list = new ArrayList<Attainment>();
+                adapter.list = new ArrayList<Attainment>();
                 String[] attainmentData = attainmentDataBackup.split("----");
                 for (String data : attainmentData) {
                     String[] attainment = data.split(";");
                     if(attainment.length == 4)
-                        mAdapter.list.add(new Attainment(attainment[0], attainment[1], attainment[2], attainment[3]));
+                        adapter.list.add(new Attainment(attainment[0], attainment[1], attainment[2], attainment[3]));
                 }
             }
 
             String attainmentDataBackup = "";
-            for (int i = 0; i < mAdapter.list.size(); i++) {
-                Attainment attainment = mAdapter.list.get(i);
+            for (int i = 0; i < adapter.list.size(); i++) {
+                Attainment attainment = adapter.list.get(i);
 
                 if (attainment.percent.length() > 1
                         && Integer.parseInt(attainment.percent.substring(0, attainment.percent.length() - 1)) == 0) {
-                    mAdapter.list.remove(i);
+                    adapter.list.remove(i);
                 }
 
-                attainmentDataBackup += mAdapter.list.get(i).id + ";"
-                        + mAdapter.list.get(i).date + ";"
-                        + mAdapter.list.get(i).module + ";"
-                        + mAdapter.list.get(i).percent + "----";
+                attainmentDataBackup += adapter.list.get(i).id + ";"
+                        + adapter.list.get(i).date + ";"
+                        + adapter.list.get(i).module + ";"
+                        + adapter.list.get(i).percent + "----";
             }
 
             SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -77,15 +74,15 @@ public class StatsAttainmentFragment extends Fragment {
             editor.commit();
 
             DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                if (mAdapter.list != null && mAdapter.list.size() > 0) {
-                    mNowData.setVisibility(View.GONE);
-                    mLayout.setVisibility(View.VISIBLE);
+                if (adapter.list != null && adapter.list.size() > 0) {
+                    nowData.setVisibility(View.GONE);
+                    layout.setVisibility(View.VISIBLE);
                 } else {
-                    mNowData.setVisibility(View.VISIBLE);
-                    mLayout.setVisibility(View.GONE);
+                    nowData.setVisibility(View.VISIBLE);
+                    layout.setVisibility(View.GONE);
                 }
 
-                mAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             });
         }).
 
@@ -99,48 +96,48 @@ public class StatsAttainmentFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mMainView = inflater.inflate(R.layout.stats_attainment, container, false);
-        mLayout = (SwipeRefreshLayout) mMainView.findViewById(R.id.stats_swipe_refresh);
-        mLayout.setColorSchemeResources(R.color.colorPrimary);
+        mainview = inflater.inflate(R.layout.stats_attainment, container, false);
+        layout = (SwipeRefreshLayout) mainview.findViewById(R.id.stats_swipe_refresh);
+        layout.setColorSchemeResources(R.color.colorPrimary);
 
-        mNowData = (TextView) mMainView.findViewById(R.id.no_data);
-        mNowData.setTypeface(DataManager.getInstance().myriadpro_regular);
+        nowData = (TextView) mainview.findViewById(R.id.no_data);
+        nowData.setTypeface(DataManager.getInstance().myriadpro_regular);
 
-        mLayout.setOnRefreshListener(() -> new Thread(() -> {
+        layout.setOnRefreshListener(() -> new Thread(() -> {
             if (NetworkManager.getInstance().getAssignmentRanking()) {
-                mAdapter.list = new Select().from(Attainment.class).execute();
+                adapter.list = new Select().from(Attainment.class).execute();
             } else {
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 String attainmentDataBackup = sharedPref.getString(getString(R.string.attainmentData), "no_data_stored");
-                mAdapter.list = new ArrayList<Attainment>();
+                adapter.list = new ArrayList<Attainment>();
                 String[] attainmentData = attainmentDataBackup.split("----");
                 for (String data : attainmentData) {
                     String[] attainment = data.split(";");
-                    mAdapter.list.add(new Attainment(attainment[0], attainment[1], attainment[2], attainment[3]));
+                    adapter.list.add(new Attainment(attainment[0], attainment[1], attainment[2], attainment[3]));
                 }
             }
 
-            if (mAdapter.list.size() > 0) {
+            if (adapter.list.size() > 0) {
                 String attainmentDataBackup = "";
-                for (int i = 0; i < mAdapter.list.size(); i++) {
-                    if (mAdapter.list.get(i).percent != null && !mAdapter.list.get(i).percent.isEmpty()) {
-                        String stringIndex = mAdapter.list.get(i).percent.substring(0, mAdapter.list.get(i).percent.length() - 1);
+                for (int i = 0; i < adapter.list.size(); i++) {
+                    if (adapter.list.get(i).percent != null && !adapter.list.get(i).percent.isEmpty()) {
+                        String stringIndex = adapter.list.get(i).percent.substring(0, adapter.list.get(i).percent.length() - 1);
 
                         try {
                             if (stringIndex != null && !stringIndex.isEmpty()) {
                                 int index = Integer.parseInt(stringIndex);
 
                                 if (index == 0) {
-                                    mAdapter.list.remove(i);
+                                    adapter.list.remove(i);
                                 }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        attainmentDataBackup += mAdapter.list.get(i).id + ";"
-                                + mAdapter.list.get(i).date + ";"
-                                + mAdapter.list.get(i).module + ";"
-                                + mAdapter.list.get(i).percent + "----";
+                        attainmentDataBackup += adapter.list.get(i).id + ";"
+                                + adapter.list.get(i).date + ";"
+                                + adapter.list.get(i).module + ";"
+                                + adapter.list.get(i).percent + "----";
                     }
                 }
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -150,20 +147,20 @@ public class StatsAttainmentFragment extends Fragment {
             }
 
             DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                mAdapter.notifyDataSetChanged();
-                call_refresh();
+                adapter.notifyDataSetChanged();
+                callRefresh();
             });
         }).start());
 
-        mList = (ListView) mMainView.findViewById(R.id.list);
-        mList.setOnTouchListener((v, event) -> {
+        listView = (ListView) mainview.findViewById(R.id.list);
+        listView.setOnTouchListener((v, event) -> {
             // Setting on Touch Listener for handling the touch inside ScrollView
             v.getParent().requestDisallowInterceptTouchEvent(true);
             return false;
         });
 
-        mAdapter = new AttainmentAdapter(DataManager.getInstance().mainActivity);
-        mList.setAdapter(mAdapter);
+        adapter = new AttainmentAdapter(DataManager.getInstance().mainActivity);
+        listView.setAdapter(adapter);
 
         final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         if (DataManager.getInstance().user.isStaff && preferences.getBoolean("stats_alert", true)) {
@@ -180,11 +177,11 @@ public class StatsAttainmentFragment extends Fragment {
             alertDialog.show();
         }
 
-        return mMainView;
+        return mainview;
     }
 
-    private void call_refresh() {
-        mLayout.setRefreshing(false);
+    private void callRefresh() {
+        layout.setRefreshing(false);
     }
 
     @Override

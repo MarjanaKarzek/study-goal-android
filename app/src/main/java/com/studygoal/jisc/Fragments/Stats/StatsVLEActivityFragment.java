@@ -49,19 +49,20 @@ import java.util.List;
 import java.util.Random;
 
 public class StatsVLEActivityFragment extends Fragment {
+    private static final String TAG = StatsVLEActivityFragment.class.getSimpleName();
 
-    private View mMainView;
-    private AppCompatTextView mModule;
-    private AppCompatTextView mCompareTo;
-    private WebView mWebView;
-    private TextView mDescription;
+    private View mainView;
+    private AppCompatTextView module;
+    private AppCompatTextView compareTo;
+    private WebView webView;
+    private TextView description;
 
-    private List<ED> mList;
+    private List<ED> list;
     private int[] offlineDemoData = {22,0,0,21,4,5,23,6,16,10,3,4,6,1,7,0,0,0,0,3,5,7,12,24,1,0,0,12,13,21};
-    private float mWebViewHeight;
-    private boolean mIsBar;
-    private boolean mIsSevenDays = false;
-    private boolean mIsOverall = false;
+    private float webViewHeight;
+    private boolean isBar;
+    private boolean isSevenDays = false;
+    private boolean isOverall = false;
 
     private SegmentClickListener segmentClickListener;
     private TextView segmentButtonSevenDays;
@@ -77,31 +78,31 @@ public class StatsVLEActivityFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mMainView = inflater.inflate(R.layout.stats3, container, false);
+        mainView = inflater.inflate(R.layout.stats3, container, false);
 
-        mIsBar = false;
-        mWebView = (WebView) mMainView.findViewById(R.id.chart_web);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.setPadding(0, 0, 0, 0);
-        mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.setOnTouchListener(new View.OnTouchListener() {
+        isBar = false;
+        webView = (WebView) mainView.findViewById(R.id.chart_web);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.setPadding(0, 0, 0, 0);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return true;
             }
         });
-        mWebView.getViewTreeObserver().addOnGlobalLayoutListener(() -> mWebViewHeight = Utils.pxToDp(mWebView.getHeight() - 40));
+        webView.getViewTreeObserver().addOnGlobalLayoutListener(() -> webViewHeight = Utils.pxToDp(webView.getHeight() - 40));
 
-        mWebView.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:white;\"></div></body></html>", "text/html", "UTF-8", "");
+        webView.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:white;\"></div></body></html>", "text/html", "UTF-8", "");
 
-        mModule = (AppCompatTextView) mMainView.findViewById(R.id.module_list);
-        mModule.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
-        mModule.setTypeface(DataManager.getInstance().myriadpro_regular);
-        mModule.setText(R.string.anymodule);
+        module = (AppCompatTextView) mainView.findViewById(R.id.module_list);
+        module.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
+        module.setTypeface(DataManager.getInstance().myriadpro_regular);
+        module.setText(R.string.anymodule);
 
-        segmentButtonSevenDays = (TextView) mMainView.findViewById(R.id.segment_button_seven_days);
-        segmentButtonTwentyeightDays = (TextView) mMainView.findViewById(R.id.segment_button_twentyeight_days);
+        segmentButtonSevenDays = (TextView) mainView.findViewById(R.id.segment_button_seven_days);
+        segmentButtonTwentyeightDays = (TextView) mainView.findViewById(R.id.segment_button_twentyeight_days);
 
         ArrayList<TextView> segments = new ArrayList<>();
         segments.add(segmentButtonSevenDays);
@@ -111,10 +112,10 @@ public class StatsVLEActivityFragment extends Fragment {
             @Override
             public void onClick(View view){
                 super.onClick(view);
-                if (mIsSevenDays) {
-                    mDescription.setText(R.string.last_week_engagement);
+                if (isSevenDays) {
+                    description.setText(R.string.last_week_engagement);
                 } else {
-                    mDescription.setText(R.string.last_month_engagement);
+                    description.setText(R.string.last_month_engagement);
                 }
 
                 loadData();
@@ -123,14 +124,14 @@ public class StatsVLEActivityFragment extends Fragment {
         segmentButtonSevenDays.setOnClickListener(segmentClickListener);
         segmentButtonTwentyeightDays.setOnClickListener(segmentClickListener);
 
-        mCompareTo = (AppCompatTextView) mMainView.findViewById(R.id.compareto);
-        mCompareTo.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
-        mCompareTo.setTypeface(DataManager.getInstance().myriadpro_regular);
-        mCompareTo.setText(R.string.no_one);
-        mCompareTo.setAlpha(0.5f);
+        compareTo = (AppCompatTextView) mainView.findViewById(R.id.compareto);
+        compareTo.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
+        compareTo.setTypeface(DataManager.getInstance().myriadpro_regular);
+        compareTo.setText(R.string.no_one);
+        compareTo.setAlpha(0.5f);
 
         final View.OnClickListener compareToListener = v -> {
-            if (!mModule.getText().toString().equals(DataManager.getInstance().mainActivity.getString(R.string.anymodule))) {
+            if (!module.getText().toString().equals(DataManager.getInstance().mainActivity.getString(R.string.anymodule))) {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.custom_spinner_layout);
@@ -162,9 +163,9 @@ public class StatsVLEActivityFragment extends Fragment {
                 for (int i = 0; i < friendList.size(); i++)
                     items.add(friendList.get(i).name);
                 final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-                listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, mCompareTo.getText().toString(), items));
+                listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, compareTo.getText().toString(), items));
                 listView.setOnItemClickListener((parent, view, position, id) -> {
-                    mCompareTo.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                    compareTo.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
                     dialog.dismiss();
                     loadData();
                 });
@@ -203,9 +204,9 @@ public class StatsVLEActivityFragment extends Fragment {
                 for (int i = 0; i < friendList.size(); i++)
                     items.add(friendList.get(i).name);
                 final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-                listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, mCompareTo.getText().toString(), items));
+                listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, compareTo.getText().toString(), items));
                 listView.setOnItemClickListener((parent, view, position, id) -> {
-                    mCompareTo.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                    compareTo.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
                     dialog.dismiss();
                     loadData();
                 });
@@ -214,16 +215,16 @@ public class StatsVLEActivityFragment extends Fragment {
             }
         };
 
-        mDescription = (TextView) mMainView.findViewById(R.id.description);
-        mDescription.setTypeface(DataManager.getInstance().myriadpro_regular);
-        mDescription.setText(R.string.last_month_engagement);
+        description = (TextView) mainView.findViewById(R.id.description);
+        description.setTypeface(DataManager.getInstance().myriadpro_regular);
+        description.setText(R.string.last_month_engagement);
 
-        ((TextView) mMainView.findViewById(R.id.module)).setTypeface(DataManager.getInstance().myriadpro_regular);
-        ((TextView) mMainView.findViewById(R.id.period)).setTypeface(DataManager.getInstance().myriadpro_regular);
-        ((TextView) mMainView.findViewById(R.id.compare_to)).setTypeface(DataManager.getInstance().myriadpro_regular);
+        ((TextView) mainView.findViewById(R.id.module)).setTypeface(DataManager.getInstance().myriadpro_regular);
+        ((TextView) mainView.findViewById(R.id.period)).setTypeface(DataManager.getInstance().myriadpro_regular);
+        ((TextView) mainView.findViewById(R.id.compare_to)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
         //Setting the module
-        mModule.setOnClickListener(v -> {
+        module.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.custom_spinner_layout);
@@ -247,7 +248,7 @@ public class StatsVLEActivityFragment extends Fragment {
             ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
 
             final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-            listView.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, mModule.getText().toString()));
+            listView.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, module.getText().toString()));
             listView.setOnItemClickListener((parent, view, position, id) -> {
                 String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
                 List<Courses> coursesList = new Select().from(Courses.class).execute();
@@ -260,19 +261,19 @@ public class StatsVLEActivityFragment extends Fragment {
                 }
 
                 dialog.dismiss();
-                mModule.setText(titleText);
+                module.setText(titleText);
 
-                if (!mModule.getText().toString().equals(getString(R.string.anymodule))) {
-                    mCompareTo.setOnClickListener(compareToListener);
-                    mCompareTo.setAlpha(1.0f);
+                if (!module.getText().toString().equals(getString(R.string.anymodule))) {
+                    compareTo.setOnClickListener(compareToListener);
+                    compareTo.setAlpha(1.0f);
                 } else {
-                    mCompareTo.setOnClickListener(null);
-                    mCompareTo.setAlpha(0.5f);
-                    mCompareTo.setText(getString(R.string.no_one));
+                    compareTo.setOnClickListener(null);
+                    compareTo.setAlpha(0.5f);
+                    compareTo.setText(getString(R.string.no_one));
                 }
 
-                if (mModule.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (mCompareTo.getText().toString().equals(getString(R.string.average)) || mCompareTo.getText().toString().equals(getString(R.string.top10)))) {
-                    mCompareTo.setText(R.string.no_one);
+                if (module.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (compareTo.getText().toString().equals(getString(R.string.average)) || compareTo.getText().toString().equals(getString(R.string.top10)))) {
+                    compareTo.setText(R.string.no_one);
                 }
 
                 loadData();
@@ -281,29 +282,29 @@ public class StatsVLEActivityFragment extends Fragment {
             dialog.show();
         });
 
-        ((ImageView) mMainView.findViewById(R.id.change_graph_btn)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.bar_graph));
-        mMainView.findViewById(R.id.change_graph_btn).setOnClickListener(v -> {
+        ((ImageView) mainView.findViewById(R.id.change_graph_btn)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.bar_graph));
+        mainView.findViewById(R.id.change_graph_btn).setOnClickListener(v -> {
             //switch between bar / graph
-            if (mIsBar) {
-                mIsBar = false;
+            if (isBar) {
+                isBar = false;
                 ((ImageView) v).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.bar_graph));
 
             } else {
-                mIsBar = true;
+                isBar = true;
                 ((ImageView) v).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.line_graph));
             }
 
             refreshUi();
         });
 
-        mMainView.findViewById(R.id.change_graph_btn).performClick();
+        mainView.findViewById(R.id.change_graph_btn).performClick();
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
             loadData();
         }, 100);
 
-        return mMainView;
+        return mainView;
     }
 
     private void loadData() {
@@ -311,31 +312,31 @@ public class StatsVLEActivityFragment extends Fragment {
 
         new Thread(() -> {
             if (DataManager.getInstance().user.isStaff) {
-                mList = new ArrayList<>();
+                list = new ArrayList<>();
 
-                if (mCompareTo.getText().toString().equals(getString(R.string.no_one))) {
-                    if (mIsSevenDays) {
+                if (compareTo.getText().toString().equals(getString(R.string.no_one))) {
+                    if (isSevenDays) {
                         for (int i = 0; i < 7; i++) {
                             ED item = new ED();
                             item.day = "" + (i + 1);
                             item.activity_points = Math.abs(new Random().nextInt()) % 100;
 
-                            mList.add(item);
+                            list.add(item);
                         }
 
-                        Collections.sort(mList, (s1, s2) -> s1.day.compareToIgnoreCase(s2.day));
-                    } else if (!mIsSevenDays) {
+                        Collections.sort(list, (s1, s2) -> s1.day.compareToIgnoreCase(s2.day));
+                    } else if (!isSevenDays) {
 
                         for (int i = 0; i < 30; i++) {
                             ED item = new ED();
                             item.day = "" + (i + 1);
                             item.activity_points = Math.abs(new Random().nextInt()) % 100;
 
-                            mList.add(item);
+                            list.add(item);
                         }
 
-                        Collections.sort(mList, (s1, s2) -> s1.day.compareToIgnoreCase(s2.day));
-                    } else if (mIsOverall) {
+                        Collections.sort(list, (s1, s2) -> s1.day.compareToIgnoreCase(s2.day));
+                    } else if (isOverall) {
 
                         try {
 
@@ -357,49 +358,49 @@ public class StatsVLEActivityFragment extends Fragment {
                                 item.realDate = startDate;
                                 item.activity_points = Math.abs(new Random().nextInt()) % 100;
 
-                                mList.add(item);
+                                list.add(item);
                             }
 
-                            Collections.sort(mList, (s1, s2) -> s1.realDate.compareTo(s2.realDate));
+                            Collections.sort(list, (s1, s2) -> s1.realDate.compareTo(s2.realDate));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 } else {
-                    if (mIsSevenDays) {
+                    if (isSevenDays) {
                         for (int i = 0; i < 7; i++) {
                             ED item = new ED();
                             item.day = "" + (i + 1);
                             item.activity_points = Math.abs(new Random().nextInt()) % 100;
                             item.student_id = DataManager.getInstance().user.jisc_student_id;
-                            mList.add(item);
+                            list.add(item);
 
                             ED item1 = new ED();
                             item1.day = "" + (i + 1);
                             item1.activity_points = Math.abs(new Random().nextInt()) % 100;
                             item1.student_id = "";
-                            mList.add(item1);
+                            list.add(item1);
                         }
 
-                        Collections.sort(mList, (s1, s2) -> s1.day.compareToIgnoreCase(s2.day));
-                    } else if (!mIsSevenDays) {
+                        Collections.sort(list, (s1, s2) -> s1.day.compareToIgnoreCase(s2.day));
+                    } else if (!isSevenDays) {
 
                         for (int i = 0; i < 30; i++) {
                             ED item = new ED();
                             item.day = "" + (i + 1);
                             item.activity_points = Math.abs(new Random().nextInt()) % 100;
                             item.student_id = DataManager.getInstance().user.jisc_student_id;
-                            mList.add(item);
+                            list.add(item);
 
                             ED item1 = new ED();
                             item1.day = "" + (i + 1);
                             item1.activity_points = Math.abs(new Random().nextInt()) % 100;
                             item1.student_id = "";
-                            mList.add(item1);
+                            list.add(item1);
                         }
 
-                        Collections.sort(mList, (s1, s2) -> s1.day.compareToIgnoreCase(s2.day));
-                    } else if (mIsOverall) {
+                        Collections.sort(list, (s1, s2) -> s1.day.compareToIgnoreCase(s2.day));
+                    } else if (isOverall) {
 
                         try {
 
@@ -421,17 +422,17 @@ public class StatsVLEActivityFragment extends Fragment {
                                 item.realDate = startDate;
                                 item.activity_points = Math.abs(new Random().nextInt()) % 100;
                                 item.student_id = DataManager.getInstance().user.jisc_student_id;
-                                mList.add(item);
+                                list.add(item);
 
                                 ED item1 = new ED();
                                 item1.day = dateFormat.format(startDate);
                                 item1.realDate = startDate;
                                 item1.activity_points = Math.abs(new Random().nextInt()) % 100;
                                 item1.student_id = "";
-                                mList.add(item1);
+                                list.add(item1);
                             }
 
-                            Collections.sort(mList, (s1, s2) -> s1.realDate.compareTo(s2.realDate));
+                            Collections.sort(list, (s1, s2) -> s1.realDate.compareTo(s2.realDate));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -449,7 +450,7 @@ public class StatsVLEActivityFragment extends Fragment {
             String filterValue;
             boolean isCourse = false;
 
-            String moduleTitleName = mModule.getText().toString().replace(" -", "");
+            String moduleTitleName = module.getText().toString().replace(" -", "");
             if (new Select().from(Module.class).where("module_name LIKE ?", "%" + moduleTitleName + "%").exists()) {
                 filterType = "module";
                 filterValue = ((Module) new Select().from(Module.class).where("module_name = ?", moduleTitleName).executeSingle()).id;
@@ -469,12 +470,12 @@ public class StatsVLEActivityFragment extends Fragment {
 //            compareValue = "10";
 //            compareType = "top";
 //        } else
-            if (!mCompareTo.getText().toString().equals(getString(R.string.no_one))
+            if (!compareTo.getText().toString().equals(getString(R.string.no_one))
 //                && !compareTo.getText().toString().equals(getString(R.string.top10))
-                    && !mCompareTo.getText().toString().equals(getString(R.string.average))) {
-                compareValue = ((Friend) new Select().from(Friend.class).where("name = ?", mCompareTo.getText().toString()).executeSingle()).jisc_student_id.replace("[", "").replace("]", "").replace("\"", "");
+                    && !compareTo.getText().toString().equals(getString(R.string.average))) {
+                compareValue = ((Friend) new Select().from(Friend.class).where("name = ?", compareTo.getText().toString()).executeSingle()).jisc_student_id.replace("[", "").replace("]", "").replace("\"", "");
                 compareType = "friend";
-            } else if (mCompareTo.getText().toString().equals(getString(R.string.average))) {
+            } else if (compareTo.getText().toString().equals(getString(R.string.average))) {
                 compareValue = "";
                 compareType = "average";
             } else {
@@ -483,14 +484,14 @@ public class StatsVLEActivityFragment extends Fragment {
             }
 
             String period;
-            if (mIsSevenDays)
+            if (isSevenDays)
                 period = getString(R.string.last_7_days).toLowerCase();
             else
                 period = getString(R.string.last_30_days).toLowerCase();
             //String scope = DataManager.getInstance().api_values.get(period.getText().toString().toLowerCase()).replace(" ", "_").toLowerCase();
             String scope = DataManager.getInstance().api_values.get(period).replace(" ", "_").toLowerCase();
 
-            mList = NetworkManager.getInstance().getEngagementGraph(
+            list = NetworkManager.getInstance().getEngagementGraph(
                     scope,
                     compareType,
                     compareValue,
@@ -499,18 +500,18 @@ public class StatsVLEActivityFragment extends Fragment {
                     isCourse
             );
 
-            if((mList.size() == 0 || mList == null) && DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk") && !ConnectionHandler.isConnected(getContext())){
+            if((list.size() == 0 || list == null) && DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk") && !ConnectionHandler.isConnected(getContext())){
                 SimpleDateFormat logDate = new SimpleDateFormat("MM/dd");
                 Calendar currentDate = Calendar.getInstance();
-                if(!mIsSevenDays) {
+                if(!isSevenDays) {
                     for(int i = 28; i > 0; i--) {
                         currentDate.add(Calendar.DATE, -1);
-                        mList.add(new ED(logDate.format(currentDate.getTime()), offlineDemoData[i]));
+                        list.add(new ED(logDate.format(currentDate.getTime()), offlineDemoData[i]));
                     }
                 } else {
                     for(int i = 28; i > 21; i--) {
                         currentDate.add(Calendar.DATE, -1);
-                        mList.add(new ED(logDate.format(currentDate.getTime()), offlineDemoData[i]));
+                        list.add(new ED(logDate.format(currentDate.getTime()), offlineDemoData[i]));
                     }
                 }
             }
@@ -522,33 +523,16 @@ public class StatsVLEActivityFragment extends Fragment {
         }).start();
     }
 
-    //BAR DATA
-    /*
-    xAxis: {
-		min: 0,
-        title: {
-            text: null
-        }
-    },
-    series: [{
-        name: 'Me',
-        data: [20, 31, 50, 10, 25]
-    }, {
-        name: 'Average',
-        data: [25, 10, 50, 31, 20]
-    }]
-     */
-
     private void refreshUi() {
-        if (mList == null) {
-            mList = new ArrayList<>();
+        if (list == null) {
+            list = new ArrayList<>();
         }
 
         ArrayList<ED> tempList = new ArrayList<>();
-        tempList.addAll(mList);
+        tempList.addAll(list);
 
-        if (mCompareTo.getText().toString().equals(getString(R.string.no_one))) {
-            if (mIsSevenDays) {
+        if (compareTo.getText().toString().equals(getString(R.string.no_one))) {
+            if (isSevenDays) {
 
                 final ArrayList<String> xVals = new ArrayList<>();
                 ArrayList<String> vals1 = new ArrayList<>();
@@ -573,10 +557,10 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 String html = getHighCartsString();
                 html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
-                html = html.replace("height:1000px", "height:" + mWebViewHeight + "px");
+                html = html.replace("height:1000px", "height:" + webViewHeight + "px");
 
-                mWebView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
-            } else if (!mIsSevenDays) {
+                webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+            } else if (!isSevenDays) {
                 ArrayList<String> vals1 = new ArrayList<>();
                 ArrayList<String> xVals = new ArrayList<>();
 
@@ -612,13 +596,13 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 String html = getHighCartsString();
                 html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
-                html = html.replace("height:1000px", "height:" + mWebViewHeight + "px");
+                html = html.replace("height:1000px", "height:" + webViewHeight + "px");
 
                 Log.e("JISC", "HTML: " + html);
-                mWebView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
             }
         } else {
-            if (mIsSevenDays) {
+            if (isSevenDays) {
                 final ArrayList<String> xVals = new ArrayList<>();
 
                 ArrayList<Integer> vals3 = new ArrayList<>();
@@ -633,8 +617,8 @@ public class StatsVLEActivityFragment extends Fragment {
                     id = "demouser";
                 }
 
-                Integer value_1;
-                Integer value_2;
+                Integer value1;
+                Integer value2;
 
                 String day;
                 Calendar c = Calendar.getInstance();
@@ -644,21 +628,21 @@ public class StatsVLEActivityFragment extends Fragment {
                 if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     for (int i = 0; i < tempList.size(); i++) {
                         if (tempList.get(i).student_id.equals(id)) {
-                            value_1 = tempList.get(i).activity_points;
-                            vals3.add(value_1);
+                            value1 = tempList.get(i).activity_points;
+                            vals3.add(value1);
                         } else {
-                            value_2 = tempList.get(i).activity_points;
-                            vals4.add(value_2);
+                            value2 = tempList.get(i).activity_points;
+                            vals4.add(value2);
                         }
                     }
                 } else {
                     for (int i = 0; i < tempList.size(); i++) {
                         if (tempList.get(i).student_id.contains(id)) {
-                            value_1 = tempList.get(i).activity_points;
-                            vals3.add(value_1);
+                            value1 = tempList.get(i).activity_points;
+                            vals3.add(value1);
                         } else {
-                            value_2 = tempList.get(i).activity_points;
-                            vals4.add(value_2);
+                            value2 = tempList.get(i).activity_points;
+                            vals4.add(value2);
                         }
                     }
                 }
@@ -680,15 +664,15 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 String webData = "xAxis: { title: {text:null}, categories:[";
                 webData += TextUtils.join(",", xVals);
-                webData += "]}, series:[{name:\'" + name + "\',data: [" + TextUtils.join(",", vals1) + "]},{name:\'" + mCompareTo.getText().toString() + "\',data: [" + TextUtils.join(",", vals2) + "]}]";
+                webData += "]}, series:[{name:\'" + name + "\',data: [" + TextUtils.join(",", vals1) + "]},{name:\'" + compareTo.getText().toString() + "\',data: [" + TextUtils.join(",", vals2) + "]}]";
 
                 String html = getHighCartsString();
                 html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
-                html = html.replace("height:1000px", "height:" + mWebViewHeight + "px");
+                html = html.replace("height:1000px", "height:" + webViewHeight + "px");
 
-                mWebView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
 
-            } else if (!mIsSevenDays) {
+            } else if (!isSevenDays) {
                 final ArrayList<String> xVals = new ArrayList<>();
 
                 ArrayList<Integer> vals3 = new ArrayList<>();
@@ -704,8 +688,8 @@ public class StatsVLEActivityFragment extends Fragment {
                     id = "demouser";
                 }
 
-                Integer value_1;
-                Integer value_2;
+                Integer value1;
+                Integer value2;
                 String label;
 
                 Calendar c = Calendar.getInstance();
@@ -715,21 +699,21 @@ public class StatsVLEActivityFragment extends Fragment {
                 if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     for (int i = 0; i < tempList.size(); i++) {
                         if (tempList.get(i).student_id.equals(id)) {
-                            value_1 = tempList.get(i).activity_points;
-                            vals3.add(value_1);
+                            value1 = tempList.get(i).activity_points;
+                            vals3.add(value1);
                         } else {
-                            value_2 = tempList.get(i).activity_points;
-                            vals4.add(value_2);
+                            value2 = tempList.get(i).activity_points;
+                            vals4.add(value2);
                         }
                     }
                 } else {
                     for (int i = 0; i < tempList.size(); i++) {
                         if (tempList.get(i).student_id.contains(id)) {
-                            value_1 = tempList.get(i).activity_points;
-                            vals3.add(value_1);
+                            value1 = tempList.get(i).activity_points;
+                            vals3.add(value1);
                         } else {
-                            value_2 = tempList.get(i).activity_points;
-                            vals4.add(value_2);
+                            value2 = tempList.get(i).activity_points;
+                            vals4.add(value2);
                         }
                     }
                 }
@@ -766,13 +750,13 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 String webData = "xAxis: { title: {text:null}, categories:[";
                 webData += TextUtils.join(",", xVals);
-                webData += "]}, series:[{name:\'" + name + "\',data: [" + TextUtils.join(",", vals1) + "]},{name:\'" + mCompareTo.getText().toString() + "\',data: [" + TextUtils.join(",", vals2) + "]}]";
+                webData += "]}, series:[{name:\'" + name + "\',data: [" + TextUtils.join(",", vals1) + "]},{name:\'" + compareTo.getText().toString() + "\',data: [" + TextUtils.join(",", vals2) + "]}]";
 
                 String html = getHighCartsString();
                 html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
-                html = html.replace("height:1000px", "height:" + mWebViewHeight + "px");
+                html = html.replace("height:1000px", "height:" + webViewHeight + "px");
 
-                mWebView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
             }
         }
     }
@@ -781,7 +765,7 @@ public class StatsVLEActivityFragment extends Fragment {
         try {
             String path;
 
-            if (mIsBar) {
+            if (isBar) {
                 path = "highcharts/bargraph.html";
             } else {
                 path = "highcharts/linegraph.html";
@@ -810,40 +794,4 @@ public class StatsVLEActivityFragment extends Fragment {
             activity.runOnUiThread(run);
         }
     }
-
-    /*private class SegmentClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            mIsSevenDays = !mIsSevenDays;
-
-            TextView segment_button_seven_days = (TextView) mMainView.findViewById(R.id.segment_button_seven_days);
-            TextView segment_button_twentyeight_days = (TextView) mMainView.findViewById(R.id.segment_button_twentyeight_days);
-
-            if (mIsSevenDays) {
-                Drawable activeDrawable = ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_active);
-                segment_button_seven_days.setBackground(activeDrawable);
-                segment_button_seven_days.setTextColor(Color.WHITE);
-
-                segment_button_twentyeight_days.setBackground(null);
-                segment_button_twentyeight_days.setBackgroundColor(Color.TRANSPARENT);
-                segment_button_twentyeight_days.setTextColor(Color.parseColor("#3792ef"));
-            } else {
-                Drawable activeDrawable = ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_active_right);
-                segment_button_twentyeight_days.setBackground(activeDrawable);
-                segment_button_twentyeight_days.setTextColor(Color.WHITE);
-
-                segment_button_seven_days.setBackground(null);
-                segment_button_seven_days.setBackgroundColor(Color.TRANSPARENT);
-                segment_button_seven_days.setTextColor(Color.parseColor("#3792ef"));
-            }
-
-            if (mIsSevenDays) {
-                mDescription.setText(R.string.last_week_engagement);
-            } else {
-                mDescription.setText(R.string.last_month_engagement);
-            }
-
-            loadData();
-        }
-    }*/
 }

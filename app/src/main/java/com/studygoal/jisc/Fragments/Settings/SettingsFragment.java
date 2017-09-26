@@ -58,15 +58,11 @@ import java.util.ArrayList;
 public class SettingsFragment extends Fragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
-    private Uri mImageUri;
-
-    private TextView mHomeValue;
-
-    private TextView mLanguageValue;
-
-    private ImageView mProfileImage;
-
-    private ProgressBar mProfileSpinner;
+    private Uri imageUri;
+    private TextView homeValue;
+    private TextView languageValue;
+    private ImageView profileImage;
+    private ProgressBar profileSpinner;
 
     @Override
     public void onResume() {
@@ -76,36 +72,36 @@ public class SettingsFragment extends Fragment {
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(5);
 
-        String selected_value = "";
+        String selectedValue = "";
 
         switch (DataManager.getInstance().home_screen.toLowerCase()) {
             case "feed": {
-                selected_value = getActivity().getString(R.string.feed);
+                selectedValue = getActivity().getString(R.string.feed);
                 break;
             }
             case "friends": {
-                selected_value = getActivity().getString(R.string.friends);
+                selectedValue = getActivity().getString(R.string.friends);
                 break;
             }
             case "stats": {
-                selected_value = getActivity().getString(R.string.stats);
+                selectedValue = getActivity().getString(R.string.stats);
                 break;
             }
             case "checkin": {
-                selected_value = getActivity().getString(R.string.check_in);
+                selectedValue = getActivity().getString(R.string.check_in);
                 break;
             }
             case "log": {
-                selected_value = getActivity().getString(R.string.log);
+                selectedValue = getActivity().getString(R.string.log);
                 break;
             }
             case "target": {
-                selected_value = getActivity().getString(R.string.target);
+                selectedValue = getActivity().getString(R.string.target);
                 break;
             }
         }
 
-        mHomeValue.setText(selected_value.toUpperCase());
+        homeValue.setText(selectedValue.toUpperCase());
     }
 
     @Override
@@ -113,54 +109,54 @@ public class SettingsFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.settings_home, container, false);
         TextView friends = (TextView) mainView.findViewById(R.id.friends);
         friends.setTypeface(DataManager.getInstance().myriadpro_regular);
-        TextView friends_value = (TextView) mainView.findViewById(R.id.friends_value);
-        friends_value.setTypeface(DataManager.getInstance().myriadpro_regular);
-        friends_value.setText(new Select().from(Friend.class).count() + "");
+        TextView friendsValue = (TextView) mainView.findViewById(R.id.friends_value);
+        friendsValue.setTypeface(DataManager.getInstance().myriadpro_regular);
+        friendsValue.setText(new Select().from(Friend.class).count() + "");
 
         final TextView home = (TextView) mainView.findViewById(R.id.home);
         home.setTypeface(DataManager.getInstance().myriadpro_regular);
-        mHomeValue = (TextView) mainView.findViewById(R.id.home_value);
-        mHomeValue.setTypeface(DataManager.getInstance().myriadpro_regular);
+        homeValue = (TextView) mainView.findViewById(R.id.home_value);
+        homeValue.setTypeface(DataManager.getInstance().myriadpro_regular);
 
-        String selected_value = "";
+        String selectedValue = "";
         switch (DataManager.getInstance().home_screen.toLowerCase()) {
             case "feed": {
-                selected_value = getActivity().getString(R.string.feed);
+                selectedValue = getActivity().getString(R.string.feed);
                 break;
             }
             case "friends": {
-                selected_value = getActivity().getString(R.string.friends);
+                selectedValue = getActivity().getString(R.string.friends);
                 break;
             }
             case "checkin": {
-                selected_value = getActivity().getString(R.string.check_in);
+                selectedValue = getActivity().getString(R.string.check_in);
                 break;
             }
             case "stats": {
-                selected_value = getActivity().getString(R.string.stats);
+                selectedValue = getActivity().getString(R.string.stats);
                 break;
             }
             case "log": {
-                selected_value = getActivity().getString(R.string.log);
+                selectedValue = getActivity().getString(R.string.log);
                 break;
             }
             case "target": {
-                selected_value = getActivity().getString(R.string.target);
+                selectedValue = getActivity().getString(R.string.target);
                 break;
             }
         }
-        mHomeValue.setText(selected_value.toUpperCase());
+        homeValue.setText(selectedValue.toUpperCase());
 
         TextView trophies = (TextView) mainView.findViewById(R.id.trophies);
         trophies.setTypeface(DataManager.getInstance().myriadpro_regular);
-        TextView trophies_value = (TextView) mainView.findViewById(R.id.trophies_value);
-        trophies_value.setTypeface(DataManager.getInstance().myriadpro_regular);
-        trophies_value.setText(new Select().from(TrophyMy.class).count() + "");//);
+        TextView trophiesValue = (TextView) mainView.findViewById(R.id.trophies_value);
+        trophiesValue.setTypeface(DataManager.getInstance().myriadpro_regular);
+        trophiesValue.setText(new Select().from(TrophyMy.class).count() + "");//);
 
         TextView language = (TextView) mainView.findViewById(R.id.language);
         language.setTypeface(DataManager.getInstance().myriadpro_regular);
-        mLanguageValue = (TextView) mainView.findViewById(R.id.language_value);
-        mLanguageValue.setTypeface(DataManager.getInstance().myriadpro_regular);
+        languageValue = (TextView) mainView.findViewById(R.id.language_value);
+        languageValue.setTypeface(DataManager.getInstance().myriadpro_regular);
 
         ((TextView) mainView.findViewById(R.id.email_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
         ((TextView) mainView.findViewById(R.id.privacy_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -183,7 +179,7 @@ public class SettingsFragment extends Fragment {
         });
 
         if (DataManager.getInstance().language != null) {
-            mLanguageValue.setText(DataManager.getInstance().language.toLowerCase().equals("english") ? getString(R.string.english).toUpperCase() : getString(R.string.welsh).toUpperCase());
+            languageValue.setText(DataManager.getInstance().language.toLowerCase().equals("english") ? getString(R.string.english).toUpperCase() : getString(R.string.welsh).toUpperCase());
         }
         mainView.findViewById(R.id.friends_layout).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,7 +242,7 @@ public class SettingsFragment extends Fragment {
                     list.add(DataManager.getInstance().mainActivity.getString(R.string.camera));
                     list.add(DataManager.getInstance().mainActivity.getString(R.string.library));
 
-                    listView.setAdapter(new GenericAdapter(getActivity(), mHomeValue.getText().toString().toUpperCase(), list));
+                    listView.setAdapter(new GenericAdapter(getActivity(), homeValue.getText().toString().toUpperCase(), list));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -328,20 +324,20 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        mProfileImage = (ImageView) mainView.findViewById(R.id.profile_picture);
-        mProfileSpinner = (ProgressBar) mainView.findViewById(R.id.profile_spinner);
-        mProfileSpinner.setVisibility(View.GONE);
+        profileImage = (ImageView) mainView.findViewById(R.id.profile_picture);
+        profileSpinner = (ProgressBar) mainView.findViewById(R.id.profile_spinner);
+        profileSpinner.setVisibility(View.GONE);
         boolean isLandscape = DataManager.getInstance().isLandscape;
 
         if (isLandscape) {
-            mProfileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            profileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
-            mProfileImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            profileImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         }
 
         GlideApp.with(this)
                 .load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic)
-                .into(mProfileImage);
+                .into(profileImage);
         return mainView;
     }
 
@@ -352,7 +348,7 @@ public class SettingsFragment extends Fragment {
 
     private void loadImageView(final DataManager manager) {
         manager.mainActivity.runOnUiThread(() -> {
-            mProfileSpinner.setVisibility(View.VISIBLE);
+            profileSpinner.setVisibility(View.VISIBLE);
 
             GlideApp.with(manager.mainActivity)
                     .load(NetworkManager.getInstance().host + manager.user.profile_pic)
@@ -364,11 +360,11 @@ public class SettingsFragment extends Fragment {
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            mProfileSpinner.setVisibility(View.INVISIBLE);
+                            profileSpinner.setVisibility(View.INVISIBLE);
                             return false;
                         }
                     })
-                    .into(mProfileImage);
+                    .into(profileImage);
 
             GlideApp.with(manager.mainActivity)
                     .load(NetworkManager.getInstance().host + manager.user.profile_pic)
@@ -425,10 +421,10 @@ public class SettingsFragment extends Fragment {
                 values.put(MediaStore.Images.Media.TITLE, "New Picture");
                 values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
 
-                mImageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                imageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 DataManager.getInstance().mainActivity.startActivityForResult(intent, 100);
             }
         }

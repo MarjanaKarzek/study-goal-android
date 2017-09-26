@@ -29,19 +29,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatsAttedanceFragment extends Fragment {
+public class StatsAttendanceFragment extends Fragment {
+    private static final String TAG = StatsAttendanceFragment.class.getSimpleName();
 
-    public LineChart lineChart;
-    public BarChart barchart;
-    AppCompatTextView module;
-    WebView mWebView;
+    private WebView webView;
 
-    RelativeLayout chart_layout;
-    List<ED> list;
-    String selectedPeriod;
-
-    ArrayList<String> dates = new ArrayList<>();
-    ArrayList<String> count = new ArrayList<>();
+    private ArrayList<String> dates = new ArrayList<>();
+    private ArrayList<String> count = new ArrayList<>();
 
     @Override
     public void onResume() {
@@ -55,16 +49,14 @@ public class StatsAttedanceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View mainView = inflater.inflate(R.layout.stats_attendance, container, false);
 
-
-        mWebView = (WebView) mainView.findViewById(R.id.webview_graph);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setOnTouchListener(new View.OnTouchListener() {
+        webView = (WebView) mainView.findViewById(R.id.webview_graph);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return true;
             }
         });
-
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         try {
@@ -72,8 +64,8 @@ public class StatsAttedanceFragment extends Fragment {
             JSONArray jsonArray = new JSONArray(preferences.getString(getString(R.string.attendance), null));
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String[] dateinfo = jsonObject.getString("date").substring(0, 10).split("-");
-                String date = dateinfo[2]+ "/" + dateinfo[1];
+                String[] dateInfo = jsonObject.getString("date").substring(0, 10).split("-");
+                String date = dateInfo[2]+ "/" + dateInfo[1];
                 dates.add(date);
                 count.add(jsonObject.getString("count"));
                 Log.e(dates.get(i), count.get(i));
@@ -89,45 +81,41 @@ public class StatsAttedanceFragment extends Fragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
-        WebSettings s = mWebView.getSettings();
+        WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);
 
         try {
             InputStream is = getContext().getAssets().open("stats_attendance_high_chart.html");
-            int size = 0;
-            size = is.available();
+            int size = is.available();
             final byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
 
-            mWebView.post(new Runnable() {
+            webView.post(new Runnable() {
                 @Override
                 public void run() {
                     double d = getActivity().getResources().getDisplayMetrics().density;
-                    int h = (int) (mWebView.getHeight() / d) - 20;
-                    int w = (int) (mWebView.getWidth() / d) - 20;
+                    int h = (int) (webView.getHeight() / d) - 20;
+                    int w = (int) (webView.getWidth() / d) - 20;
 
                     String dataCount = "";
                     String dataDate = "";
                     for (int i = 0; i < dates.size(); i++) {
                         dataCount += "" + count.get(i) + ", ";
                         dataDate += "'" + dates.get(i) + "', \n";
-//                        data += "},";
                     }
 
 
-                    String rawhtml = new String(buffer);
-                    rawhtml = rawhtml.replace("280px", w + "px");
-                    rawhtml = rawhtml.replace("220px", h + "px");
-                    rawhtml = rawhtml.replace("DATA", dataCount);
-                    rawhtml = rawhtml.replace("DATES", dataDate);
-                    mWebView.loadDataWithBaseURL("", rawhtml, "text/html", "UTF-8", "");
+                    String rawHTML = new String(buffer);
+                    rawHTML = rawHTML.replace("280px", w + "px");
+                    rawHTML = rawHTML.replace("220px", h + "px");
+                    rawHTML = rawHTML.replace("DATA", dataCount);
+                    rawHTML = rawHTML.replace("DATES", dataDate);
+                    webView.loadDataWithBaseURL("", rawHTML, "text/html", "UTF-8", "");
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 }

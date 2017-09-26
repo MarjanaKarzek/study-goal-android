@@ -26,8 +26,9 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class LanguageScreenFragment extends Fragment {
+    private static final String TAG = LanguageScreenFragment.class.getSimpleName();
 
-    public String selected_value;
+    public String selectedValue;
 
     @Override
     public void onResume() {
@@ -41,7 +42,7 @@ public class LanguageScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.generic_screen, container, false);
 
-        selected_value = DataManager.getInstance().language == null
+        selectedValue = DataManager.getInstance().language == null
                 || DataManager.getInstance().language.toLowerCase().equals("english") ?
                 getString(R.string.english) : getString(R.string.welsh);
 
@@ -52,12 +53,12 @@ public class LanguageScreenFragment extends Fragment {
         list.add(DataManager.getInstance().mainActivity.getString(R.string.welsh));
 
         final ListView listView = (ListView) mainView.findViewById(R.id.list);
-        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, selected_value, list));
+        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, selectedValue, list));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(ConnectionHandler.isConnected(getContext())) {
-                    if (!((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().equals(selected_value)) {
+                    if (!((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().equals(selectedValue)) {
 
                         if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LanguageScreenFragment.this.getActivity());

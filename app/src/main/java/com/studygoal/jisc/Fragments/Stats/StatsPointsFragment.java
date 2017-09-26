@@ -32,6 +32,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class StatsPointsFragment extends BaseFragment {
+    private static final String TAG = StatsPointsFragment.class.getSimpleName();
+
     private View mainView;
     private WebView piChartWebView;
     private ViewFlipper upperContainer;
@@ -49,10 +51,10 @@ public class StatsPointsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        MainActivity a = DataManager.getInstance().mainActivity;
-        a.setTitle(getString(R.string.points));
-        a.hideAllButtons();
-        a.showCertainButtons(5);
+        MainActivity mainActivity = DataManager.getInstance().mainActivity;
+        mainActivity.setTitle(getString(R.string.points));
+        mainActivity.hideAllButtons();
+        mainActivity.showCertainButtons(5);
 
         refreshView();
 
@@ -73,9 +75,9 @@ public class StatsPointsFragment extends BaseFragment {
             piChartWebView.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
         });
 
-        ListView activity_points_list_view = (ListView) mainView.findViewById(R.id.activity_points_list_view);
+        ListView activityPointsListView = (ListView) mainView.findViewById(R.id.activity_points_list_view);
         adapter = new ActivityPointsAdapter(getContext());
-        activity_points_list_view.setAdapter(adapter);
+        activityPointsListView.setAdapter(adapter);
 
         segmentButtonThisWeek = (TextView) mainView.findViewById(R.id.segment_button_this_week);
         segmentButtonOverall = (TextView) mainView.findViewById(R.id.segment_button_overall);
@@ -89,7 +91,7 @@ public class StatsPointsFragment extends BaseFragment {
             public void onClick(View view){
                 super.onClick(view);
                 isThisWeek = !isThisWeek;
-                call_refresh();
+                callRefresh();
             }
         };
 
@@ -108,17 +110,16 @@ public class StatsPointsFragment extends BaseFragment {
 
         try {
             InputStream is = getContext().getAssets().open("stats_points_pi_chart.html");
-            int size = 0;
-            size = is.available();
+            int size = is.available();
             final byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
 
             piChartWebView.post(() -> {
                 String pointsDataBackup = "";
-                double d = getActivity().getResources().getDisplayMetrics().density;
-                int h = (int) (piChartWebView.getHeight() / d) - 20;
-                int w = (int) (piChartWebView.getWidth() / d) - 20;
+                double density = getActivity().getResources().getDisplayMetrics().density;
+                int height = (int) (piChartWebView.getHeight() / density) - 20;
+                int width = (int) (piChartWebView.getWidth() / density) - 20;
 
                 String data = "";
                 for (ActivityPoints p : DataManager.getInstance().user.points) {
@@ -136,8 +137,8 @@ public class StatsPointsFragment extends BaseFragment {
                 }
 
                 String rawhtml = new String(buffer);
-                rawhtml = rawhtml.replace("280px", w + "px");
-                rawhtml = rawhtml.replace("220px", h + "px");
+                rawhtml = rawhtml.replace("280px", width + "px");
+                rawhtml = rawhtml.replace("220px", height + "px");
                 rawhtml = rawhtml.replace("REPLACE_DATA", data);
                 piChartWebView.loadDataWithBaseURL("", rawhtml, "text/html", "UTF-8", "");
 
@@ -167,13 +168,13 @@ public class StatsPointsFragment extends BaseFragment {
             }
 
             runOnUiThread(() -> {
-                call_refresh();
+                callRefresh();
                 loadWebView();
             });
         }).start();
     }
 
-    private void call_refresh() {
+    private void callRefresh() {
         DataManager.getInstance().mainActivity.hideProgressBar();
         adapter.notifyDataSetChanged();
 
@@ -182,7 +183,7 @@ public class StatsPointsFragment extends BaseFragment {
             sum += Integer.parseInt(p.points);
         }
 
-        Log.d("", "call_refresh: isThisWeek " + isThisWeek);
+        Log.d("", "callRefresh: isThisWeek " + isThisWeek);
 
         if(isThisWeek)
             activityPointsValueWeek.setText(String.valueOf(sum));

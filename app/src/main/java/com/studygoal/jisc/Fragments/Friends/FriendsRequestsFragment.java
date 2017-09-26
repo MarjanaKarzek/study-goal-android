@@ -16,8 +16,9 @@ import com.studygoal.jisc.R;
 import com.studygoal.jisc.Activities.SettingsActivity;
 
 public class FriendsRequestsFragment extends Fragment {
+    private static final String TAG = FriendsRequestsFragment.class.getSimpleName();
 
-    FriendsRequestAdapter adapter;
+    private FriendsRequestAdapter adapter;
 
     @Override
     public void onResume() {

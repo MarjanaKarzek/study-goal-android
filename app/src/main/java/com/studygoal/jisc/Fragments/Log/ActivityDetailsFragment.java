@@ -35,8 +35,9 @@ import com.studygoal.jisc.Utils.Utils;
 import java.util.HashMap;
 
 public class ActivityDetailsFragment extends Fragment {
+    private static final String TAG = ActivityDetailsFragment.class.getSimpleName();
 
-    View mainView;
+    private View mainView;
     public ActivityHistory activityHistory;
     public String title;
     public EditText notes;
@@ -58,10 +59,10 @@ public class ActivityDetailsFragment extends Fragment {
         save = (ImageView) mainView.findViewById(R.id.save);
         Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.getInstance().images.get(activityHistory.activity)).into((ImageView)mainView.findViewById(R.id.activity_icon));
 
-        TextView titleview = (TextView)mainView.findViewById(R.id.activity_details_text);
-        titleview.setTypeface(DataManager.getInstance().myriadpro_regular);
+        TextView titleView = (TextView)mainView.findViewById(R.id.activity_details_text);
+        titleView.setTypeface(DataManager.getInstance().myriadpro_regular);
         title = LinguisticManager.getInstance().translate(getActivity(), activityHistory.activity) + " " + getActivity().getString(R.string._for) + " " + Utils.getMinutesToHour(activityHistory.time_spent);
-        titleview.setText(title);
+        titleView.setText(title);
 
         TextView date = (TextView) mainView.findViewById(R.id.activity_details_date);
         notes = (EditText) mainView.findViewById(R.id.activity_details_notes_edittext);
@@ -201,8 +202,8 @@ public class ActivityDetailsFragment extends Fragment {
         ((TextView) mainView.findViewById(R.id.activity_details_notes)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
         date.setTypeface(DataManager.getInstance().myriadpro_regular);
-        String str = DataManager.getInstance().mainActivity.getString(R.string.date) + ":" + " " + Utils.getDate(activityHistory.activity_date);
-        date.setText(str);
+        String dateString = DataManager.getInstance().mainActivity.getString(R.string.date) + ":" + " " + Utils.getDate(activityHistory.activity_date);
+        date.setText(dateString);
 
         notes.setTypeface(DataManager.getInstance().myriadpro_regular);
 

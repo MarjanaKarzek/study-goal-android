@@ -26,14 +26,15 @@ import com.studygoal.jisc.R;
 import java.util.Timer;
 
 public class Stats2 extends Fragment {
+    private static final String TAG = Stats2.class.getSimpleName();
 
     private Timer timer;
     private Timer timer2;
-    ListView list;
-    AttainmentAdapter adapter;
-    View mainView;
-    private int contor;
-    SwipeRefreshLayout layout;
+    private ListView list;
+    private AttainmentAdapter adapter;
+    private View mainView;
+    private int countor;
+    private SwipeRefreshLayout layout;
 
 
     @Override
@@ -67,15 +68,15 @@ public class Stats2 extends Fragment {
 
         ((TextView) mainView.findViewById(R.id.title)).setTypeface(DataManager.getInstance().myriadpro_regular);
         ((TextView) mainView.findViewById(R.id.activity_points_1_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
-        final TextView activity_points_thisweek;
-        (activity_points_thisweek = (TextView) mainView.findViewById(R.id.activity_points_1)).setTypeface(DataManager.getInstance().myriadpro_regular);
+        final TextView activityPointsThisweek;
+        (activityPointsThisweek = (TextView) mainView.findViewById(R.id.activity_points_1)).setTypeface(DataManager.getInstance().myriadpro_regular);
         ((TextView) mainView.findViewById(R.id.activity_points_2_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
-        final TextView activity_points_overall;
-        (activity_points_overall = (TextView) mainView.findViewById(R.id.activity_points_2)).setTypeface(DataManager.getInstance().myriadpro_regular);
+        final TextView activityPointsOverall;
+        (activityPointsOverall = (TextView) mainView.findViewById(R.id.activity_points_2)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
         NetworkManager.getInstance().getStudentActivityPoint("");
-        activity_points_thisweek.setText(DataManager.getInstance().user.last_week_activity_points);
-        activity_points_overall.setText(DataManager.getInstance().user.overall_activity_points);
+        activityPointsThisweek.setText(DataManager.getInstance().user.last_week_activity_points);
+        activityPointsOverall.setText(DataManager.getInstance().user.overall_activity_points);
 
         ((TextView) mainView.findViewById(R.id.this_week)).setTypeface(DataManager.getInstance().myriadpro_regular);
         ((TextView) mainView.findViewById(R.id.overall)).setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -96,8 +97,8 @@ public class Stats2 extends Fragment {
                         DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                activity_points_thisweek.setText(DataManager.getInstance().user.last_week_activity_points);
-                                activity_points_overall.setText(DataManager.getInstance().user.overall_activity_points);
+                                activityPointsThisweek.setText(DataManager.getInstance().user.last_week_activity_points);
+                                activityPointsOverall.setText(DataManager.getInstance().user.overall_activity_points);
 
                                 adapter.list = new Select().from(Attainment.class).execute();
                                 adapter.notifyDataSetChanged();
@@ -110,7 +111,7 @@ public class Stats2 extends Fragment {
             }
         });
 
-        //Lista pt attainment + refresh
+        //List pt attainment + refresh
         list = (ListView) mainView.findViewById(R.id.list);
         list.setOnTouchListener(new View.OnTouchListener() {
             // Setting on Touch Listener for handling the touch inside ScrollView
@@ -123,7 +124,6 @@ public class Stats2 extends Fragment {
         });
         adapter = new AttainmentAdapter(DataManager.getInstance().mainActivity);
         list.setAdapter(adapter);
-        //
 
         mainView.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override

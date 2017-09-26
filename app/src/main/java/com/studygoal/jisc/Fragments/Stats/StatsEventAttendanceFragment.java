@@ -41,21 +41,19 @@ public class StatsEventAttendanceFragment extends BaseFragment {
 
     private static final int PAGE_SIZE = 10;
 
-    private ListView mListView;
-    private int mPreviousLast;
-    private EventsAttendedAdapter mAdapter;
-    private ArrayList<Event> mEvents = new ArrayList<>();
-    private boolean mIsLoading = false;
+    private ListView listView;
+    private int previousLast;
+    private EventsAttendedAdapter adapter;
+    private ArrayList<Event> events = new ArrayList<>();
+    private boolean isLoading = false;
 
-    private WebView mWebView;
+    private WebView webView;
     ArrayList<String> dates = new ArrayList<>();
     ArrayList<String> count = new ArrayList<>();
 
     private View mainView;
-    private boolean allSelected = true;
     private TextView all;
     private TextView summary;
-    private Switch viewSwitch;
     private ViewFlipper viewFlipper;
     private SegmentClickListener segmentClickListener;
 
@@ -72,11 +70,11 @@ public class StatsEventAttendanceFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.stats_event_attendance, container, false);
-        mAdapter = new EventsAttendedAdapter(getContext());
+        adapter = new EventsAttendedAdapter(getContext());
 
-        mListView = (ListView) mainView.findViewById(R.id.event_attendance_listView);
-        mListView.setAdapter(mAdapter);
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        listView = (ListView) mainView.findViewById(R.id.event_attendance_listView);
+        listView.setAdapter(adapter);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
             }
@@ -86,19 +84,19 @@ public class StatsEventAttendanceFragment extends BaseFragment {
                 final int lastItem = firstVisibleItem + visibleItemCount;
 
                 if (lastItem == totalItemCount) {
-                    if (mPreviousLast != lastItem) {
+                    if (previousLast != lastItem) {
                         //to avoid multiple calls for last item
-                        if (!mIsLoading) {
+                        if (!isLoading) {
                             new Thread(() -> {
-                                if (!mIsLoading) {
-                                    mPreviousLast = lastItem;
-                                    mIsLoading = true;
+                                if (!isLoading) {
+                                    previousLast = lastItem;
+                                    isLoading = true;
                                     loadData(lastItem, PAGE_SIZE, false);
                                     runOnUiThread(() -> {
-                                        mAdapter.updateList(mEvents);
-                                        mAdapter.notifyDataSetChanged();
+                                        adapter.updateList(events);
+                                        adapter.notifyDataSetChanged();
                                         ((MainActivity) getActivity()).hideProgressBar();
-                                        mIsLoading = false;
+                                        isLoading = false;
                                     });
                                 }
                             }).start();
@@ -108,21 +106,21 @@ public class StatsEventAttendanceFragment extends BaseFragment {
             }
         });
 
-        mListView.setOnItemClickListener((adapterView, view, i12, l) -> {
+        listView.setOnItemClickListener((adapterView, view, i12, l) -> {
             return;
         });
 
         ((MainActivity) getActivity()).showProgressBar(null);
 
         new Thread(() -> {
-            if (!mIsLoading) {
-                mIsLoading = true;
+            if (!isLoading) {
+                isLoading = true;
                 loadData(0, PAGE_SIZE * 2, true);
                 runOnUiThread(() -> {
-                    mAdapter.updateList(mEvents);
-                    mAdapter.notifyDataSetChanged();
+                    adapter.updateList(events);
+                    adapter.notifyDataSetChanged();
                     ((MainActivity) getActivity()).hideProgressBar();
-                    mIsLoading = false;
+                    isLoading = false;
                 });
             }
         }).start();
@@ -140,9 +138,9 @@ public class StatsEventAttendanceFragment extends BaseFragment {
         all.setOnClickListener(segmentClickListener);
         summary.setOnClickListener(segmentClickListener);
 
-        mWebView = (WebView) mainView.findViewById(R.id.webview_graph);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setOnTouchListener(new View.OnTouchListener() {
+        webView = (WebView) mainView.findViewById(R.id.webview_graph);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return true;
@@ -174,15 +172,15 @@ public class StatsEventAttendanceFragment extends BaseFragment {
 
     private void loadData(int skip, int limit, boolean reset) {
         if (XApiManager.getInstance().getAttendance(skip, limit, reset)) {
-            mEvents.clear();
+            events.clear();
             List<Event> events = new Select().from(Event.class).execute();
-            mEvents.addAll(events);
+            this.events.addAll(events);
         }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
-        WebSettings s = mWebView.getSettings();
+        WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);
 
         try {
@@ -193,28 +191,27 @@ public class StatsEventAttendanceFragment extends BaseFragment {
             is.read(buffer);
             is.close();
 
-            mWebView.post(new Runnable() {
+            webView.post(new Runnable() {
                 @Override
                 public void run() {
-                    double d = getActivity().getResources().getDisplayMetrics().density;
-                    int h = (int) (mWebView.getHeight() / d) - 20;
-                    int w = (int) (mWebView.getWidth() / d) - 20;
+                    double density = getActivity().getResources().getDisplayMetrics().density;
+                    int height = (int) (webView.getHeight() / density) - 20;
+                    int width = (int) (webView.getWidth() / density) - 20;
 
                     String dataCount = "";
                     String dataDate = "";
                     for (int i = 0; i < dates.size(); i++) {
                         dataCount += "" + count.get(i) + ", ";
                         dataDate += "'" + dates.get(i) + "', \n";
-//                        data += "},";
                     }
 
 
-                    String rawhtml = new String(buffer);
-                    rawhtml = rawhtml.replace("280px", w + "px");
-                    rawhtml = rawhtml.replace("220px", h + "px");
-                    rawhtml = rawhtml.replace("DATA", dataCount);
-                    rawhtml = rawhtml.replace("DATES", dataDate);
-                    mWebView.loadDataWithBaseURL("", rawhtml, "text/html", "UTF-8", "");
+                    String rawHTML = new String(buffer);
+                    rawHTML = rawHTML.replace("280px", width + "px");
+                    rawHTML = rawHTML.replace("220px", height + "px");
+                    rawHTML = rawHTML.replace("DATA", dataCount);
+                    rawHTML = rawHTML.replace("DATES", dataDate);
+                    webView.loadDataWithBaseURL("", rawHTML, "text/html", "UTF-8", "");
                 }
             });
         } catch (IOException e) {

@@ -14,38 +14,39 @@ import com.studygoal.jisc.Models.ReceivedRequest;
 import com.studygoal.jisc.R;
 
 public class FriendsFragment extends Fragment {
+    private static final String TAG = FriendsFragment.class.getSimpleName();
 
-    private FragmentTabHost mTabHost;
+    private FragmentTabHost fragmentTabHost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.friends_fragment, container, false);
 
-        mTabHost = (FragmentTabHost) mainView.findViewById(R.id.tabhost);
+        fragmentTabHost = (FragmentTabHost) mainView.findViewById(R.id.tabhost);
 
         if(!DataManager.getInstance().isLandscape)
-            mTabHost.setup(DataManager.getInstance().mainActivity, getChildFragmentManager(), R.id.realtabcontent);
+            fragmentTabHost.setup(DataManager.getInstance().mainActivity, getChildFragmentManager(), R.id.realtabcontent);
         else
-            mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
+            fragmentTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
 
-        mTabHost.addTab(mTabHost.newTabSpec("search").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.search)),
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("search").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.search)),
                 FriendsSearchFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("newrequests").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.requests)),
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("newrequests").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.requests)),
                 FriendsRequestsFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("myfriends").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.friends)),
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("myfriends").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.friends)),
                 FriendsListFragment.class, null);
 
         for(int i = 0; i < 3; i++) {
-            View v = mTabHost.getTabWidget().getChildTabViewAt(i);
+            View v = fragmentTabHost.getTabWidget().getChildTabViewAt(i);
             ((TextView)v.findViewById(android.R.id.title)).setTextColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.colorPrimary));
             ((TextView)v.findViewById(android.R.id.title)).setTypeface(DataManager.getInstance().myriadpro_regular);
             ((TextView)v.findViewById(android.R.id.title)).setTextSize(16f);
             ((TextView)v.findViewById(android.R.id.title)).setAllCaps(false);
-            mTabHost.getTabWidget().getChildAt(i).getLayoutParams().height = (int) (50 * this.getResources().getDisplayMetrics().density);
+            fragmentTabHost.getTabWidget().getChildAt(i).getLayoutParams().height = (int) (50 * this.getResources().getDisplayMetrics().density);
         }
 
         if(new Select().from(ReceivedRequest.class).count() > 0)
-            mTabHost.setCurrentTab(1);
+            fragmentTabHost.setCurrentTab(1);
 
         return mainView;
     }
@@ -54,6 +55,6 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mTabHost = null;
+        fragmentTabHost = null;
     }
 }

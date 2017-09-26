@@ -30,13 +30,14 @@ import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 
 public class CheckInFragment extends Fragment {
+    private static final String TAG = CheckInFragment.class.getSimpleName();
 
-    View mainView;
-    ListView list;
-    ActivitiesHistoryAdapter adapter;
-    SwipeRefreshLayout layout;
-    boolean gps_enabled = false;
-    boolean network_enabled = false;
+    private View mainView;
+    private ListView list;
+    private ActivitiesHistoryAdapter adapter;
+    private SwipeRefreshLayout layout;
+    private boolean gps_enabled = false;
+    private boolean network_enabled = false;
 
     private ProgressDialog progressDialog;
 
@@ -57,15 +58,14 @@ public class CheckInFragment extends Fragment {
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(5);
 
-        final TextView pin_text_edit = (TextView) mainView.findViewById(R.id.pin_text_edit);
-        pin_text_edit.setTypeface(DataManager.getInstance().oratorstd_typeface);
+        final TextView pinTextEdit = (TextView) mainView.findViewById(R.id.pin_text_edit);
+        pinTextEdit.setTypeface(DataManager.getInstance().oratorstd_typeface);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                         ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
                             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 102);
         }
-
 
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -139,7 +139,7 @@ public class CheckInFragment extends Fragment {
                 }
 
                 if(ConnectionHandler.isConnected(getContext())) {
-                    final String pin_text_edit_text = pin_text_edit.getText().toString();
+                    final String pin_text_edit_text = pinTextEdit.getText().toString();
                     if (pin_text_edit_text.length() == 0) {
                         showProgressDialog(false);
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CheckInFragment.this.getActivity());
@@ -194,7 +194,7 @@ public class CheckInFragment extends Fragment {
                                     AlertDialog alertDialog = alertDialogBuilder.create();
                                     alertDialog.show();
 
-                                    pin_text_edit.setText("");
+                                    pinTextEdit.setText("");
                                 }
                             });
                         }
@@ -215,9 +215,9 @@ public class CheckInFragment extends Fragment {
                 text.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
                         // your click code here
-                        String pin_text_edit_text = pin_text_edit.getText().toString();
+                        String pin_text_edit_text = pinTextEdit.getText().toString();
                         if (pin_text_edit_text.length() > 0)
-                            pin_text_edit.setText(pin_text_edit_text.substring(0, pin_text_edit_text.length() - 1));
+                            pinTextEdit.setText(pin_text_edit_text.substring(0, pin_text_edit_text.length() - 1));
                     }
                 });
             } else {
@@ -225,7 +225,7 @@ public class CheckInFragment extends Fragment {
                 text.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
                         // your click code here
-                        pin_text_edit.setText(pin_text_edit.getText().toString() + text.getText().toString());
+                        pinTextEdit.setText(pinTextEdit.getText().toString() + text.getText().toString());
                     }
                 });
             }

@@ -53,25 +53,26 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class LogNewActivityFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = LogNewActivityFragment.class.getSimpleName();
 
-    View mainView;
-    AppCompatTextView chooseActivity;
-    AppCompatTextView module;
-    AppCompatTextView activityType;
+    private View mainView;
+    private AppCompatTextView chooseActivity;
+    private AppCompatTextView module;
+    private AppCompatTextView activityType;
 
-    EditText reminder_textView;
-    TextView countdown_textView;
+    private EditText reminderEditText;
+    private TextView countdownTextView;
 
-    AlarmManager am;
-    PendingIntent pendingIntent;
-    Timer timer;
-    TimerTask timertask;
-    Long timestamp;
-    Long _pause;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    private Timer timer;
+    private TimerTask timerTask;
+    private Long timestamp;
+    private Long pause;
 
-    SharedPreferences saves;
+    private SharedPreferences sharedPreferences;
 
-    RelativeLayout addModuleLayout;
+    private RelativeLayout addModuleLayout;
 
     @Override
     public void onResume() {
@@ -98,12 +99,12 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
         ((TextView) mainView.findViewById(R.id.add_module_button_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
         mainView.findViewById(R.id.add_module_button_text).setOnClickListener(this);
 
-        countdown_textView = ((TextView) mainView.findViewById(R.id.new_activity_text_timer_2));
-        countdown_textView.setTypeface(DataManager.getInstance().myriadpro_regular);
+        countdownTextView = ((TextView) mainView.findViewById(R.id.new_activity_text_timer_2));
+        countdownTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
 
         ((TextView) mainView.findViewById(R.id.new_activity_text_minutes)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
-        am = (AlarmManager) DataManager.getInstance().mainActivity.getSystemService(Context.ALARM_SERVICE);
+        alarmManager = (AlarmManager) DataManager.getInstance().mainActivity.getSystemService(Context.ALARM_SERVICE);
 
         module = (AppCompatTextView) mainView.findViewById(R.id.new_activity_module_textView);
         module.setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -120,9 +121,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
         chooseActivity.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
         chooseActivity.setOnClickListener(this);
 
-        reminder_textView = ((EditText) mainView.findViewById(R.id.new_activity_text_timer_1));
-        reminder_textView.setTypeface(DataManager.getInstance().myriadpro_regular);
-        reminder_textView.addTextChangedListener(new TextWatcher() {
+        reminderEditText = ((EditText) mainView.findViewById(R.id.new_activity_text_timer_1));
+        reminderEditText.setTypeface(DataManager.getInstance().myriadpro_regular);
+        reminderEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -136,15 +137,15 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 if (s.toString().length() != 0) {
                     int value = Integer.parseInt(s.toString());
                     if (value < 0 || value > 60) {
-                        reminder_textView.setText("");
-                        reminder_textView.setSelection(reminder_textView.getText().length());
+                        reminderEditText.setText("");
+                        reminderEditText.setSelection(reminderEditText.getText().length());
                     }
                 }
             }
         });
 
-        countdown_textView = ((TextView) mainView.findViewById(R.id.new_activity_text_timer_2));
-        countdown_textView.setTypeface(DataManager.getInstance().myriadpro_regular);
+        countdownTextView = ((TextView) mainView.findViewById(R.id.new_activity_text_timer_2));
+        countdownTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
 
         ((TextView) mainView.findViewById(R.id.new_activity_text_module)).setTypeface(DataManager.getInstance().myriadpro_regular);
         ((TextView) mainView.findViewById(R.id.new_activity_text_choose)).setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -163,7 +164,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
 
         timer = new Timer();
-        timertask = new TimerTask() {
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 Long elapsed_time = System.currentTimeMillis() - timestamp;
@@ -183,7 +184,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        countdown_textView.setText(f_value);
+                        countdownTextView.setText(f_value);
                     }
                 });
 
@@ -194,8 +195,8 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
         };
 
 
-        saves = DataManager.getInstance().mainActivity.getSharedPreferences("jisc", Context.MODE_PRIVATE);
-        timestamp = saves.getLong("timer", 0);
+        sharedPreferences = DataManager.getInstance().mainActivity.getSharedPreferences("jisc", Context.MODE_PRIVATE);
+        timestamp = sharedPreferences.getLong("timer", 0);
 
 
         RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
@@ -216,14 +217,14 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
         mainView.findViewById(R.id.new_activity_btn_start).setOnClickListener(this);
         mainView.findViewById(R.id.new_activity_btn_pause).setOnClickListener(this);
 
-        if (saves.contains("pause")) {
-            _pause = saves.getLong("pause", 0);
+        if (sharedPreferences.contains("pause")) {
+            pause = sharedPreferences.getLong("pause", 0);
             if (timestamp == 0) {
-                _pause = (long) 0;
-                saves.edit().putLong("pause", 0).apply();
+                pause = (long) 0;
+                sharedPreferences.edit().putLong("pause", 0).apply();
             }
-            if (_pause > 0) {
-                Long elapsed_time = _pause - timestamp;
+            if (pause > 0) {
+                Long elapsed_time = pause - timestamp;
                 Long seconds = (elapsed_time / 1000) % 60;
                 Long minutes = elapsed_time / 60000;
 
@@ -240,7 +241,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        countdown_textView.setText(f_value);
+                        countdownTextView.setText(f_value);
                     }
                 });
 
@@ -256,7 +257,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 if (timestamp > 0) {
                     mainView.findViewById(R.id.new_activity_btn_start).setVisibility(View.GONE);
                     mainView.findViewById(R.id.new_activity_btn_pause).setVisibility(View.VISIBLE);
-                    timer.schedule(timertask, 0, 1000);
+                    timer.schedule(timerTask, 0, 1000);
                 }
             }
         } else {
@@ -265,7 +266,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 mainView.findViewById(R.id.new_activity_btn_start).setVisibility(View.GONE);
                 mainView.findViewById(R.id.new_activity_btn_pause).setVisibility(View.VISIBLE);
                 if (timestamp > 0)
-                    timer.schedule(timertask, 0, 1000);
+                    timer.schedule(timerTask, 0, 1000);
             }
         }
 
@@ -286,10 +287,10 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.new_activity_btn_stop: {
-                if (saves.getLong("pause", 0) > 0) {
-                    Long _pause = System.currentTimeMillis() - saves.getLong("pause", 0);
-                    timestamp -= _pause;
-                    saves.edit().putLong("pause", 0).apply();
+                if (sharedPreferences.getLong("pause", 0) > 0) {
+                    Long pause = System.currentTimeMillis() - sharedPreferences.getLong("pause", 0);
+                    timestamp -= pause;
+                    sharedPreferences.edit().putLong("pause", 0).apply();
                 }
 
                 timer.cancel();
@@ -312,16 +313,16 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_canceled_due_to_short_time, Snackbar.LENGTH_LONG).show();
                     new Delete().from(RunningActivity.class).execute();
 
-                    saves.edit().putLong("timer", 0).apply();
-                    saves.edit().putLong("pause", 0).apply();
+                    sharedPreferences.edit().putLong("timer", 0).apply();
+                    sharedPreferences.edit().putLong("pause", 0).apply();
 
 
                     Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
                     pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
                             intent, PendingIntent.FLAG_ONE_SHOT);
-                    am.cancel(pendingIntent);
+                    alarmManager.cancel(pendingIntent);
 
-                    countdown_textView.setText("00:00");
+                    countdownTextView.setText("00:00");
 
                     ((TextView) mainView.findViewById(R.id.new_activity_btn_pause_text)).setText(DataManager.getInstance().mainActivity.getString(R.string.pause));
 
@@ -357,18 +358,18 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
                 new Delete().from(RunningActivity.class).execute();
 
-                saves.edit().putLong("timer", 0).apply();
-                saves.edit().putLong("pause", 0).apply();
+                sharedPreferences.edit().putLong("timer", 0).apply();
+                sharedPreferences.edit().putLong("pause", 0).apply();
                 ((TextView) mainView.findViewById(R.id.new_activity_btn_pause_text)).setText(DataManager.getInstance().mainActivity.getString(R.string.pause));
 
                 Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
                 pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
                         intent, PendingIntent.FLAG_ONE_SHOT);
-                am.cancel(pendingIntent);
+                alarmManager.cancel(pendingIntent);
 
 
                 Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_stopped, Snackbar.LENGTH_LONG).show();
-                countdown_textView.setText("00:00");
+                countdownTextView.setText("00:00");
 
                 ((CardView) mainView.findViewById(R.id.new_activity_btn_start)).setCardBackgroundColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.default_blue));//getResources().getColor(R.color.default_blue));
                 mainView.findViewById(R.id.new_activity_btn_start).setOnClickListener(this);
@@ -387,9 +388,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
                     pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
                             intent, PendingIntent.FLAG_ONE_SHOT);
-                    am.cancel(pendingIntent);
+                    alarmManager.cancel(pendingIntent);
 
-                    saves.edit().putLong("pause", System.currentTimeMillis()).apply();
+                    sharedPreferences.edit().putLong("pause", System.currentTimeMillis()).apply();
 
                     timer.cancel();
 
@@ -397,12 +398,12 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
                     ((TextView) mainView.findViewById(R.id.new_activity_btn_pause_text)).setText(DataManager.getInstance().mainActivity.getString(R.string.resume));
                 } else {
-                    Long _pause = System.currentTimeMillis() - saves.getLong("pause", 0);
+                    Long _pause = System.currentTimeMillis() - sharedPreferences.getLong("pause", 0);
                     timestamp += _pause;
-                    saves.edit().putLong("pause", 0).apply();
-                    int reminder = (Integer.parseInt(reminder_textView.getText().toString().split(":")[0]) * 60) + Integer.parseInt(reminder_textView.getText().toString().split(":")[1]);
+                    sharedPreferences.edit().putLong("pause", 0).apply();
+                    int reminder = (Integer.parseInt(reminderEditText.getText().toString().split(":")[0]) * 60) + Integer.parseInt(reminderEditText.getText().toString().split(":")[1]);
                     timer = new Timer();
-                    timertask = new TimerTask() {
+                    timerTask = new TimerTask() {
                         @Override
                         public void run() {
                             Long elapsed_time = System.currentTimeMillis() - timestamp;
@@ -422,7 +423,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                             DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    countdown_textView.setText(f_value);
+                                    countdownTextView.setText(f_value);
                                 }
                             });
 
@@ -435,11 +436,11 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                         Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
                         pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
                                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        am.set(AlarmManager.RTC_WAKEUP,
+                        alarmManager.set(AlarmManager.RTC_WAKEUP,
                                 System.currentTimeMillis() + reminder * 1000, pendingIntent);
                     }
-                    timer.schedule(timertask, 0, 1000);
-                    saves.edit().putLong("timer", timestamp).apply();
+                    timer.schedule(timerTask, 0, 1000);
+                    sharedPreferences.edit().putLong("timer", timestamp).apply();
 
                     Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_resumed, Snackbar.LENGTH_LONG).show();
 
@@ -474,9 +475,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_started, Snackbar.LENGTH_LONG).show();
 
                 timestamp = System.currentTimeMillis();
-                int reminder = Integer.parseInt(reminder_textView.getText().toString());
+                int reminder = Integer.parseInt(reminderEditText.getText().toString());
                 timer = new Timer();
-                timertask = new TimerTask() {
+                timerTask = new TimerTask() {
                     @Override
                     public void run() {
                         Long elapsed_time = System.currentTimeMillis() - timestamp;
@@ -496,7 +497,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                         DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                countdown_textView.setText(f_value);
+                                countdownTextView.setText(f_value);
                             }
                         });
 
@@ -505,8 +506,8 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                         }
                     }
                 };
-                timer.schedule(timertask, 0, 1000);
-                saves.edit().putLong("timer", timestamp).apply();
+                timer.schedule(timerTask, 0, 1000);
+                sharedPreferences.edit().putLong("timer", timestamp).apply();
 
 
                 Calendar c = Calendar.getInstance();
@@ -526,7 +527,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     //TODO: Bug Samsung devices - old code works on all except samsung
                     pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
                             intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + reminder * 1000, pendingIntent);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + reminder * 1000, pendingIntent);
 
                     //TODO: BUGFIX
                 }
@@ -548,8 +549,8 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     dialog.getWindow().setAttributes(params);
                 }
 
-                int hour = Integer.parseInt(reminder_textView.getText().toString().split(":")[0]);
-                int minute = Integer.parseInt(reminder_textView.getText().toString().split(":")[1]);
+                int hour = Integer.parseInt(reminderEditText.getText().toString().split(":")[0]);
+                int minute = Integer.parseInt(reminderEditText.getText().toString().split(":")[1]);
 
                 final NumberPicker hourPicker = (NumberPicker) dialog.findViewById(R.id.hour_picker);
                 hourPicker.setMinValue(0);
@@ -593,7 +594,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                             clock += "0" + minute;
                         else
                             clock += minute;
-                        reminder_textView.setText(clock);
+                        reminderEditText.setText(clock);
                         dialog.dismiss();
                     }
                 });
@@ -727,8 +728,8 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 break;
             }
             case R.id.add_module_button_text: {
-                EditText add_module_edit_text = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
-                final String moduleName = add_module_edit_text.getText().toString();
+                EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
+                final String moduleName = addModuleEditText.getText().toString();
                 if (moduleName.length() == 0) {
                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.module_name_invalid, Snackbar.LENGTH_LONG).show();
                     return;
