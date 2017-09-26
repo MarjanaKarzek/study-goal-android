@@ -13,10 +13,11 @@ import com.studygoal.jisc.R;
 import java.util.ArrayList;
 
 public class GenericAdapter extends BaseAdapter {
+    private static final String TAG = GenericAdapter.class.getSimpleName();
 
     public ArrayList<String> list;
-    LayoutInflater inflater;
-    String selected;
+    private LayoutInflater inflater;
+    private String selected;
 
     public GenericAdapter(Context context, String selected, ArrayList<String> items) {
         this.selected = selected;

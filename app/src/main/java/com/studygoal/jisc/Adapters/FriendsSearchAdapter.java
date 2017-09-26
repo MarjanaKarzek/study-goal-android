@@ -31,8 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FriendsSearchAdapter extends BaseAdapter {
+    private static final String TAG = FriendsSearchAdapter.class.getSimpleName();
 
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
     public ArrayList<Friend> list;
     private Context context;
 
@@ -111,30 +112,30 @@ public class FriendsSearchAdapter extends BaseAdapter {
                 ((TextView)dialog.findViewById(R.id.question)).setTypeface(DataManager.getInstance().myriadpro_regular);
                 ((TextView)dialog.findViewById(R.id.question)).setText(context.getString(R.string.what_would_you_like_student_to_see).replace("%s", attendant.name));
 
-                final SwitchCompat switch_2 = (SwitchCompat)dialog.findViewById(R.id.switch2);
-                switch_2.setTypeface(DataManager.getInstance().myriadpro_regular);
-                switch_2.setChecked(true);
-                final SwitchCompat switch_3 = (SwitchCompat)dialog.findViewById(R.id.switch3);
-                switch_3.setTypeface(DataManager.getInstance().myriadpro_regular);
-                switch_3.setChecked(true);
-                final SwitchCompat switch_4 = (SwitchCompat)dialog.findViewById(R.id.switch4);
-                switch_4.setTypeface(DataManager.getInstance().myriadpro_regular);
-                switch_4.setChecked(true);
-                final SwitchCompat switch_1 = (SwitchCompat)dialog.findViewById(R.id.switch1);
-                switch_1.setTypeface(DataManager.getInstance().myriadpro_regular);
-                switch_1.setChecked(true);
+                final SwitchCompat switch2 = (SwitchCompat)dialog.findViewById(R.id.switch2);
+                switch2.setTypeface(DataManager.getInstance().myriadpro_regular);
+                switch2.setChecked(true);
+                final SwitchCompat switch3 = (SwitchCompat)dialog.findViewById(R.id.switch3);
+                switch3.setTypeface(DataManager.getInstance().myriadpro_regular);
+                switch3.setChecked(true);
+                final SwitchCompat switch4 = (SwitchCompat)dialog.findViewById(R.id.switch4);
+                switch4.setTypeface(DataManager.getInstance().myriadpro_regular);
+                switch4.setChecked(true);
+                final SwitchCompat switch1 = (SwitchCompat)dialog.findViewById(R.id.switch1);
+                switch1.setTypeface(DataManager.getInstance().myriadpro_regular);
+                switch1.setChecked(true);
 
-                switch_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if(isChecked) {
-                            switch_2.setChecked(true);
-                            switch_3.setChecked(true);
-                            switch_4.setChecked(true);
+                            switch2.setChecked(true);
+                            switch3.setChecked(true);
+                            switch4.setChecked(true);
                         } else {
-                            switch_2.setChecked(false);
-                            switch_3.setChecked(false);
-                            switch_4.setChecked(false);
+                            switch2.setChecked(false);
+                            switch3.setChecked(false);
+                            switch4.setChecked(false);
                         }
                     }
                 });
@@ -147,9 +148,9 @@ public class FriendsSearchAdapter extends BaseAdapter {
                         HashMap<String, String> params = new HashMap<>();
                         params.put("from_student_id", DataManager.getInstance().user.id);
                         params.put("to_student_id", attendant1.id);
-                        params.put("is_result", switch_2.isChecked()?"yes":"no");
-                        params.put("is_course_engagement", switch_3.isChecked()?"yes":"no");
-                        params.put("is_activity_log", switch_4.isChecked()?"yes":"no");
+                        params.put("is_result", switch2.isChecked()?"yes":"no");
+                        params.put("is_course_engagement", switch3.isChecked()?"yes":"no");
+                        params.put("is_activity_log", switch4.isChecked()?"yes":"no");
 
                         if(NetworkManager.getInstance().sendFriendRequest(params)) {
                             list.remove(attendant1);

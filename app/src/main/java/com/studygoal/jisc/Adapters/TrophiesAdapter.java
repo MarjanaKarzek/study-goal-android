@@ -17,17 +17,18 @@ import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 import java.util.List;
 
 public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener {
+    private static final String TAG = TrophiesAdapter.class.getSimpleName();
 
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
     public List<Trophy> list;
     private Context context;
-    Fragment fragment;
+    private Fragment fragment;
 
-    public TrophiesAdapter(Context context,Fragment fr) {
+    public TrophiesAdapter(Context context,Fragment fragment) {
         this.context = context;
         list = new Select().from(Trophy.class).execute();
         inflater = LayoutInflater.from(context);
-        fragment = fr;
+        this.fragment = fragment;
     }
 
     @Override
@@ -69,10 +70,8 @@ public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-
         Trophy trophy = list.get(Integer.parseInt((String) v.getTag()));
         ((AllTrophiesFragment)fragment).showTrophy(trophy);
-
     }
 
 }

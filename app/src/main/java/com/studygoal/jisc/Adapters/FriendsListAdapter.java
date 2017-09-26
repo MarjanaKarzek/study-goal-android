@@ -30,8 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FriendsListAdapter extends BaseAdapter {
+    private static final String TAG = FriendsListAdapter.class.getSimpleName();
 
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
     public List<Friend> list;
     private Context context;
 
