@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.webkit.CookieManager;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
@@ -4408,7 +4407,7 @@ public class NetworkManager {
     }
 
     private boolean forbidden(int code) {
-        if (code == 401){
+        if (code == 401) {
             //cookie manager context
             if (DataManager.getInstance().checkForbidden) {
                 //CookieManager.getInstance().removeAllCookies(null);
@@ -4649,11 +4648,17 @@ public class NetworkManager {
                 .post(formBody)
                 .build();
         Log.d("", "updateAppUsage: alice " + DataManager.getInstance().get_jwt());
+
         try {
             Response response = okHttpClient.newCall(request).execute();
+
             if (response.isSuccessful()) {
-                String message = response.body().string();
-                Log.e(getClass().getCanonicalName(), "Updated App Usage Data: " + message);
+                // TODO: crash when call response.body().string()
+//                if(response.body() != null && response.body().contentLength() > 0) {
+//                    String message = response.body().string();
+//                    Log.e(getClass().getCanonicalName(), "Updated App Usage Data: " + message);
+//                }
+
                 //Update data in DataManager
                 DataManager.getInstance().appUsageData.sessions = sessionsOnApp;
                 DataManager.getInstance().appUsageData.activities = hoursOfActivityLogged;
@@ -4671,7 +4676,7 @@ public class NetworkManager {
         }
     }
 
-    public boolean getAppUsage(String startDate, String endDate){
+    public boolean getAppUsage(String startDate, String endDate) {
         Future<Boolean> future_result = executorService.submit(new GetAppUsage(startDate, endDate));
         try {
             return future_result.get(NETWORK_TIMEOUT, TimeUnit.SECONDS);
@@ -4681,7 +4686,7 @@ public class NetworkManager {
         }
     }
 
-    private class GetAppUsage implements Callable<Boolean>{
+    private class GetAppUsage implements Callable<Boolean> {
 
         private String startDate;
         private String endDate;
@@ -4694,17 +4699,16 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_get_appusage?student_id="
-                        + DataManager.getInstance().user.id;
-                if(startDate != null && endDate != null){
+                String apiURL = host + "fn_get_appusage?student_id=" + DataManager.getInstance().user.id;
+                if (startDate != null && endDate != null) {
                     apiURL += "&start_date=" + startDate + "&end_date=" + endDate;
                 }
-                URL url = new URL(apiURL);
 
+                URL url = new URL(apiURL);
                 Log.d("", "call: Login call is " + apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestMethod("GET");
                 urlConnection.addRequestProperty("Authorization", DataManager.getInstance().get_jwt());
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
 
