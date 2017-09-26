@@ -24,6 +24,7 @@ import junit.framework.Assert;
  *
  */
 public class TrophyDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = TrophyDetailsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,26 +40,24 @@ public class TrophyDetailsActivity extends AppCompatActivity implements View.OnC
         DataManager.getInstance().currActivity = this;
         Bundle bundle = getIntent().getExtras();
 
-        String days = " " + getString(R.string.in) + " " + bundle.getString("days") + " " + getString(R.string.days);
-
         String type = bundle.getString("type");
         String statement = bundle.getString("statement");
 
-        TextView title_view = (TextView) findViewById(R.id.main_screen_title);
-        title_view.setTypeface(DataManager.getInstance().myriadpro_regular);
-        title_view.setText(bundle.getString("title"));
+        TextView titleView = (TextView) findViewById(R.id.main_screen_title);
+        titleView.setTypeface(DataManager.getInstance().myriadpro_regular);
+        titleView.setText(bundle.getString("title"));
 
-        TextView trophy_details_text = (TextView) findViewById(R.id.trophy_details_text);
-        trophy_details_text.setTypeface(DataManager.getInstance().myriadpro_regular);
-        trophy_details_text.setText(statement);
+        TextView trophyDetailsText = (TextView) findViewById(R.id.trophy_details_text);
+        trophyDetailsText.setTypeface(DataManager.getInstance().myriadpro_regular);
+        trophyDetailsText.setText(statement);
 
-        TextView trophy_details_type = (TextView) findViewById(R.id.trophy_details_type);
-        trophy_details_type.setTypeface(DataManager.getInstance().myriadpro_regular);
+        TextView trophyDetailsType = (TextView) findViewById(R.id.trophy_details_type);
+        trophyDetailsType.setTypeface(DataManager.getInstance().myriadpro_regular);
 
         if (bundle.getString("type").contains("Silver")){
-            trophy_details_type.setText(getString(R.string.silver));
+            trophyDetailsType.setText(getString(R.string.silver));
         }else{
-            trophy_details_type.setText(getString(R.string.gold));
+            trophyDetailsType.setText(getString(R.string.gold));
         }
 
         ImageView image = (ImageView) findViewById(R.id.trophy_details_image);
@@ -73,13 +72,13 @@ public class TrophyDetailsActivity extends AppCompatActivity implements View.OnC
                 .transform(new CircleTransform(this))
                 .into(image);
 
-        RelativeLayout close_button = (RelativeLayout) findViewById(R.id.close_button);
-        close_button.setOnClickListener(this);
+        RelativeLayout closeButton = (RelativeLayout) findViewById(R.id.close_button);
+        closeButton.setOnClickListener(this);
 
         assert type != null;
         if (type.equals("Gold")) {
             findViewById(R.id.circle).setBackground(ContextCompat.getDrawable(this, R.drawable.circle_gold));
-            trophy_details_type.setTextColor(Color.parseColor("#f19001"));
+            trophyDetailsType.setTextColor(Color.parseColor("#f19001"));
         }
 
     }

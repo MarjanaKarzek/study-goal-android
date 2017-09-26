@@ -16,6 +16,7 @@ import com.studygoal.jisc.Utils.Utils;
 import java.util.HashMap;
 
 public class ForgotPasswordActivity extends Activity {
+    private static final String TAG = ForgotPasswordActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

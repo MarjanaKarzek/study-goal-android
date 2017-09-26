@@ -21,6 +21,8 @@ import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 import java.util.ArrayList;
 
 public class DrawerAdapter extends BaseAdapter {
+    private static final String TAG = DrawerAdapter.class.getSimpleName();
+
     public String[] values;
     public TextView selected_text;
     public ImageView selected_image;

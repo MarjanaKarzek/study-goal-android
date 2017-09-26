@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityDetailsAllTrophiesAdapter extends BaseAdapter {
+    private static final String TAG = ActivityDetailsAllTrophiesAdapter.class.getSimpleName();
 
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
     public List<Trophy> list;
 
     public ActivityDetailsAllTrophiesAdapter() {
@@ -48,12 +49,12 @@ public class ActivityDetailsAllTrophiesAdapter extends BaseAdapter {
         }
         Trophy trophy = list.get(position);
 
-        TextView trophy_name = (TextView) convertView.findViewById(R.id.trophy_name);
-        TextView trophy_hours = (TextView) convertView.findViewById(R.id.trophy_hours);
-        trophy_name.setTypeface(DataManager.getInstance().myriadpro_regular);
-        trophy_name.setText(trophy.trophy_name);
-        trophy_hours.setTypeface(DataManager.getInstance().myriadpro_regular);
-        trophy_hours.setText(trophy.count);
+        TextView trophyName = (TextView) convertView.findViewById(R.id.trophy_name);
+        TextView trophyHours = (TextView) convertView.findViewById(R.id.trophy_hours);
+        trophyName.setTypeface(DataManager.getInstance().myriadpro_regular);
+        trophyName.setText(trophy.trophy_name);
+        trophyHours.setTypeface(DataManager.getInstance().myriadpro_regular);
+        trophyHours.setText(trophy.count);
 
         Glide.with(DataManager.getInstance().mainActivity).load(trophy.getImageDrawable(DataManager.getInstance().mainActivity)).into((ImageView) convertView.findViewById(R.id.image));
 

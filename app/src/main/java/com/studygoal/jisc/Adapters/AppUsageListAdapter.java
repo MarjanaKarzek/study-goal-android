@@ -21,9 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AppUsageListAdapter extends BaseAdapter {
+    private static final String TAG = AppUsageListAdapter.class.getSimpleName();
+
     public ArrayList<String> list;
     public HashMap<String,String> data;
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
     private Context context;
 
     public AppUsageListAdapter(Context context) {

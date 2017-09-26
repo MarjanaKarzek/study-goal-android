@@ -32,12 +32,13 @@ import com.studygoal.jisc.Utils.Utils;
 import java.util.List;
 
 public class ActivitiesHistoryAdapter extends BaseAdapter {
+    private static final String TAG = ActivitiesHistoryAdapter.class.getSimpleName();
 
     public List<ActivityHistory> historyList;
-    LayoutInflater inflater;
-    Context context;
-    LogActivityHistoryFragment fragment;
-    Boolean hasRunning = false;
+    private LayoutInflater inflater;
+    private Context context;
+    private LogActivityHistoryFragment fragment;
+    private Boolean hasRunning = false;
 
     public ActivitiesHistoryAdapter(LogActivityHistoryFragment fragment) {
         this.fragment = fragment;
@@ -61,15 +62,15 @@ public class ActivitiesHistoryAdapter extends BaseAdapter {
             SharedPreferences saves = context.getSharedPreferences("jisc", Context.MODE_PRIVATE);
             Long timestamp = saves.getLong("timer", 0);
             Long pause;
-            Long timespent;
+            Long timeSpent;
             if(saves.contains("pause")) {
                 if(saves.getLong("pause", 0) > 0) {
                     pause = saves.getLong("pause", 0);
-                    timespent = (pause - timestamp) / 60000;
+                    timeSpent = (pause - timestamp) / 60000;
                 } else
-                    timespent = (System.currentTimeMillis() - timestamp)/60000;
+                    timeSpent = (System.currentTimeMillis() - timestamp)/60000;
             } else
-                timespent = (System.currentTimeMillis() - timestamp)/60000;
+                timeSpent = (System.currentTimeMillis() - timestamp)/60000;
             RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
 
             ActivityHistory history = new ActivityHistory();
@@ -79,7 +80,7 @@ public class ActivitiesHistoryAdapter extends BaseAdapter {
             history.activity_type = activity.activity_type;
             history.activity = activity.activity;
             history.activity_date = activity.activity_date;
-            history.time_spent = timespent + "";
+            history.time_spent = timeSpent + "";
             history.note = "";
             history.created_date = "";
             history.modified_date = "";

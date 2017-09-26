@@ -44,19 +44,20 @@ import java.util.Arrays;
 import io.fabric.sdk.android.Fabric;
 
 public class SocialActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+    private static final String TAG = SocialActivity.class.getSimpleName();
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "8sRjZ9CSN89N1iHMyMZjfedeE";
     private static final String TWITTER_SECRET = "GPRDOuvl9HBoIZVYZo7r5XlverGN6HAGNouJYhCDOVIYrd7lcT";
 
-    TwitterAuthClient mTwitterAuthClient;
+    private TwitterAuthClient twitterAuthClient;
 
-    CallbackManager callbackManager;
+    private CallbackManager callbackManager;
 
-    int socialType;
+    private int socialType;
 
-    String email;
-    String socialID;
+    private String email;
+    private String socialID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
         Twitter.getSessionManager().clearActiveSession();
         Twitter.logOut();
 
-        mTwitterAuthClient= new TwitterAuthClient();
+        twitterAuthClient = new TwitterAuthClient();
         TextView login_with_twitter = (TextView)findViewById(R.id.login_with_twitter);
         login_with_twitter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,12 +121,12 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
                 socialID = "";
                 email = "";
 
-                mTwitterAuthClient.authorize(SocialActivity.this, new Callback<TwitterSession>() {
+                twitterAuthClient.authorize(SocialActivity.this, new Callback<TwitterSession>() {
                     @Override
                     public void success(Result<TwitterSession> twitterSessionResult) {
                         // Success
                         socialID = ""+twitterSessionResult.data.getUserId();
-                        mTwitterAuthClient.requestEmail(twitterSessionResult.data, new Callback<String>() {
+                        twitterAuthClient.requestEmail(twitterSessionResult.data, new Callback<String>() {
                             @Override
                             public void success(Result<String> result) {
                                 email = result.data;
@@ -238,7 +239,7 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
         if(socialType == 1) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         } else if (socialType == 2) {
-            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
+            twitterAuthClient.onActivityResult(requestCode, resultCode, data);
         } else if (socialType == 3) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);

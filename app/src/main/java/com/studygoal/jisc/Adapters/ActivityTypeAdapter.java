@@ -13,9 +13,11 @@ import com.studygoal.jisc.R;
 import java.util.ArrayList;
 
 public class ActivityTypeAdapter extends BaseAdapter {
+    private static final String TAG = ActivityTypeAdapter.class.getSimpleName();
+
     public ArrayList<String> activityTypeList;
-    LayoutInflater inflater;
-    String selected;
+    private LayoutInflater inflater;
+    private String selected;
 
     public ActivityTypeAdapter(Context context, String selected) {
         this.selected = selected;

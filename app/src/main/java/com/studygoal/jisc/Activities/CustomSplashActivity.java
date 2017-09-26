@@ -14,6 +14,7 @@ import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.R;
 
 public class CustomSplashActivity extends AppCompatActivity {
+    private static final String TAG = CustomSplashActivity.class.getSimpleName();
 
     // Note: Currently as a DEMO
 

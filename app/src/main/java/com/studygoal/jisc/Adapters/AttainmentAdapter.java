@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AttainmentAdapter extends BaseAdapter {
+    private static final String TAG = AttainmentAdapter.class.getSimpleName();
+
     public List<Attainment> list;
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
 
     public AttainmentAdapter(Context context) {
         this.list = new ArrayList<>();

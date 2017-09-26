@@ -18,21 +18,23 @@ import java.util.List;
  * Created by Marjana-Tbox on 12/09/17.
  */
 public class EventsAttendedAdapter extends BaseAdapter {
-    private Context mContext;
-    private List<Event> mList;
+    private static final String TAG = EventsAttendedAdapter.class.getSimpleName();
+
+    private Context context;
+    private List<Event> list;
 
     public EventsAttendedAdapter(Context context) {
-        mContext = context;
-        mList = new ArrayList<>();
+        this.context = context;
+        list = new ArrayList<>();
     }
 
     public List<Event> getList() {
-        return mList;
+        return list;
     }
 
     @Override
     public int getCount() {
-        return mList.size();
+        return list.size();
     }
 
     @Override
@@ -47,10 +49,10 @@ public class EventsAttendedAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final Event item = mList.get(position);
+        final Event item = list.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_events_attended, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_events_attended, parent, false);
         }
 
         TextView date = (TextView) convertView.findViewById(R.id.event_item_time_ago);
@@ -65,9 +67,9 @@ public class EventsAttendedAdapter extends BaseAdapter {
 
     public void updateList(ArrayList<Event> events) {
         if (events != null && events.size() > 0) {
-            mList.clear();
-            mList.addAll(events);
-            Collections.sort(mList, (o1, o2) -> {
+            list.clear();
+            list.addAll(events);
+            Collections.sort(list, (o1, o2) -> {
                 if (o1 != null && o2 != null) {
                     Long t1 = o1.getTime();
                     Long t2 = o2.getTime();
@@ -83,8 +85,8 @@ public class EventsAttendedAdapter extends BaseAdapter {
 
     public void addToList(ArrayList<Event> events) {
         if (events != null && events.size() > 0) {
-            mList.addAll(events);
-            Collections.sort(mList, (o1, o2) -> {
+            list.addAll(events);
+            Collections.sort(list, (o1, o2) -> {
                 if (o1 != null && o2 != null) {
                     Long t1 = o1.getTime();
                     Long t2 = o2.getTime();

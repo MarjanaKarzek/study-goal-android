@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 import com.activeandroid.util.Log;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -46,10 +45,11 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
+    private static final String TAG = FeedAdapter.class.getSimpleName();
 
     public List<Feed> feedList = new ArrayList<>();
     private Context context;
-    SwipeRefreshLayout layout;
+    private SwipeRefreshLayout layout;
 
     public FeedAdapter(Context context, SwipeRefreshLayout layout) {
         this.context = context;
@@ -90,7 +90,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         feedViewHolder.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                feedViewHolder.bottom_bar.setVisibility(View.VISIBLE);
+                feedViewHolder.bottomBar.setVisibility(View.VISIBLE);
                 feedViewHolder.close.setVisibility(View.GONE);
                 feedViewHolder.menu.setVisibility(View.GONE);
                 feedViewHolder.feed.setVisibility(View.VISIBLE);
@@ -100,7 +100,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         if (feedViewHolder.close.getVisibility() == View.VISIBLE)
             feedViewHolder.close.callOnClick();
 
-        feedViewHolder.hide_post.setOnClickListener(new View.OnClickListener() {
+        feedViewHolder.hidePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -148,9 +148,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                         })
                         .placeholder(R.drawable.profilenotfound)
                         .transform(new CircleTransform(context))
-                        .into(feedViewHolder.profile_pic);
+                        .into(feedViewHolder.profilePic);
             } else {
-                GlideApp.with(context).load(R.drawable.profilenotfound).into(feedViewHolder.profile_pic);
+                GlideApp.with(context).load(R.drawable.profilenotfound).into(feedViewHolder.profilePic);
             }
 
             feedViewHolder.swipelayout.setSwipeEnabled(true);
@@ -234,12 +234,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 photo = "";
 
             if (photo.equals(""))
-                GlideApp.with(context).load(R.drawable.profilenotfound).into(feedViewHolder.profile_pic);
+                GlideApp.with(context).load(R.drawable.profilenotfound).into(feedViewHolder.profilePic);
             else
                 GlideApp.with(context)
                         .load(NetworkManager.getInstance().host + photo)
                         .transform(new CircleTransform(context))
-                        .into(feedViewHolder.profile_pic);
+                        .into(feedViewHolder.profilePic);
         }
 
         Calendar c = Calendar.getInstance();
@@ -256,15 +256,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         long diff = (current_time - created_date) / 60000;
 
         if (diff <= 1)
-            feedViewHolder.time_ago.setText(context.getString(R.string.just_a_moment_ago));
+            feedViewHolder.timeAgo.setText(context.getString(R.string.just_a_moment_ago));
         else if (diff < 59)
-            feedViewHolder.time_ago.setText(diff + " " + context.getString(R.string.minutes_ago));
+            feedViewHolder.timeAgo.setText(diff + " " + context.getString(R.string.minutes_ago));
         else if (diff < 120)
-            feedViewHolder.time_ago.setText("1 " + context.getString(R.string.hour_ago));
+            feedViewHolder.timeAgo.setText("1 " + context.getString(R.string.hour_ago));
         else if (diff < 1440)
-            feedViewHolder.time_ago.setText((diff / 60) + " " + context.getString(R.string.hours_ago));
+            feedViewHolder.timeAgo.setText((diff / 60) + " " + context.getString(R.string.hours_ago));
         else
-            feedViewHolder.time_ago.setText(
+            feedViewHolder.timeAgo.setText(
                     context.getString(R.string.on) + " "
                             + item.created_date.split(" ")[0].split("-")[2] + " "
                             + LinguisticManager.getInstance().convertMonth(item.created_date.split(" ")[0].split("-")[1]) + " " + item.created_date.split(" ")[0].split("-")[0]);
@@ -291,57 +291,57 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     static class FeedViewHolder extends RecyclerView.ViewHolder {
         protected TextView message;
-        ImageView profile_pic;
+        public ImageView profilePic;
         protected TextView feed;
-        TextView time_ago;
-        TextView hide_post;
-        TextView hide_friend;
-        TextView delete_friend;
-        View menu;
+        public TextView timeAgo;
+        public TextView hidePost;
+        public TextView hideFriend;
+        public TextView deleteFriend;
+        public View menu;
         protected View close;
-        View bottom_bar;
-        View facebook_btn, twitter_btn, mail_btn;
-        View selfPost;
+        public View bottomBar;
+        public View facebookButton, twitterButton, mailButton;
+        public View selfPost;
 
-        SwipeLayout swipelayout;
-        RelativeLayout deleteButton;
-        RelativeLayout shareButton;
+        public SwipeLayout swipelayout;
+        public RelativeLayout deleteButton;
+        public RelativeLayout shareButton;
 
         protected View share;
 
         public View view;
 
-        FeedViewHolder(View v) {
-            super(v);
+        public FeedViewHolder(View view) {
+            super(view);
             try {
-                message = (TextView) v.findViewById(R.id.message);
+                message = (TextView) view.findViewById(R.id.message);
                 message.setTypeface(DataManager.getInstance().myriadpro_regular);
             } catch (Exception ignored) {
             }
-            view = v;
+            this.view = view;
             try {
-                swipelayout = (SwipeLayout) v.findViewById(R.id.swipelayout);
-                deleteButton = (RelativeLayout) v.findViewById(R.id.delete);
-                shareButton = (RelativeLayout) v.findViewById(R.id.share);
-                profile_pic = (ImageView) v.findViewById(R.id.feed_item_profile);
-                feed = (TextView) v.findViewById(R.id.feed_item_feed);
-                time_ago = (TextView) v.findViewById(R.id.feed_item_time_ago);
-                hide_post = (TextView) v.findViewById(R.id.feed_item_hide_post);
-                hide_friend = (TextView) v.findViewById(R.id.feed_item_hide_friend);
-                delete_friend = (TextView) v.findViewById(R.id.feed_item_delete_friend);
-                menu = v.findViewById(R.id.feed_item_menu);
-                close = v.findViewById(R.id.feed_item_close);
-                bottom_bar = v.findViewById(R.id.feed_item_bottom_bar);
-                facebook_btn = v.findViewById(R.id.facebook_btn);
-                twitter_btn = v.findViewById(R.id.twitter_btn);
-                mail_btn = v.findViewById(R.id.mail_btn);
-                selfPost = v.findViewById(R.id.feed_item_selfpost);
+                swipelayout = (SwipeLayout) view.findViewById(R.id.swipelayout);
+                deleteButton = (RelativeLayout) view.findViewById(R.id.delete);
+                shareButton = (RelativeLayout) view.findViewById(R.id.share);
+                profilePic = (ImageView) view.findViewById(R.id.feed_item_profile);
+                feed = (TextView) view.findViewById(R.id.feed_item_feed);
+                timeAgo = (TextView) view.findViewById(R.id.feed_item_time_ago);
+                hidePost = (TextView) view.findViewById(R.id.feed_item_hide_post);
+                hideFriend = (TextView) view.findViewById(R.id.feed_item_hide_friend);
+                deleteFriend = (TextView) view.findViewById(R.id.feed_item_delete_friend);
+                menu = view.findViewById(R.id.feed_item_menu);
+                close = view.findViewById(R.id.feed_item_close);
+                bottomBar = view.findViewById(R.id.feed_item_bottom_bar);
+                facebookButton = view.findViewById(R.id.facebook_btn);
+                twitterButton = view.findViewById(R.id.twitter_btn);
+                mailButton = view.findViewById(R.id.mail_btn);
+                selfPost = view.findViewById(R.id.feed_item_selfpost);
 
                 feed.setTypeface(DataManager.getInstance().myriadpro_regular);
-                time_ago.setTypeface(DataManager.getInstance().myriadpro_regular);
-                hide_post.setTypeface(DataManager.getInstance().myriadpro_regular);
-                hide_friend.setTypeface(DataManager.getInstance().myriadpro_regular);
-                delete_friend.setTypeface(DataManager.getInstance().myriadpro_regular);
+                timeAgo.setTypeface(DataManager.getInstance().myriadpro_regular);
+                hidePost.setTypeface(DataManager.getInstance().myriadpro_regular);
+                hideFriend.setTypeface(DataManager.getInstance().myriadpro_regular);
+                deleteFriend.setTypeface(DataManager.getInstance().myriadpro_regular);
             } catch (Exception ignored) {
             }
         }

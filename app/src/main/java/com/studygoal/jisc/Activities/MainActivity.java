@@ -94,14 +94,14 @@ public class MainActivity extends FragmentActivity {
 
     public DrawerLayout drawer;
     public RelativeLayout friend, settings, addTarget, send, timer, back;
-    SettingsFragment settings_fragment;
-    LogActivityHistoryFragment logFragment;
+    private SettingsFragment settingsFragment;
+    private LogActivityHistoryFragment logFragment;
     public FeedFragment feedFragment;
     public boolean isLandscape = DataManager.getInstance().isLandscape;
     private int selectedPosition;
-    ListView navigationView;
+    private ListView navigationView;
     public DrawerAdapter adapter;
-    View menu, blackout;
+    private View menu, blackout;
     public boolean displaySingleTarget = false;
 
     private Context context;
@@ -134,7 +134,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Thread t = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             if (!DataManager.getInstance().sessionLog) {
                 NetworkManager.getInstance().getAppUsage(null, null);
                 NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
@@ -145,7 +145,7 @@ public class MainActivity extends FragmentActivity {
                 DataManager.getInstance().sessionLog = true;
             }
         });
-        t.start();
+        thread.start();
 
         Log.setEnabled(true);
         isLandscape = DataManager.getInstance().isLandscape;
@@ -283,9 +283,9 @@ public class MainActivity extends FragmentActivity {
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                     startActivity(intent);
                 } else {
-                    settings_fragment = new SettingsFragment();
+                    settingsFragment = new SettingsFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, settings_fragment)
+                            .replace(R.id.main_fragment, settingsFragment)
                             .addToBackStack(null)
                             .commit();
                 }
@@ -827,26 +827,26 @@ public class MainActivity extends FragmentActivity {
         }
 
         try {
-            int w = bmp.getWidth();
-            int h = bmp.getHeight();
-            int nw;
-            int nh;
+            int width = bmp.getWidth();
+            int height = bmp.getHeight();
+            int newWidth;
+            int newHeight;
 
-            if (w >= Constants.DEFAULT_PROFILE_IMAGE_SIZE && h >= Constants.DEFAULT_PROFILE_IMAGE_SIZE) {
-                if (w > h) {
-                    nw = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
-                    nh = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * h / w);
+            if (width >= Constants.DEFAULT_PROFILE_IMAGE_SIZE && height >= Constants.DEFAULT_PROFILE_IMAGE_SIZE) {
+                if (width > height) {
+                    newWidth = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
+                    newHeight = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * height / width);
                 } else {
-                    nh = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
-                    nw = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * w / h);
+                    newHeight = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
+                    newWidth = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * width / height);
                 }
             } else {
-                nw = w;
-                nh = h;
+                newWidth = width;
+                newHeight = height;
             }
 
             outStream = new FileOutputStream(file);
-            bmp = Bitmap.createScaledBitmap(bmp, nw, nh, false);
+            bmp = Bitmap.createScaledBitmap(bmp, newWidth, newHeight, false);
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
             outStream.flush();
             outStream.close();
@@ -878,7 +878,7 @@ public class MainActivity extends FragmentActivity {
                 new Thread(() -> {
                     if (NetworkManager.getInstance().updateProfileImage(imagePath)) {
                         MainActivity.this.runOnUiThread(() -> {
-                            //settings_fragment.refresh_image();
+                            //settingsFragment.refresh_image();
                             EventBus.getDefault().post(new EventReloadImage());
                             hideProgressBar();
                         });
@@ -901,7 +901,7 @@ public class MainActivity extends FragmentActivity {
                 new Thread(() -> {
                     if (NetworkManager.getInstance().updateProfileImage(imagePath)) {
                         MainActivity.this.runOnUiThread(() -> {
-                            //settings_fragment.refresh_image();
+                            //settingsFragment.refresh_image();
                             EventBus.getDefault().post(new EventReloadImage());
                             hideProgressBar();
                         });

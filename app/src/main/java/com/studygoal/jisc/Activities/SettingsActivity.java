@@ -32,9 +32,8 @@ import java.io.ByteArrayOutputStream;
 public class SettingsActivity extends AppCompatActivity {
 
     public TextView fragmentTitle;
-
     private ProfileFragment fragment;
-    private ListView list_menu;
+    private ListView listMenu;
     private ListMenuAdapter[] adapter;
 
     @Override
@@ -59,9 +58,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.settings_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
         (fragmentTitle = (TextView) findViewById(R.id.fragment_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-        list_menu = (ListView) findViewById(R.id.list_menu);
-        list_menu.setAdapter(adapter[0]);
-        list_menu.setOnItemClickListener(new SettingsItemClickListener());
+        listMenu = (ListView) findViewById(R.id.list_menu);
+        listMenu.setAdapter(adapter[0]);
+        listMenu.setOnItemClickListener(new SettingsItemClickListener());
     }
 
     @Override
@@ -175,7 +174,7 @@ public class SettingsActivity extends AppCompatActivity {
                 sendBugReportEmail();
             } else {
                 adapter[0] = new ListMenuAdapter(SettingsActivity.this, position);
-                list_menu.setAdapter(adapter[0]);
+                listMenu.setAdapter(adapter[0]);
 
                 Fragment destination = null;
                 switch (position) {

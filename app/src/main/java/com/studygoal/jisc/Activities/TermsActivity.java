@@ -16,6 +16,8 @@ import com.studygoal.jisc.R;
  */
 
 public class TermsActivity extends AppCompatActivity{
+    private static final String TAG = TermsActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

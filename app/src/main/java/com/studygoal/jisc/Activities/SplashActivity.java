@@ -14,6 +14,7 @@ import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.R;
 
 public class SplashActivity extends AppCompatActivity {
+    private static final String TAG = SplashActivity.class.getSimpleName();
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
 
