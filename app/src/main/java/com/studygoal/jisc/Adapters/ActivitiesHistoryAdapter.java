@@ -110,7 +110,7 @@ public class ActivitiesHistoryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.history_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_history, parent, false);
         }
         final ActivityHistory activityHistory = historyList.get(position);
 

@@ -87,7 +87,7 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.log_fragment_log_activity, container, false);
+        mainView = inflater.inflate(R.layout.layout_log_log_activity, container, false);
 
         DataManager.getInstance().reload();
 

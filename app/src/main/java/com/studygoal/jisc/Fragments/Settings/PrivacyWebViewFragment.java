@@ -16,7 +16,7 @@ public class PrivacyWebViewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.privacy_webview_fragment, container, false);
+        View mainView = inflater.inflate(R.layout.layout_privacy_webview, container, false);
         WebView webView = (WebView) mainView.findViewById(R.id.privacy_web_view);
         webView.loadUrl("https://github.com/jiscdev/learning-analytics/wiki/Privacy-Statement");
         return mainView;

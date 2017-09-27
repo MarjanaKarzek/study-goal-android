@@ -106,7 +106,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.settings_home, container, false);
+        View mainView = inflater.inflate(R.layout.layout_settings_home, container, false);
         TextView friends = (TextView) mainView.findViewById(R.id.friends);
         friends.setTypeface(DataManager.getInstance().myriadpro_regular);
         TextView friendsValue = (TextView) mainView.findViewById(R.id.friends_value);

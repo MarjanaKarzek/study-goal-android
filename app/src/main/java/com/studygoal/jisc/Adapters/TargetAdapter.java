@@ -71,7 +71,7 @@ public class TargetAdapter extends BaseAdapter {
         Module module = new Select().from(Module.class).where("module_id = ?", item.module_id).executeSingle();
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_target, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_target, parent, false);
         }
 
         List<ActivityHistory> activityHistoryList;

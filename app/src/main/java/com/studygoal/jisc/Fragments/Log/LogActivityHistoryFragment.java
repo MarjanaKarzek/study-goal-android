@@ -85,7 +85,7 @@ public class LogActivityHistoryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.log_fragment_activity_history, container, false);
+        mainView = inflater.inflate(R.layout.layout_log_activity_history, container, false);
         layout = (SwipeRefreshLayout) mainView.findViewById(R.id.swipelayout);
         message = (TextView) mainView.findViewById(R.id.message);
 

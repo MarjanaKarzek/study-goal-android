@@ -86,7 +86,7 @@ public class ToDoTasksAdapter extends BaseAdapter {
         final ToDoTasks item = list.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_todo_tasks, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_todo_tasks, parent, false);
         }
 
         ImageView activity_icon = (ImageView) convertView.findViewById(R.id.activity_icon);

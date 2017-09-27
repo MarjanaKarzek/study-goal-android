@@ -1,7 +1,6 @@
 package com.studygoal.jisc.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,7 @@ public class AttainmentAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
-            convertView = inflater.inflate(R.layout.item_attainment, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_attainment, parent, false);
         }
 
         TextView module = (TextView) convertView.findViewById(R.id.attainment_item_module);

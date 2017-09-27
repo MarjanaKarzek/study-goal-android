@@ -30,7 +30,7 @@ public class FriendsScreenFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.generic_screen, container, false);
+        View mainView = inflater.inflate(R.layout.layout_generic_screen, container, false);
 
 
         ((TextView)mainView.findViewById(R.id.title)).setText(R.string.all_friends_list);

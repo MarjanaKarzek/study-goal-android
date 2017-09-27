@@ -10,15 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.studygoal.jisc.Managers.DataManager;
-import com.studygoal.jisc.Models.Attainment;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Utils.Utils;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class AppUsageListAdapter extends BaseAdapter {
     private static final String TAG = AppUsageListAdapter.class.getSimpleName();
@@ -56,7 +51,7 @@ public class AppUsageListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null)
-            convertView = inflater.inflate(R.layout.item_app_usage, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_app_usage, parent, false);
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.app_usage_image);
 

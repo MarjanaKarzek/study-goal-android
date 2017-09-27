@@ -79,7 +79,7 @@ public class FriendsSearchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View mainView = inflater.inflate(R.layout.friendssearch_fragment, container, false);
+        final View mainView = inflater.inflate(R.layout.layout_friends_search, container, false);
 
         ((TextView) mainView.findViewById(R.id.send_friend_request_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
 

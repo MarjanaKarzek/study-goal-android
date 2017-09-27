@@ -27,7 +27,7 @@
 //
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View mainView = inflater.inflate(R.layout.log_fragment, container, false);
+//        View mainView = inflater.inflate(R.layout.layout_logs, container, false);
 //
 //        //Set the typeface of the buttons
 //        ((TextView)mainView.findViewById(R.id.new_activity_btn_text)).setTypeface(DataManager.getInstance().myriadpro_regular);

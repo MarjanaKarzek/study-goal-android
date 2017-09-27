@@ -99,7 +99,7 @@ public class DrawerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == 0) {
-            convertView = inflater.inflate(R.layout.nav_header_main, parent, false);
+            convertView = inflater.inflate(R.layout.snippet_nav_header_main, parent, false);
             GlideApp.with(context).load(R.drawable.menu_header_bg).into((ImageView) convertView.findViewById(R.id.navheader));
 
             TextView email = (TextView) convertView.findViewById(R.id.drawer_email);
@@ -126,9 +126,9 @@ public class DrawerAdapter extends BaseAdapter {
             }
         } else {
             if (statsOpened && position > 3 && position <= 3 + statOpenedNum) {
-                convertView = inflater.inflate(R.layout.nav_item_sub, parent, false);
+                convertView = inflater.inflate(R.layout.menu_item_nav_sub, parent, false);
             } else {
-                convertView = inflater.inflate(R.layout.nav_item, parent, false);
+                convertView = inflater.inflate(R.layout.menu_item_nav, parent, false);
             }
 
             TextView textView;

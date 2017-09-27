@@ -40,7 +40,7 @@ public class LanguageScreenFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.generic_screen, container, false);
+        View mainView = inflater.inflate(R.layout.layout_generic_screen, container, false);
 
         selectedValue = DataManager.getInstance().language == null
                 || DataManager.getInstance().language.toLowerCase().equals("english") ?

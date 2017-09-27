@@ -45,7 +45,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.profile_screen, container, false);
+        View mainView = inflater.inflate(R.layout.layout_profile_screen, container, false);
 
         TextView name = (TextView) mainView.findViewById(R.id.name);
         name.setTypeface(DataManager.getInstance().myriadpro_regular);

@@ -52,7 +52,7 @@ public class EventsAttendedAdapter extends BaseAdapter {
         final Event item = list.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_events_attended, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_events_attended, parent, false);
         }
 
         TextView date = (TextView) convertView.findViewById(R.id.event_item_time_ago);

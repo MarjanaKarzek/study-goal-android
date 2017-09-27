@@ -55,7 +55,7 @@ public class StatsLeaderBoardFragment extends BaseFragment {
         rankListView = (ListView) mainView.findViewById(R.id.stats_leaderBoard_listView);
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.stats_event_attendance_list_view_header, rankListView, false);
         rankListView.addHeaderView(header);
-        rankListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.list_event_attendance, EVENTS));
+        rankListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.snippet_event_attendance_list, EVENTS));
 
 
         setUpModule(mainView);
