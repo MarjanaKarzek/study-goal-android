@@ -134,7 +134,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             NetworkManager.getInstance().getAppUsage(null, null);
             if (!DataManager.getInstance().sessionLogged) {
                 android.util.Log.d(TAG, "onCreate: Session about to get logged");
@@ -146,7 +146,7 @@ public class MainActivity extends FragmentActivity {
                 DataManager.getInstance().sessionLogged = true;
             }
         });
-        thread.start();
+        thread.start();*/
 
         Log.setEnabled(true);
         isLandscape = DataManager.getInstance().isLandscape;

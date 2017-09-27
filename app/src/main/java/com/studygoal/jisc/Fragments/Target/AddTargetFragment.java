@@ -776,12 +776,12 @@ public class AddTargetFragment extends BaseFragment {
 
                 new Thread(() -> {
                     if (NetworkManager.getInstance().addTarget(params)) {
-                        NetworkManager.getInstance().getAppUsage(null,null);
+                        /*NetworkManager.getInstance().getAppUsage(null,null);
                         NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
                                 DataManager.getInstance().appUsageData.activities,
                                 "" + (Integer.valueOf(DataManager.getInstance().appUsageData.setTargets) + 1),
                                 DataManager.getInstance().appUsageData.metTargets,
-                                DataManager.getInstance().appUsageData.failedTargets);
+                                DataManager.getInstance().appUsageData.failedTargets);*/
 
                         NetworkManager.getInstance().getTargets(DataManager.getInstance().user.id);
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
@@ -905,13 +905,13 @@ public class AddTargetFragment extends BaseFragment {
 
             new Thread(() -> {
                 if (NetworkManager.getInstance().addToDoTask(params)) {
-                    NetworkManager.getInstance().getAppUsage(null,null);
+                    /*NetworkManager.getInstance().getAppUsage(null,null);
                     NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
                             DataManager.getInstance().appUsageData.activities,
                             "" + (Integer.valueOf(DataManager.getInstance().appUsageData.setTargets) + 1),
                             DataManager.getInstance().appUsageData.metTargets,
                             DataManager.getInstance().appUsageData.failedTargets);
-                    NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);
+                    NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);*/
 
                     runOnUiThread(() -> {
                         DataManager.getInstance().mainActivity.hideProgressBar();

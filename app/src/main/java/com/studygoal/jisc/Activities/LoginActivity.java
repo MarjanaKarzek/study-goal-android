@@ -300,7 +300,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         String firstlogin = DataManager.getInstance().first_time;
                                         Intent intent = null;
                                         if (firstlogin.equals("yes")) {
-                                            NetworkManager.getInstance().updateAppUsage("0","0","0","0","0");
+                                            //NetworkManager.getInstance().updateAppUsage("0","0","0","0","0");
                                             intent = new Intent(LoginActivity.this, TermsActivity.class);
                                         } else {
                                             intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -324,7 +324,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         String firstlogin = DataManager.getInstance().first_time;
                                         Intent intent = null;
                                         if (firstlogin.equals("yes")) {
-                                            NetworkManager.getInstance().updateAppUsage("0","0","0","0","0");
+                                            //NetworkManager.getInstance().updateAppUsage("0","0","0","0","0");
                                             intent = new Intent(LoginActivity.this, TermsActivity.class);
                                         } else {
                                             intent = new Intent(LoginActivity.this, MainActivity.class);

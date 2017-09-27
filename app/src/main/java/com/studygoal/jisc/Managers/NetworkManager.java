@@ -4633,7 +4633,7 @@ public class NetworkManager {
         }
     }
 
-    public boolean updateAppUsage(String sessionsOnApp, String hoursOfActivityLogged, String targetsSet, String targetsMet, String targetsFailed) {
+    /*public boolean updateAppUsage(String sessionsOnApp, String hoursOfActivityLogged, String targetsSet, String targetsMet, String targetsFailed) {
         RequestBody formBody = new FormBody.Builder()
                 .add("student_id", DataManager.getInstance().user.id)
                 .add("sessions_on_app", sessionsOnApp)
@@ -4670,7 +4670,7 @@ public class NetworkManager {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     public boolean getAppUsage(String startDate, String endDate) {
         Future<Boolean> future_result = executorService.submit(new GetAppUsage(startDate, endDate));

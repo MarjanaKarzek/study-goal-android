@@ -348,12 +348,12 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     activity.save();
                 } else {
 //                    NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
-                    NetworkManager.getInstance().getAppUsage(null,null);
+                    /*NetworkManager.getInstance().getAppUsage(null,null);
                     NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
                             "" + Integer.valueOf((DataManager.getInstance().appUsageData.activities) + duration),
                             DataManager.getInstance().appUsageData.setTargets,
                             DataManager.getInstance().appUsageData.metTargets,
-                            DataManager.getInstance().appUsageData.failedTargets);
+                            DataManager.getInstance().appUsageData.failedTargets);*/
                 }
 
                 new Delete().from(RunningActivity.class).execute();
