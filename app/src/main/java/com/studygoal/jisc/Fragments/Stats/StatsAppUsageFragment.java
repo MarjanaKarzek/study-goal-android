@@ -2,6 +2,7 @@ package com.studygoal.jisc.Fragments.Stats;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,10 @@ public class StatsAppUsageFragment extends Fragment {
 
     private TextView startDate;
     private TextView endDate;
-    private Calendar pickedDate = Calendar.getInstance();
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private Calendar startDatePicked = Calendar.getInstance();
+    private Calendar endDatePicked = Calendar.getInstance();
+    private SimpleDateFormat apiDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private DatePickerDialog.OnDateSetListener datePickerEnd;
     private DatePickerDialog.OnDateSetListener datePickerStart;
 
@@ -59,9 +62,9 @@ public class StatsAppUsageFragment extends Fragment {
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(getActivity(), datePickerStart, pickedDate
-                        .get(Calendar.YEAR), pickedDate.get(Calendar.MONTH),
-                        pickedDate.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(getActivity(), datePickerStart, startDatePicked
+                        .get(Calendar.YEAR), startDatePicked.get(Calendar.MONTH),
+                        startDatePicked.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -69,9 +72,9 @@ public class StatsAppUsageFragment extends Fragment {
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(getActivity(), datePickerEnd, pickedDate
-                        .get(Calendar.YEAR), pickedDate.get(Calendar.MONTH),
-                        pickedDate.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(getActivity(), datePickerEnd, endDatePicked
+                        .get(Calendar.YEAR), endDatePicked.get(Calendar.MONTH),
+                        endDatePicked.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -104,14 +107,19 @@ public class StatsAppUsageFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                pickedDate.set(Calendar.YEAR, year);
-                pickedDate.set(Calendar.MONTH, monthOfYear);
-                pickedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                startDate.setText(dateFormat.format(pickedDate.getTime()));
-                //refresh picker data
-                pickedDate = Calendar.getInstance();
-                if(!endDate.getText().toString().equals("End"))
-                    loadData(startDate.getText().toString(),endDate.getText().toString());
+                startDatePicked.set(Calendar.YEAR, year);
+                startDatePicked.set(Calendar.MONTH, monthOfYear);
+                startDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                startDate.setText(dateFormat.format(startDatePicked.getTime()));
+                if(!endDate.getText().toString().equals("End")) {
+                    if(startDatePicked.after(endDatePicked)){
+                        startDatePicked = Calendar.getInstance();
+                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_after_end_date_hint, Snackbar.LENGTH_LONG).show();
+                        startDate.setText("Start");
+                    } else {
+                        loadData(apiDateFormat.format(startDatePicked.getTime()), apiDateFormat.format(endDatePicked.getTime()));
+                    }
+                }
             }
         };
 
@@ -119,14 +127,18 @@ public class StatsAppUsageFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                pickedDate.set(Calendar.YEAR, year);
-                pickedDate.set(Calendar.MONTH, monthOfYear);
-                pickedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                endDate.setText(dateFormat.format(pickedDate.getTime()));
-                //refresh picker data
-                pickedDate = Calendar.getInstance();
+                endDatePicked.set(Calendar.YEAR, year);
+                endDatePicked.set(Calendar.MONTH, monthOfYear);
+                endDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                endDate.setText(dateFormat.format(endDatePicked.getTime()));
                 if(!endDate.getText().toString().equals("Start"))
-                    loadData(startDate.getText().toString(),endDate.getText().toString());
+                    if(endDatePicked.before(startDatePicked)){
+                        endDatePicked = Calendar.getInstance();
+                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_before_start_date_hint, Snackbar.LENGTH_LONG).show();
+                        endDate.setText("End");
+                    } else {
+                        loadData(apiDateFormat.format(startDatePicked.getTime()), apiDateFormat.format(endDatePicked.getTime()));
+                    }
             }
         };
     }
