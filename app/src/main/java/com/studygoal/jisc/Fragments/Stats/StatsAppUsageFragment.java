@@ -91,9 +91,9 @@ public class StatsAppUsageFragment extends Fragment {
         data.clear();
         data.put("sessions",DataManager.getInstance().appUsageData.sessions);
         data.put("activities",DataManager.getInstance().appUsageData.activities);
-        data.put("set targets",DataManager.getInstance().appUsageData.setTargets);
-        data.put("met targets",DataManager.getInstance().appUsageData.metTargets);
-        data.put("failed targets",DataManager.getInstance().appUsageData.failedTargets);
+        data.put("set_targets",DataManager.getInstance().appUsageData.setTargets);
+        data.put("met_targets",DataManager.getInstance().appUsageData.metTargets);
+        data.put("failed_targets",DataManager.getInstance().appUsageData.failedTargets);
         if(adapter != null)
             adapter.notifyDataSetChanged();
         DataManager.getInstance().mainActivity.hideProgressBar();

@@ -2,6 +2,7 @@ package com.studygoal.jisc.Adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,15 +63,15 @@ public class AppUsageListAdapter extends BaseAdapter {
             TextView textView2 = (TextView) convertView.findViewById(R.id.app_usage_double_text2);
 
             imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.target_met));
-            textView1.setText("Targets met on time: " + data.get("targets met"));
-            textView2.setText("Targets not met on time: " + data.get("targets failed"));
+            textView1.setText("Targets met on time: " + data.get("met_targets"));
+            textView2.setText("Targets not met on time: " + data.get("failed_targets"));
         } else {
             TextView textView = (TextView) convertView.findViewById(R.id.app_usage_single_text);
 
             switch (position){
                 case 1:
                     imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.activity_icon_2));
-                    textView.setText("Targets set: " + data.get("targets set"));
+                    textView.setText("Targets set: " + data.get("set_targets"));
                     break;
                 case 2:
                     imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hours_of_activites));
