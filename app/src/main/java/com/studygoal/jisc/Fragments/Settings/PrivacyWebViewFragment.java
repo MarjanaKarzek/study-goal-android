@@ -12,6 +12,7 @@ import com.studygoal.jisc.R;
 import com.studygoal.jisc.Activities.SettingsActivity;
 
 public class PrivacyWebViewFragment extends Fragment {
+    private static final String TAG = PrivacyWebViewFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

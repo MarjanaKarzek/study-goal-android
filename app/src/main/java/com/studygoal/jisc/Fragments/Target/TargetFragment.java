@@ -40,14 +40,14 @@ import java.util.List;
 public class TargetFragment extends BaseFragment {
     private static final String TAG = TargetFragment.class.getSimpleName();
 
-    private TargetAdapter mAdapterTarget;
-    private ToDoTasksAdapter mAdapterToDo;
+    private TargetAdapter targetAdapter;
+    private ToDoTasksAdapter toDoTasksAdapter;
 
-    private View mRootView;
-    private View mTutorialMessage;
-    private SwipeRefreshLayout mLayout;
+    private View rootView;
+    private View tutorialMessage;
+    private SwipeRefreshLayout layout;
 
-    private TargetFragmentBinding mBinding = null;
+    private TargetFragmentBinding binding = null;
 
     @Override
     public void onResume() {
@@ -62,27 +62,27 @@ public class TargetFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.target_fragment, container, false);
-        mRootView = mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.target_fragment, container, false);
+        rootView = binding.getRoot();
 
-        mBinding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
+        binding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.target_recurring) {
-                mBinding.list.setVisibility(View.VISIBLE);
-                mBinding.listTodo.setVisibility(View.GONE);
+                binding.list.setVisibility(View.VISIBLE);
+                binding.listTodo.setVisibility(View.GONE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = false;
             } else {
-                mBinding.list.setVisibility(View.GONE);
-                mBinding.listTodo.setVisibility(View.VISIBLE);
+                binding.list.setVisibility(View.GONE);
+                binding.listTodo.setVisibility(View.VISIBLE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = true;
             }
 
             updateTutorialMessage();
         });
 
-        mTutorialMessage = mRootView.findViewById(R.id.tutorial_message);
-        mLayout = (SwipeRefreshLayout) mRootView.findViewById(R.id.swipelayout);
+        tutorialMessage = rootView.findViewById(R.id.tutorial_message);
+        layout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipelayout);
 
-        mAdapterTarget = new TargetAdapter(getActivity(), new TargetAdapter.TargetAdapterListener() {
+        targetAdapter = new TargetAdapter(getActivity(), new TargetAdapter.TargetAdapterListener() {
             @Override
             public void onDelete(Targets target, int finalPosition) {
                 if(ConnectionHandler.isConnected(getContext())) {
@@ -102,7 +102,7 @@ public class TargetFragment extends BaseFragment {
             }
         });
 
-        mAdapterToDo = new ToDoTasksAdapter(getActivity(), new ToDoTasksAdapter.ToDoTasksAdapterListener() {
+        toDoTasksAdapter = new ToDoTasksAdapter(getActivity(), new ToDoTasksAdapter.ToDoTasksAdapterListener() {
             @Override
             public void onDelete(ToDoTasks target, int finalPosition) {
                 if(ConnectionHandler.isConnected(getContext())) {
@@ -131,12 +131,12 @@ public class TargetFragment extends BaseFragment {
             }
         });
 
-        mBinding.list.setAdapter(mAdapterTarget);
-        mBinding.listTodo.setAdapter(mAdapterToDo);
+        binding.list.setAdapter(targetAdapter);
+        binding.listTodo.setAdapter(toDoTasksAdapter);
 
-        mBinding.list.setOnItemClickListener((parent, v, position, id) -> {
+        binding.list.setOnItemClickListener((parent, v, position, id) -> {
             TargetDetailsFragment fragment = new TargetDetailsFragment();
-            fragment.list = mAdapterTarget.list;
+            fragment.list = targetAdapter.list;
             fragment.position = position;
             DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, fragment)
@@ -144,8 +144,8 @@ public class TargetFragment extends BaseFragment {
                     .commit();
         });
 
-        mBinding.listTodo.setOnItemClickListener((parent, v, position, id) -> {
-            ToDoTasks item = mAdapterToDo.getItem(position);
+        binding.listTodo.setOnItemClickListener((parent, v, position, id) -> {
+            ToDoTasks item = toDoTasksAdapter.getItem(position);
 
             if (item != null) {
                 if (item.fromTutor != null && item.isAccepted != null && item.fromTutor.toLowerCase().equals("yes") && item.isAccepted.equals("0")) {
@@ -154,41 +154,41 @@ public class TargetFragment extends BaseFragment {
             }
         });
 
-        mBinding.list.setOnScrollListener(new AbsListView.OnScrollListener() {
+        binding.list.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int topRowVerticalPosition = (mBinding.list == null || mBinding.list.getChildCount() == 0) ? 0 : mBinding.list.getChildAt(0).getTop();
-                mLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+                int topRowVerticalPosition = (binding.list == null || binding.list.getChildCount() == 0) ? 0 : binding.list.getChildAt(0).getTop();
+                layout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
             }
         });
 
-        mBinding.listTodo.setOnScrollListener(new AbsListView.OnScrollListener() {
+        binding.listTodo.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int topRowVerticalPosition = (mBinding.listTodo == null || mBinding.listTodo.getChildCount() == 0) ? 0 : mBinding.listTodo.getChildAt(0).getTop();
-                mLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+                int topRowVerticalPosition = (binding.listTodo == null || binding.listTodo.getChildCount() == 0) ? 0 : binding.listTodo.getChildAt(0).getTop();
+                layout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
             }
         });
 
-        mBinding.listTodo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.listTodo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.swipe_for_done_edit_delete, Snackbar.LENGTH_LONG).show();
             }
         });
 
-        mLayout.setColorSchemeResources(R.color.colorPrimary);
-        mLayout.setOnRefreshListener(() -> loadData(false));
+        layout.setColorSchemeResources(R.color.colorPrimary);
+        layout.setOnRefreshListener(() -> loadData(false));
 
-        return mRootView;
+        return rootView;
     }
 
     private void deleteTarget(final Targets target, final int finalPosition) {
@@ -210,19 +210,19 @@ public class TargetFragment extends BaseFragment {
             if (NetworkManager.getInstance().deleteTarget(params)) {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     target.delete();
-                    mAdapterTarget.list.remove(finalPosition);
-                    if (mAdapterTarget.list.size() == 0)
-                        mTutorialMessage.setVisibility(View.VISIBLE);
+                    targetAdapter.list.remove(finalPosition);
+                    if (targetAdapter.list.size() == 0)
+                        tutorialMessage.setVisibility(View.VISIBLE);
                     else
-                        mTutorialMessage.setVisibility(View.GONE);
-                    mAdapterTarget.notifyDataSetChanged();
+                        tutorialMessage.setVisibility(View.GONE);
+                    targetAdapter.notifyDataSetChanged();
                     DataManager.getInstance().mainActivity.hideProgressBar();
-                    Snackbar.make(mRootView.findViewById(R.id.parent), R.string.target_deleted_successfully, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rootView.findViewById(R.id.parent), R.string.target_deleted_successfully, Snackbar.LENGTH_LONG).show();
                 });
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
-                    Snackbar.make(mRootView.findViewById(R.id.parent), R.string.fail_to_delete_target_message, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rootView.findViewById(R.id.parent), R.string.fail_to_delete_target_message, Snackbar.LENGTH_LONG).show();
                 });
             }
         }).start();
@@ -247,15 +247,15 @@ public class TargetFragment extends BaseFragment {
             if (NetworkManager.getInstance().deleteToDoTask(params)) {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     task.delete();
-                    mAdapterToDo.deleteItem(finalPosition);
+                    toDoTasksAdapter.deleteItem(finalPosition);
                     DataManager.getInstance().mainActivity.hideProgressBar();
                     updateTutorialMessage();
-                    Snackbar.make(mRootView.findViewById(R.id.parent), R.string.target_deleted_successfully, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rootView.findViewById(R.id.parent), R.string.target_deleted_successfully, Snackbar.LENGTH_LONG).show();
                 });
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
-                    Snackbar.make(mRootView.findViewById(R.id.parent), R.string.fail_to_delete_target_message, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rootView.findViewById(R.id.parent), R.string.fail_to_delete_target_message, Snackbar.LENGTH_LONG).show();
                 });
             }
         }).start();
@@ -304,10 +304,10 @@ public class TargetFragment extends BaseFragment {
             NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);
 
             DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                mAdapterTarget.list = new Select().from(Targets.class).execute();
-                mAdapterTarget.notifyDataSetChanged();
+                targetAdapter.list = new Select().from(Targets.class).execute();
+                targetAdapter.notifyDataSetChanged();
 
-                //mAdapterToDo.updateList(new Select().from(ToDoTasks.class).execute());
+                //toDoTasksAdapter.updateList(new Select().from(ToDoTasks.class).execute());
 
                 List<ToDoTasks> currentTaskList = new Select().from(ToDoTasks.class).execute();
                 Iterator iterator = currentTaskList.iterator();
@@ -345,13 +345,13 @@ public class TargetFragment extends BaseFragment {
                     }
                 });*/
 
-                mAdapterToDo.updateList(currentTaskList);
-                mAdapterToDo.notifyDataSetChanged();
+                toDoTasksAdapter.updateList(currentTaskList);
+                toDoTasksAdapter.notifyDataSetChanged();
 
                 if (showProgress) {
                     DataManager.getInstance().mainActivity.hideProgressBar();
                 } else {
-                    mLayout.setRefreshing(false);
+                    layout.setRefreshing(false);
                 }
             });
 
@@ -361,17 +361,17 @@ public class TargetFragment extends BaseFragment {
 
     private void updateTutorialMessage() {
         runOnUiThread(() -> {
-            if (mBinding.targetRecurring.isChecked()) {
-                if (mAdapterTarget != null && mAdapterTarget.list.size() > 0) {
-                    mTutorialMessage.setVisibility(View.GONE);
+            if (binding.targetRecurring.isChecked()) {
+                if (targetAdapter != null && targetAdapter.list.size() > 0) {
+                    tutorialMessage.setVisibility(View.GONE);
                 } else {
-                    mTutorialMessage.setVisibility(View.VISIBLE);
+                    tutorialMessage.setVisibility(View.VISIBLE);
                 }
-            } else if (mBinding.targetSingle.isChecked()) {
-                if (mAdapterToDo != null && mAdapterToDo.getCount() > 0) {
-                    mTutorialMessage.setVisibility(View.GONE);
+            } else if (binding.targetSingle.isChecked()) {
+                if (toDoTasksAdapter != null && toDoTasksAdapter.getCount() > 0) {
+                    tutorialMessage.setVisibility(View.GONE);
                 } else {
-                    mTutorialMessage.setVisibility(View.VISIBLE);
+                    tutorialMessage.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -500,7 +500,7 @@ public class TargetFragment extends BaseFragment {
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
-                    Snackbar.make(mRootView, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rootView, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
                 });
             }
         }).start();
@@ -540,7 +540,7 @@ public class TargetFragment extends BaseFragment {
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
-                    Snackbar.make(mRootView, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rootView, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
                 });
             }
         }).start();
@@ -575,7 +575,7 @@ public class TargetFragment extends BaseFragment {
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
-                    Snackbar.make(mRootView, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rootView, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
                 });
             }
         }).start();

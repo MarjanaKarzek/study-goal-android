@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.studygoal.jisc.Adapters.FeedAdapter;
 import com.studygoal.jisc.Adapters.ModuleAdapter;
 import com.studygoal.jisc.Activities.MainActivity;
 import com.studygoal.jisc.Fragments.BaseFragment;
@@ -30,6 +31,8 @@ import com.studygoal.jisc.R;
 import java.util.List;
 
 public class StatsLeaderBoardFragment extends BaseFragment {
+    private static final String TAG = StatsLeaderBoardFragment.class.getSimpleName();
+
     private AppCompatTextView module;
     private String selectedPeriod;
     private ListView rankListView;
@@ -124,29 +127,29 @@ public class StatsLeaderBoardFragment extends BaseFragment {
             dialog.show();
         });
 
-        final TextView last_7d_text_view = (TextView) mainView.findViewById(R.id.last_7d_text_view);
-        final TextView last_30d_text_view = (TextView) mainView.findViewById(R.id.last_30d_text_view);
-        last_7d_text_view.setTypeface(DataManager.getInstance().myriadpro_regular);
-        last_30d_text_view.setTypeface(DataManager.getInstance().myriadpro_regular);
+        final TextView last7DTextView = (TextView) mainView.findViewById(R.id.last_7d_text_view);
+        final TextView last30DTextView = (TextView) mainView.findViewById(R.id.last_30d_text_view);
+        last7DTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
+        last30DTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
         selectedPeriod = getString(R.string.last_7_days);
 
         LinearLayout period_segmented = (LinearLayout) mainView.findViewById(R.id.period_segmented);
         period_segmented.setOnClickListener(v -> {
             if (selectedPeriod.equals(getString(R.string.last_7_days))) {
                 selectedPeriod = getString(R.string.last_30_days);
-                last_30d_text_view.setTextColor(Color.parseColor("#ffffff"));
-                last_30d_text_view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.circle_background_blue_right));
+                last30DTextView.setTextColor(Color.parseColor("#ffffff"));
+                last30DTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.circle_background_blue_right));
 
-                last_7d_text_view.setTextColor(Color.parseColor("#3691ee"));
-                last_7d_text_view.setBackground(null);
+                last7DTextView.setTextColor(Color.parseColor("#3691ee"));
+                last7DTextView.setBackground(null);
 
             } else {
                 selectedPeriod = getString(R.string.last_7_days);
-                last_30d_text_view.setTextColor(Color.parseColor("#3691ee"));
-                last_30d_text_view.setBackground(null);
+                last30DTextView.setTextColor(Color.parseColor("#3691ee"));
+                last30DTextView.setBackground(null);
 
-                last_7d_text_view.setTextColor(Color.parseColor("#ffffff"));
-                last_7d_text_view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.circle_background_blue_left));
+                last7DTextView.setTextColor(Color.parseColor("#ffffff"));
+                last7DTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.circle_background_blue_left));
             }
         });
     }

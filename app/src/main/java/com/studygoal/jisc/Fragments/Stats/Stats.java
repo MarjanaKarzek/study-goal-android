@@ -29,14 +29,15 @@ import com.studygoal.jisc.R;
 import java.util.Timer;
 
 public class Stats extends Fragment {
+    private static final String TAG = Stats.class.getSimpleName();
 
     private Timer timer;
     private Timer timer2;
-    ListView list;
-    AttainmentAdapter adapter;
-    View mainView;
-    private int contor;
-    SwipeRefreshLayout layout;
+    private ListView list;
+    private AttainmentAdapter adapter;
+    private View mainView;
+    private int counter;
+    private SwipeRefreshLayout layout;
 
     @Override
     public void onResume() {
@@ -74,19 +75,19 @@ public class Stats extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    final String _number = NetworkManager.getInstance().getCurrentRanking(DataManager.getInstance().user.id);
+                    final String number = NetworkManager.getInstance().getCurrentRanking(DataManager.getInstance().user.id);
                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.rankingImage(_number)).into((ImageView) mainView.findViewById(R.id.first_table_image));
-                            ((TextView) mainView.findViewById(R.id.first_table_title)).setText(LinguisticManager.convertRanking(_number));
-                            String _number2 = _number;
-                            _number2 = _number2.replace("%", "");
-                            if (Integer.parseInt(_number) > 10)
-                                _number2 = (100 - Integer.parseInt(_number2)) + "";
+                            Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.rankingImage(number)).into((ImageView) mainView.findViewById(R.id.first_table_image));
+                            ((TextView) mainView.findViewById(R.id.first_table_title)).setText(LinguisticManager.convertRanking(number));
+                            String number2 = number;
+                            number2 = number2.replace("%", "");
+                            if (Integer.parseInt(number) > 10)
+                                number2 = (100 - Integer.parseInt(number2)) + "";
                             else
-                                _number2 = DataManager.getInstance().mainActivity.getString(R.string.top) + " " + _number2;
-                            final String text = DataManager.getInstance().mainActivity.getString(R.string.you_are_in_top).replace("@@", _number2);
+                                number2 = DataManager.getInstance().mainActivity.getString(R.string.top) + " " + number2;
+                            final String text = DataManager.getInstance().mainActivity.getString(R.string.you_are_in_top).replace("@@", number2);
                             ((TextView) mainView.findViewById(R.id.first_table_description)).setText(text);
                         }
                     });
@@ -95,19 +96,19 @@ public class Stats extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    final String _number = NetworkManager.getInstance().getCurrentOverallRanking(DataManager.getInstance().user.id);
+                    final String number = NetworkManager.getInstance().getCurrentOverallRanking(DataManager.getInstance().user.id);
                     DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.rankingImage(_number)).into((ImageView) mainView.findViewById(R.id.second_table_image));
-                            ((TextView) mainView.findViewById(R.id.second_table_title)).setText(LinguisticManager.convertRanking(_number));
-                            String _number2 = _number;
-                            _number2 = _number2.replace("%", "");
-                            if (Integer.parseInt(_number) > 10)
-                                _number2 = (100 - Integer.parseInt(_number2)) + "";
+                            Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.rankingImage(number)).into((ImageView) mainView.findViewById(R.id.second_table_image));
+                            ((TextView) mainView.findViewById(R.id.second_table_title)).setText(LinguisticManager.convertRanking(number));
+                            String number2 = number;
+                            number2 = number2.replace("%", "");
+                            if (Integer.parseInt(number) > 10)
+                                number2 = (100 - Integer.parseInt(number2)) + "";
                             else
-                                _number2 = DataManager.getInstance().mainActivity.getString(R.string.top) + " " + _number2;
-                            final String text2 = DataManager.getInstance().mainActivity.getString(R.string.you_are_in_top).replace("@@", _number2);
+                                number2 = DataManager.getInstance().mainActivity.getString(R.string.top) + " " + number2;
+                            final String text2 = DataManager.getInstance().mainActivity.getString(R.string.you_are_in_top).replace("@@", number2);
                             ((TextView) mainView.findViewById(R.id.second_table_description)).setText(text2);
 
                         }
@@ -149,7 +150,7 @@ public class Stats extends Fragment {
         layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                contor = 0;
+                counter = 0;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -163,7 +164,7 @@ public class Stats extends Fragment {
                             @Override
                             public void run() {
                                 adapter.notifyDataSetChanged();
-                                call_refresh();
+                                callRefresh();
                             }
                         });
                     }
@@ -175,21 +176,21 @@ public class Stats extends Fragment {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            final String _number = NetworkManager.getInstance().getCurrentRanking(DataManager.getInstance().user.id);
+                            final String number = NetworkManager.getInstance().getCurrentRanking(DataManager.getInstance().user.id);
                             DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.rankingImage(_number)).into((ImageView) mainView.findViewById(R.id.first_table_image));
-                                    ((TextView) mainView.findViewById(R.id.first_table_title)).setText(LinguisticManager.convertRanking(_number));
-                                    String _number2 = _number;
-                                    _number2 = _number2.replace("%", "");
-                                    if (Integer.parseInt(_number) > 10)
-                                        _number2 = (100 - Integer.parseInt(_number2)) + "";
+                                    Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.rankingImage(number)).into((ImageView) mainView.findViewById(R.id.first_table_image));
+                                    ((TextView) mainView.findViewById(R.id.first_table_title)).setText(LinguisticManager.convertRanking(number));
+                                    String number2 = number;
+                                    number2 = number2.replace("%", "");
+                                    if (Integer.parseInt(number) > 10)
+                                        number2 = (100 - Integer.parseInt(number2)) + "";
                                     else
-                                        _number2 = DataManager.getInstance().mainActivity.getString(R.string.top) + " " + _number2;
-                                    final String text = DataManager.getInstance().mainActivity.getString(R.string.you_are_in_top).replace("@@", _number2);
+                                        number2 = DataManager.getInstance().mainActivity.getString(R.string.top) + " " + number2;
+                                    final String text = DataManager.getInstance().mainActivity.getString(R.string.you_are_in_top).replace("@@", number2);
                                     ((TextView) mainView.findViewById(R.id.first_table_description)).setText(text);
-                                    call_refresh();
+                                    callRefresh();
                                 }
                             });
                         }
@@ -198,21 +199,21 @@ public class Stats extends Fragment {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            final String _number = NetworkManager.getInstance().getCurrentOverallRanking(DataManager.getInstance().user.id);
+                            final String number = NetworkManager.getInstance().getCurrentOverallRanking(DataManager.getInstance().user.id);
                             DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.rankingImage(_number)).into((ImageView) mainView.findViewById(R.id.second_table_image));
-                                    ((TextView) mainView.findViewById(R.id.second_table_title)).setText(LinguisticManager.convertRanking(_number));
-                                    String _number2 = _number;
-                                    _number2 = _number2.replace("%", "");
-                                    if (Integer.parseInt(_number) > 10)
-                                        _number2 = (100 - Integer.parseInt(_number2)) + "";
+                                    Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.rankingImage(number)).into((ImageView) mainView.findViewById(R.id.second_table_image));
+                                    ((TextView) mainView.findViewById(R.id.second_table_title)).setText(LinguisticManager.convertRanking(number));
+                                    String number2 = number;
+                                    number2 = number2.replace("%", "");
+                                    if (Integer.parseInt(number) > 10)
+                                        number2 = (100 - Integer.parseInt(number2)) + "";
                                     else
-                                        _number2 = DataManager.getInstance().mainActivity.getString(R.string.top) + " " + _number2;
-                                    final String text2 = DataManager.getInstance().mainActivity.getString(R.string.you_are_in_top).replace("@@", _number2);
+                                        number2 = DataManager.getInstance().mainActivity.getString(R.string.top) + " " + number2;
+                                    final String text2 = DataManager.getInstance().mainActivity.getString(R.string.you_are_in_top).replace("@@", number2);
                                     ((TextView) mainView.findViewById(R.id.second_table_description)).setText(text2);
-                                    call_refresh();
+                                    callRefresh();
                                 }
                             });
                         }
@@ -229,7 +230,7 @@ public class Stats extends Fragment {
                                 public void run() {
                                     ((TextView) mainView.findViewById(R.id.this_week_ap)).setText(DataManager.getInstance().user.last_week_activity_points + " " + DataManager.getInstance().mainActivity.getString(R.string.activity_points));
                                     ((TextView) mainView.findViewById(R.id.overall_ap)).setText(DataManager.getInstance().user.overall_activity_points + " " + DataManager.getInstance().mainActivity.getString(R.string.activity_points));
-                                    call_refresh();
+                                    callRefresh();
                                 }
                             });
                         }
@@ -309,21 +310,21 @@ public class Stats extends Fragment {
             });
         } else {
 
-            TextView this_week_ap = (TextView) mainView.findViewById(R.id.this_week_ap);
-            if (this_week_ap != null) {
-                this_week_ap.setTypeface(DataManager.getInstance().myriadpro_regular);
+            TextView thisWeekAp = (TextView) mainView.findViewById(R.id.this_week_ap);
+            if (thisWeekAp != null) {
+                thisWeekAp.setTypeface(DataManager.getInstance().myriadpro_regular);
             }
-            TextView this_week2 = (TextView) mainView.findViewById(R.id.this_week2);
-            if (this_week2 != null) {
-                this_week2.setTypeface(DataManager.getInstance().myriadpro_regular);
+            TextView thisWeek2 = (TextView) mainView.findViewById(R.id.this_week2);
+            if (thisWeek2 != null) {
+                thisWeek2.setTypeface(DataManager.getInstance().myriadpro_regular);
             }
             TextView overall2 = (TextView) mainView.findViewById(R.id.overall2);
             if (overall2 != null) {
                 overall2.setTypeface(DataManager.getInstance().myriadpro_regular);
             }
-            TextView overall_ap = (TextView) mainView.findViewById(R.id.overall_ap);
-            if (overall_ap != null) {
-                overall_ap.setTypeface(DataManager.getInstance().myriadpro_regular);
+            TextView overallAp = (TextView) mainView.findViewById(R.id.overall_ap);
+            if (overallAp != null) {
+                overallAp.setTypeface(DataManager.getInstance().myriadpro_regular);
             }
         }
 
@@ -353,11 +354,11 @@ public class Stats extends Fragment {
         return mainView;
     }
 
-    private void call_refresh() {
-        contor++;
+    private void callRefresh() {
+        counter++;
         if (!DataManager.getInstance().mainActivity.isLandscape) {
-            if (contor == 3) layout.setRefreshing(false);
-        } else if (contor == 2) layout.setRefreshing(false);
+            if (counter == 3) layout.setRefreshing(false);
+        } else if (counter == 2) layout.setRefreshing(false);
     }
 
     @Override

@@ -2,8 +2,6 @@ package com.studygoal.jisc.Adapters;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.provider.CalendarContract;
-import android.support.annotation.IntegerRes;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
@@ -25,87 +23,57 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class ToDoTasksAdapter extends BaseAdapter {
     private static final String TAG = ToDoTasksAdapter.class.getSimpleName();
 
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private Context context;
+    private ArrayList<ToDoTasks> list;
+    private ToDoTasksAdapterListener listener;
+
     public interface ToDoTasksAdapterListener {
         void onDelete(ToDoTasks target, int finalPosition);
-
         void onEdit(ToDoTasks targets);
-
         void onDone(ToDoTasks target);
     }
 
-    private static final SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    private Context mContext;
-
-    private ArrayList<ToDoTasks> mList;
-
-    private ToDoTasksAdapterListener mListener;
-
     public ToDoTasksAdapter(Context context, ToDoTasksAdapterListener listener) {
-        mContext = context;
-        mListener = listener;
-        mList = new ArrayList<>();
+        this.context = context;
+        this.listener = listener;
+        list = new ArrayList<>();
     }
 
     public void updateList(List<ToDoTasks> list) {
-        if (mList != null) {
-            mList.clear();
+        if (this.list != null) {
+            this.list.clear();
         } else {
-            mList = new ArrayList<>();
+            this.list = new ArrayList<>();
         }
 
         if (list != null) {
-            mList.addAll(list);
+            this.list.addAll(list);
             notifyDataSetChanged();
         }
-
-        /*Collections.sort(mList, (o1, o2) -> {
-            int result = 0;
-
-            if (o1 != null && o2 != null) {
-                if (o1.fromTutor != null && o2.fromTutor != null) {
-                    Boolean tutor1 = o1.fromTutor.toLowerCase().equals("yes");
-                    Boolean tutor2 = o2.fromTutor.toLowerCase().equals("yes");
-                    result = tutor2.compareTo(tutor1);
-                }
-
-                if (result == 0 && o1.isAccepted != null && o2.isAccepted != null) {
-                    Boolean accepted1 = o1.isAccepted.toLowerCase().equals("0");
-                    Boolean accepted2 = o2.isAccepted.toLowerCase().equals("0");
-                    result += accepted2.compareTo(accepted1);
-                }
-
-                if (result == 0 && o1.description != null && o2.description != null) {
-                    result = o1.description.toLowerCase().compareTo(o2.description.toLowerCase());
-                }
-            }
-
-            return result;
-        });*/
     }
 
     public void deleteItem(int position) {
-        if (mList != null && position < mList.size()) {
-            mList.remove(position);
+        if (list != null && position < list.size()) {
+            list.remove(position);
             notifyDataSetChanged();
         }
     }
 
     @Override
     public int getCount() {
-        return mList.size();
+        return list.size();
     }
 
     @Override
     public ToDoTasks getItem(int position) {
-        return mList.get(position);
+        return list.get(position);
     }
 
     @Override
@@ -115,10 +83,10 @@ public class ToDoTasksAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final ToDoTasks item = mList.get(position);
+        final ToDoTasks item = list.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_todo_tasks, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_todo_tasks, parent, false);
         }
 
         ImageView activity_icon = (ImageView) convertView.findViewById(R.id.activity_icon);
@@ -127,7 +95,7 @@ public class ToDoTasksAdapter extends BaseAdapter {
         currentDate.setTime(Calendar.getInstance().getTimeInMillis());
         Date itemDate = null;
         try {
-            itemDate = sDateFormat.parse(item.endDate);
+            itemDate = simpleDateFormat.parse(item.endDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -135,15 +103,15 @@ public class ToDoTasksAdapter extends BaseAdapter {
 
         String overdueText = "";
         if (difference == 0) {
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.watch_time_due_today));
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_due_today));
         } else if (difference == -1 || difference == -2) {
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.watch_time_2_left));
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_2_left));
         } else if (difference <= -3 && difference > -7) {
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.watch_time_7_left));
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_7_left));
         } else if (difference <= -7) {
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.watch_time_idle));
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_idle));
         } else if (difference > 0){
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.watch_time_overdue));
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.watch_time_overdue));
             if(difference == 1)
                 overdueText = "1 day overdue: ";
             else
@@ -156,13 +124,13 @@ public class ToDoTasksAdapter extends BaseAdapter {
         String text = "";
         text += overdueText + item.description;
         if(!item.module.equals("no_module"))
-            text += " " + mContext.getString(R.string._for) + " " + item.module;
-        text  += " " + mContext.getString(R.string.by).toLowerCase() + " ";
+            text += " " + context.getString(R.string._for) + " " + item.module;
+        text  += " " + context.getString(R.string.by).toLowerCase() + " ";
 
         boolean isToday = false;
 
         try {
-            Date date = sDateFormat.parse(item.endDate);
+            Date date = simpleDateFormat.parse(item.endDate);
             if(DateUtils.isToday(date.getTime())){
                 isToday = true;
             }
@@ -171,13 +139,13 @@ public class ToDoTasksAdapter extends BaseAdapter {
         }
 
         if (isToday) {
-            text += mContext.getString(R.string.today);
+            text += context.getString(R.string.today);
         } else {
             text += getDateFromEndDateTag(item.endDate);
         }
 
         if (item.reason != null && !item.reason.isEmpty()) {
-            text += " " + mContext.getString(R.string.because) + " " + item.reason;
+            text += " " + context.getString(R.string.because) + " " + item.reason;
         }
 
         textView.setText(text);
@@ -186,25 +154,25 @@ public class ToDoTasksAdapter extends BaseAdapter {
         convertView.findViewById(R.id.edit).setOnClickListener(v -> {
             swipeLayout.close(true);
 
-            if (mListener != null) {
-                mListener.onEdit(item);
+            if (listener != null) {
+                listener.onEdit(item);
             }
         });
 
         convertView.findViewById(R.id.done).setOnClickListener(v -> {
             swipeLayout.close(true);
 
-            if (mListener != null) {
-                mListener.onDone(item);
+            if (listener != null) {
+                listener.onDone(item);
             }
         });
 
         View mainLayout = convertView.findViewById(R.id.mainLayout);
 
         if (item.fromTutor != null && item.isAccepted != null && item.fromTutor.toLowerCase().equals("yes") && item.isAccepted.equals("0")) {
-            mainLayout.setBackgroundColor(mContext.getResources().getColor(R.color.to_do_item_tutor_background));
+            mainLayout.setBackgroundColor(context.getResources().getColor(R.color.to_do_item_tutor_background));
         } else {
-            mainLayout.setBackgroundColor(mContext.getResources().getColor(R.color.to_do_item_general_background));
+            mainLayout.setBackgroundColor(context.getResources().getColor(R.color.to_do_item_general_background));
         }
 
         final int finalPosition = position;
@@ -240,8 +208,8 @@ public class ToDoTasksAdapter extends BaseAdapter {
                 dialog.dismiss();
                 swipeLayout.close(true);
 
-                if (mListener != null) {
-                    mListener.onDelete(item, finalPosition);
+                if (listener != null) {
+                    listener.onDelete(item, finalPosition);
                 }
             });
             dialog.findViewById(R.id.dialog_no).setOnClickListener(v12 -> dialog.dismiss());
@@ -273,45 +241,45 @@ public class ToDoTasksAdapter extends BaseAdapter {
                 returnDate += day + "rd";
                 break;
             default:
-                returnDate += day + mContext.getString(R.string._th);
+                returnDate += day + context.getString(R.string._th);
         }
 
         switch(month){
             case 1:
-                returnDate += " " + mContext.getString(R.string.january);
+                returnDate += " " + context.getString(R.string.january);
                 break;
             case 2:
-                returnDate += " " + mContext.getString(R.string.february);
+                returnDate += " " + context.getString(R.string.february);
                 break;
             case 3:
-                returnDate += " " + mContext.getString(R.string.march);
+                returnDate += " " + context.getString(R.string.march);
                 break;
             case 4:
-                returnDate += " " + mContext.getString(R.string.april);
+                returnDate += " " + context.getString(R.string.april);
                 break;
             case 5:
-                returnDate += " " + mContext.getString(R.string.may);
+                returnDate += " " + context.getString(R.string.may);
                 break;
             case 6:
-                returnDate += " " + mContext.getString(R.string.june);
+                returnDate += " " + context.getString(R.string.june);
                 break;
             case 7:
-                returnDate += " " + mContext.getString(R.string.july);
+                returnDate += " " + context.getString(R.string.july);
                 break;
             case 8:
-                returnDate += " " + mContext.getString(R.string.august);
+                returnDate += " " + context.getString(R.string.august);
                 break;
             case 9:
-                returnDate += " " + mContext.getString(R.string.september);
+                returnDate += " " + context.getString(R.string.september);
                 break;
             case 10:
-                returnDate += " " + mContext.getString(R.string.october);
+                returnDate += " " + context.getString(R.string.october);
                 break;
             case 11:
-                returnDate += " " + mContext.getString(R.string.november);
+                returnDate += " " + context.getString(R.string.november);
                 break;
             default:
-                returnDate += " " + mContext.getString(R.string.december);
+                returnDate += " " + context.getString(R.string.december);
         }
 
         returnDate += " " + date[0];

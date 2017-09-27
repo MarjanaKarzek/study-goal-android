@@ -20,6 +20,7 @@ import com.studygoal.jisc.Activities.TrophyDetailsActivity;
  *
  */
 public class AllTrophiesFragment extends Fragment {
+    private static final String TAG = AllTrophiesFragment.class.getSimpleName();
 
     @Override
     public void onResume() {

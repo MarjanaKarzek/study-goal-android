@@ -14,6 +14,7 @@ import com.studygoal.jisc.R;
 import com.studygoal.jisc.Activities.SettingsActivity;
 
 public class FriendsScreenFragment extends Fragment {
+    private static final String TAG = FriendsScreenFragment.class.getSimpleName();
 
     @Override
     public void onResume() {

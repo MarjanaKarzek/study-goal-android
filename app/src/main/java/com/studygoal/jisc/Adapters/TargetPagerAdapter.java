@@ -12,6 +12,7 @@ import com.studygoal.jisc.Models.Targets;
 import java.util.List;
 
 public class TargetPagerAdapter extends FragmentStatePagerAdapter {
+    private static final String TAG = TargetPagerAdapter.class.getSimpleName();
 
     public List<Targets> list;
     public TargetDetailsFragment reference;

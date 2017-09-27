@@ -28,10 +28,11 @@ import com.studygoal.jisc.Utils.EditTextCustom;
 import java.util.HashMap;
 
 public class FeedFragment extends Fragment {
+    private static final String TAG = FeedFragment.class.getSimpleName();
 
-    public View mainView, tutorial_message;
-    FeedAdapter adapter;
-    SwipeRefreshLayout layout;
+    public View mainView, tutorialMessage;
+    private FeedAdapter adapter;
+    private SwipeRefreshLayout layout;
 
     @Override
     public void onResume() {
@@ -58,9 +59,9 @@ public class FeedFragment extends Fragment {
                     public void run() {
                         adapter.notifyDataSetChanged();
                         if (adapter.feedList.size() == 0)
-                            tutorial_message.setVisibility(View.VISIBLE);
+                            tutorialMessage.setVisibility(View.VISIBLE);
                         else
-                            tutorial_message.setVisibility(View.INVISIBLE);
+                            tutorialMessage.setVisibility(View.INVISIBLE);
                         DataManager.getInstance().mainActivity.hideProgressBar();
                     }
                 });
@@ -74,7 +75,7 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.feed_fragment, container, false);
         layout = (SwipeRefreshLayout) mainView.findViewById(R.id.swipelayout);
-        tutorial_message = mainView.findViewById(R.id.tutorial_message);
+        tutorialMessage = mainView.findViewById(R.id.tutorial_message);
 
         final EditTextCustom myEditText = (EditTextCustom) mainView.findViewById(R.id.message);
         myEditText.fragment = FeedFragment.this;
@@ -131,9 +132,9 @@ public class FeedFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                     layout.setRefreshing(false);
                                     if (adapter.feedList.size() == 0)
-                                        tutorial_message.setVisibility(View.VISIBLE);
+                                        tutorialMessage.setVisibility(View.VISIBLE);
                                     else
-                                        tutorial_message.setVisibility(View.INVISIBLE);
+                                        tutorialMessage.setVisibility(View.INVISIBLE);
                                 }
                             });
                         } else {
@@ -151,15 +152,15 @@ public class FeedFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) mainView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(DataManager.getInstance().mainActivity);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DataManager.getInstance().mainActivity);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
 
         adapter = new FeedAdapter(DataManager.getInstance().mainActivity, layout);
         recyclerView.setAdapter(adapter);
-        Log.e(getClass().getCanonicalName(), "FeedFragment Opened!");
+        Log.e(TAG, "FeedFragment Opened!");
         return mainView;
     }
 

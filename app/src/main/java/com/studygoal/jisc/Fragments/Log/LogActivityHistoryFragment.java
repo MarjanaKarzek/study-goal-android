@@ -33,12 +33,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LogActivityHistoryFragment extends Fragment {
+    private static final String TAG = LogActivityHistoryFragment.class.getSimpleName();
 
-    View mainView;
-    ListView list;
-    ActivitiesHistoryAdapter adapter;
-    SwipeRefreshLayout layout;
-    TextView message;
+    private View mainView;
+    private ListView list;
+    private ActivitiesHistoryAdapter adapter;
+    private SwipeRefreshLayout layout;
+    private TextView message;
 
     @Override
     public void onResume() {
@@ -98,11 +99,11 @@ public class LogActivityHistoryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-                String mid = v.getTag().toString().split(";")[0];
+                String logId = v.getTag().toString().split(";")[0];
                 String text = v.getTag().toString().split(";")[1];
 
                 ActivityDetailsFragment fragment = new ActivityDetailsFragment();
-                fragment.activityHistory = new Select().from(ActivityHistory.class).where("log_id=?", mid).executeSingle();
+                fragment.activityHistory = new Select().from(ActivityHistory.class).where("log_id=?", logId).executeSingle();
                 fragment.title = text;
 
                 DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()

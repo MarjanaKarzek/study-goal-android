@@ -17,6 +17,8 @@ import com.studygoal.jisc.Activities.SettingsActivity;
  */
 
 public class TermsScreenFragment extends Fragment {
+    private static final String TAG = TermsScreenFragment.class.getSimpleName();
+
     @Override
     public void onResume() {
         super.onResume();

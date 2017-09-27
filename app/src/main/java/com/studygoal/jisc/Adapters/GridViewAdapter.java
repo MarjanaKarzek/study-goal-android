@@ -9,8 +9,9 @@ import android.widget.BaseAdapter;
 import com.studygoal.jisc.R;
 
 public class GridViewAdapter extends BaseAdapter {
+    private static final String TAG = GridViewAdapter.class.getSimpleName();
 
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
 
     public GridViewAdapter(Context context) {
         inflater = LayoutInflater.from(context);

@@ -23,6 +23,7 @@ import com.studygoal.jisc.Activities.TrophyDetailsActivity;
  *
  */
 public class MyTrophiesFragment extends Fragment {
+    private static final String TAG = MyTrophiesFragment.class.getSimpleName();
 
     @Override
     public void onResume() {
@@ -58,8 +59,8 @@ public class MyTrophiesFragment extends Fragment {
         intent.putExtra("title",trophyMy.trophy_name);
         intent.putExtra("details", trophyMy.count);
 
-        Trophy t = new Select().from(Trophy.class).where("trophy_id = ?",trophyMy.trophy_id).executeSingle();
-        intent.putExtra("statement", t.statement);
+        Trophy trophy = new Select().from(Trophy.class).where("trophy_id = ?",trophyMy.trophy_id).executeSingle();
+        intent.putExtra("statement", trophy.statement);
 
         startActivity(intent);
     }

@@ -19,10 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FriendsGenericAdapter extends BaseAdapter {
+    private static final String TAG = FriendsGenericAdapter.class.getSimpleName();
 
     public List<Friend> list;
-    LayoutInflater inflater;
-    Context context;
+    private LayoutInflater inflater;
+    private Context context;
 
     public FriendsGenericAdapter(Context context) {
         inflater = LayoutInflater.from(context);

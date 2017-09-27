@@ -21,9 +21,10 @@ import com.studygoal.jisc.R;
 import com.studygoal.jisc.Activities.SettingsActivity;
 
 public class FriendsListFragment extends Fragment {
+    private static final String TAG = FriendsListFragment.class.getSimpleName();
 
-    FriendsListAdapter adapter;
-    ListView list;
+    private FriendsListAdapter adapter;
+    private ListView list;
 
     @Override
     public void onResume() {

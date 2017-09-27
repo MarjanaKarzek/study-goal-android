@@ -19,28 +19,29 @@ import com.studygoal.jisc.R;
  *
  */
 public class TrophiesFragment extends Fragment {
+    private static final String TAG = TrophiesFragment.class.getSimpleName();
 
-    private FragmentTabHost mTabHost;
+    private FragmentTabHost fragmentTabHost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.trophies_fragment, container, false);
 
-//        mTabHost = new FragmentTabHost(getActivity());
-        mTabHost = (FragmentTabHost) mainView.findViewById(R.id.tabhost);
+//        fragmentTabHost = new FragmentTabHost(getActivity());
+        fragmentTabHost = (FragmentTabHost) mainView.findViewById(R.id.tabhost);
 
-        mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
+        fragmentTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
 
-        mTabHost.addTab(mTabHost.newTabSpec("mytrophies").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.trophies_won)), MyTrophiesFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("alltrophies").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.trophies_available)),AllTrophiesFragment.class, null);
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("mytrophies").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.trophies_won)), MyTrophiesFragment.class, null);
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("alltrophies").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.trophies_available)),AllTrophiesFragment.class, null);
 
         for(int i = 0; i < 2; i++) {
-            View v = mTabHost.getTabWidget().getChildTabViewAt(i);
+            View v = fragmentTabHost.getTabWidget().getChildTabViewAt(i);
             ((TextView)v.findViewById(android.R.id.title)).setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
             ((TextView)v.findViewById(android.R.id.title)).setTypeface(DataManager.getInstance().myriadpro_regular);
             ((TextView)v.findViewById(android.R.id.title)).setTextSize(16f);
             ((TextView)v.findViewById(android.R.id.title)).setAllCaps(false);
-            mTabHost.getTabWidget().getChildAt(i).getLayoutParams().height = (int) (50 * this.getResources().getDisplayMetrics().density);
+            fragmentTabHost.getTabWidget().getChildAt(i).getLayoutParams().height = (int) (50 * this.getResources().getDisplayMetrics().density);
         }
 
         return mainView;
@@ -49,6 +50,6 @@ public class TrophiesFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mTabHost = null;
+        fragmentTabHost = null;
     }
 }

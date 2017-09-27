@@ -50,24 +50,25 @@ import java.util.List;
 import java.util.Map;
 
 public class LogLogActivityFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = LogLogActivityFragment.class.getSimpleName();
 
-    View mainView;
-    AppCompatTextView chooseActivity;
-    AppCompatTextView module;
-    AppCompatTextView activityType;
+    private View mainView;
+    private AppCompatTextView chooseActivity;
+    private AppCompatTextView module;
+    private AppCompatTextView activityType;
 
-    EditText hours_spent, minutes_spent;
-    TextView date;
+    private EditText hoursSpent, minutesSpent;
+    private TextView date;
 
     public Boolean isInEditMode;
     public ActivityHistory item;
 
-    RelativeLayout addModuleLayout;
+    private RelativeLayout addModuleLayout;
 
-    EditText note;
-    private String init_date;
-    private String init_note;
-    private String init_timespent;
+    private EditText note;
+    private String initDate;
+    private String initNote;
+    private String initTimeSpent;
 
     @Override
     public void onResume() {
@@ -102,13 +103,13 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
         ((TextView) mainView.findViewById(R.id.add_module_button_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
         mainView.findViewById(R.id.add_module_button_text).setOnClickListener(this);
 
-        TextView log_activity_text_hours = (TextView) mainView.findViewById(R.id.log_activity_text_hours);
-        log_activity_text_hours.setTypeface(DataManager.getInstance().myriadpro_regular);
+        TextView logActivityTextHours = (TextView) mainView.findViewById(R.id.log_activity_text_hours);
+        logActivityTextHours.setTypeface(DataManager.getInstance().myriadpro_regular);
 
-        hours_spent = ((EditText) mainView.findViewById(R.id.log_activity_text_timer_1));
-        hours_spent.setTypeface(DataManager.getInstance().myriadpro_regular);
-        minutes_spent = ((EditText) mainView.findViewById(R.id.log_activity_text_timer_3));
-        minutes_spent.setTypeface(DataManager.getInstance().myriadpro_regular);
+        hoursSpent = ((EditText) mainView.findViewById(R.id.log_activity_text_timer_1));
+        hoursSpent.setTypeface(DataManager.getInstance().myriadpro_regular);
+        minutesSpent = ((EditText) mainView.findViewById(R.id.log_activity_text_timer_3));
+        minutesSpent.setTypeface(DataManager.getInstance().myriadpro_regular);
 
         TextWatcher hoursWatcher = new TextWatcher() {
             @Override
@@ -125,9 +126,9 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                 if (s.toString().length() != 0) {
                     int value = Integer.parseInt(s.toString());
                     if (value < 0)
-                        hours_spent.setText("0");
+                        hoursSpent.setText("0");
                     if (value > 9)
-                        hours_spent.setText("9");
+                        hoursSpent.setText("9");
                 }
             }
         };
@@ -147,22 +148,22 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                 if (s.toString().length() != 0) {
                     int value = Integer.parseInt(s.toString());
                     if (value < 0)
-                        minutes_spent.setText("00");
+                        minutesSpent.setText("00");
                     if (value > 59)
-                        minutes_spent.setText("59");
+                        minutesSpent.setText("59");
                 }
             }
         };
 
         final View contentView = container;
         contentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            private int mPreviousHeight;
+            private int previousHeight;
 
             @Override
             public void onGlobalLayout() {
                 int newHeight = contentView.getHeight();
-                if (mPreviousHeight != 0) {
-                    if (mPreviousHeight > newHeight) {
+                if (previousHeight != 0) {
+                    if (previousHeight > newHeight) {
 
                         // Height decreased: keyboard was shown
                         mainView.findViewById(R.id.content_scroll).setPadding(0, 0, 0, 200);
@@ -180,18 +181,18 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                             }, 100);
                         }
 
-                    } else if (mPreviousHeight < newHeight) {
+                    } else if (previousHeight < newHeight) {
                         mainView.findViewById(R.id.content_scroll).setPadding(0, 0, 0, 0);
                     } else {
                         // No change
                     }
                 }
-                mPreviousHeight = newHeight;
+                previousHeight = newHeight;
             }
         });
 
-        hours_spent.addTextChangedListener(hoursWatcher);
-        minutes_spent.addTextChangedListener(minutesWatcher);
+        hoursSpent.addTextChangedListener(hoursWatcher);
+        minutesSpent.addTextChangedListener(minutesWatcher);
 
         ((TextView) mainView.findViewById(R.id.log_activity_text_minutes)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
@@ -272,14 +273,14 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
             date.setTag(c.get(Calendar.YEAR) + "-" + ((c.get(Calendar.MONTH) + 1) < 10 ? "0" + (c.get(Calendar.MONTH) + 1) : (c.get(Calendar.MONTH) + 1)) + "-" + ((c.get(Calendar.DAY_OF_MONTH)) < 10 ? "0" + c.get(Calendar.DAY_OF_MONTH) : c.get(Calendar.DAY_OF_MONTH)));
             note.setText(item.note);
 
-            init_date = date.getText().toString();
-            init_note = item.note;
-            init_timespent = item.time_spent;
+            initDate = date.getText().toString();
+            initNote = item.note;
+            initTimeSpent = item.time_spent;
 
             int h_spent = Integer.parseInt(item.time_spent) / 60;
             int m_spent = Integer.parseInt(item.time_spent) % 60;
-            hours_spent.setText(h_spent + "");
-            minutes_spent.setText(m_spent < 10 ? "0" + m_spent : m_spent + "");
+            hoursSpent.setText(h_spent + "");
+            minutesSpent.setText(m_spent < 10 ? "0" + m_spent : m_spent + "");
         }
 
         if (DataManager.getInstance().mainActivity.isLandscape) {
@@ -322,12 +323,12 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                         return;
                     }
 
-                    final int time_spent = Integer.parseInt(hours_spent.getText().toString()) * 60 + Integer.parseInt(minutes_spent.getText().toString());
-                    if (init_date.equals(date.getText().toString()) && init_timespent.equals(time_spent + "") && init_note.equals(note.getText().toString())) {
+                    final int timeSpent = Integer.parseInt(hoursSpent.getText().toString()) * 60 + Integer.parseInt(minutesSpent.getText().toString());
+                    if (initDate.equals(date.getText().toString()) && initTimeSpent.equals(timeSpent + "") && initNote.equals(note.getText().toString())) {
                         DataManager.getInstance().mainActivity.onBackPressed();
                         return;
                     }
-                    if (time_spent == 0) {
+                    if (timeSpent == 0) {
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.you_must_spend_time_to_edit_activity, Snackbar.LENGTH_LONG).show();
                         return;
                     } else {
@@ -335,7 +336,7 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                         params.put("student_id", DataManager.getInstance().user.id);
                         params.put("log_id", item.id);
                         params.put("activity_date", date.getTag().toString());
-                        params.put("time_spent", time_spent + "");
+                        params.put("time_spent", timeSpent + "");
                         if (note.getText().toString().length() > 0)
                             params.put("note", note.getText().toString());
 
@@ -350,7 +351,7 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                         modified_date += calendar.get(Calendar.MINUTE) < 10 ? "0" + calendar.get(Calendar.MINUTE) + ":" : calendar.get(Calendar.MINUTE) + ":";
                         modified_date += calendar.get(Calendar.SECOND) < 10 ? "0" + calendar.get(Calendar.SECOND) : calendar.get(Calendar.SECOND);
 
-                        final String finalModified_date = modified_date;
+                        final String finalModifiedDate = modified_date;
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -359,16 +360,16 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                                         @Override
                                         public void run() {
                                             NetworkManager.getInstance().getAppUsage(null,null);
-                                            int activityTime = time_spent - Integer.valueOf(item.time_spent);
+                                            int activityTime = timeSpent - Integer.valueOf(item.time_spent);
                                             NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
                                                     "" + Integer.valueOf((DataManager.getInstance().appUsageData.activities) + activityTime),
                                                     DataManager.getInstance().appUsageData.setTargets,
                                                     DataManager.getInstance().appUsageData.metTargets,
                                                     DataManager.getInstance().appUsageData.failedTargets);
                                             item.activity_date = date.getTag().toString();
-                                            item.time_spent = time_spent + "";
+                                            item.time_spent = timeSpent + "";
                                             item.note = note.getText().toString();
-                                            item.modified_date = finalModified_date;
+                                            item.modified_date = finalModifiedDate;
                                             item.save();
                                             DataManager.getInstance().mainActivity.hideProgressBar();
                                             DataManager.getInstance().mainActivity.onBackPressed();
@@ -408,10 +409,10 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                         return;
                     }
 
-                    String hours = hours_spent.getText().toString();
+                    String hours = hoursSpent.getText().toString();
                     if (hours.equals(""))
                         hours = "0";
-                    String minutes = minutes_spent.getText().toString();
+                    String minutes = minutesSpent.getText().toString();
                     if (minutes.equals(""))
                         minutes = "0";
 
@@ -601,7 +602,7 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
 
                 hourPicker.setMinValue(0);
                 hourPicker.setMaxValue(7);
-                hourPicker.setValue(Integer.parseInt(hours_spent.getText().toString()));
+                hourPicker.setValue(Integer.parseInt(hoursSpent.getText().toString()));
 //                hourPicker.setFormatter(new NumberPicker.Formatter() {
 //                    @Override
 //                    public String format(int value) {
@@ -618,7 +619,7 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                 });
                 minutePicker.setMinValue(0);
                 minutePicker.setMaxValue(59);
-                minutePicker.setValue(Integer.parseInt(minutes_spent.getText().toString()));
+                minutePicker.setValue(Integer.parseInt(minutesSpent.getText().toString()));
                 minutePicker.setFormatter(new NumberPicker.Formatter() {
                     @Override
                     public String format(int value) {
@@ -642,14 +643,14 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
                     public void onClick(View v) {
                         int hour = hourPicker.getValue();
 //                        if (hour < 10)
-//                            hours_spent.setText("0" + hour);
+//                            hoursSpent.setText("0" + hour);
 //                        else
-                        hours_spent.setText("" + hour);
+                        hoursSpent.setText("" + hour);
                         int minute = minutePicker.getValue();
                         if (minute < 10)
-                            minutes_spent.setText("0" + minute);
+                            minutesSpent.setText("0" + minute);
                         else
-                            minutes_spent.setText("" + minute);
+                            minutesSpent.setText("" + minute);
                         dialog.dismiss();
                     }
                 });

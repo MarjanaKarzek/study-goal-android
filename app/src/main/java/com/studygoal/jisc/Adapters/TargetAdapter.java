@@ -31,22 +31,20 @@ import java.util.Date;
 import java.util.List;
 
 public class TargetAdapter extends BaseAdapter {
+    private static final String TAG = TargetAdapter.class.getSimpleName();
+
+    private Context context;
+    public List<Targets> list;
+    private TargetAdapterListener listener;
 
     public interface TargetAdapterListener {
         void onDelete(Targets target, int finalPosition);
-
         void onEdit(Targets targets);
     }
 
-    private Context mContext;
-
-    public List<Targets> list;
-
-    private TargetAdapterListener mListener;
-
     public TargetAdapter(Context context, TargetAdapterListener listener) {
-        mContext = context;
-        mListener = listener;
+        this.context = context;
+        this.listener = listener;
         list = new ArrayList<>();
     }
 
@@ -73,30 +71,29 @@ public class TargetAdapter extends BaseAdapter {
         Module module = new Select().from(Module.class).where("module_id = ?", item.module_id).executeSingle();
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_target, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_target, parent, false);
         }
 
         List<ActivityHistory> activityHistoryList;
 
-
         if (module != null) {
             activityHistoryList = new Select().from(ActivityHistory.class).where("module_id = ?", item.module_id).and("activity = ?", item.activity).execute();
-            Log.d("TargetAdapter", "getView: searching for logs for: " + item.activity);
+            Log.d(TAG, "getView: searching for logs for: " + item.activity);
         } else {
             activityHistoryList = new Select().from(ActivityHistory.class).where("activity = ?", item.activity).execute();
-            Log.d("TargetAdapter", "getView: searching for logs for: " + module + "    " + item.activity);
+            Log.d(TAG, "getView: searching for logs for: " + module + "    " + item.activity);
         }
 
         Calendar date = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String current_date = dateFormat.format(date.getTime());
+        String currentDate = dateFormat.format(date.getTime());
 
         boolean dueToday = false;
 
         SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date convertedDate = null;
         try {
-            convertedDate = shortDateFormat.parse(current_date);
+            convertedDate = shortDateFormat.parse(currentDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -106,7 +103,7 @@ public class TargetAdapter extends BaseAdapter {
 
         switch (item.time_span.toLowerCase()) {
             case "daily": {
-                String time = current_date.split(" ")[0];
+                String time = currentDate.split(" ")[0];
                 List<ActivityHistory> tmp = new ArrayList<>();
                 for (int i = 0; i < activityHistoryList.size(); i++) {
                     Log.d("", "getView: activity History all " + activityHistoryList.get(i).toString());
@@ -133,7 +130,7 @@ public class TargetAdapter extends BaseAdapter {
                 break;
             }
             case "monthly": {
-                String time = current_date.split(" ")[0].split("-")[0] + "-" + current_date.split(" ")[0].split("-")[1];
+                String time = currentDate.split(" ")[0].split("-")[0] + "-" + currentDate.split(" ")[0].split("-")[1];
                 List<ActivityHistory> tmp = new ArrayList<>();
                 for (int i = 0; i < activityHistoryList.size(); i++) {
                     Log.d("TargetAdapter", "getView: activity History all " + activityHistoryList.get(i).toString());
@@ -151,19 +148,19 @@ public class TargetAdapter extends BaseAdapter {
             }
         }
 
-        int necessary_time = Integer.parseInt(item.total_time);
-        int spent_time = 0;
+        int necessaryTime = Integer.parseInt(item.total_time);
+        int spentTime = 0;
 
         for (int i = 0; i < activityHistoryList.size(); i++) {
             Log.d("TargetAdapter", "getView: activity History filtered " + activityHistoryList.get(i).toString());
             Log.d("TargetAdapter", "getView: time of that log" + Integer.parseInt(activityHistoryList.get(i).time_spent));
-            spent_time += Integer.parseInt(activityHistoryList.get(i).time_spent);
+            spentTime += Integer.parseInt(activityHistoryList.get(i).time_spent);
         }
 
-        Log.d("Spend", "getView: " + spent_time + " " + necessary_time);
-        if (dueToday && (spent_time < necessary_time))
+        Log.d("Spend", "getView: " + spentTime + " " + necessaryTime);
+        if (dueToday && (spentTime < necessaryTime))
             convertView.findViewById(R.id.colorbar).setBackgroundColor(0xFFFF0000);
-        else if (spent_time < necessary_time)
+        else if (spentTime < necessaryTime)
             convertView.findViewById(R.id.colorbar).setBackgroundColor(0xFFFFCC00);
         else
             convertView.findViewById(R.id.colorbar).setBackgroundColor(0xFF00FF00);
@@ -180,15 +177,15 @@ public class TargetAdapter extends BaseAdapter {
         text += LinguisticManager.getInstance().present.get(item.activity) + " ";
         int hour = Integer.parseInt(item.total_time) / 60;
         int minute = Integer.parseInt(item.total_time) % 60;
-        text += (hour == 1) ? "1 " + mContext.getString(R.string.hour) : hour + " " + mContext.getString(R.string.hours) + " ";
+        text += (hour == 1) ? "1 " + context.getString(R.string.hour) : hour + " " + context.getString(R.string.hours) + " ";
         if (minute > 0)
-            text += ((minute == 1) ? " " + mContext.getString(R.string.and) + " 1 " + mContext.getString(R.string.minute) + " " : " " + mContext.getString(R.string.and) + " " + minute + " " + mContext.getString(R.string.minutes) + " ");
+            text += ((minute == 1) ? " " + context.getString(R.string.and) + " 1 " + context.getString(R.string.minute) + " " : " " + context.getString(R.string.and) + " " + minute + " " + context.getString(R.string.minutes) + " ");
 
         if (item.time_span.length() > 0)
             text += item.time_span.toLowerCase();
 
         if (module != null && module.name.length() > 0) {
-            text += " " + mContext.getString(R.string._for) + " " + module.name;
+            text += " " + context.getString(R.string._for) + " " + module.name;
         }
 
         textView.setText(text);
@@ -197,8 +194,8 @@ public class TargetAdapter extends BaseAdapter {
         convertView.findViewById(R.id.edit).setOnClickListener(v -> {
             swipeLayout.close(true);
 
-            if (mListener != null) {
-                mListener.onEdit(item);
+            if (listener != null) {
+                listener.onEdit(item);
             }
         });
 
@@ -235,8 +232,8 @@ public class TargetAdapter extends BaseAdapter {
                 dialog.dismiss();
                 swipeLayout.close(true);
 
-                if (mListener != null) {
-                    mListener.onDelete(item, finalPosition);
+                if (listener != null) {
+                    listener.onDelete(item, finalPosition);
                 }
             });
 

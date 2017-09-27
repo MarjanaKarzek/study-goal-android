@@ -16,9 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogModuleAdapter extends BaseAdapter {
+    private static final String TAG = LogModuleAdapter.class.getSimpleName();
+
     public ArrayList<String> moduleList;
-    LayoutInflater inflater;
-    String selected;
+    private LayoutInflater inflater;
+    private String selected;
 
     public LogModuleAdapter(Context context, String selected) {
         this.selected = selected;

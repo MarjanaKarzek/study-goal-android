@@ -29,16 +29,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TargetDetailsFragment extends Fragment {
+    private static final String TAG = AddTargetFragment.class.getSimpleName();
 
-    View mainView;
-    ViewPager pager;
-    TargetPagerAdapter mAdapter;
+    private View mainView;
+    private ViewPager pager;
+    private TargetPagerAdapter adapter;
 
     public List<Targets> list;
     public int position;
-
-    public TargetDetailsFragment() {
-    }
 
     @Override
     public void onResume() {
@@ -47,12 +45,12 @@ public class TargetDetailsFragment extends Fragment {
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(4);
 
-        if (pager != null && mAdapter != null && mAdapter.list.size() != new Select().from(Targets.class).count()) {
-            mAdapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
-            mAdapter.reference = this;
-            mAdapter.list = new Select().from(Targets.class).execute();
-            mAdapter.notifyDataSetChanged();
-            pager.setAdapter(mAdapter);
+        if (pager != null && adapter != null && adapter.list.size() != new Select().from(Targets.class).count()) {
+            adapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
+            adapter.reference = this;
+            adapter.list = new Select().from(Targets.class).execute();
+            adapter.notifyDataSetChanged();
+            pager.setAdapter(adapter);
         }
 
         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsGraphs);
@@ -65,15 +63,15 @@ public class TargetDetailsFragment extends Fragment {
         mainView = inflater.inflate(R.layout.target_details, container, false);
 
         pager = (ViewPager) mainView.findViewById(R.id.pager);
-        mAdapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
-        mAdapter.reference = this;
+        adapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
+        adapter.reference = this;
         if (list == null) {
-            mAdapter.list = new Select().from(Targets.class).execute();
+            adapter.list = new Select().from(Targets.class).execute();
         } else {
-            mAdapter.list = list;
+            adapter.list = list;
         }
 
-        pager.setAdapter(mAdapter);
+        pager.setAdapter(adapter);
         pager.setCurrentItem(position);
 
         final PageControl pageControl = (PageControl) mainView.findViewById(R.id.page_control);
@@ -131,8 +129,8 @@ public class TargetDetailsFragment extends Fragment {
                             @Override
                             public void run() {
                                 target.delete();
-                                mAdapter.list.remove(finalPosition);
-                                mAdapter.notifyDataSetChanged();
+                                adapter.list.remove(finalPosition);
+                                adapter.notifyDataSetChanged();
                                 DataManager.getInstance().mainActivity.hideProgressBar();
                                 Snackbar.make(mainView.findViewById(R.id.parent), R.string.target_deleted_successfully, Snackbar.LENGTH_LONG).show();
                             }

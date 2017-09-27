@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HomeScreenFragment extends Fragment {
+    private static final String TAG = HomeScreenFragment.class.getSimpleName();
 
     public String selected_value;
 

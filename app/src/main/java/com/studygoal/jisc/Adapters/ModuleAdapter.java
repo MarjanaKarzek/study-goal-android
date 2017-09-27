@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleAdapter extends BaseAdapter {
+    private static final String TAG = ModuleAdapter.class.getSimpleName();
+
     private ArrayList<String> moduleList;
     private ArrayList<String> coursesList;
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
     private String selected;
 
     public ModuleAdapter(Context context, String selected) {
