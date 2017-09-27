@@ -68,7 +68,7 @@ public class FriendsRequestsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.friendsrequests, container, false);
+        View mainView = inflater.inflate(R.layout.layout_friends_requests, container, false);
 
 //            NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
 //            NetworkManager.getInstance().getFriendRequests(DataManager.getInstance().user.id);

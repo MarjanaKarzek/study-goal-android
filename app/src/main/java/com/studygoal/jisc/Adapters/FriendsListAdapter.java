@@ -60,7 +60,7 @@ public class FriendsListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.friendlist_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_friend_list, parent, false);
         }
         final Friend attendant = list.get(position);
 
@@ -83,7 +83,7 @@ public class FriendsListAdapter extends BaseAdapter {
                 if(ConnectionHandler.isConnected(context)) {
                     final Dialog dialog = new Dialog(context);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.friendrequest);
+                    dialog.setContentView(R.layout.layout_send_friend_request);
 
                     if (DataManager.getInstance().mainActivity.isLandscape) {
                         DisplayMetrics displaymetrics = new DisplayMetrics();

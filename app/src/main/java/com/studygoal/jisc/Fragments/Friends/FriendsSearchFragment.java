@@ -129,7 +129,7 @@ public class FriendsSearchFragment extends Fragment {
                         if (friend != null) {
                             final Dialog dialog = new Dialog(getActivity());
                             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            dialog.setContentView(R.layout.friendrequest);
+                            dialog.setContentView(R.layout.layout_send_friend_request);
 
                             if (DataManager.getInstance().mainActivity.isLandscape) {
                                 DisplayMetrics displaymetrics = new DisplayMetrics();

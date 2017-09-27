@@ -85,7 +85,7 @@ public class FriendsListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.friendslist, container, false);
+        View mainView = inflater.inflate(R.layout.layout_friends_list, container, false);
 
 
         EditText search = (EditText) mainView.findViewById(R.id.friends_search_edittext);

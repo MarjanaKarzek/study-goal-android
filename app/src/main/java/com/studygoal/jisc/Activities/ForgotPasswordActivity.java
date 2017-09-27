@@ -25,7 +25,7 @@ public class ForgotPasswordActivity extends Activity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         else
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.forgotpassword);
+        setContentView(R.layout.activity_layout_forgot_password);
 
         DataManager.getInstance().currActivity = this;
 

@@ -20,7 +20,7 @@ public class FriendsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.friends_fragment, container, false);
+        View mainView = inflater.inflate(R.layout.layout_friends, container, false);
 
         fragmentTabHost = (FragmentTabHost) mainView.findViewById(R.id.tabhost);
 

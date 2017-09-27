@@ -63,7 +63,7 @@ public class FriendsSearchAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.friendsearch_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_friend_search, parent, false);
         }
         final Friend attendant = list.get(position);
 
@@ -95,7 +95,7 @@ public class FriendsSearchAdapter extends BaseAdapter {
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(context);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.friendrequest);
+                dialog.setContentView(R.layout.layout_send_friend_request);
 
                 if(DataManager.getInstance().mainActivity.isLandscape) {
                     DisplayMetrics displaymetrics = new DisplayMetrics();

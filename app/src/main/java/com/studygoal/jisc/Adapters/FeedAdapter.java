@@ -285,7 +285,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     public FeedViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView;
         itemView = LayoutInflater.
-                from(viewGroup.getContext()).inflate(R.layout.feed_item, viewGroup, false);
+                from(viewGroup.getContext()).inflate(R.layout.list_item_feed, viewGroup, false);
         return new FeedViewHolder(itemView);
     }
 

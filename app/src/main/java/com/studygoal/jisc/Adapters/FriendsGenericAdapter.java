@@ -49,7 +49,7 @@ public class FriendsGenericAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
-            convertView = inflater.inflate(R.layout.friend_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_friend, parent, false);
         }
         final View hide = convertView.findViewById(R.id.hide);
         final View unhide = convertView.findViewById(R.id.unhide);

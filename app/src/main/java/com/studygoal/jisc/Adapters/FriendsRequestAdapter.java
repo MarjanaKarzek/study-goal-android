@@ -79,7 +79,7 @@ public class FriendsRequestAdapter extends BaseAdapter {
             return convertView;
         } else {
             if (convertView == null || (convertView.getTag() != null && convertView.getTag().equals("-1"))) {
-                convertView = inflater.inflate(R.layout.friendrequests_item, parent, false);
+                convertView = inflater.inflate(R.layout.list_item_friend_request, parent, false);
             }
 
             final ReceivedRequest attendant = list.get(position);
@@ -109,7 +109,7 @@ public class FriendsRequestAdapter extends BaseAdapter {
                     if(ConnectionHandler.isConnected(context)) {
                         final Dialog dialog = new Dialog(context);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.friendrequest);
+                        dialog.setContentView(R.layout.layout_send_friend_request);
 
                         if (DataManager.getInstance().mainActivity.isLandscape) {
                             DisplayMetrics displaymetrics = new DisplayMetrics();
