@@ -134,7 +134,7 @@ public class StatsVLEActivityFragment extends Fragment {
             if (!module.getText().toString().equals(DataManager.getInstance().mainActivity.getString(R.string.anymodule))) {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.custom_spinner_layout);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
                 dialog.setCancelable(true);
                 dialog.setOnCancelListener(dialog1 -> {
                     dialog1.dismiss();
@@ -175,7 +175,7 @@ public class StatsVLEActivityFragment extends Fragment {
             } else {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.custom_spinner_layout);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
                 dialog.setCancelable(true);
                 dialog.setOnCancelListener(dialog12 -> {
                     dialog12.dismiss();
@@ -227,7 +227,7 @@ public class StatsVLEActivityFragment extends Fragment {
         module.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.custom_spinner_layout);
+            dialog.setContentView(R.layout.snippet_custom_spinner);
             dialog.setCancelable(true);
             dialog.setOnCancelListener(dialog13 -> {
                 dialog13.dismiss();

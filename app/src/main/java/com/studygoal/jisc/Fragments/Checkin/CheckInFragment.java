@@ -52,7 +52,7 @@ public class CheckInFragment extends Fragment {
 
         final LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        mainView = inflater.inflate(R.layout.checkin_fragment, container, false);
+        mainView = inflater.inflate(R.layout.layout_checkin, container, false);
 
         DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.check_in));
         DataManager.getInstance().mainActivity.hideAllButtons();

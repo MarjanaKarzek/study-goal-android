@@ -12,9 +12,7 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Models.ActivityPoints;
 import com.studygoal.jisc.Models.Attainment;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Utils.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityPointsAdapter extends BaseAdapter {
@@ -47,7 +45,7 @@ public class ActivityPointsAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
 
-        convertView = inflater.inflate(R.layout.activity_points_item, parent, false);
+        convertView = inflater.inflate(R.layout.list_item_activity_points, parent, false);
 
         if(position == 0) {
             convertView.setBackgroundColor(Color.parseColor("#eeeeee"));

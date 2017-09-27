@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_layout_settings);
         DataManager.getInstance().currActivity = this;
         findViewById(R.id.main_screen_back).setOnClickListener(new View.OnClickListener() {
             @Override

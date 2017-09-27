@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             DataManager.getInstance().isLandscape = false;
         }
 
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_layout_login);
 
         ActiveAndroid.initialize(this);
         DataManager.getInstance().context = this;

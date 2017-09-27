@@ -2,7 +2,6 @@ package com.studygoal.jisc.Fragments.Stats;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +51,7 @@ public class StatsAppUsageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View mainView = inflater.inflate(R.layout.app_usage, container, false);
+        final View mainView = inflater.inflate(R.layout.layout_stats_app_usage, container, false);
 
         setUpDatePicker();
 

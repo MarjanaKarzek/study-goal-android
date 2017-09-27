@@ -18,7 +18,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Adapters.FeedAdapter;
 import com.studygoal.jisc.Adapters.ModuleAdapter;
 import com.studygoal.jisc.Activities.MainActivity;
 import com.studygoal.jisc.Fragments.BaseFragment;
@@ -87,7 +86,7 @@ public class StatsLeaderBoardFragment extends BaseFragment {
         module.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.custom_spinner_layout);
+            dialog.setContentView(R.layout.snippet_custom_spinner);
             dialog.setCancelable(true);
             dialog.setOnCancelListener(dialog1 -> {
                 dialog1.dismiss();

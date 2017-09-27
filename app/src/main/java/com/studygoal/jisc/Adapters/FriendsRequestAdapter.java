@@ -69,7 +69,7 @@ public class FriendsRequestAdapter extends BaseAdapter {
 
         if(list.size() == 0) {
 
-            convertView = inflater.inflate(R.layout.empty_item, parent, false);
+            convertView = inflater.inflate(R.layout.snippet_empty_friends_list, parent, false);
 
             TextView name = (TextView) convertView.findViewById(R.id.name);
             name.setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -215,7 +215,7 @@ public class FriendsRequestAdapter extends BaseAdapter {
                     if (ConnectionHandler.isConnected(context)) {
                         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.dialog_confirmation);
+                        dialog.setContentView(R.layout.layout_dialog_confirmation);
                         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                         if (DataManager.getInstance().mainActivity.isLandscape) {

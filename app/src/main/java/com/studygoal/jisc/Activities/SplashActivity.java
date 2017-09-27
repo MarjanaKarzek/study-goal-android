@@ -33,7 +33,7 @@ public class SplashActivity extends AppCompatActivity {
             DataManager.getInstance().isLandscape = false;
         }
 
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_layout_splash);
 
         try {
             VideoView videoHolder = (VideoView) findViewById(R.id.video_view);

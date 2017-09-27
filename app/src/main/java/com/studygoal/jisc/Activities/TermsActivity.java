@@ -22,7 +22,7 @@ public class TermsActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_terms);
+        setContentView(R.layout.activity_layout_terms);
 
         DataManager.getInstance().context = getApplicationContext();
         DataManager.getInstance().init();

@@ -71,7 +71,7 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
             DataManager.getInstance().isLandscape = false;
         }
 
-        setContentView(R.layout.activity_social);
+        setContentView(R.layout.activity_layout_social);
 
         email = "";
         socialID = "";

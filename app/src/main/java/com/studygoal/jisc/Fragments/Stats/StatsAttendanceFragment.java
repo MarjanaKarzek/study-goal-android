@@ -94,9 +94,9 @@ public class StatsAttendanceFragment extends Fragment {
             webView.post(new Runnable() {
                 @Override
                 public void run() {
-                    double d = getActivity().getResources().getDisplayMetrics().density;
-                    int h = (int) (webView.getHeight() / d) - 20;
-                    int w = (int) (webView.getWidth() / d) - 20;
+                    double density = getActivity().getResources().getDisplayMetrics().density;
+                    int height = (int) (webView.getHeight() / density) - 20;
+                    int width = (int) (webView.getWidth() / density) - 20;
 
                     String dataCount = "";
                     String dataDate = "";
@@ -107,8 +107,8 @@ public class StatsAttendanceFragment extends Fragment {
 
 
                     String rawHTML = new String(buffer);
-                    rawHTML = rawHTML.replace("280px", w + "px");
-                    rawHTML = rawHTML.replace("220px", h + "px");
+                    rawHTML = rawHTML.replace("280px", width + "px");
+                    rawHTML = rawHTML.replace("220px", height + "px");
                     rawHTML = rawHTML.replace("DATA", dataCount);
                     rawHTML = rawHTML.replace("DATES", dataDate);
                     webView.loadDataWithBaseURL("", rawHTML, "text/html", "UTF-8", "");

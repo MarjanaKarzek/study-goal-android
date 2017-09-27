@@ -381,7 +381,7 @@ public class TargetFragment extends BaseFragment {
         if(ConnectionHandler.isConnected(getContext())) {
             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.dialog_accept_task);
+            dialog.setContentView(R.layout.layout_dialog_accept_task);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
             if (DataManager.getInstance().mainActivity.isLandscape) {
@@ -432,7 +432,7 @@ public class TargetFragment extends BaseFragment {
     private void showDeclineTaskDialog(ToDoTasks item) {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_decline_task);
+        dialog.setContentView(R.layout.layout_dialog_decline_task);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         if (DataManager.getInstance().mainActivity.isLandscape) {

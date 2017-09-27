@@ -606,7 +606,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             case R.id.new_activity_module_textView: {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.custom_spinner_layout);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 if (DataManager.getInstance().mainActivity.isLandscape) {
                     DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -654,7 +654,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             case R.id.new_activity_activitytype_textView: {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.custom_spinner_layout);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 if (DataManager.getInstance().mainActivity.isLandscape) {
                     DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -693,7 +693,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             case R.id.new_activity_choose_textView: {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.custom_spinner_layout);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 if (DataManager.getInstance().mainActivity.isLandscape) {
                     DisplayMetrics displaymetrics = new DisplayMetrics();

@@ -211,7 +211,7 @@ public class LogActivityHistoryFragment extends Fragment {
     public void showDialog() {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.custom_spinner_layout);
+        dialog.setContentView(R.layout.snippet_custom_spinner);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if (DataManager.getInstance().mainActivity.isLandscape) {
             DisplayMetrics displaymetrics = new DisplayMetrics();

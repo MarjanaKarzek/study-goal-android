@@ -43,7 +43,7 @@ public class ChooseActivityAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
-            convertView = inflater.inflate(R.layout.custom_spinner_layout_item, parent, false);
+            convertView = inflater.inflate(R.layout.snippet_custom_spinner_item, parent, false);
         }
         TextView textView = (TextView)convertView.findViewById(R.id.dialog_item_name);
         textView.setTypeface(DataManager.getInstance().myriadpro_regular);

@@ -73,7 +73,7 @@ public class FeedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.feed_fragment, container, false);
+        mainView = inflater.inflate(R.layout.layout_feed, container, false);
         layout = (SwipeRefreshLayout) mainView.findViewById(R.id.swipelayout);
         tutorialMessage = mainView.findViewById(R.id.tutorial_message);
 
