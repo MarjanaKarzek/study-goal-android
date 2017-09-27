@@ -54,7 +54,7 @@ public class ActivityDetailsFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
-        mainView = inflater.inflate(R.layout.activity_activity_details, container, false);
+        mainView = inflater.inflate(R.layout.layout_activity_details, container, false);
 
         save = (ImageView) mainView.findViewById(R.id.save);
         Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.getInstance().images.get(activityHistory.activity)).into((ImageView)mainView.findViewById(R.id.activity_icon));

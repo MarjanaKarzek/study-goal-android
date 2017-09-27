@@ -13,7 +13,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -69,7 +68,7 @@ public class StatsEventAttendanceFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.stats_event_attendance, container, false);
+        mainView = inflater.inflate(R.layout.layout_stats_event_attendance, container, false);
         adapter = new EventsAttendedAdapter(getContext());
 
         listView = (ListView) mainView.findViewById(R.id.event_attendance_listView);

@@ -202,7 +202,7 @@ public class DataManager {
                 public void run() {
                     final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.trophy_notification);
+                    dialog.setContentView(R.layout.snippet_trophy_notification);
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                     TextView title = (TextView)dialog.findViewById(R.id.dialog_title);
                     title.setTypeface(DataManager.getInstance().oratorstd_typeface);

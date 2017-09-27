@@ -53,7 +53,7 @@ public class InstitutionsAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = inflater.inflate(R.layout.institution_item, viewGroup, false);
+            view = inflater.inflate(R.layout.list_item_institution, viewGroup, false);
         }
 
         TextView name = (TextView) view.findViewById(R.id.name);

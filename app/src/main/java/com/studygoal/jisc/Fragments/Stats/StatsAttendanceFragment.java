@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,12 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.RelativeLayout;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.studygoal.jisc.Managers.DataManager;
-import com.studygoal.jisc.Models.ED;
 import com.studygoal.jisc.R;
 
 import org.json.JSONArray;
@@ -27,7 +22,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class StatsAttendanceFragment extends Fragment {
     private static final String TAG = StatsAttendanceFragment.class.getSimpleName();
@@ -47,7 +41,7 @@ public class StatsAttendanceFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View mainView = inflater.inflate(R.layout.stats_attendance, container, false);
+        final View mainView = inflater.inflate(R.layout.layout_stats_attendance, container, false);
 
         webView = (WebView) mainView.findViewById(R.id.webview_graph);
         webView.getSettings().setJavaScriptEnabled(true);

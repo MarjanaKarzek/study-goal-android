@@ -88,7 +88,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mainView = inflater.inflate(R.layout.lauout_log_new_activity, container, false);
+        mainView = inflater.inflate(R.layout.layout_log_new_activity, container, false);
 
         DataManager.getInstance().reload();
 
@@ -536,7 +536,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             case R.id.new_activity_text_timer_1: {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.timespent_layout);
+                dialog.setContentView(R.layout.snippet_time_spent);
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                 if (DataManager.getInstance().mainActivity.isLandscape) {

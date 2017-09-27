@@ -433,7 +433,7 @@ public class AddTargetFragment extends BaseFragment {
     private void onAddTargetCardView() {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.timespent_layout);
+        dialog.setContentView(R.layout.snippet_time_spent);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if (DataManager.getInstance().mainActivity.isLandscape) {
             DisplayMetrics displaymetrics = new DisplayMetrics();

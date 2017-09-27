@@ -36,7 +36,7 @@ public class AllTrophiesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.trophiesall_layout, container, false);
+        View mainView = inflater.inflate(R.layout.layout_trophies_all, container, false);
 
         final GridView list = (GridView) mainView.findViewById(R.id.gridlist);
         final TrophiesAdapter adapter = new TrophiesAdapter(getActivity(),this);

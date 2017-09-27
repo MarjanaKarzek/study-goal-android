@@ -63,7 +63,7 @@ public class StatsPointsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.stats_points, container, false);
+        mainView = inflater.inflate(R.layout.layout_stats_points, container, false);
         activityPointsValueWeek = (TextView) mainView.findViewById(R.id.activity_points_value);
         activityPointsValueAll = (TextView) mainView.findViewById(R.id.activity_points_value2);
         piChartWebView = (WebView) mainView.findViewById(R.id.pi_chart_web_view);

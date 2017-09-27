@@ -50,10 +50,10 @@ public class StatsLeaderBoardFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View mainView = inflater.inflate(R.layout.stats_leaderboard, container, false);
+        final View mainView = inflater.inflate(R.layout.layout_stats_leaderboard, container, false);
 
         rankListView = (ListView) mainView.findViewById(R.id.stats_leaderBoard_listView);
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.stats_event_attendance_list_view_header, rankListView, false);
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.snippet_stats_event_attendance_list_view_header, rankListView, false);
         rankListView.addHeaderView(header);
         rankListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.snippet_event_attendance_list, EVENTS));
 

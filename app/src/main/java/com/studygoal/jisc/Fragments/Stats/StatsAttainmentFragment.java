@@ -96,7 +96,7 @@ public class StatsAttainmentFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainview = inflater.inflate(R.layout.stats_attainment, container, false);
+        mainview = inflater.inflate(R.layout.layout_stats_attainment, container, false);
         layout = (SwipeRefreshLayout) mainview.findViewById(R.id.stats_swipe_refresh);
         layout.setColorSchemeResources(R.color.colorPrimary);
 

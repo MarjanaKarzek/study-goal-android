@@ -50,7 +50,7 @@ public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.trophies_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_trophies, parent, false);
         } else {
             ImageView image = (ImageView) convertView.findViewById(R.id.trophy_image);
             image.setImageDrawable(null);

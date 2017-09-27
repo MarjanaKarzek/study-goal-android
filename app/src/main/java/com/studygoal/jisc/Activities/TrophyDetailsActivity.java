@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.CircleTransform;
@@ -36,7 +35,7 @@ public class TrophyDetailsActivity extends AppCompatActivity implements View.OnC
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        setContentView(R.layout.trophy_details);
+        setContentView(R.layout.layout_trophy_details);
         DataManager.getInstance().currActivity = this;
         Bundle bundle = getIntent().getExtras();
 

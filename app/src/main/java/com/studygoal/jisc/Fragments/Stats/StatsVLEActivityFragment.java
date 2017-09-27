@@ -78,7 +78,7 @@ public class StatsVLEActivityFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.stats3, container, false);
+        mainView = inflater.inflate(R.layout.layout_stats_vle_activity, container, false);
 
         isBar = false;
         webView = (WebView) mainView.findViewById(R.id.chart_web);

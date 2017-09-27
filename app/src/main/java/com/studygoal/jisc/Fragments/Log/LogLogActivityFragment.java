@@ -584,7 +584,7 @@ public class LogLogActivityFragment extends Fragment implements View.OnClickList
             case R.id.log_activity_cardView_timespent: {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.timespent_layout);
+                dialog.setContentView(R.layout.snippet_time_spent);
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 if (DataManager.getInstance().mainActivity.isLandscape) {
                     DisplayMetrics displaymetrics = new DisplayMetrics();

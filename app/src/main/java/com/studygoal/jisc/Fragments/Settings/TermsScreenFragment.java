@@ -33,7 +33,7 @@ public class TermsScreenFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.terms_screen, container, false);
+        View mainView = inflater.inflate(R.layout.layout_settings_terms_screen, container, false);
 
         WebView webView = (WebView) mainView.findViewById(R.id.webviewTerms);
         webView.loadUrl("https://docs.analytics.alpha.jisc.ac.uk/docs/learning-analytics/App-service-terms-and-conditions");

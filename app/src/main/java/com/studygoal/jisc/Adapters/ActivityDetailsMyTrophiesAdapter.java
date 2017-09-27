@@ -45,7 +45,7 @@ public class ActivityDetailsMyTrophiesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.activity_details_trophy_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_activity_details_trophy, parent, false);
         }
         TrophyMy trophy = list.get(position);
 

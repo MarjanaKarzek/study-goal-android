@@ -25,7 +25,7 @@ public class TrophiesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.trophies_fragment, container, false);
+        View mainView = inflater.inflate(R.layout.layout_trophies, container, false);
 
 //        fragmentTabHost = new FragmentTabHost(getActivity());
         fragmentTabHost = (FragmentTabHost) mainView.findViewById(R.id.tabhost);
