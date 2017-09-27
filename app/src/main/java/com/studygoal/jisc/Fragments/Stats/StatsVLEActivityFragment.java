@@ -61,7 +61,7 @@ public class StatsVLEActivityFragment extends Fragment {
     private int[] offlineDemoData = {22,0,0,21,4,5,23,6,16,10,3,4,6,1,7,0,0,0,0,3,5,7,12,24,1,0,0,12,13,21};
     private float webViewHeight;
     private boolean isBar;
-    private boolean isSevenDays = false;
+    private boolean isSevenDays = true;
     private boolean isOverall = false;
 
     private SegmentClickListener segmentClickListener;
@@ -108,10 +108,11 @@ public class StatsVLEActivityFragment extends Fragment {
         segments.add(segmentButtonSevenDays);
         segments.add(segmentButtonTwentyeightDays);
 
-        segmentClickListener = new SegmentClickListener(null, segments, getContext(), 1){
+        segmentClickListener = new SegmentClickListener(null, segments, getContext(), 0){
             @Override
             public void onClick(View view){
                 super.onClick(view);
+                isSevenDays = !isSevenDays;
                 if (isSevenDays) {
                     description.setText(R.string.last_week_engagement);
                 } else {
@@ -217,7 +218,11 @@ public class StatsVLEActivityFragment extends Fragment {
 
         description = (TextView) mainView.findViewById(R.id.description);
         description.setTypeface(DataManager.getInstance().myriadpro_regular);
-        description.setText(R.string.last_month_engagement);
+        if (isSevenDays) {
+            description.setText(R.string.last_week_engagement);
+        } else {
+            description.setText(R.string.last_month_engagement);
+        }
 
         ((TextView) mainView.findViewById(R.id.module)).setTypeface(DataManager.getInstance().myriadpro_regular);
         ((TextView) mainView.findViewById(R.id.period)).setTypeface(DataManager.getInstance().myriadpro_regular);

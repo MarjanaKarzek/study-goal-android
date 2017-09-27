@@ -174,9 +174,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/round_corners_segmented_active"
                         android:gravity="center"
                         android:text="@string/last_7_days_short"
-                        android:textColor="#3792ef"
+                        android:textColor="#ffffff"
                         android:textSize="18sp" />
 
                     <TextView
@@ -184,10 +185,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/round_corners_segmented_active_right"
                         android:gravity="center"
                         android:text="@string/last_28_days_short"
-                        android:textColor="#ffffff"
+                        android:textColor="#3792ef"
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
