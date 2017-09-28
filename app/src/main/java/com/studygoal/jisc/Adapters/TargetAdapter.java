@@ -188,6 +188,10 @@ public class TargetAdapter extends BaseAdapter {
             text += " " + context.getString(R.string._for) + " " + module.name;
         }
 
+        if(item.because != null && item.because.length() > 0){
+            text += " because " + item.because;
+        }
+
         textView.setText(text);
 
         final com.daimajia.swipe.SwipeLayout swipeLayout = (com.daimajia.swipe.SwipeLayout) convertView.findViewById(R.id.swipelayout);
