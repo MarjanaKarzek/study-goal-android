@@ -493,6 +493,7 @@
     <string name="to_do_task_decline_dialog_title">Decline</string>
     <string name="to_do_task_decline_dialog_message">Give reason for declining the task</string>
     <string name="to_do_task_decline_reason">Reason</string>
+    <string name="add_single_target_missing_goal">Add a goal for this target</string>
 
     <string name="to">to</string>
     <string name="session_on_app">Sessions on App</string>

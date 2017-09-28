@@ -842,6 +842,9 @@ public class AddTargetFragment extends BaseFragment {
 
             if (binding.addtargetEdittextMyGoalSingle.getText().toString().length() > 0) {
                 params.put("description", binding.addtargetEdittextMyGoalSingle.getText().toString());
+            } else {
+                Snackbar.make(root, R.string.add_single_target_missing_goal, Snackbar.LENGTH_LONG).show();
+                return;
             }
 
             if (binding.addtargetEdittextBecauseSingle.getText().toString().length() > 0) {
@@ -894,6 +897,9 @@ public class AddTargetFragment extends BaseFragment {
 
             if (binding.addtargetEdittextMyGoalSingle.getText().toString().length() > 0) {
                 params.put("description", binding.addtargetEdittextMyGoalSingle.getText().toString());
+            } else {
+                Snackbar.make(root, R.string.add_single_target_missing_goal, Snackbar.LENGTH_LONG).show();
+                return;
             }
 
             if (binding.addtargetEdittextBecauseSingle.getText().toString().length() > 0) {
