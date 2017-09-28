@@ -475,7 +475,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_started, Snackbar.LENGTH_LONG).show();
 
                 timestamp = System.currentTimeMillis();
-                int reminder = Integer.parseInt(reminderEditText.getText().toString());
+                int reminder = 0;
+                if(!reminderEditText.getText().toString().equals(""))
+                    reminder = Integer.parseInt(reminderEditText.getText().toString());
                 timer = new Timer();
                 timerTask = new TimerTask() {
                     @Override
