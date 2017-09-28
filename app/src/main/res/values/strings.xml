@@ -502,4 +502,6 @@
     <string name="targets_failed_to_meet">Targets Failed to Meet</string>
     <string name="start_date_after_end_date_hint">Start date must be before end date</string>
     <string name="end_date_before_start_date_hint">End date must be after start date</string>
+    <string name="start_date_in_future_hint">Start date can not be set to future date</string>
+    <string name="end_date_in_future_hint">End date can not be set to future date</string>
 </resources>

@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.studygoal.jisc.Adapters.AppUsageListAdapter;
@@ -40,7 +42,7 @@ public class StatsAppUsageFragment extends Fragment {
     private DatePickerDialog.OnDateSetListener datePickerStart;
 
     private ArrayList<String> list = new ArrayList<>(Arrays.asList("targets", "setTarget", "activities", "sessions"));
-    private HashMap<String,String> data = new HashMap<>();
+    private HashMap<String, String> data = new HashMap<>();
     private AppUsageListAdapter adapter;
 
     public void onResume() {
@@ -58,27 +60,31 @@ public class StatsAppUsageFragment extends Fragment {
 
         setUpDatePicker();
 
+        DatePickerDialog startDateDatePickerDialog = new DatePickerDialog(getActivity(), datePickerStart, startDatePicked
+                .get(Calendar.YEAR), startDatePicked.get(Calendar.MONTH),
+                startDatePicked.get(Calendar.DAY_OF_MONTH));
+
         startDate = (TextView) mainView.findViewById(R.id.app_usage_start);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(getActivity(), datePickerStart, startDatePicked
-                        .get(Calendar.YEAR), startDatePicked.get(Calendar.MONTH),
-                        startDatePicked.get(Calendar.DAY_OF_MONTH)).show();
+                startDateDatePickerDialog.show();
             }
         });
+
+        DatePickerDialog endDateDatePickerDialog = new DatePickerDialog(getActivity(), datePickerEnd, endDatePicked
+                .get(Calendar.YEAR), endDatePicked.get(Calendar.MONTH),
+                endDatePicked.get(Calendar.DAY_OF_MONTH));
 
         endDate = (TextView) mainView.findViewById(R.id.app_usage_end);
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(getActivity(), datePickerEnd, endDatePicked
-                        .get(Calendar.YEAR), endDatePicked.get(Calendar.MONTH),
-                        endDatePicked.get(Calendar.DAY_OF_MONTH)).show();
+                endDateDatePickerDialog.show();
             }
         });
 
-        loadData(null,null);
+        loadData(null, null);
         adapter = new AppUsageListAdapter(getContext());
         adapter.list = list;
         adapter.data = data;
@@ -88,21 +94,21 @@ public class StatsAppUsageFragment extends Fragment {
         return mainView;
     }
 
-    private void loadData(String startDate, String endDate){
+    private void loadData(String startDate, String endDate) {
         DataManager.getInstance().mainActivity.showProgressBar("");
         NetworkManager.getInstance().getAppUsage(startDate, endDate);
         data.clear();
-        data.put("sessions",DataManager.getInstance().appUsageData.sessions);
-        data.put("activities",DataManager.getInstance().appUsageData.activities);
-        data.put("set_targets",DataManager.getInstance().appUsageData.setTargets);
-        data.put("met_targets",DataManager.getInstance().appUsageData.metTargets);
-        data.put("failed_targets",DataManager.getInstance().appUsageData.failedTargets);
-        if(adapter != null)
+        data.put("sessions", DataManager.getInstance().appUsageData.sessions);
+        data.put("activities", DataManager.getInstance().appUsageData.activities);
+        data.put("set_targets", DataManager.getInstance().appUsageData.setTargets);
+        data.put("met_targets", DataManager.getInstance().appUsageData.metTargets);
+        data.put("failed_targets", DataManager.getInstance().appUsageData.failedTargets);
+        if (adapter != null)
             adapter.notifyDataSetChanged();
         DataManager.getInstance().mainActivity.hideProgressBar();
     }
 
-    private void setUpDatePicker(){
+    private void setUpDatePicker() {
         datePickerStart = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -111,8 +117,14 @@ public class StatsAppUsageFragment extends Fragment {
                 startDatePicked.set(Calendar.MONTH, monthOfYear);
                 startDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 startDate.setText(dateFormat.format(startDatePicked.getTime()));
-                if(!endDate.getText().toString().equals("End")) {
-                    if(startDatePicked.after(endDatePicked)){
+                if (startDatePicked.after(Calendar.getInstance())) {
+                    startDatePicked = Calendar.getInstance();
+                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_in_future_hint, Snackbar.LENGTH_LONG).show();
+                    startDate.setText("Start");
+                    return;
+                }
+                if (!endDate.getText().toString().equals("End")) {
+                    if (startDatePicked.after(endDatePicked)) {
                         startDatePicked = Calendar.getInstance();
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_after_end_date_hint, Snackbar.LENGTH_LONG).show();
                         startDate.setText("Start");
@@ -131,14 +143,21 @@ public class StatsAppUsageFragment extends Fragment {
                 endDatePicked.set(Calendar.MONTH, monthOfYear);
                 endDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 endDate.setText(dateFormat.format(endDatePicked.getTime()));
-                if(!endDate.getText().toString().equals("Start"))
-                    if(endDatePicked.before(startDatePicked)){
+                if (endDatePicked.after(Calendar.getInstance())) {
+                    endDatePicked = Calendar.getInstance();
+                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_in_future_hint, Snackbar.LENGTH_LONG).show();
+                    endDate.setText("End");
+                    return;
+                }
+                if (!endDate.getText().toString().equals("Start")) {
+                    if (endDatePicked.before(startDatePicked)) {
                         endDatePicked = Calendar.getInstance();
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_before_start_date_hint, Snackbar.LENGTH_LONG).show();
                         endDate.setText("End");
                     } else {
                         loadData(apiDateFormat.format(startDatePicked.getTime()), apiDateFormat.format(endDatePicked.getTime()));
                     }
+                }
             }
         };
     }
