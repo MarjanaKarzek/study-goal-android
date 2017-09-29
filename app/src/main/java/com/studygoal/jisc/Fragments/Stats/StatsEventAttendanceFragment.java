@@ -109,6 +109,8 @@ public class StatsEventAttendanceFragment extends BaseFragment {
             return;
         });
 
+        listView.setEmptyView(mainView.findViewById(R.id.events_attended_list_emptyView));
+
         ((MainActivity) getActivity()).showProgressBar(null);
 
         new Thread(() -> {
@@ -203,7 +205,6 @@ public class StatsEventAttendanceFragment extends BaseFragment {
                         dataCount += "" + count.get(i) + ", ";
                         dataDate += "'" + dates.get(i) + "', \n";
                     }
-
 
                     String rawHTML = new String(buffer);
                     rawHTML = rawHTML.replace("280px", width + "px");

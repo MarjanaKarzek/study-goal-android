@@ -52,6 +52,15 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="15dp"
                 android:background="#d1e0f3" />
+            <TextView
+                android:id="@+id/events_attended_list_emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/empty_events_page_message"
+                android:textColor="@color/dark_grey"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
