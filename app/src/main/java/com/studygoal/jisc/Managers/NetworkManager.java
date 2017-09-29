@@ -4730,9 +4730,13 @@ public class NetworkManager {
                 JSONObject jsonObject = new JSONObject(sb.toString());
                 DataManager.getInstance().appUsageData.sessions = jsonObject.getString("number_of_sessions");
                 DataManager.getInstance().appUsageData.activities = jsonObject.getString("activity_logged_hours");
-                DataManager.getInstance().appUsageData.setTargets = jsonObject.getString("set_targets_number");
-                DataManager.getInstance().appUsageData.metTargets = jsonObject.getString("met_targets_number");
-                DataManager.getInstance().appUsageData.failedTargets = jsonObject.getString("failed_targets_number");
+                JSONObject setTargets = jsonObject.getJSONObject("set_targets_number");
+                DataManager.getInstance().appUsageData.setTargets = "" + (Integer.valueOf(setTargets.getString("recurring targets")) + Integer.valueOf(setTargets.getString("todo tasks")));
+                JSONObject metTargets = jsonObject.getJSONObject("met_targets_number");
+                DataManager.getInstance().appUsageData.metTargets = "" + (Integer.valueOf(metTargets.getString("recurring targets")) + Integer.valueOf(metTargets.getString("todo tasks")));
+                JSONObject failedTargets = jsonObject.getJSONObject("failed_targets_number");
+                DataManager.getInstance().appUsageData.failedTargets = "" + (Integer.valueOf(failedTargets.getString("recurring targets")) + Integer.valueOf(failedTargets.getString("todo tasks")));
+
                 Log.d("NetworkManager", "call: get App Usage " + DataManager.getInstance().appUsageData.sessions
                         + " " + DataManager.getInstance().appUsageData.activities
                         + " " + DataManager.getInstance().appUsageData.setTargets
