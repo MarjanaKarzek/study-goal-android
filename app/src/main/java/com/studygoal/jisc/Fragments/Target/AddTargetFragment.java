@@ -292,8 +292,18 @@ public class AddTargetFragment extends BaseFragment {
 
                 in.setText(moduleName);
                 because.setText(item.because);
-                activityType.setOnClickListener(v -> onAddTargetActivityType());
-                chooseActivity.setOnClickListener(v -> onAddTargetChooseActivity());
+                activityType.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Snackbar.make(root, R.string.not_change_activity_in_edit_mode_hint, Snackbar.LENGTH_LONG).show();
+                    }
+                });
+                chooseActivity.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Snackbar.make(root, R.string.not_change_activity_in_edit_mode_hint, Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
         } else {
             activityType.setText(DataManager.getInstance().activity_type.get(0));
