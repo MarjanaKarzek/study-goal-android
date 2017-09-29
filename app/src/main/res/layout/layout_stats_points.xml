@@ -119,6 +119,17 @@
         android:layout_below="@+id/activity_points_container"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp" />
+    <TextView
+        android:id="@+id/points_list_emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/empty_points_page_message"
+        android:textColor="@color/dark_grey"
+        android:layout_below="@id/pi_chart_web_view"
+        android:layout_marginTop="100dp"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="1dp"

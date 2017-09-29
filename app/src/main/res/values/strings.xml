@@ -287,6 +287,7 @@
     <string name="empty_log_page_message">Welcome to Study Goal.\nStart logging your activity by pressing the \"+\" button.</string>
     <string name="empty_target_page_message">"Welcome to Study Goal.\nStart adding targets by pressing the \"+\" button.</string>
     <string name="empty_events_page_message">"No events attended yet.</string>
+    <string name="empty_points_page_message">"No points achieved yet.</string>
     <string name="daily">Daily</string>
     <string name="Weekly">Weekly</string>
     <string name="monthly">Monthly</string>

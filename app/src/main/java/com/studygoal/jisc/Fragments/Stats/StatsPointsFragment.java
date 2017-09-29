@@ -105,6 +105,11 @@ public class StatsPointsFragment extends BaseFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
+        if(adapter.list == null || adapter.list.size() == 0){
+            mainView.findViewById(R.id.points_list_emptyView).setVisibility(View.VISIBLE);
+        }else{
+            mainView.findViewById(R.id.points_list_emptyView).setVisibility(View.GONE);
+        }
         WebSettings s = piChartWebView.getSettings();
         s.setJavaScriptEnabled(true);
 
