@@ -155,8 +155,8 @@ public class StatsEventAttendanceFragment extends BaseFragment {
             JSONArray jsonArray = new JSONArray(preferences.getString(getString(R.string.attendance), null));
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String[] dateinfo = jsonObject.getString("date").substring(0, 10).split("-");
-                String date = dateinfo[2]+ "/" + dateinfo[1];
+                String[] dateInfo = jsonObject.getString("date").substring(0, 10).split("-");
+                String date = dateInfo[2]+ "/" + dateInfo[1];
                 dates.add(date);
                 count.add(jsonObject.getString("count"));
                 Log.e(dates.get(i), count.get(i));
@@ -181,41 +181,45 @@ public class StatsEventAttendanceFragment extends BaseFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
-        WebSettings s = webView.getSettings();
-        s.setJavaScriptEnabled(true);
+        if(dates.size() == 0){
+            mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.VISIBLE);
+        } else {
+            mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.GONE);
+            WebSettings s = webView.getSettings();
+            s.setJavaScriptEnabled(true);
 
-        try {
-            InputStream is = getContext().getAssets().open("stats_attendance_high_chart.html");
-            int size = 0;
-            size = is.available();
-            final byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
+            try {
+                InputStream is = getContext().getAssets().open("stats_attendance_high_chart.html");
+                int size = is.available();
+                final byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
 
-            webView.post(new Runnable() {
-                @Override
-                public void run() {
-                    double density = getActivity().getResources().getDisplayMetrics().density;
-                    int height = (int) (webView.getHeight() / density) - 20;
-                    int width = (int) (webView.getWidth() / density) - 20;
+                webView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        double density = getActivity().getResources().getDisplayMetrics().density;
+                        int height = (int) (webView.getHeight() / density) - 20;
+                        int width = (int) (webView.getWidth() / density) - 20;
 
-                    String dataCount = "";
-                    String dataDate = "";
-                    for (int i = 0; i < dates.size(); i++) {
-                        dataCount += "" + count.get(i) + ", ";
-                        dataDate += "'" + dates.get(i) + "', \n";
+                        String dataCount = "";
+                        String dataDate = "";
+                        for (int i = 0; i < dates.size(); i++) {
+                            dataCount += "" + count.get(i) + ", ";
+                            dataDate += "'" + dates.get(i) + "', \n";
+                        }
+
+                        String rawHTML = new String(buffer);
+                        rawHTML = rawHTML.replace("280px", width + "px");
+                        rawHTML = rawHTML.replace("220px", height + "px");
+                        rawHTML = rawHTML.replace("DATA", dataCount);
+                        rawHTML = rawHTML.replace("DATES", dataDate);
+                        webView.loadDataWithBaseURL("", rawHTML, "text/html", "UTF-8", "");
                     }
-
-                    String rawHTML = new String(buffer);
-                    rawHTML = rawHTML.replace("280px", width + "px");
-                    rawHTML = rawHTML.replace("220px", height + "px");
-                    rawHTML = rawHTML.replace("DATA", dataCount);
-                    rawHTML = rawHTML.replace("DATES", dataDate);
-                    webView.loadDataWithBaseURL("", rawHTML, "text/html", "UTF-8", "");
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
