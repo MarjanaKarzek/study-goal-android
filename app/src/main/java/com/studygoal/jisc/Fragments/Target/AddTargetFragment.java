@@ -171,11 +171,13 @@ public class AddTargetFragment extends BaseFragment {
         applyTypeface();
 
         if(DataManager.getInstance().mainActivity.displaySingleTarget){
+            Log.d(TAG, "onCreateView: single target add checked was true");
             binding.targetSingle.setChecked(true);
             isRecurringTarget = false;
             binding.recurringLayout.setVisibility(View.GONE);
             binding.singleLayout.setVisibility(View.VISIBLE);
         } else {
+            Log.d(TAG, "onCreateView: single target add checked was false");
             isRecurringTarget = true;
             binding.recurringLayout.setVisibility(View.VISIBLE);
             binding.singleLayout.setVisibility(View.GONE);
@@ -183,13 +185,17 @@ public class AddTargetFragment extends BaseFragment {
 
         binding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.target_recurring) {
+                Log.d(TAG, "onCreateView: single target add checked changed to false");
                 isRecurringTarget = true;
                 binding.recurringLayout.setVisibility(View.VISIBLE);
                 binding.singleLayout.setVisibility(View.GONE);
+                DataManager.getInstance().mainActivity.displaySingleTarget = false;
             } else {
+                Log.d(TAG, "onCreateView: single target add checked changed to true");
                 isRecurringTarget = false;
                 binding.recurringLayout.setVisibility(View.GONE);
                 binding.singleLayout.setVisibility(View.VISIBLE);
+                DataManager.getInstance().mainActivity.displaySingleTarget = true;
             }
         });
 

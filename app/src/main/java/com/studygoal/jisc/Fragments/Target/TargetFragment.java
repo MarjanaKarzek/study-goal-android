@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,21 +57,14 @@ public class TargetFragment extends BaseFragment {
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(4);
 
-        XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsMain);
-        loadData(true);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.target_fragment, container, false);
-        rootView = binding.getRoot();
-
         binding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.target_recurring) {
+                Log.d(TAG, "onCreateView: single target checked changed to false");
                 binding.list.setVisibility(View.VISIBLE);
                 binding.listTodo.setVisibility(View.GONE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = false;
             } else {
+                Log.d(TAG, "onCreateView: single target checked changed to true");
                 binding.list.setVisibility(View.GONE);
                 binding.listTodo.setVisibility(View.VISIBLE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = true;
@@ -78,6 +72,17 @@ public class TargetFragment extends BaseFragment {
 
             updateTutorialMessage();
         });
+
+        XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsMain);
+        loadData(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        boolean originalSingleTargetValue = DataManager.getInstance().mainActivity.displaySingleTarget;
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.target_fragment, container, false);
+        rootView = binding.getRoot();
 
         tutorialMessage = rootView.findViewById(R.id.tutorial_message);
         layout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipelayout);
@@ -187,6 +192,20 @@ public class TargetFragment extends BaseFragment {
 
         layout.setColorSchemeResources(R.color.colorPrimary);
         layout.setOnRefreshListener(() -> loadData(false));
+
+        if(originalSingleTargetValue){
+            Log.d(TAG, "onCreateView: single target was originally selected");
+            binding.targetSingle.setChecked(true);
+            binding.targetRecurring.setChecked(false);
+            binding.list.setVisibility(View.GONE);
+            binding.listTodo.setVisibility(View.VISIBLE);
+            DataManager.getInstance().mainActivity.displaySingleTarget = true;
+        }else {
+            Log.d(TAG, "onCreateView: single target was originally not selected");
+            binding.list.setVisibility(View.VISIBLE);
+            binding.listTodo.setVisibility(View.GONE);
+            DataManager.getInstance().mainActivity.displaySingleTarget = false;
+        }
 
         return rootView;
     }
