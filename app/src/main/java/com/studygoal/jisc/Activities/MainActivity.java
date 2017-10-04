@@ -121,7 +121,7 @@ public class MainActivity extends FragmentActivity {
             GlideApp.with(DataManager.getInstance().mainActivity)
                     .load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic)
                     .transform(new CircleTransform(DataManager.getInstance().mainActivity))
-                    .into(DataManager.getInstance().mainActivity.adapter.profile_pic);
+                    .into(DataManager.getInstance().mainActivity.adapter.profilePicture);
         } catch (Exception ignored) {
         }
     }
@@ -134,20 +134,6 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*Thread thread = new Thread(() -> {
-            NetworkManager.getInstance().getAppUsage(null, null);
-            if (!DataManager.getInstance().sessionLogged) {
-                android.util.Log.d(TAG, "onCreate: Session about to get logged");
-                NetworkManager.getInstance().updateAppUsage("" + (Integer.valueOf(DataManager.getInstance().appUsageData.sessions) + 1),
-                        DataManager.getInstance().appUsageData.activities,
-                        DataManager.getInstance().appUsageData.setTargets,
-                        DataManager.getInstance().appUsageData.metTargets,
-                        DataManager.getInstance().appUsageData.failedTargets);
-                DataManager.getInstance().sessionLogged = true;
-            }
-        });
-        thread.start();*/
-
         Log.setEnabled(true);
         isLandscape = DataManager.getInstance().isLandscape;
         DataManager.getInstance().checkForbidden = true;
@@ -328,9 +314,6 @@ public class MainActivity extends FragmentActivity {
                 pref.setAttendanceData(XApiManager.getInstance().getSettingAttendanceData());
                 pref.setAttainmentData(XApiManager.getInstance().getSettingAttainmentData());
                 pref.setStudyGoalAttendance(XApiManager.getInstance().getSettingStudyGoalAttendance());
-//                NetworkManager.getInstance().getSettings(getString(R.string.attendanceData));
-//                NetworkManager.getInstance().getSettings(getString(R.string.studyGoalAttendance));
-//                NetworkManager.getInstance().getSettings(getString(R.string.attainmentData));
                 NetworkManager.getInstance().getWeeklyAttendance();
 
                 // change left menu after login
@@ -350,36 +333,40 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, new FeedFragment())
                     .commit();
-        } else if (DataManager.getInstance().home_screen.equals("")) {
-            DataManager.getInstance().home_screen = "feed";
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new FeedFragment())
-                    .commit();
-        } else if (DataManager.getInstance().home_screen.toLowerCase().equals("feed")) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new FeedFragment())
-                    .commit();
-        } else if (DataManager.getInstance().home_screen.toLowerCase().equals("stats")) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new StatsVLEActivityFragment())
-                    .commit();
-        } else if (DataManager.getInstance().home_screen.toLowerCase().equals("log")) {
-            logFragment = new LogActivityHistoryFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, logFragment)
-                    .commit();
-        } else if (DataManager.getInstance().home_screen.toLowerCase().equals("target")) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new TargetFragment())
-                    .commit();
-        } else if (DataManager.getInstance().home_screen.toLowerCase().equals("checkin")) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new CheckInFragment())
-                    .commit();
-        } else if (DataManager.getInstance().home_screen.toLowerCase().equals("friends")) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new FriendsFragment())
-                    .commit();
+        } else {
+            switch (DataManager.getInstance().home_screen) {
+                case "stats":
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, new StatsVLEActivityFragment())
+                            .commit();
+                    break;
+                case "log":
+                    logFragment = new LogActivityHistoryFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, logFragment)
+                            .commit();
+                    break;
+                case "target":
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, new TargetFragment())
+                            .commit();
+                    break;
+                case "checkin":
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, new CheckInFragment())
+                            .commit();
+                    break;
+                case "friends":
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, new FriendsFragment())
+                            .commit();
+                    break;
+                default:
+                    DataManager.getInstance().home_screen = "feed";
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, new FeedFragment())
+                            .commit();
+            }
         }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -446,8 +433,7 @@ public class MainActivity extends FragmentActivity {
                 } else if (selection.equals(getString(R.string.points))) {
                     destination = new StatsPointsFragment();
                 } else if (selection.equals(getString(R.string.log))) {
-                    logFragment = new LogActivityHistoryFragment();
-                    destination = logFragment;
+                    destination = new LogActivityHistoryFragment();
                 } else if (selection.equals(getString(R.string.target))) {
                     destination = new TargetFragment();
                 } else if (selection.equals(getString(R.string.leader_board))) {
@@ -469,7 +455,6 @@ public class MainActivity extends FragmentActivity {
                         fragmentTransaction.addToBackStack(null);
                     }
                     fragmentTransaction.commit();
-//                            .commit();
                 }
             }
 
@@ -492,105 +477,108 @@ public class MainActivity extends FragmentActivity {
                     if (adapter.values[position].equals(getString(R.string.stats))) {
                         adapter.statsOpened = !adapter.statsOpened;
                         adapter.notifyDataSetChanged();
+                    } else {
+                        if (adapter.selectedImage != null) {
+                            adapter.selectedImage.setColorFilter(0x00FFFFFF);
+                            adapter.selectedImage = (ImageView) view.findViewById(R.id.drawer_item_icon);
+                            adapter.selectedImage.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
+                        }
+                        if (adapter.selectedText != null) {
+                            adapter.selectedText.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.light_grey));
+                            adapter.selectedText = (TextView) view.findViewById(R.id.drawer_item_text);
+                            adapter.selectedText.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
+                        }
                     }
-                    if (adapter.selected_image != null) {
-                        adapter.selected_image.setColorFilter(0x00FFFFFF);
-                        adapter.selected_image = (ImageView) view.findViewById(R.id.drawer_item_icon);
-                        adapter.selected_image.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
-                    }
-                    if (adapter.selected_text != null) {
-                        adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.light_grey));
-                        adapter.selected_text = (TextView) view.findViewById(R.id.drawer_item_text);
-                        adapter.selected_text.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
-                    }
+                    android.util.Log.d(TAG, "onItemClick: selected Menu Text " + adapter.selectedText.getText());
 
                     int staticMenuItems = 8;
                     for (String menuItem : adapter.values) {
                         if (menuItem.equals(getString(R.string.check_in))) {
                             staticMenuItems++;
+                            return;
                         }
                     }
                     int statOpenedNum = adapter.values.length - staticMenuItems;
 
-
                     if (adapter.values[position].equals(getString(R.string.stats))) {
                         return;
-                    }
-
-                    for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
-                        getSupportFragmentManager().popBackStackImmediate();
-                    }
-
-                    selectedPosition = position;
-                    if (!adapter.statsOpened && position > 3) {
-                        selectedPosition = position + statOpenedNum;
-                    }
-                    drawer.closeDrawer(GravityCompat.START);
-
-                    if (!isInsideStats(adapter.values[selectedPosition])) {
-                        lastSelected = selectedPosition;
-                    }
-
-
-                    if (adapter.selected_text != null && adapter.selected_text.getText().toString().equals(MainActivity.this.getString(R.string.logout))) {
-                        final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.layout_dialog_confirmation);
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                        if (DataManager.getInstance().mainActivity.isLandscape) {
-                            DisplayMetrics displaymetrics = new DisplayMetrics();
-                            DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                            int width = (int) (displaymetrics.widthPixels * 0.45);
-
-                            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                            params.width = width;
-                            dialog.getWindow().setAttributes(params);
+                    } else {
+                        android.util.Log.d(TAG, "onItemClick: Menu Text something else then Stats");
+                        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                            getSupportFragmentManager().popBackStackImmediate();
                         }
 
-                        ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-                        ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.confirm);
+                        selectedPosition = position;
+                        if (!adapter.statsOpened && position > 3) {
+                            selectedPosition = position + statOpenedNum;
+                        }
+                        drawer.closeDrawer(GravityCompat.START);
 
-                        ((TextView) dialog.findViewById(R.id.dialog_message)).setTypeface(DataManager.getInstance().myriadpro_regular);
-                        ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.confirm_logout_message);
+                        if (!isInsideStats(adapter.values[selectedPosition])) {
+                            lastSelected = selectedPosition;
+                        }
+                        DataManager.getInstance().fragment = selectedPosition;
 
-                        ((TextView) dialog.findViewById(R.id.dialog_no_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
-                        ((TextView) dialog.findViewById(R.id.dialog_no_text)).setText(R.string.no);
+                        if (adapter.selectedText != null && adapter.selectedText.getText().toString().equals(MainActivity.this.getString(R.string.logout))) {
+                            final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog.setContentView(R.layout.layout_dialog_confirmation);
+                            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            if (DataManager.getInstance().mainActivity.isLandscape) {
+                                DisplayMetrics displaymetrics = new DisplayMetrics();
+                                DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                                int width = (int) (displaymetrics.widthPixels * 0.45);
 
-                        ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
-                        ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setText(R.string.yes);
-
-                        dialog.findViewById(R.id.dialog_ok).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                android.webkit.CookieManager.getInstance().removeAllCookie();
-                                DataManager.getInstance().checkForbidden = false;
-                                DataManager.getInstance().set_jwt("");
-
-                                getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("jwt", "").apply();
-                                getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_checked", "").apply();
-                                getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_staff", "").apply();
-                                getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", "").apply();
-
-                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                                        .edit().remove("trophies").apply();
-
-                                DataManager.getInstance().fromLogout = true;
-                                DataManager.getInstance().sessionLogged = false;
-
-                                new Delete().from(CurrentUser.class).execute();
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                MainActivity.this.finish();
+                                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                                params.width = width;
+                                dialog.getWindow().setAttributes(params);
                             }
-                        });
-                        dialog.findViewById(R.id.dialog_no).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog.show();
+
+                            ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+                            ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.confirm);
+
+                            ((TextView) dialog.findViewById(R.id.dialog_message)).setTypeface(DataManager.getInstance().myriadpro_regular);
+                            ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.confirm_logout_message);
+
+                            ((TextView) dialog.findViewById(R.id.dialog_no_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
+                            ((TextView) dialog.findViewById(R.id.dialog_no_text)).setText(R.string.no);
+
+                            ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
+                            ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setText(R.string.yes);
+
+                            dialog.findViewById(R.id.dialog_ok).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                    android.webkit.CookieManager.getInstance().removeAllCookie();
+                                    DataManager.getInstance().checkForbidden = false;
+                                    DataManager.getInstance().set_jwt("");
+
+                                    getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("jwt", "").apply();
+                                    getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_checked", "").apply();
+                                    getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_staff", "").apply();
+                                    getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("is_institution", "").apply();
+
+                                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                            .edit().remove("trophies").apply();
+
+                                    DataManager.getInstance().fromLogout = true;
+                                    DataManager.getInstance().sessionLogged = false;
+
+                                    new Delete().from(CurrentUser.class).execute();
+                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    MainActivity.this.finish();
+                                }
+                            });
+                            dialog.findViewById(R.id.dialog_no).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
+                        }
                     }
                 }
             }
@@ -608,7 +596,8 @@ public class MainActivity extends FragmentActivity {
                 || (selection.equals(getString(R.string.graphs)))
                 || (selection.equals(getString(R.string.points)))
                 || (selection.equals(getString(R.string.events_attended)))
-                || (selection.equals(getString(R.string.attendance)))) {
+                || (selection.equals(getString(R.string.attendance)))
+                || (selection.equals(getString(R.string.app_usage)))) {
             return true;
         }
         return false;

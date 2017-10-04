@@ -369,7 +369,7 @@ public class SettingsFragment extends Fragment {
             GlideApp.with(manager.mainActivity)
                     .load(NetworkManager.getInstance().host + manager.user.profile_pic)
                     .transform(new CircleTransform(manager.mainActivity))
-                    .into(manager.mainActivity.adapter.profile_pic);
+                    .into(manager.mainActivity.adapter.profilePicture);
         });
     }
 

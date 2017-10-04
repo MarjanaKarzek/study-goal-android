@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,35 +25,37 @@ public class DrawerAdapter extends BaseAdapter {
     private static final String TAG = DrawerAdapter.class.getSimpleName();
 
     public String[] values;
-    public TextView selected_text;
-    public ImageView selected_image;
-    public ImageView profile_pic;
+    public TextView selectedText;
+    public ImageView selectedImage;
+    public ImageView profilePicture;
     public boolean statsOpened;
 
     private LayoutInflater inflater;
     private Context context;
     private int statOpenedNum = 2;
+    private TextView textView;
+    private ImageView imageView;
 
-    public DrawerAdapter(Context con) {
-        context = con;
-        inflater = LayoutInflater.from(con);
+    public DrawerAdapter(Context context) {
+        this.context = context;
+        inflater = LayoutInflater.from(context);
         statsOpened = false;
 
         if (DataManager.getInstance().user.isSocial) {
             statOpenedNum = 0;
-            values = new String[]{"0", con.getString(R.string.feed), con.getString(R.string.log), con.getString(R.string.target), con.getString(R.string.logout)};
+            values = new String[]{"0", context.getString(R.string.feed), context.getString(R.string.log), context.getString(R.string.target), context.getString(R.string.logout)};
         } else {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(con);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             ArrayList<String> valuesList = new ArrayList<>();
             valuesList.add("0");
-            valuesList.add(con.getString(R.string.feed));
-            valuesList.add(con.getString(R.string.friends));
-            valuesList.add(con.getString(R.string.stats));
-            valuesList.add(con.getString(R.string.points));
-            valuesList.add(con.getString(R.string.app_usage));
+            valuesList.add(context.getString(R.string.feed));
+            valuesList.add(context.getString(R.string.friends));
+            valuesList.add(context.getString(R.string.stats));
+            valuesList.add(context.getString(R.string.points));
+            valuesList.add(context.getString(R.string.app_usage));
             statOpenedNum++;
 
-            valuesList.add(con.getString(R.string.attainment));
+            valuesList.add(context.getString(R.string.attainment));
             statOpenedNum++;
 
 //            if (prefs.getBoolean(con.getString(R.string.attainmentData), false)) {
@@ -63,25 +66,24 @@ public class DrawerAdapter extends BaseAdapter {
             if (AppCore.getInstance().getPreferences().getAttendanceData()) {
                 //valuesList.add(con.getString(R.string.attendance));
                 //statOpenedNum++;
-                valuesList.add(con.getString(R.string.events_attended));
+                valuesList.add(context.getString(R.string.events_attended));
                 statOpenedNum++;
             }
 
-            valuesList.add(con.getString(R.string.graphs));
+            valuesList.add(context.getString(R.string.graphs));
 
-            if (prefs.getBoolean(con.getString(R.string.studyGoalAttendance), false)) {
-                valuesList.add(con.getString(R.string.check_in));
+            if (prefs.getBoolean(context.getString(R.string.studyGoalAttendance), false)) {
+                valuesList.add(context.getString(R.string.check_in));
             }
 
-            valuesList.add(con.getString(R.string.log));
-            valuesList.add(con.getString(R.string.target));
-            valuesList.add(con.getString(R.string.settings));
-            valuesList.add(con.getString(R.string.logout));
+            valuesList.add(context.getString(R.string.log));
+            valuesList.add(context.getString(R.string.target));
+            valuesList.add(context.getString(R.string.settings));
+            valuesList.add(context.getString(R.string.logout));
             values = valuesList.toArray(new String[valuesList.size()]);
         }
     }
 
-    //Numarul de rows
     public int getCount() {
         return statsOpened ? values.length : values.length - statOpenedNum;
     }
@@ -111,18 +113,18 @@ public class DrawerAdapter extends BaseAdapter {
             TextView name = (TextView) convertView.findViewById(R.id.drawer_name);
             name.setTypeface(DataManager.getInstance().myriadpro_regular);
             name.setText(DataManager.getInstance().user.name);
-            profile_pic = (ImageView) convertView.findViewById(R.id.imageView);
+            profilePicture = (ImageView) convertView.findViewById(R.id.imageView);
 
             if (DataManager.getInstance().user.profile_pic.equals("")) {
                 GlideApp.with(context)
                         .load(R.drawable.profilenotfound2)
                         .transform(new CircleTransform(context))
-                        .into(profile_pic);
+                        .into(profilePicture);
             } else {
                 GlideApp.with(context)
                         .load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic)
                         .transform(new CircleTransform(context))
-                        .into(profile_pic);
+                        .into(profilePicture);
             }
         } else {
             if (statsOpened && position > 3 && position <= 3 + statOpenedNum) {
@@ -131,8 +133,6 @@ public class DrawerAdapter extends BaseAdapter {
                 convertView = inflater.inflate(R.layout.menu_item_nav, parent, false);
             }
 
-            TextView textView;
-            ImageView imageView;
             textView = (TextView) convertView.findViewById(R.id.drawer_item_text);
             textView.setTypeface(DataManager.getInstance().myriadpro_regular);
             imageView = (ImageView) convertView.findViewById(R.id.drawer_item_icon);
@@ -186,13 +186,14 @@ public class DrawerAdapter extends BaseAdapter {
             if (iconResID != -1)
                 GlideApp.with(context).load(iconResID).into(imageView);
 
+            Log.d(TAG, "getView: fragment Menu Text" + DataManager.getInstance().fragment);
             if (DataManager.getInstance().fragment != null) {
                 if (DataManager.getInstance().fragment == position) {
                     textView.setTextColor(ContextCompat.getColor(context, R.color.default_blue));
                     imageView.setColorFilter(ContextCompat.getColor(context, R.color.default_blue));
-                    selected_image = imageView;
-                    selected_text = textView;
-                    DataManager.getInstance().fragment = null;
+                    selectedImage = imageView;
+                    selectedText = textView;
+                    //DataManager.getInstance().fragment = null;
                 }
             } else {
                 String selected_value = "";
@@ -225,8 +226,8 @@ public class DrawerAdapter extends BaseAdapter {
                 if (textView.getText().toString().toLowerCase().equals(selected_value.toLowerCase())) {
                     textView.setTextColor(ContextCompat.getColor(context, R.color.default_blue));
                     imageView.setColorFilter(ContextCompat.getColor(context, R.color.default_blue));
-                    selected_image = imageView;
-                    selected_text = textView;
+                    selectedImage = imageView;
+                    selectedText = textView;
                 }
             }
         }
