@@ -145,8 +145,9 @@
         android:text="@string/send_pin_title"
         android:gravity="center"
         android:textSize="18sp"
-        android:background="#a47cea"
+        android:background="@color/checkinButtonInactive"
         android:textColor="@android:color/white"
+        android:enabled="false"
         />
 
 </RelativeLayout>

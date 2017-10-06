@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -14,7 +15,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +60,9 @@ public class CheckInFragment extends Fragment {
         DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.check_in));
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(5);
+
+        TextView sendButton = ((TextView) mainView.findViewById(R.id.pin_send_button));
+        sendButton.setTypeface(DataManager.getInstance().oratorstd_typeface);
 
         final TextView pinTextEdit = (TextView) mainView.findViewById(R.id.pin_text_edit);
         pinTextEdit.setTypeface(DataManager.getInstance().oratorstd_typeface);
@@ -101,12 +107,12 @@ public class CheckInFragment extends Fragment {
             });
         }
 
-        ((TextView) mainView.findViewById(R.id.pin_send_button)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-
-        mainView.findViewById(R.id.pin_send_button).setOnClickListener(new View.OnClickListener() {
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showProgressDialog(true);
+                sendButton.setEnabled(false);
+                sendButton.setBackgroundColor(Color.parseColor("#aaaaaa"));
                 if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     showProgressDialog(false);
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CheckInFragment.this.getActivity());
@@ -119,6 +125,8 @@ public class CheckInFragment extends Fragment {
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    sendButton.setEnabled(true);
+                    sendButton.setBackgroundColor(Color.parseColor("#a47cea"));
                     return;
                 }
 
@@ -135,12 +143,14 @@ public class CheckInFragment extends Fragment {
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    sendButton.setEnabled(true);
+                    sendButton.setBackgroundColor(Color.parseColor("#a47cea"));
                     return;
                 }
 
                 if(ConnectionHandler.isConnected(getContext())) {
-                    final String pin_text_edit_text = pinTextEdit.getText().toString();
-                    if (pin_text_edit_text.length() == 0) {
+                    final String pinTextEditText = pinTextEdit.getText().toString();
+                    if (pinTextEditText.length() == 0) {
                         showProgressDialog(false);
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CheckInFragment.this.getActivity());
                         alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.alert_invalid_pin) + "</font>"));
@@ -164,7 +174,7 @@ public class CheckInFragment extends Fragment {
                                 se.printStackTrace();
                             }
 
-                            final boolean result = NetworkManager.getInstance().setUserPin(pin_text_edit_text, "LOCATION");
+                            final boolean result = NetworkManager.getInstance().setUserPin(pinTextEditText, "LOCATION");
 
                             // commented, not used
                             //debug for testing getsettings - by tmobiledevcore
@@ -195,6 +205,9 @@ public class CheckInFragment extends Fragment {
                                     alertDialog.show();
 
                                     pinTextEdit.setText("");
+
+                                    sendButton.setEnabled(false);
+                                    sendButton.setBackgroundColor(Color.parseColor("#aaaaaa"));
                                 }
                             });
                         }
@@ -214,18 +227,31 @@ public class CheckInFragment extends Fragment {
                 final ImageView text = (ImageView) grid.getChildAt(i);
                 text.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
-                        // your click code here
-                        String pin_text_edit_text = pinTextEdit.getText().toString();
-                        if (pin_text_edit_text.length() > 0)
-                            pinTextEdit.setText(pin_text_edit_text.substring(0, pin_text_edit_text.length() - 1));
+                        String pinTextEditText = pinTextEdit.getText().toString();
+                        if (pinTextEditText.length() > 0) {
+                            pinTextEdit.setText(pinTextEditText.substring(0, pinTextEditText.length() - 1));
+                        }
+                        if(pinTextEdit.getText().length() == 0 || pinTextEdit.getText().length() > 4){
+                            sendButton.setEnabled(false);
+                            sendButton.setBackgroundColor(Color.parseColor("#aaaaaa"));
+                        }
+                        if(pinTextEdit.getText().length() > 0 && pinTextEdit.getText().length() < 5){
+                            sendButton.setEnabled(true);
+                            sendButton.setBackgroundColor(Color.parseColor("#a47cea"));
+                        }
                     }
                 });
             } else {
                 final TextView text = (TextView) grid.getChildAt(i);
                 text.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
-                        // your click code here
                         pinTextEdit.setText(pinTextEdit.getText().toString() + text.getText().toString());
+                        sendButton.setEnabled(true);
+                        sendButton.setBackgroundColor(Color.parseColor("#a47cea"));
+                        if(pinTextEdit.getText().length() == 0 || pinTextEdit.getText().length() > 4){
+                            sendButton.setEnabled(false);
+                            sendButton.setBackgroundColor(Color.parseColor("#aaaaaa"));
+                        }
                     }
                 });
             }

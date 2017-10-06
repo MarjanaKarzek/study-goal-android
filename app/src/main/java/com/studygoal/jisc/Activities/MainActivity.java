@@ -495,7 +495,7 @@ public class MainActivity extends FragmentActivity {
                     for (String menuItem : adapter.values) {
                         if (menuItem.equals(getString(R.string.check_in))) {
                             staticMenuItems++;
-                            return;
+                            break;
                         }
                     }
                     int statOpenedNum = adapter.values.length - staticMenuItems;
