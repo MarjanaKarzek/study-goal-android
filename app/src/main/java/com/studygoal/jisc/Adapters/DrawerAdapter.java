@@ -72,9 +72,9 @@ public class DrawerAdapter extends BaseAdapter {
 
             valuesList.add(context.getString(R.string.graphs));
 
-            //if (prefs.getBoolean(context.getString(R.string.studyGoalAttendance), false)) {
+            if (prefs.getBoolean(context.getString(R.string.studyGoalAttendance), false)) {
                 valuesList.add(context.getString(R.string.check_in));
-            //}
+            }
 
             valuesList.add(context.getString(R.string.log));
             valuesList.add(context.getString(R.string.target));
