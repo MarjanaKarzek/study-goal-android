@@ -4729,7 +4729,7 @@ public class NetworkManager {
 
                 JSONObject jsonObject = new JSONObject(sb.toString());
                 DataManager.getInstance().appUsageData.sessions = jsonObject.getString("number_of_sessions");
-                DataManager.getInstance().appUsageData.activities = jsonObject.getString("activity_logged_hours");
+                DataManager.getInstance().appUsageData.activities = "" + (Integer.valueOf(jsonObject.getString("activity_logged_hours")) / 60);
                 JSONObject setTargets = jsonObject.getJSONObject("set_targets_number");
                 DataManager.getInstance().appUsageData.setTargets = "" + (Integer.valueOf(setTargets.getString("recurring targets")) + Integer.valueOf(setTargets.getString("todo tasks")));
                 JSONObject metTargets = jsonObject.getJSONObject("met_targets_number");
