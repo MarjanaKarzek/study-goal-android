@@ -135,9 +135,11 @@ public class StatsEventAttendanceFragment extends BaseFragment {
         segments.add(all);
         segments.add(summary);
 
-        segmentClickListener = new SegmentClickListener(viewFlipper,segments,getContext(),0);
+        segmentClickListener = new SegmentClickListener(viewFlipper,segments,getContext(),1);
         all.setOnClickListener(segmentClickListener);
         summary.setOnClickListener(segmentClickListener);
+
+        viewFlipper.showNext();
 
         webView = (WebView) mainView.findViewById(R.id.webview_graph);
         webView.getSettings().setJavaScriptEnabled(true);

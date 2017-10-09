@@ -438,7 +438,7 @@ public class MainActivity extends FragmentActivity {
                     destination = new TargetFragment();
                 } else if (selection.equals(getString(R.string.leader_board))) {
                     destination = new StatsLeaderBoardFragment();
-                } else if (selection.equals(getString(R.string.events_attended))) {
+                } else if (selection.equals(getString(R.string.attendance_menu))) {
                     destination = new StatsEventAttendanceFragment();
                 } else if (selection.equals(getString(R.string.attendance))) {
                     destination = new StatsAttendanceFragment();
@@ -595,7 +595,7 @@ public class MainActivity extends FragmentActivity {
         if (selection.equals(getString(R.string.attainment))
                 || (selection.equals(getString(R.string.graphs)))
                 || (selection.equals(getString(R.string.points)))
-                || (selection.equals(getString(R.string.events_attended)))
+                || (selection.equals(getString(R.string.attendance_menu)))
                 || (selection.equals(getString(R.string.attendance)))
                 || (selection.equals(getString(R.string.app_usage)))) {
             return true;
