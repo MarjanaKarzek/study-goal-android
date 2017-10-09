@@ -484,4 +484,6 @@
     <string name="attainment_info">IMPORTANT: All marks / grades indicated with \'**\' are subject to moderation and confirmation by a Board of Examiners. These marks / grades are therefore provisional and subject to change.</string>
     <string name="everyone">Everyone</string>
     <string name="send_to">Send to</string>
+    //New Values
+    <string name="attendance_menu">PLACEHOLDER</string>
 </resources>

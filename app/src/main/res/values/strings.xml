@@ -508,4 +508,6 @@
     <string name="start_date_in_future_hint">Start date can not be set to future date</string>
     <string name="end_date_in_future_hint">End date can not be set to future date</string>
     <string name="not_change_activity_in_edit_mode_hint">Activities can not be changed in edit mode</string>
+
+    <string name="attendance_menu">Attendance</string>
 </resources>
