@@ -160,11 +160,43 @@ public class ToDoTasksAdapter extends BaseAdapter {
         });
 
         convertView.findViewById(R.id.done).setOnClickListener(v -> {
-            swipeLayout.close(true);
+            final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.layout_dialog_confirmation);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-            if (listener != null) {
-                listener.onDone(item);
+            if (DataManager.getInstance().mainActivity.isLandscape) {
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                int width = (int) (displaymetrics.widthPixels * 0.45);
+
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width = width;
+                dialog.getWindow().setAttributes(params);
             }
+
+            ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+            ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.confirmation);
+
+            ((TextView) dialog.findViewById(R.id.dialog_message)).setTypeface(DataManager.getInstance().myriadpro_regular);
+            ((TextView) dialog.findViewById(R.id.dialog_message)).setText(R.string.confirm_todo_task_done_message);
+
+            ((TextView) dialog.findViewById(R.id.dialog_no_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
+            ((TextView) dialog.findViewById(R.id.dialog_no_text)).setText(R.string.no);
+
+            ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
+            ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setText(R.string.yes);
+
+            dialog.findViewById(R.id.dialog_ok).setOnClickListener(v1 -> {
+                dialog.dismiss();
+                swipeLayout.close(true);
+
+                if (listener != null) {
+                    listener.onDone(item);
+                }
+            });
+            dialog.findViewById(R.id.dialog_no).setOnClickListener(v12 -> dialog.dismiss());
+            dialog.show();
         });
 
         View mainLayout = convertView.findViewById(R.id.mainLayout);
