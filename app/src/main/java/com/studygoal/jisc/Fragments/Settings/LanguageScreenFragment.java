@@ -103,6 +103,7 @@ public class LanguageScreenFragment extends Fragment {
                             DataManager.getInstance().reload();
                             if (DataManager.getInstance().mainActivity != null)
                                 DataManager.getInstance().mainActivity.refreshDrawer();
+                            DataManager.getInstance().mainActivity.recreate();
                         }
                     }
                     if (!DataManager.getInstance().mainActivity.isLandscape)
