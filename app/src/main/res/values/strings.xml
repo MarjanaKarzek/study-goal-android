@@ -510,4 +510,22 @@
     <string name="not_change_activity_in_edit_mode_hint">Activities can not be changed in edit mode</string>
 
     <string name="attendance_menu">Attendance</string>
+    <string name="activity_title">Activity</string>
+    <string name="count_title">Count</string>
+    <string name="points_title">Points Awarded</string>
+    <string name="logged_in">Logged in</string>
+    <string name="hours_of_activities_logged">Hours of Activity Logged: </string>
+    <string name="sessions">Sessions: </string>
+    <string name="end">End</string>
+    <string name="targets_met_on_time">Targets met on time: </string>
+    <string name="targets_not_met_on_time">Targets not met on time: </string>
+    <string name="targets_set_app_usage">Targets set: </string>
+    <string name="module_attainment">Module: </string>
+    <string name="mark_attainment">Mark:</string>
+    <string name="activity_description">Activity: </string>
+    <string name="all">All</string>
+    <string name="summary">Summary</string>
+    <string name="day_overdue">day overdue: </string>
+    <string name="days_overdue"> days overdue: </string>
+
 </resources>

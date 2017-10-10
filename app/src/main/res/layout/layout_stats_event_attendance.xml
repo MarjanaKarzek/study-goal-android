@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#3792ef"
-            android:text="All"/>
+            android:text="@string/all"/>
 
         <TextView
             android:id="@+id/segment_button_attendance_summary"
@@ -29,7 +29,7 @@
             android:background="@drawable/round_corners_segmented_active_right"
             android:gravity="center"
             android:textColor="#ffffff"
-            android:text="Summary"/>
+            android:text="@string/summary"/>
 
     </LinearLayout>
 

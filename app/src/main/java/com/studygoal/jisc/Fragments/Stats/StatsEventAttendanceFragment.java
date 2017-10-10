@@ -59,7 +59,7 @@ public class StatsEventAttendanceFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        DataManager.getInstance().mainActivity.setTitle(getString(R.string.events_attended));
+        DataManager.getInstance().mainActivity.setTitle(getString(R.string.attendance_menu));
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(5);
 

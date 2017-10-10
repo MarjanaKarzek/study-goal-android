@@ -20,9 +20,11 @@ public class ActivityPointsAdapter extends BaseAdapter {
 
     public List<Attainment> list;
     private LayoutInflater inflater;
+    private Context context;
 
     public ActivityPointsAdapter(Context context) {
         inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
@@ -66,7 +68,7 @@ public class ActivityPointsAdapter extends BaseAdapter {
             ActivityPoints activityPoints = DataManager.getInstance().user.points.get(position-1);
 
             if(activityPoints.activity.equals("Loggedin")){
-                activityTitle.setText("Logged in");
+                activityTitle.setText(context.getString(R.string.logged_in));
             } else {
                 activityTitle.setText(activityPoints.activity);
             }

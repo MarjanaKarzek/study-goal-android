@@ -78,10 +78,8 @@ public class TargetAdapter extends BaseAdapter {
 
         if (module != null) {
             activityHistoryList = new Select().from(ActivityHistory.class).where("module_id = ?", item.module_id).and("activity = ?", item.activity).execute();
-            Log.d(TAG, "getView: searching for logs for: " + item.activity);
         } else {
             activityHistoryList = new Select().from(ActivityHistory.class).where("activity = ?", item.activity).execute();
-            Log.d(TAG, "getView: searching for logs for: " + module + "    " + item.activity);
         }
 
         Calendar date = Calendar.getInstance();
@@ -157,7 +155,6 @@ public class TargetAdapter extends BaseAdapter {
             spentTime += Integer.parseInt(activityHistoryList.get(i).time_spent);
         }
 
-        Log.d("Spend", "getView: " + spentTime + " " + necessaryTime);
         if (dueToday && (spentTime < necessaryTime))
             convertView.findViewById(R.id.colorbar).setBackgroundColor(0xFFFF0000);
         else if (spentTime < necessaryTime)
@@ -189,7 +186,7 @@ public class TargetAdapter extends BaseAdapter {
         }
 
         if(item.because != null && item.because.length() > 0){
-            text += " because " + item.because;
+            text += " " + context.getString(R.string.because) + " " + item.because;
         }
 
         textView.setText(text);

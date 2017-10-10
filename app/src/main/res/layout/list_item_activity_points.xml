@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:layout_weight="40"
             android:gravity="center"
-            android:text="Activity"
+            android:text="@string/activity_title"
             android:textColor="#5c5c5c"
             android:textSize="13sp" />
 
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_weight="30"
             android:gravity="center"
-            android:text="Count"
+            android:text="@string/count_title"
             android:textColor="#5c5c5c"
             android:textSize="13sp" />
 
@@ -46,7 +46,7 @@
             android:layout_height="match_parent"
             android:layout_weight="30"
             android:gravity="center"
-            android:text="Points Awarded"
+            android:text="@string/points_title"
             android:textColor="#5c5c5c"
             android:textSize="13sp" />
     </LinearLayout>

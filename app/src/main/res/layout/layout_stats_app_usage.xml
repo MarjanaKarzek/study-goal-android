@@ -27,7 +27,7 @@
                 android:layout_marginStart="10dp"
                 android:background="@drawable/round_corner_pink_hallow_transparent"
                 android:padding="5dp"
-                android:text="Start"
+                android:text="@string/start"
                 android:textAlignment="center"
                 android:textColor="@color/dark_grey"
                 android:textSize="24sp" />
@@ -54,7 +54,7 @@
                 android:layout_marginStart="10dp"
                 android:background="@drawable/round_corner_pink_hallow_transparent"
                 android:padding="5dp"
-                android:text="End"
+                android:text="@string/end"
                 android:textAlignment="center"
                 android:textColor="@color/dark_grey"
                 android:textSize="24sp" />
