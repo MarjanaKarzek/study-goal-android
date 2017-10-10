@@ -36,7 +36,7 @@ public class StatsAppUsageFragment extends Fragment {
     private TextView endDate;
     private Calendar startDatePicked = Calendar.getInstance();
     private Calendar endDatePicked = Calendar.getInstance();
-    private SimpleDateFormat apiDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private DatePickerDialog.OnDateSetListener datePickerEnd;
     private DatePickerDialog.OnDateSetListener datePickerStart;
