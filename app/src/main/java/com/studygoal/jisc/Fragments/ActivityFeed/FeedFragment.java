@@ -98,7 +98,7 @@ public class FeedFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             DataManager.getInstance().mainActivity.hideAllButtons();
-                            DataManager.getInstance().mainActivity.showCertainButtons(1);
+                            DataManager.getInstance().mainActivity.showCertainButtons(5);
                             mainView.findViewById(R.id.overlay).setVisibility(View.GONE);
                             View view = mainView.findViewById(R.id.message);
                             if (view != null) {
