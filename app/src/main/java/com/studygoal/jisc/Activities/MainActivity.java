@@ -327,45 +327,50 @@ public class MainActivity extends FragmentActivity {
         Intent intentService = new Intent(this, Syncronize.class);
         startService(intentService);
 
-        android.util.Log.d(TAG, "onCreate: selected screen " + DataManager.getInstance().home_screen);
-        if (DataManager.getInstance().home_screen == null) {
-            DataManager.getInstance().home_screen = "feed";
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, new FeedFragment())
-                    .commit();
+        if(DataManager.getInstance().languageChanged){
+            navigateToSettings();
+            DataManager.getInstance().languageChanged = false;
         } else {
-            switch (DataManager.getInstance().home_screen) {
-                case "stats":
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, new StatsVLEActivityFragment())
-                            .commit();
-                    break;
-                case "log":
-                    logFragment = new LogActivityHistoryFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, logFragment)
-                            .commit();
-                    break;
-                case "target":
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, new TargetFragment())
-                            .commit();
-                    break;
-                case "checkin":
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, new CheckInFragment())
-                            .commit();
-                    break;
-                case "friends":
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, new FriendsFragment())
-                            .commit();
-                    break;
-                default:
-                    DataManager.getInstance().home_screen = "feed";
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, new FeedFragment())
-                            .commit();
+            android.util.Log.d(TAG, "onCreate: selected screen " + DataManager.getInstance().home_screen);
+            if (DataManager.getInstance().home_screen == null) {
+                DataManager.getInstance().home_screen = "feed";
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_fragment, new FeedFragment())
+                        .commit();
+            } else {
+                switch (DataManager.getInstance().home_screen) {
+                    case "stats":
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragment, new StatsVLEActivityFragment())
+                                .commit();
+                        break;
+                    case "log":
+                        logFragment = new LogActivityHistoryFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragment, logFragment)
+                                .commit();
+                        break;
+                    case "target":
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragment, new TargetFragment())
+                                .commit();
+                        break;
+                    case "checkin":
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragment, new CheckInFragment())
+                                .commit();
+                        break;
+                    case "friends":
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragment, new FriendsFragment())
+                                .commit();
+                        break;
+                    default:
+                        DataManager.getInstance().home_screen = "feed";
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_fragment, new FeedFragment())
+                                .commit();
+                }
             }
         }
 
@@ -951,5 +956,11 @@ public class MainActivity extends FragmentActivity {
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    public void navigateToSettings() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, new SettingsFragment());
+        fragmentTransaction.commit();
     }
 }

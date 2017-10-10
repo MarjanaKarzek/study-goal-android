@@ -61,6 +61,7 @@ public class DataManager {
     public boolean fromLogout = false;
 
     public String selfie_url;
+    public boolean languageChanged = false;
 
     public static DataManager getInstance() {
         return ourInstance;

@@ -101,8 +101,10 @@ public class LanguageScreenFragment extends Fragment {
                                         getActivity().getBaseContext().getResources().getDisplayMetrics());
                             }
                             DataManager.getInstance().reload();
-                            if (DataManager.getInstance().mainActivity != null)
-                                DataManager.getInstance().mainActivity.refreshDrawer();
+                            //if (DataManager.getInstance().mainActivity != null)
+                                //DataManager.getInstance().mainActivity.refreshDrawer();
+                            //DataManager.getInstance().fragment = null;
+                            DataManager.getInstance().languageChanged = true;
                             DataManager.getInstance().mainActivity.recreate();
                         }
                     }
