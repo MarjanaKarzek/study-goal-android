@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ import com.studygoal.jisc.Adapters.InstitutionsAdapter;
 import com.studygoal.jisc.Constants;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
+import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.CurrentUser;
 import com.studygoal.jisc.Models.Institution;
 import com.studygoal.jisc.R;
@@ -104,6 +106,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private boolean firstTimeConnectionProblem = true;
 
     private Institution selectedInstitution;
+    private int developerModeCounter = 0;
+    private Button logoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +130,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
         setContentView(R.layout.activity_layout_login);
+
+        logoButton = (Button) findViewById(R.id.logo_button);
+        logoButton.setBackgroundColor(Color.TRANSPARENT);
+        setUpDeveloperModeListener();
 
         ActiveAndroid.initialize(this);
         DataManager.getInstance().context = this;
@@ -564,6 +572,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         } else{
             refreshData();
         }
+    }
+
+    private void setUpDeveloperModeListener() {
+        logoButton.setOnClickListener(view -> {
+            developerModeCounter++;
+            if(developerModeCounter == 5){
+                developerModeCounter = 0;
+                XApiManager.getInstance().changeDeveloperMode();
+                NetworkManager.getInstance().changeDeveloperMode(LoginActivity.this);
+            }
+        });
     }
 
     private void showProgressDialog(final boolean show) {

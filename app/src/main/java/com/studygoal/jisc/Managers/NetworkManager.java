@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
@@ -89,8 +90,10 @@ public class NetworkManager {
     private SSLContext context;
     private Context appContext;
     private ExecutorService executorService;
+    private boolean developerMode = false;
 
     public String host = "https://stuapp.analytics.alpha.jisc.ac.uk/";
+    private String xapiHost = "https://api.datax.jisc.ac.uk";
 
     HttpLoggingInterceptor logging = new HttpLoggingInterceptor()
             .setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
@@ -159,6 +162,17 @@ public class NetworkManager {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void changeDeveloperMode(Context context) {
+        if(developerMode){
+            xapiHost = "https://api.datax.jisc.ac.uk";
+            Toast.makeText(context,"Developer Mode turned off",Toast.LENGTH_LONG).show();
+        } else {
+            xapiHost = "https://api.x-dev.data.alpha.jisc.ac.uk";
+            Toast.makeText(context,"Developer Mode turned on",Toast.LENGTH_LONG).show();
+        }
+        developerMode = !developerMode;
     }
 
     private class deleteFeed implements Callable<Boolean> {
@@ -4172,12 +4186,14 @@ public class NetworkManager {
                 Date daysBeforeDate = cal.getTime();
                 String current = sdf.format(new Date());
                 String past = sdf.format(daysBeforeDate);
+
                 String apiURL = "";
                 if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
                     apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_attendance_summary";
                 } else {
-                    apiURL = "https://api.datax.jisc.ac.uk/sg/weeklyattendance?startdate=" + past + "&enddate=" + current;
+                    apiURL = xapiHost + "/sg/weeklyattendance?startdate=" + past + "&enddate=" + current;
                 }
+
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
