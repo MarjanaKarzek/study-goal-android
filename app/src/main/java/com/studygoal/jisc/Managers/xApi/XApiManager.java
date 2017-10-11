@@ -28,7 +28,7 @@ import rx.schedulers.Schedulers;
 public class XApiManager {
     private static final String TAG = XApiManager.class.getSimpleName();
 
-    private static final String SERVER_BASE = "https://api.datax.jisc.ac.uk";
+    private static String SERVER_BASE = "https://api.datax.jisc.ac.uk";
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final SimpleDateFormat sDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
@@ -37,6 +37,7 @@ public class XApiManager {
     private static final String SETTING_STUDY_GOAL_ATTENDANCE = "studyGoalAttendance";
 
     private static XApiManager sInstance = null;
+    private boolean developerMode = false;
 
     public static XApiManager getInstance() {
         if (sInstance == null) {
@@ -393,5 +394,14 @@ public class XApiManager {
         }
 
         return result;
+    }
+
+    public void changeDeveloperMode() {
+        if(developerMode){
+            SERVER_BASE = "https://api.datax.jisc.ac.uk";
+        } else {
+            SERVER_BASE = "https://api.x-dev.data.alpha.jisc.ac.uk";
+        }
+        developerMode = !developerMode;
     }
 }

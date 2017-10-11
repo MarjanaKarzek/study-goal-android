@@ -13,16 +13,6 @@
         android:src="@drawable/tmp_login_background" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/mini_logo" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/login_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -291,4 +281,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mini_logo" />
+        <Button
+            android:id="@+id/logo_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:clickable="true" />
+    </RelativeLayout>
 </RelativeLayout>
