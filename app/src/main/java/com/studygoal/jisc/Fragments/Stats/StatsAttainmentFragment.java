@@ -34,7 +34,7 @@ public class StatsAttainmentFragment extends Fragment {
     private ListView listView;
     private AttainmentAdapter adapter;
     private View mainview;
-    private TextView nowData;
+    private TextView noData;
     private TextView moduleFilter;
     private SwipeRefreshLayout layout;
 
@@ -55,7 +55,7 @@ public class StatsAttainmentFragment extends Fragment {
                 String[] attainmentData = attainmentDataBackup.split("----");
                 for (String data : attainmentData) {
                     String[] attainment = data.split(";");
-                    if(attainment.length == 4)
+                    if (attainment.length == 4)
                         adapter.list.add(new Attainment(attainment[0], attainment[1], attainment[2], attainment[3]));
                 }
             }
@@ -81,24 +81,11 @@ public class StatsAttainmentFragment extends Fragment {
             editor.commit();
 
             DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                if (adapter.list != null && adapter.list.size() > 0) {
-                    nowData.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
-                } else {
-                    nowData.setVisibility(View.VISIBLE);
-                    layout.setVisibility(View.GONE);
-                }
-
                 adapter.notifyDataSetChanged();
             });
-        }).
+        }).start();
 
-                start();
-
-        XApiManager.getInstance().
-
-                sendLogActivityEvent(LogActivityEvent.NavigateAttainment);
-
+        XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateAttainment);
     }
 
     @Override
@@ -107,8 +94,8 @@ public class StatsAttainmentFragment extends Fragment {
         layout = (SwipeRefreshLayout) mainview.findViewById(R.id.stats_swipe_refresh);
         layout.setColorSchemeResources(R.color.colorPrimary);
 
-        nowData = (TextView) mainview.findViewById(R.id.no_data);
-        nowData.setTypeface(DataManager.getInstance().myriadpro_regular);
+        noData = (TextView) mainview.findViewById(R.id.no_data);
+        noData.setTypeface(DataManager.getInstance().myriadpro_regular);
 
         layout.setOnRefreshListener(() -> new Thread(() -> {
             if (NetworkManager.getInstance().getAssignmentRanking()) {
@@ -160,6 +147,7 @@ public class StatsAttainmentFragment extends Fragment {
         }).start());
 
         listView = (ListView) mainview.findViewById(R.id.list);
+        listView.setEmptyView(noData);
         listView.setOnTouchListener((v, event) -> {
             // Setting on Touch Listener for handling the touch inside ScrollView
             v.getParent().requestDisallowInterceptTouchEvent(true);
@@ -214,7 +202,7 @@ public class StatsAttainmentFragment extends Fragment {
                 String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
 
                 dialog.dismiss();
-                if(!titleText.equals("All Activity")){
+                if (!titleText.equals("All Activity")) {
                     moduleFilter.setText(titleText);
                 } else {
                     moduleFilter.setText(R.string.filter_modules);
