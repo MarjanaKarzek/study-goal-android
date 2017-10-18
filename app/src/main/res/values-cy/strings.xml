@@ -521,4 +521,7 @@
     <!--New Values-->
     <string name="filter_modules">PLACEHOLDER</string>
     <string name="compare_to_leader">PLACEHOLDER</string>
+    <string name="chart">PLACEHOLDER</string>
+    <string name="bar_graph">PLACEHOLDER</string>
+    <string name="line_graph">PLACEHOLDER</string>
 </resources>

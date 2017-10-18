@@ -1,11 +1,13 @@
 package com.studygoal.jisc.Fragments.Stats;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -53,21 +56,29 @@ public class StatsVLEActivityFragment extends Fragment {
     private static final String TAG = StatsVLEActivityFragment.class.getSimpleName();
 
     private View mainView;
-    private AppCompatTextView module;
-    private AppCompatTextView compareTo;
+    private TextView moduleFilter;
+    private TextView compareTo;
     private WebView webView;
-    private TextView description;
 
     private List<ED> list;
     private int[] offlineDemoData = {22,0,0,21,4,5,23,6,16,10,3,4,6,1,7,0,0,0,0,3,5,7,12,24,1,0,0,12,13,21};
     private float webViewHeight;
-    private boolean isBar;
+    private boolean isBar = true;
     private boolean isSevenDays = true;
     private boolean isOverall = false;
 
     private SegmentClickListener segmentClickListener;
-    private TextView segmentButtonSevenDays;
-    private TextView segmentButtonTwentyeightDays;
+    private TextView segmentButtonBarGraph;
+    private TextView segmentButtonLineGraph;
+
+    private TextView startDate;
+    private TextView endDate;
+    private Calendar startDatePicked = Calendar.getInstance();
+    private Calendar endDatePicked = Calendar.getInstance();
+    private SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private DatePickerDialog.OnDateSetListener datePickerEnd;
+    private DatePickerDialog.OnDateSetListener datePickerStart;
 
     @Override
     public void onResume() {
@@ -81,7 +92,6 @@ public class StatsVLEActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.layout_stats_vle_activity, container, false);
 
-        isBar = false;
         webView = (WebView) mainView.findViewById(R.id.chart_web);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -97,49 +107,57 @@ public class StatsVLEActivityFragment extends Fragment {
 
         webView.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:white;\"></div></body></html>", "text/html", "UTF-8", "");
 
-        module = (AppCompatTextView) mainView.findViewById(R.id.module_list);
-        module.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
-        module.setTypeface(DataManager.getInstance().myriadpro_regular);
-        module.setText(R.string.anymodule);
+        setUpDatePicker();
 
-        segmentButtonSevenDays = (TextView) mainView.findViewById(R.id.segment_button_seven_days);
-        segmentButtonTwentyeightDays = (TextView) mainView.findViewById(R.id.segment_button_twentyeight_days);
+        DatePickerDialog startDateDatePickerDialog = new DatePickerDialog(getActivity(), datePickerStart, startDatePicked
+                .get(Calendar.YEAR), startDatePicked.get(Calendar.MONTH),
+                startDatePicked.get(Calendar.DAY_OF_MONTH));
+
+        startDate = (TextView) mainView.findViewById(R.id.vle_activity_start);
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startDateDatePickerDialog.show();
+            }
+        });
+
+        DatePickerDialog endDateDatePickerDialog = new DatePickerDialog(getActivity(), datePickerEnd, endDatePicked
+                .get(Calendar.YEAR), endDatePicked.get(Calendar.MONTH),
+                endDatePicked.get(Calendar.DAY_OF_MONTH));
+
+        endDate = (TextView) mainView.findViewById(R.id.vle_activity_end);
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                endDateDatePickerDialog.show();
+            }
+        });
+
+        moduleFilter = (TextView) mainView.findViewById(R.id.vle_activity_module_filter);
+
+        segmentButtonBarGraph = (TextView) mainView.findViewById(R.id.segment_button_bar_graph);
+        segmentButtonLineGraph = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
 
         ArrayList<TextView> segments = new ArrayList<>();
-        segments.add(segmentButtonSevenDays);
-        segments.add(segmentButtonTwentyeightDays);
+        segments.add(segmentButtonBarGraph);
+        segments.add(segmentButtonLineGraph);
 
         segmentClickListener = new SegmentClickListener(null, segments, getContext(), 0){
             @Override
             public void onClick(View view){
-                super.onClick(view);
-                isSevenDays = !isSevenDays;
-                if (isSevenDays) {
-                    description.setText(R.string.last_week_engagement);
-                } else {
-                    description.setText(R.string.last_month_engagement);
-                }
-
                 loadData();
+                isBar = !isBar;
+                refreshUi();
             }
         };
-        if(!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
-            segmentButtonSevenDays.setOnClickListener(segmentClickListener);
-            segmentButtonTwentyeightDays.setOnClickListener(segmentClickListener);
-        } else {
-            segmentButtonSevenDays.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_active_disabled));
-            mainView.findViewById(R.id.segment_buttons_period).setBackground(ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_disabled));
-            segmentButtonTwentyeightDays.setTextColor(Color.parseColor("#BBBBBB"));
-        }
 
-        compareTo = (AppCompatTextView) mainView.findViewById(R.id.compareto);
-        compareTo.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
-        compareTo.setTypeface(DataManager.getInstance().myriadpro_regular);
-        compareTo.setText(R.string.no_one);
-        compareTo.setAlpha(0.5f);
+        segmentButtonBarGraph.setOnClickListener(segmentClickListener);
+        segmentButtonLineGraph.setOnClickListener(segmentClickListener);
+
+        compareTo = (TextView) mainView.findViewById(R.id.activity_points_compare_to);
 
         final View.OnClickListener compareToListener = v -> {
-            if (!module.getText().toString().equals(DataManager.getInstance().mainActivity.getString(R.string.anymodule))) {
+            if (!moduleFilter.getText().toString().equals(DataManager.getInstance().mainActivity.getString(R.string.anymodule))) {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.snippet_custom_spinner);
@@ -223,29 +241,16 @@ public class StatsVLEActivityFragment extends Fragment {
             }
         };
 
-        description = (TextView) mainView.findViewById(R.id.description);
-        description.setTypeface(DataManager.getInstance().myriadpro_regular);
-        if (isSevenDays) {
-            description.setText(R.string.last_week_engagement);
-        } else {
-            description.setText(R.string.last_month_engagement);
-        }
-
-        ((TextView) mainView.findViewById(R.id.module)).setTypeface(DataManager.getInstance().myriadpro_regular);
-        ((TextView) mainView.findViewById(R.id.period)).setTypeface(DataManager.getInstance().myriadpro_regular);
-        ((TextView) mainView.findViewById(R.id.compare_to)).setTypeface(DataManager.getInstance().myriadpro_regular);
-
-        //Setting the module
-        if(!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
-            module.setOnClickListener(v -> {
-                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.snippet_custom_spinner);
-                dialog.setCancelable(true);
-                dialog.setOnCancelListener(dialog13 -> {
-                    dialog13.dismiss();
-                    runOnUiThread(() -> ((MainActivity) getActivity()).hideProgressBar());
-                });
+        //Setting the moduleFilter
+        moduleFilter.setOnClickListener(v -> {
+            final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.snippet_custom_spinner);
+            dialog.setCancelable(true);
+            dialog.setOnCancelListener(dialog13 -> {
+                dialog13.dismiss();
+                runOnUiThread(() -> ((MainActivity) getActivity()).hideProgressBar());
+            });
 
                 if (DataManager.getInstance().mainActivity.isLandscape) {
                     DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -260,11 +265,11 @@ public class StatsVLEActivityFragment extends Fragment {
                 ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
                 ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
 
-                final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-                listView.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, module.getText().toString()));
-                listView.setOnItemClickListener((parent, view, position, id) -> {
-                    String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
-                    List<Courses> coursesList = new Select().from(Courses.class).execute();
+            final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
+            listView.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, moduleFilter.getText().toString()));
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
+                List<Courses> coursesList = new Select().from(Courses.class).execute();
 
                     for (int j = 0; j < coursesList.size(); j++) {
                         String courseName = coursesList.get(j).name;
@@ -273,52 +278,34 @@ public class StatsVLEActivityFragment extends Fragment {
                         }
                     }
 
-                    dialog.dismiss();
-                    module.setText(titleText);
+                dialog.dismiss();
+                moduleFilter.setText(titleText);
 
-                    if (!module.getText().toString().equals(getString(R.string.anymodule))) {
-                        compareTo.setOnClickListener(compareToListener);
-                        compareTo.setAlpha(1.0f);
-                    } else {
-                        compareTo.setOnClickListener(null);
-                        compareTo.setAlpha(0.5f);
-                        compareTo.setText(getString(R.string.no_one));
-                    }
+                if (!moduleFilter.getText().toString().equals(getString(R.string.anymodule))) {
+                    compareTo.setOnClickListener(compareToListener);
+                    compareTo.setAlpha(1.0f);
+                } else {
+                    compareTo.setOnClickListener(null);
+                    compareTo.setAlpha(0.5f);
+                    compareTo.setText(getString(R.string.compare_to));
+                }
 
-                    if (module.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (compareTo.getText().toString().equals(getString(R.string.average)) || compareTo.getText().toString().equals(getString(R.string.top10)))) {
-                        compareTo.setText(R.string.no_one);
-                    }
+                if (moduleFilter.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (compareTo.getText().toString().equals(getString(R.string.average)) || compareTo.getText().toString().equals(getString(R.string.top10)))) {
+                    compareTo.setText(R.string.compare_to);
+                }
 
                     loadData();
                 });
                 ((MainActivity) getActivity()).showProgressBar2("");
                 dialog.show();
             });
-        } else {
-            module.setAlpha(0.5f);
-        }
-
-        ((ImageView) mainView.findViewById(R.id.change_graph_btn)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.bar_graph));
-        mainView.findViewById(R.id.change_graph_btn).setOnClickListener(v -> {
-            //switch between bar / graph
-            if (isBar) {
-                isBar = false;
-                ((ImageView) v).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.bar_graph));
-
-            } else {
-                isBar = true;
-                ((ImageView) v).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.line_graph));
-            }
-
-            refreshUi();
-        });
-
-        mainView.findViewById(R.id.change_graph_btn).performClick();
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
             loadData();
         }, 100);
+
+        refreshUi();
 
         return mainView;
     }
@@ -330,7 +317,7 @@ public class StatsVLEActivityFragment extends Fragment {
             if (DataManager.getInstance().user.isStaff) {
                 list = new ArrayList<>();
 
-                if (compareTo.getText().toString().equals(getString(R.string.no_one))) {
+                if (compareTo.getText().toString().equals(getString(R.string.compare_to))) {
                     if (isSevenDays) {
                         for (int i = 0; i < 7; i++) {
                             ED item = new ED();
@@ -466,9 +453,9 @@ public class StatsVLEActivityFragment extends Fragment {
             String filterValue;
             boolean isCourse = false;
 
-            String moduleTitleName = module.getText().toString().replace(" -", "");
+            String moduleTitleName = moduleFilter.getText().toString().replace(" -", "");
             if (new Select().from(Module.class).where("module_name LIKE ?", "%" + moduleTitleName + "%").exists()) {
-                filterType = "module";
+                filterType = "moduleFilter";
                 filterValue = ((Module) new Select().from(Module.class).where("module_name = ?", moduleTitleName).executeSingle()).id;
             } else {
                 filterType = "course";
@@ -486,7 +473,7 @@ public class StatsVLEActivityFragment extends Fragment {
 //            compareValue = "10";
 //            compareType = "top";
 //        } else
-            if (!compareTo.getText().toString().equals(getString(R.string.no_one))
+            if (!compareTo.getText().toString().equals(getString(R.string.compare_to))
 //                && !compareTo.getText().toString().equals(getString(R.string.top10))
                     && !compareTo.getText().toString().equals(getString(R.string.average))) {
                 compareValue = ((Friend) new Select().from(Friend.class).where("name = ?", compareTo.getText().toString()).executeSingle()).jisc_student_id.replace("[", "").replace("]", "").replace("\"", "");
@@ -547,7 +534,7 @@ public class StatsVLEActivityFragment extends Fragment {
         ArrayList<ED> tempList = new ArrayList<>();
         tempList.addAll(list);
 
-        if (compareTo.getText().toString().equals(getString(R.string.no_one))) {
+        if (compareTo.getText().toString().equals(getString(R.string.compare_to))) {
             if (isSevenDays) {
 
                 final ArrayList<String> xVals = new ArrayList<>();
@@ -809,5 +796,59 @@ public class StatsVLEActivityFragment extends Fragment {
         if (activity != null && run != null) {
             activity.runOnUiThread(run);
         }
+    }
+
+    private void setUpDatePicker() {
+        datePickerStart = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                startDatePicked.set(Calendar.YEAR, year);
+                startDatePicked.set(Calendar.MONTH, monthOfYear);
+                startDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                startDate.setText(dateFormat.format(startDatePicked.getTime()));
+                if (startDatePicked.after(Calendar.getInstance())) {
+                    startDatePicked = Calendar.getInstance();
+                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_in_future_hint, Snackbar.LENGTH_LONG).show();
+                    startDate.setText("Start");
+                    return;
+                }
+                if (!endDate.getText().toString().equals("End")) {
+                    if (startDatePicked.after(endDatePicked)) {
+                        startDatePicked = Calendar.getInstance();
+                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_after_end_date_hint, Snackbar.LENGTH_LONG).show();
+                        startDate.setText("Start");
+                    } else {
+                        //load Data
+                    }
+                }
+            }
+        };
+
+        datePickerEnd = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                endDatePicked.set(Calendar.YEAR, year);
+                endDatePicked.set(Calendar.MONTH, monthOfYear);
+                endDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                endDate.setText(dateFormat.format(endDatePicked.getTime()));
+                if (endDatePicked.after(Calendar.getInstance())) {
+                    endDatePicked = Calendar.getInstance();
+                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_in_future_hint, Snackbar.LENGTH_LONG).show();
+                    endDate.setText("End");
+                    return;
+                }
+                if (!endDate.getText().toString().equals("Start")) {
+                    if (endDatePicked.before(startDatePicked)) {
+                        endDatePicked = Calendar.getInstance();
+                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_before_start_date_hint, Snackbar.LENGTH_LONG).show();
+                        endDate.setText("End");
+                    } else {
+                        //load Data
+                    }
+                }
+            }
+        };
     }
 }
