@@ -533,5 +533,6 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="see_demo_account">See demo account</string>
     <string name="filter_modules">Filter Modules</string>
+    <string name="compare_to_leader">Compare to Leader</string>
 
 </resources>

@@ -518,4 +518,14 @@
     <!--New Values-->
     <string name="tomorrow">PLACEHOLDER</string>
     <string name="module_in">PLACEHOLDER</string>
+    <string name="my_goal">PLACEHOLDER</string>
+    <string name="add_a_reason_to_keep_this_target_single">PLACEHOLDER</string>
+    <string name="by">PLACEHOLDER</string>
+    <string name="day_overdue">PLACEHOLDER: </string>
+    <string name="days_overdue"> PLACEHOLDER: </string>
+    <string name="today">PLACEHOLDER</string>
+    <string name="confirm_todo_task_done_message">PLACEHOLDER</string>
+    <string name="filter_modules">PLACEHOLDER</string>
+    <string name="compare_to_leader">PLACEHOLDER</string>
 </resources>
+
