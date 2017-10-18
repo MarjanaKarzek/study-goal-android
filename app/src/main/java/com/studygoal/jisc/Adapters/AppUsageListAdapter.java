@@ -63,23 +63,23 @@ public class AppUsageListAdapter extends BaseAdapter {
             TextView textView2 = (TextView) convertView.findViewById(R.id.app_usage_double_text2);
 
             imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.target_met));
-            textView1.setText(context.getString(R.string.targets_met_on_time) + data.get("met_targets"));
-            textView2.setText(context.getString(R.string.targets_not_met_on_time) + data.get("failed_targets"));
+            textView1.setText(context.getString(R.string.targets_met_on_time) + " " + data.get("met_targets"));
+            textView2.setText(context.getString(R.string.targets_not_met_on_time) + " " + data.get("failed_targets"));
         } else {
             TextView textView = (TextView) convertView.findViewById(R.id.app_usage_single_text);
 
             switch (position){
                 case 1:
                     imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.activity_icon_2));
-                    textView.setText(context.getString(R.string.targets_set_app_usage) + data.get("set_targets"));
+                    textView.setText(context.getString(R.string.targets_set_app_usage) + " " + data.get("set_targets"));
                     break;
                 case 2:
                     imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.hours_of_activites));
-                    textView.setText(context.getString(R.string.hours_of_activities_logged) + data.get("activities"));
+                    textView.setText(context.getString(R.string.hours_of_activities_logged) + " " + data.get("activities"));
                     break;
                 case 3:
                     imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.sessions));
-                    textView.setText(context.getString(R.string.sessions) + data.get("sessions"));
+                    textView.setText(context.getString(R.string.sessions) + " " + data.get("sessions"));
                     break;
             }
         }
