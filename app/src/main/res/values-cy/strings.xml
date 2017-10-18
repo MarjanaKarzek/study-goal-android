@@ -1,3 +1,4 @@
+
 <resources>
     <string name="me">Fi</string>
     <string name="activity_details">Manylion Actifedd</string>
@@ -143,7 +144,7 @@
     <string name="no_friend_requests">Does dim ceisiadau ffrind newydd gyda chi ar y foment.</string>
     <string name="not_deleted_friend_request_message">Mae nam wedi digwydd - rhaid treial eto</string>
 
-    <string name="confirm_delete_message">ydych chi'n siwr eich bod chi eisiau dileu?</string>
+    <string name="confirm_delete_message">ydych chi\'n siwr eich bod chi eisiau dileu?</string>
     <string name="friend_request_sent_successfully">Cais ffrind wedi ei yrru yn llwyddiannus!</string>
     <string name="fail_sendFriendRequest">Mae nam wedi digwydd - rhaid treial eto</string>
 
@@ -291,7 +292,7 @@
     <string name="logout_menu">Allgofnodi</string>
     <string name="facebook_not_implemented">Facebook not implemented at this moment</string>
 
-    <string name="deleted_friend_message">Ffrind yn cael ei ddileu o'ch rhestr </string>
+    <string name="deleted_friend_message">Ffrind yn cael ei ddileu o\'ch rhestr </string>
     <string name="hide_friend_message">Ffrind yn cael ei guddio </string>
     <string name="session_expired_message">Mae eich sesiwn wedi gorffen. Bydd rhaid ail-ymuno a\'r system i barhau</string>
 
@@ -442,7 +443,7 @@
     <string name="do_you_want_to_respond_now">Ydych eisiau ymateb nawr?</string>
 
     <string name="statistics_admin_view">Mae ystadegau a roddir at ddibenion prawf yn unig ac ni fyddant yn cael eu heffeithio gan weithredoedd defnyddwyr.</string>
-    <string name="institution_no_listed">Nid yw fy sefydliad wedi'i rhestru yma</string>
+    <string name="institution_no_listed">Nid yw fy sefydliad wedi\'i rhestru yma</string>
 
     <string name="login_with_facebook">Mewngofnodi gyda Facebook</string>
     <string name="login_with_google">Mewngofnodi gyda Google</string>
@@ -479,7 +480,7 @@
     <string name="social_login_error">This email is already registered in our system. Please try again with a different social platform!</string>
     <string name="add_module">Add Module</string>
     <string name="module_name_invalid">Please add a valid Module Name</string>
-    <string name="confirm_delete_feed">ydych chi'n siwr eich bod chi eisiau dileu?</string>
+    <string name="confirm_delete_feed">ydych chi\'n siwr eich bod chi eisiau dileu?</string>
     <!--<string name="attainment_info">PWYSIG: Mae pob marc a nodir â \'\*\*\' yn amodol ar gymredoli a chadarnhau gan Fwrdd Arholwyr. Felly marciau/graddau dros dro yw'r rhain a gallent newid. </string>-->
     <string name="everyone">Pawb</string>
     <string name="send_to">anfon i/at</string>
