@@ -59,10 +59,12 @@ public class StatsVLEActivityFragment extends Fragment {
     private TextView moduleFilter;
     private TextView compareTo;
     private WebView webView;
+    private WebView webViewLineGraph;
 
     private List<ED> list;
     private int[] offlineDemoData = {22,0,0,21,4,5,23,6,16,10,3,4,6,1,7,0,0,0,0,3,5,7,12,24,1,0,0,12,13,21};
     private float webViewHeight;
+    private float webViewHeightLine;
     private boolean isBar = true;
     private boolean isSevenDays = true;
     private boolean isOverall = false;
@@ -104,8 +106,23 @@ public class StatsVLEActivityFragment extends Fragment {
             }
         });
         webView.getViewTreeObserver().addOnGlobalLayoutListener(() -> webViewHeight = Utils.pxToDp(webView.getHeight() - 40));
-
         webView.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:white;\"></div></body></html>", "text/html", "UTF-8", "");
+
+        if (DataManager.getInstance().mainActivity.isLandscape) {
+            webViewLineGraph = (WebView) mainView.findViewById(R.id.chart_web_line);
+            webViewLineGraph.getSettings().setJavaScriptEnabled(true);
+            webViewLineGraph.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            webViewLineGraph.setPadding(0, 0, 0, 0);
+            webViewLineGraph.getSettings().setLoadWithOverviewMode(true);
+            webViewLineGraph.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    return true;
+                }
+            });
+            webViewLineGraph.getViewTreeObserver().addOnGlobalLayoutListener(() -> webViewHeightLine = Utils.pxToDp(webViewLineGraph.getHeight() - 40));
+            webViewLineGraph.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:white;\"></div></body></html>", "text/html", "UTF-8", "");
+        }
 
         setUpDatePicker();
 
@@ -134,25 +151,25 @@ public class StatsVLEActivityFragment extends Fragment {
         });
 
         moduleFilter = (TextView) mainView.findViewById(R.id.vle_activity_module_filter);
+        if(!DataManager.getInstance().mainActivity.isLandscape) {
+            segmentButtonBarGraph = (TextView) mainView.findViewById(R.id.segment_button_bar_graph);
+            segmentButtonLineGraph = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
 
-        segmentButtonBarGraph = (TextView) mainView.findViewById(R.id.segment_button_bar_graph);
-        segmentButtonLineGraph = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
+            ArrayList<TextView> segments = new ArrayList<>();
+            segments.add(segmentButtonBarGraph);
+            segments.add(segmentButtonLineGraph);
 
-        ArrayList<TextView> segments = new ArrayList<>();
-        segments.add(segmentButtonBarGraph);
-        segments.add(segmentButtonLineGraph);
-
-        segmentClickListener = new SegmentClickListener(null, segments, getContext(), 0){
-            @Override
-            public void onClick(View view){
-                loadData();
-                isBar = !isBar;
-                refreshUi();
-            }
-        };
-
-        segmentButtonBarGraph.setOnClickListener(segmentClickListener);
-        segmentButtonLineGraph.setOnClickListener(segmentClickListener);
+            segmentClickListener = new SegmentClickListener(null, segments, getContext(), 0) {
+                @Override
+                public void onClick(View view) {
+                    loadData();
+                    isBar = !isBar;
+                    refreshUi();
+                }
+            };
+            segmentButtonBarGraph.setOnClickListener(segmentClickListener);
+            segmentButtonLineGraph.setOnClickListener(segmentClickListener);
+        }
 
         compareTo = (TextView) mainView.findViewById(R.id.activity_points_compare_to);
 
@@ -283,10 +300,8 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 if (!moduleFilter.getText().toString().equals(getString(R.string.anymodule))) {
                     compareTo.setOnClickListener(compareToListener);
-                    compareTo.setAlpha(1.0f);
                 } else {
                     compareTo.setOnClickListener(null);
-                    compareTo.setAlpha(0.5f);
                     compareTo.setText(getString(R.string.compare_to));
                 }
 
@@ -561,8 +576,14 @@ public class StatsVLEActivityFragment extends Fragment {
                 String html = getHighCartsString();
                 html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
                 html = html.replace("height:1000px", "height:" + webViewHeight + "px");
-
                 webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+
+                if(DataManager.getInstance().mainActivity.isLandscape) {
+                    html = getHighCartsTabletString();
+                    html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
+                    html = html.replace("height:1000px", "height:" + webViewHeightLine + "px");
+                    webViewLineGraph.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                }
             } else if (!isSevenDays) {
                 ArrayList<String> vals1 = new ArrayList<>();
                 ArrayList<String> xVals = new ArrayList<>();
@@ -603,6 +624,12 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 Log.e("JISC", "HTML: " + html);
                 webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                if(DataManager.getInstance().mainActivity.isLandscape) {
+                    html = getHighCartsTabletString();
+                    html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
+                    html = html.replace("height:1000px", "height:" + webViewHeightLine + "px");
+                    webViewLineGraph.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                }
             }
         } else {
             if (isSevenDays) {
@@ -674,6 +701,12 @@ public class StatsVLEActivityFragment extends Fragment {
                 html = html.replace("height:1000px", "height:" + webViewHeight + "px");
 
                 webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                if(DataManager.getInstance().mainActivity.isLandscape) {
+                    html = getHighCartsTabletString();
+                    html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
+                    html = html.replace("height:1000px", "height:" + webViewHeightLine + "px");
+                    webViewLineGraph.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                }
 
             } else if (!isSevenDays) {
                 final ArrayList<String> xVals = new ArrayList<>();
@@ -760,6 +793,12 @@ public class StatsVLEActivityFragment extends Fragment {
                 html = html.replace("height:1000px", "height:" + webViewHeight + "px");
 
                 webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                if(DataManager.getInstance().mainActivity.isLandscape) {
+                    html = getHighCartsTabletString();
+                    html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
+                    html = html.replace("height:1000px", "height:" + webViewHeightLine + "px");
+                    webViewLineGraph.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+                }
             }
         }
     }
@@ -774,6 +813,25 @@ public class StatsVLEActivityFragment extends Fragment {
                 path = "highcharts/linegraph.html";
             }
 
+            StringBuilder buf = new StringBuilder();
+            InputStream json = DataManager.getInstance().mainActivity.getAssets().open(path);
+            BufferedReader in = new BufferedReader(new InputStreamReader(json, "UTF-8"));
+            String str;
+
+            while ((str = in.readLine()) != null) {
+                buf.append(str);
+            }
+
+            in.close();
+            return buf.toString();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    private String getHighCartsTabletString() {
+        try {
+            String path = "highcharts/linegraph.html";
             StringBuilder buf = new StringBuilder();
             InputStream json = DataManager.getInstance().mainActivity.getAssets().open(path);
             BufferedReader in = new BufferedReader(new InputStreamReader(json, "UTF-8"));
