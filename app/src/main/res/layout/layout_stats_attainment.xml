@@ -12,30 +12,55 @@
         android:text="@string/attainment_not_data"
         android:textColor="@color/light_grey" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/stats_swipe_refresh"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFF"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/module_filter"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/round_corner_pink_hallow"
+                android:padding="5dp"
+                android:text="@string/filter_modules"
+                android:textAlignment="center"
+                android:textColor="@color/dark_grey"
+                android:textSize="24sp" />
+
+        </RelativeLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/stats_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp">
+                android:background="#FFF"
+                android:orientation="vertical">
 
-                <ListView
-                    android:id="@+id/list"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:divider="@null"
-                    android:dividerHeight="0dp" />
-            </RelativeLayout>
-        </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+                    android:layout_margin="10dp">
+
+                    <ListView
+                        android:id="@+id/list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:divider="@null"
+                        android:dividerHeight="0dp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 </RelativeLayout>
