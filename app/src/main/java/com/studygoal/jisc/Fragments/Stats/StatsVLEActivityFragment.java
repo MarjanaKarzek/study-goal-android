@@ -65,6 +65,7 @@ public class StatsVLEActivityFragment extends Fragment {
     private int[] offlineDemoData = {22,0,0,21,4,5,23,6,16,10,3,4,6,1,7,0,0,0,0,3,5,7,12,24,1,0,0,12,13,21};
     private float webViewHeight;
     private float webViewHeightLine;
+
     private boolean isBar = true;
     private boolean isSevenDays = true;
     private boolean isOverall = false;
@@ -151,6 +152,7 @@ public class StatsVLEActivityFragment extends Fragment {
         });
 
         moduleFilter = (TextView) mainView.findViewById(R.id.vle_activity_module_filter);
+
         if(!DataManager.getInstance().mainActivity.isLandscape) {
             segmentButtonBarGraph = (TextView) mainView.findViewById(R.id.segment_button_bar_graph);
             segmentButtonLineGraph = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
@@ -302,6 +304,7 @@ public class StatsVLEActivityFragment extends Fragment {
                     compareTo.setOnClickListener(compareToListener);
                 } else {
                     compareTo.setOnClickListener(null);
+                    compareTo.setAlpha(0.5f);
                     compareTo.setText(getString(R.string.compare_to));
                 }
 
@@ -314,6 +317,7 @@ public class StatsVLEActivityFragment extends Fragment {
                 ((MainActivity) getActivity()).showProgressBar2("");
                 dialog.show();
             });
+            ((MainActivity) getActivity()).showProgressBar2("");
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
