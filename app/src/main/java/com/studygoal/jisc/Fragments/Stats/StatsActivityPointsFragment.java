@@ -112,7 +112,6 @@ public class StatsActivityPointsFragment extends BaseFragment {
                     callRefresh();
                 }
             };
-
             segmentButtonSummary.setOnClickListener(segmentClickListener);
             segmentButtonChart.setOnClickListener(segmentClickListener);
         }
