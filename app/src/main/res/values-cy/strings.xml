@@ -143,7 +143,7 @@
     <string name="no_friend_requests">Does dim ceisiadau ffrind newydd gyda chi ar y foment.</string>
     <string name="not_deleted_friend_request_message">Mae nam wedi digwydd - rhaid treial eto</string>
 
-    <string name="confirm_delete_message">Are you sure you want to delete?</string>
+    <string name="confirm_delete_message">ydych chi'n siwr eich bod chi eisiau dileu?</string>
     <string name="friend_request_sent_successfully">Cais ffrind wedi ei yrru yn llwyddiannus!</string>
     <string name="fail_sendFriendRequest">Mae nam wedi digwydd - rhaid treial eto</string>
 
@@ -217,20 +217,20 @@
     <string name="no_module">Dim Modiwl</string>
     <string name="you_must_spend_time_to_edit_activity">Mewngofnodi amser wedi cael ei wario</string>
     <string name="activity_has_been_edited">Actifedd wedi ei olygu yn llwyddiannus!</string>
-    <string name="spend_more_time_to_submit_activity">You must have spent at least 1 minute doing the activity in order to submit it</string>
+    <string name="spend_more_time_to_submit_activity">Rhaid i chi wedi treulio o leiaf un munud yn gwneud y gweithgaredd er mwyn arbed</string>
 
-    <string name="jan">Jan</string>
-    <string name="feb">Feb</string>
-    <string name="mar">Mar</string>
-    <string name="apr">Apr</string>
-    <string name="may">May</string>
-    <string name="jun">Jun</string>
-    <string name="jul">Jul</string>
-    <string name="aug">Aug</string>
-    <string name="sep">Sep</string>
-    <string name="oct">Oct</string>
-    <string name="nov">Nov</string>
-    <string name="dec">Dec</string>
+    <string name="jan">Ion</string>
+    <string name="feb">Chwe</string>
+    <string name="mar">Maw</string>
+    <string name="apr">Ebr</string>
+    <string name="may">Mai</string>
+    <string name="jun">Mehefin</string>
+    <string name="jul">Gorf</string>
+    <string name="aug">Aws</string>
+    <string name="sep">Med</string>
+    <string name="oct">Hydr</string>
+    <string name="nov">Tach</string>
+    <string name="dec">Rhag</string>
 
     <string name="_1st">1st</string>
     <string name="_2nd">2nd</string>
@@ -275,7 +275,7 @@
     <string name="engagement_graph">Graph Ymrwymiad</string>
     <string name="last_24_hours">24 awr diwethaf</string>
     <string name="xyz_gmail_com">xyz@gmail.com</string>
-    <string name="email_notregistered">Email address not registered</string>
+    <string name="email_notregistered">Nid ydy’r cyfeiriad ebost wedi’i gofrestru</string>
     <string name="for_text">Ar gyfer</string>
     <string name="top">Brig</string>
     <string name="feed_menu">Porthiant</string>
@@ -291,16 +291,16 @@
     <string name="logout_menu">Allgofnodi</string>
     <string name="facebook_not_implemented">Facebook not implemented at this moment</string>
 
-    <string name="deleted_friend_message">Friend has been removed from your list</string>
-    <string name="hide_friend_message">Friend has been hidden</string>
+    <string name="deleted_friend_message">Ffrind yn cael ei ddileu o'ch rhestr </string>
+    <string name="hide_friend_message">Ffrind yn cael ei guddio </string>
     <string name="session_expired_message">Mae eich sesiwn wedi gorffen. Bydd rhaid ail-ymuno a\'r system i barhau</string>
 
-    <string name="what_would_you_want_to_see">What would you like</string>
-    <string name="to_see">to see?</string>
+    <string name="what_would_you_want_to_see">Beth hoffech</string>
+    <string name="to_see">chi weld?</string>
     <string name="activity_details_title">Manylion Actifedd</string>
     <string name="target_edited">Targed wedi ei olygu yn llwyddiannus!</string>
     <string name="posted_message">Neges wedi a Bostio\'n Llwyddiannus!</string>
-    <string name="fail_to_post_message">Failed to post message! Please try again later.</string>
+    <string name="fail_to_post_message">Aeth rhywbeth yn anghywir. Ceisiwch eto yn hwyr </string>
 
     <string name="requests">Ceisiadau</string>
 
@@ -310,7 +310,7 @@
     <string name="setup_language">"Dewis iaith</string>
 
     <string name="success_delete_activity">Dileu yn Llwyddiannus</string>
-    <string name="fail_delete_activity">Failed to delete activity from history, please try again later</string>
+    <string name="fail_delete_activity">Aeth rhywbeth yn anghywir. Ceisiwch eto yn hwyr</string>
     <string name="log_title">Log</string>
     <string name="running_activity">Actifedd yn Rhedeg</string>
     <string name="new_activity">Actifedd Newydd</string>
@@ -325,7 +325,7 @@
     <string name="settings_title">Gosodiadau</string>
     <string name="stats_title">Ystadegau</string>
     <string name="you_are_in_top">Rydych yn y @@% o\'r brig</string>
-    <string name="please_select_module">Please select the module in which you’d like to compare your engagement level to other students</string>
+    <string name="please_select_module">Dewisich y modiwl hoffech chi gymharu eich lefel ymrwymiad i fyrfywyr eraill</string>
     <string name="target_title">Targed</string>
     <string name="deleted_target_message">Dileu yn Llwyddiannut</string>
     <string name="successfully_set_stretch_target">Targed Ymestyn wedi ei atodi</string>
@@ -345,12 +345,12 @@
     <string name="twitter_not_available">Twitter is not installed on this device</string>
     <string name="profile">Proffil</string>
     <string name="terms_a_cond">Termau ac amodau</string>
-    <string name="accept_tns">You must accept terms and conditions to log in</string>
+    <string name="accept_tns">Rhaid i chi dderbyn termau ac amodau </string>
     <string name="please_fill_all_fields">Cwblhewch pob maes a sydd angen</string>
-    <string name="invalid_email_or_password">Invalid Email or Password</string>
-    <string name="press_back_again_to_exit_app">Press back again to exit application</string>
-    <string name="days">days</string>
-    <string name="add_notes">Add Notes</string>
+    <string name="invalid_email_or_password">Ebost neu gyfrinair annilys </string>
+    <string name="press_back_again_to_exit_app">Dewiswch yn ôl eto er mwyn gadael y rhaglen </string>
+    <string name="days">dyddiau</string>
+    <string name="add_notes">Ychwanegu nodiadau</string>
     <string name="keep_me_signed_in">CadwÂ fi wedi llofnodi mewn</string>
     <string name="forgot_password">Anghofio Cyfrinair?</string>
     <string name="i_accept">Derbyn</string>
@@ -362,8 +362,8 @@
 
 
     <string name="already_added_activity">You have already logged same activity in past 48 hours</string>
-    <string name="receiving_request">Receiving Request</string>
-    <string name="cancel_pending_title">Confirm Cancellation</string>
+    <string name="receiving_request">Derbyn cais</string>
+    <string name="cancel_pending_title">Gallwch gadarnhau</string>
     <string name="jisc_reminder_title">Study Goal - Reminder</string>
     <string name="dont_forget_break">Don\'t forget to take a break!</string>
 
@@ -442,7 +442,7 @@
     <string name="do_you_want_to_respond_now">Ydych eisiau ymateb nawr?</string>
 
     <string name="statistics_admin_view">Mae ystadegau a roddir at ddibenion prawf yn unig ac ni fyddant yn cael eu heffeithio gan weithredoedd defnyddwyr.</string>
-    <string name="institution_no_listed">My institution is not listed here</string>
+    <string name="institution_no_listed">Nid yw fy sefydliad wedi'i rhestru yma</string>
 
     <string name="login_with_facebook">Mewngofnodi gyda Facebook</string>
     <string name="login_with_google">Mewngofnodi gyda Google</string>
@@ -459,7 +459,7 @@
     <string name="login_back_to_first_page">Y dudalen gyntaf</string>
     <string name="check_in">Cofrestru</string>
     <string name="send_pin_title">Anfon PIN</string>
-    <string name="alert_invalid_pin">Oops. PIN wasn\'t recognised. Please try again.</string>
+    <string name="alert_invalid_pin">Aeth rhywbeth yn anghywir. Ceisiwch eto yn hwyr </string>
     <string name="alert_valid_pin">Diolch. Rydych wedi llwyddo I gofrestru.</string>
     <string name="alert_invalid_pin_staff">"Check-in section is for demonstration purposes, and your PIN was not validated. This section is active for student users.</string>
     <string name="demo_mode">See demo account</string>
@@ -479,10 +479,10 @@
     <string name="social_login_error">This email is already registered in our system. Please try again with a different social platform!</string>
     <string name="add_module">Add Module</string>
     <string name="module_name_invalid">Please add a valid Module Name</string>
-    <string name="confirm_delete_feed">Are you sure you want to delete item this from feed?</string>
+    <string name="confirm_delete_feed">ydych chi'n siwr eich bod chi eisiau dileu?</string>
     <!--<string name="attainment_info">PWYSIG: Mae pob marc a nodir â \'\*\*\' yn amodol ar gymredoli a chadarnhau gan Fwrdd Arholwyr. Felly marciau/graddau dros dro yw'r rhain a gallent newid. </string>-->
-    <string name="everyone">Everyone</string>
-    <string name="send_to">Send to</string>
+    <string name="everyone">Pawb</string>
+    <string name="send_to">anfon i/at</string>
     <string name="app_usage">Defnydd app</string>
     <string name="send_friend_request">Gyrru Cais Ffrind</string>
     <string name="empty_points_page_message">dim pwyntiau a enillwyd eto</string>
@@ -501,17 +501,17 @@
     <string name="target_add_single">Unig</string>
     <string name="target_add_recurring">Rheolaidd</string>
     <!--New Values-->
-    <string name="attendance_menu">PLACEHOLDER</string>
-    <string name="mark_attainment">PLACEHOLDER:</string>
-    <string name="all">PLACEHOLDER</string>
-    <string name="summary">PLACEHOLDER</string>
-    <string name="empty_events_page_message">PLACEHOLDER</string>
+    <string name="attendance_menu">Mynychiad </string>
+    <string name="mark_attainment">Marcio:</string>
+    <string name="all">Holl</string>
+    <string name="summary">Crynodeb </string>
+    <string name="empty_events_page_message">Dim data ar gael </string>
     <string name="module_in">PLACEHOLDER</string>
-    <string name="my_goal">PLACEHOLDER</string>
-    <string name="add_a_reason_to_keep_this_target_single">PLACEHOLDER</string>
-    <string name="by">PLACEHOLDER</string>
-    <string name="day_overdue">PLACEHOLDER: </string>
-    <string name="days_overdue"> PLACEHOLDER: </string>
-    <string name="today">PLACEHOLDER</string>
-    <string name="confirm_todo_task_done_message">PLACEHOLDER</string>
+    <string name="my_goal">Fy amcan </string>
+    <string name="add_a_reason_to_keep_this_target_single">Rheswm am darged</string>
+    <string name="by">gan</string>
+    <string name="day_overdue">Dyddiau yn hwyr: </string>
+    <string name="days_overdue"> Dyddiau yn hwyr: </string>
+    <string name="today">Heddiw </string>
+    <string name="confirm_todo_task_done_message">Gallwch gadarnhau </string>
 </resources>
