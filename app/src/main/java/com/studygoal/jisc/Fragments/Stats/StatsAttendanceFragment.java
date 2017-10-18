@@ -140,6 +140,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                 }
             });
         }
+
         listView = (ListView) mainView.findViewById(R.id.event_attendance_listView);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -276,6 +277,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                     if(!DataManager.getInstance().mainActivity.isLandscape) {
                         moduleFilterAll.setText(R.string.filter_modules);
                     }
+                    moduleFilterAll.setText(titleText);
                 }
                 ((MainActivity) getActivity()).hideProgressBar();
                 new Thread(() -> {
@@ -423,16 +425,20 @@ public class StatsAttendanceFragment extends BaseFragment {
                 startDatePicked.set(Calendar.MONTH, monthOfYear);
                 startDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 startDateSummary.setText(dateFormat.format(startDatePicked.getTime()));
+
                 if(!DataManager.getInstance().mainActivity.isLandscape) {
                     startDateAll.setText(dateFormat.format(startDatePicked.getTime()));
                 }
+
                 if (startDatePicked.after(Calendar.getInstance())) {
                     startDatePicked = Calendar.getInstance();
                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_in_future_hint, Snackbar.LENGTH_LONG).show();
                     startDateSummary.setText("Start");
+
                     if(!DataManager.getInstance().mainActivity.isLandscape) {
                         startDateAll.setText("Start");
                     }
+
                     return;
                 }
                 if (!endDateSummary.getText().toString().equals("End")) {
@@ -440,9 +446,11 @@ public class StatsAttendanceFragment extends BaseFragment {
                         startDatePicked = Calendar.getInstance();
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_after_end_date_hint, Snackbar.LENGTH_LONG).show();
                         startDateSummary.setText("Start");
+
                         if(!DataManager.getInstance().mainActivity.isLandscape) {
                             startDateAll.setText("Start");
                         }
+
                     } else {
                         new Thread(() -> {
                             loadData(0, PAGE_SIZE * 2, true);
@@ -466,16 +474,20 @@ public class StatsAttendanceFragment extends BaseFragment {
                 endDatePicked.set(Calendar.MONTH, monthOfYear);
                 endDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 endDateSummary.setText(dateFormat.format(endDatePicked.getTime()));
+
                 if(!DataManager.getInstance().mainActivity.isLandscape) {
                     endDateAll.setText(dateFormat.format(endDatePicked.getTime()));
                 }
+
                 if (endDatePicked.after(Calendar.getInstance())) {
                     endDatePicked = Calendar.getInstance();
                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_in_future_hint, Snackbar.LENGTH_LONG).show();
                     endDateSummary.setText("End");
+
                     if(!DataManager.getInstance().mainActivity.isLandscape) {
                         endDateAll.setText("End");
                     }
+
                     return;
                 }
                 if (!endDateSummary.getText().toString().equals("Start")) {
@@ -483,9 +495,11 @@ public class StatsAttendanceFragment extends BaseFragment {
                         endDatePicked = Calendar.getInstance();
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_before_start_date_hint, Snackbar.LENGTH_LONG).show();
                         endDateSummary.setText("End");
+
                         if(!DataManager.getInstance().mainActivity.isLandscape) {
                             endDateAll.setText("End");
                         }
+
                     } else {
                         new Thread(() -> {
                             loadData(0, PAGE_SIZE * 2, true);
