@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_purple"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/activity_points_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/activity_points"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/activity_points_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/pi_chart_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/activity_points_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="7">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+
+                    <TextView
+                        android:id="@+id/activity_points_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/start"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/startDateSpinner"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/activity_points_start"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+
+                    <TextView
+                        android:id="@+id/activity_points_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="2dp"
+                        android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/end"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/endDateSpinner"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/activity_points_end"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal">
+
+                    <Button
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/activity_points_module_filter"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_corner_pink_hallow"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/filter_modules"
+                android:textColor="@color/dark_grey"
+                android:textSize="24sp" />
+
+            <ListView
+                android:id="@+id/activity_points_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp" />
+
+            <TextView
+                android:id="@+id/points_list_emptyView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="@string/empty_points_page_message"
+                android:textColor="@color/dark_grey" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

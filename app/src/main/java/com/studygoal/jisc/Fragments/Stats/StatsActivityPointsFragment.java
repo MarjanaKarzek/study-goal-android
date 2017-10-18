@@ -87,7 +87,6 @@ public class StatsActivityPointsFragment extends BaseFragment {
         activityPointsValue = (TextView) mainView.findViewById(R.id.activity_points_value);
         piChartWebView = (WebView) mainView.findViewById(R.id.pi_chart_web_view);
         piChartWebView.setVisibility(View.INVISIBLE);
-        viewFlipper = (ViewFlipper) mainView.findViewById(R.id.activity_points_container);
 
         ListView activityPointsListView = (ListView) mainView.findViewById(R.id.activity_points_list_view);
         adapter = new ActivityPointsAdapter(getContext());
@@ -95,25 +94,27 @@ public class StatsActivityPointsFragment extends BaseFragment {
         emptyView = (TextView) mainView.findViewById(R.id.points_list_emptyView);
         emptyView.setVisibility(View.GONE);
 
-        segmentButtonSummary = (TextView) mainView.findViewById(R.id.segment_button_summary);
-        segmentButtonChart = (TextView) mainView.findViewById(R.id.segment_button_chart);
+        if(!DataManager.getInstance().mainActivity.isLandscape) {
+            viewFlipper = (ViewFlipper) mainView.findViewById(R.id.activity_points_container);
+            segmentButtonSummary = (TextView) mainView.findViewById(R.id.segment_button_summary);
+            segmentButtonChart = (TextView) mainView.findViewById(R.id.segment_button_chart);
 
-        ArrayList<TextView> segments = new ArrayList<>();
-        segments.add(segmentButtonSummary);
-        segments.add(segmentButtonChart);
+            ArrayList<TextView> segments = new ArrayList<>();
+            segments.add(segmentButtonSummary);
+            segments.add(segmentButtonChart);
 
-        segmentClickListener = new SegmentClickListener(viewFlipper, segments, getContext(), 0){
-            @Override
-            public void onClick(View view){
-                super.onClick(view);
-                isThisWeek = !isThisWeek;
-                callRefresh();
-            }
-        };
+            segmentClickListener = new SegmentClickListener(viewFlipper, segments, getContext(), 0) {
+                @Override
+                public void onClick(View view) {
+                    super.onClick(view);
+                    isThisWeek = !isThisWeek;
+                    callRefresh();
+                }
+            };
 
-        segmentButtonSummary.setOnClickListener(segmentClickListener);
-        segmentButtonChart.setOnClickListener(segmentClickListener);
-
+            segmentButtonSummary.setOnClickListener(segmentClickListener);
+            segmentButtonChart.setOnClickListener(segmentClickListener);
+        }
         showAlertDialog();
         setUpDatePicker();
 
