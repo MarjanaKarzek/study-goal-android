@@ -1,38 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:orientation="vertical">
 
-    <WebView
-        android:id="@+id/pi_chart_web_view"
+    <LinearLayout
+        android:id="@+id/segment_controller"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center" />
+        android:layout_height="42dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/round_corners_segmented"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/segment_button_summary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/round_corners_segmented_active"
+            android:gravity="center"
+            android:text="@string/summary"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/segment_button_chart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/chart"
+            android:textColor="#3792ef" />
+
+    </LinearLayout>
 
     <ViewFlipper
         android:id="@+id/activity_points_container"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/circle_purple"
+        android:layout_marginTop="5dp"
         android:gravity="center">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/circle_purple">
 
             <TextView
                 android:id="@+id/activity_points_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:text="@string/activity_points"
                 android:textColor="#ffffff"
@@ -42,108 +63,137 @@
                 android:id="@+id/activity_points_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text=""
+                android:text="0"
                 android:textColor="#ffffff"
                 android:textSize="30sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
             android:orientation="vertical"
             android:layout_gravity="center">
 
-            <TextView
-                android:id="@+id/activity_points_title2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="@string/activity_points"
-                android:textColor="#ffffff"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/activity_points_value2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="0"
-                android:textColor="#ffffff"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
+            <WebView
+                android:id="@+id/pi_chart_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:gravity="center" />
 
         </LinearLayout>
     </ViewFlipper>
 
     <LinearLayout
-        android:id="@+id/segment_buttons"
-        android:layout_width="300dp"
-        android:layout_height="35dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/round_corners_segmented"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/activity_points_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+
+                <TextView
+                    android:id="@+id/activity_points_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@drawable/round_corner_pink_hallow_transparent"
+                    android:padding="5dp"
+                    android:text="@string/start"
+                    android:gravity="center"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/startDateSpinner"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/activity_points_start"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+
+                <TextView
+                    android:id="@+id/activity_points_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/round_corner_pink_hallow_transparent"
+                    android:padding="5dp"
+                    android:text="@string/end"
+                    android:gravity="center"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/endDateSpinner"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/activity_points_end"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/segment_button_this_week"
-            android:layout_width="0dp"
+            android:id="@+id/activity_points_module_filter"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_corner_pink_hallow"
+            android:padding="5dp"
+            android:text="@string/filter_modules"
+            android:textAlignment="center"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp" />
+
+        <ListView
+            android:id="@+id/activity_points_list_view"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/round_corners_segmented_active"
-            android:gravity="center"
-            android:text="@string/this_week"
-            android:textColor="#ffffff" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp" />
 
         <TextView
-            android:id="@+id/segment_button_overall"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/overall"
-            android:textColor="#3792ef" />
-
+            android:id="@+id/points_list_emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/empty_points_page_message"
+            android:textColor="@color/dark_grey"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/activity_points_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/segment_buttons"
-        android:layout_below="@+id/activity_points_container"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp" />
-    <TextView
-        android:id="@+id/points_list_emptyView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/empty_points_page_message"
-        android:textColor="@color/dark_grey"
-        android:layout_below="@id/pi_chart_web_view"
-        android:layout_marginTop="100dp"
-        android:visibility="gone"/>
-
-    <LinearLayout
-        android:layout_width="1dp"
-        android:layout_height="35dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:background="#3792ef" />
-
-    <Switch
-        android:id="@+id/pie_chart_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/activity_points_container"
-        android:layout_toEndOf="@+id/activity_points_container" />
-
-</RelativeLayout>
+</LinearLayout>
