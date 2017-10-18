@@ -152,7 +152,6 @@ public class StatsVLEActivityFragment extends Fragment {
         });
 
         moduleFilter = (TextView) mainView.findViewById(R.id.vle_activity_module_filter);
-
         if(!DataManager.getInstance().mainActivity.isLandscape) {
             segmentButtonBarGraph = (TextView) mainView.findViewById(R.id.segment_button_bar_graph);
             segmentButtonLineGraph = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
@@ -304,7 +303,6 @@ public class StatsVLEActivityFragment extends Fragment {
                     compareTo.setOnClickListener(compareToListener);
                 } else {
                     compareTo.setOnClickListener(null);
-                    compareTo.setAlpha(0.5f);
                     compareTo.setText(getString(R.string.compare_to));
                 }
 
