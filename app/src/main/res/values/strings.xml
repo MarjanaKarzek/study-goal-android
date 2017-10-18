@@ -130,7 +130,7 @@
     <string name="attendance">Attendance Summary</string>
     <string name="this_week">This Week</string>
     <string name="period">Period</string>
-    <string name="compare_to">Compare to</string>
+    <string name="compare_to">Compare to ...</string>
     <string name="time_period">Time Period</string>
     <string name="last_day">Last Day</string>
     <string name="last_week">Last Week</string>
@@ -535,5 +535,7 @@
     <string name="filter_modules">Filter Modules</string>
     <string name="compare_to_leader">Compare to Leader</string>
     <string name="chart">Chart</string>
-    
+    <string name="bar_graph">Bar Graph</string>
+    <string name="line_graph">Line Graph</string>
+
 </resources>

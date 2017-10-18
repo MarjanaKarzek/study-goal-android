@@ -7,12 +7,42 @@
     android:orientation="vertical"
     android:weightSum="10">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
+        android:id="@+id/segment_controller"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/round_corners_segmented"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/segment_button_bar_graph"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/round_corners_segmented_active"
+            android:gravity="center"
+            android:text="@string/bar_graph"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/segment_button_line_graph"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/line_graph"
+            android:textColor="#3792ef" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="6"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="2dp">
@@ -21,14 +51,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textColor="@color/dark_grey"
-                android:textSize="18sp" />
 
             <RelativeLayout
                 android:id="@+id/chart_layout"
@@ -58,197 +80,110 @@
 
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1.2"
-        android:visibility="visible"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="2dp">
-
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
         <LinearLayout
+            android:id="@+id/activity_points_date"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="7">
 
             <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/newactivity_module_icon" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="10">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
 
                 <TextView
-                    android:id="@+id/module"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="4"
-                    android:text="@string/module"
-                    android:textColor="@color/default_blue"
+                    android:id="@+id/vle_activity_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@drawable/round_corner_pink_hallow_transparent"
+                    android:padding="5dp"
+                    android:text="@string/start"
+                    android:gravity="center"
+                    android:textColor="@color/dark_grey"
                     android:textSize="18sp" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/module_list"
-                    style="@style/AppSpinner"
-                    android:layout_width="0dp"
+                <Spinner
+                    android:id="@+id/startDateSpinner"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="6"
-                    android:gravity="end"
-                    android:paddingStart="3dp"
-                    android:text=""
-                    android:textColor="#8a63cc"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1.2"
-        android:visibility="visible"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="2dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                    android:layout_alignEnd="@+id/activity_points_start"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/timer" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
 
                 <TextView
-                    android:id="@+id/period"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="4"
-                    android:text="@string/period"
-                    android:textColor="@color/default_blue"
+                    android:id="@+id/vle_activity_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/round_corner_pink_hallow_transparent"
+                    android:padding="5dp"
+                    android:text="@string/end"
+                    android:gravity="center"
+                    android:textColor="@color/dark_grey"
                     android:textSize="18sp" />
 
-                <LinearLayout
-                    android:id="@+id/segment_buttons_period"
-                    android:layout_width="0dp"
+                <Spinner
+                    android:id="@+id/endDateSpinner"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/round_corners_segmented"
-                    android:orientation="horizontal"
-                    android:layout_weight="6"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:id="@+id/segment_button_seven_days"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/round_corners_segmented_active"
-                        android:gravity="center"
-                        android:text="@string/last_7_days_short"
-                        android:textColor="#ffffff"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/segment_button_twentyeight_days"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/last_28_days_short"
-                        android:textColor="#3792ef"
-                        android:textSize="18sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1.2"
-        android:visibility="visible"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="2dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                    android:layout_alignEnd="@+id/activity_points_end"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/compareto" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:weightSum="10">
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
 
-                <TextView
-                    android:id="@+id/compare_to"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="4"
-                    android:text="@string/compare_to"
-                    android:textColor="@color/default_blue"
-                    android:textSize="18sp" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/compareto"
-                    style="@style/AppSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="6"
-                    android:gravity="end"
-                    android:paddingStart="3dp"
-                    android:text=""
-                    android:textColor="#8a63cc"
-                    android:textSize="18sp" />
-            </LinearLayout>
+                <Button
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+            </RelativeLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/vle_activity_module_filter"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_corner_pink_hallow"
+            android:padding="5dp"
+            android:text="@string/filter_modules"
+            android:textAlignment="center"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/activity_points_compare_to"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_corner_pink_hallow"
+            android:padding="5dp"
+            android:text="@string/compare_to"
+            android:textAlignment="center"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp" />
+    </LinearLayout>
 </LinearLayout>
