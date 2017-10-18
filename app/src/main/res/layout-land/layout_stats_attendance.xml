@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:weightSum="2">
+
+            <WebView
+                android:id="@+id/webview_graph"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <ListView
+                android:id="@+id/event_attendance_listView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="#d1e0f3"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/events_attended_list_emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/empty_events_page_message"
+                android:textColor="@color/dark_grey" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/border_gray_left"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/app_usage_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="7">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+
+                    <TextView
+                        android:id="@+id/attendance_start_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/start"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/startDateSpinner"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/attendance_start_summary"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+
+                    <TextView
+                        android:id="@+id/attendance_end_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="2dp"
+                        android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/end"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/endDateSpinner"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/attendance_end_summary"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal">
+
+                    <Button
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/attendance_module_filter_summary"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_corner_pink_hallow"
+                android:padding="5dp"
+                android:text="@string/filter_modules"
+                android:gravity="center"
+                android:textColor="@color/dark_grey"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/compare_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="3"
+                    android:text="@string/compare_to_leader"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="24sp" />
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

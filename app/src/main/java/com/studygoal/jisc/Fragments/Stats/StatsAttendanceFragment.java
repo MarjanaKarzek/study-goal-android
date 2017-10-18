@@ -109,13 +109,15 @@ public class StatsAttendanceFragment extends BaseFragment {
             }
         });
 
-        startDateAll = (TextView) mainView.findViewById(R.id.attendance_start_all);
-        startDateAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startDateDatePickerDialog.show();
-            }
-        });
+        if(!DataManager.getInstance().mainActivity.isLandscape) {
+            startDateAll = (TextView) mainView.findViewById(R.id.attendance_start_all);
+            startDateAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startDateDatePickerDialog.show();
+                }
+            });
+        }
 
         DatePickerDialog endDateDatePickerDialog = new DatePickerDialog(getActivity(), datePickerEnd, endDatePicked
                 .get(Calendar.YEAR), endDatePicked.get(Calendar.MONTH),
@@ -129,14 +131,15 @@ public class StatsAttendanceFragment extends BaseFragment {
             }
         });
 
-        endDateAll = (TextView) mainView.findViewById(R.id.attendance_end_all);
-        endDateAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                endDateDatePickerDialog.show();
-            }
-        });
-
+        if(!DataManager.getInstance().mainActivity.isLandscape) {
+            endDateAll = (TextView) mainView.findViewById(R.id.attendance_end_all);
+            endDateAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    endDateDatePickerDialog.show();
+                }
+            });
+        }
         listView = (ListView) mainView.findViewById(R.id.event_attendance_listView);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -192,18 +195,20 @@ public class StatsAttendanceFragment extends BaseFragment {
             }
         }).start();
 
-        summary = (TextView) mainView.findViewById(R.id.segment_button_attendance_summary);
-        all = (TextView) mainView.findViewById(R.id.segment_button_all_events);
+        if(!DataManager.getInstance().mainActivity.isLandscape) {
+            summary = (TextView) mainView.findViewById(R.id.segment_button_attendance_summary);
+            all = (TextView) mainView.findViewById(R.id.segment_button_all_events);
 
-        viewFlipper = (ViewFlipper) mainView.findViewById(R.id.viewFlipperEvents);
+            viewFlipper = (ViewFlipper) mainView.findViewById(R.id.viewFlipperEvents);
 
-        ArrayList<TextView> segments = new ArrayList<>();
-        segments.add(summary);
-        segments.add(all);
+            ArrayList<TextView> segments = new ArrayList<>();
+            segments.add(summary);
+            segments.add(all);
 
-        segmentClickListener = new SegmentClickListener(viewFlipper,segments,getContext(),0);
-        summary.setOnClickListener(segmentClickListener);
-        all.setOnClickListener(segmentClickListener);
+            segmentClickListener = new SegmentClickListener(viewFlipper, segments, getContext(), 0);
+            summary.setOnClickListener(segmentClickListener);
+            all.setOnClickListener(segmentClickListener);
+        }
 
         webView = (WebView) mainView.findViewById(R.id.webview_graph);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -263,10 +268,14 @@ public class StatsAttendanceFragment extends BaseFragment {
                 dialog.dismiss();
                 if (!titleText.equals("All Activity")) {
                     moduleFilterSummary.setText(titleText);
-                    moduleFilterAll.setText(titleText);
+                    if(!DataManager.getInstance().mainActivity.isLandscape) {
+                        moduleFilterAll.setText(titleText);
+                    }
                 } else {
                     moduleFilterSummary.setText(R.string.filter_modules);
-                    moduleFilterAll.setText(R.string.filter_modules);
+                    if(!DataManager.getInstance().mainActivity.isLandscape) {
+                        moduleFilterAll.setText(R.string.filter_modules);
+                    }
                 }
                 ((MainActivity) getActivity()).hideProgressBar();
                 new Thread(() -> {
@@ -283,57 +292,59 @@ public class StatsAttendanceFragment extends BaseFragment {
             dialog.show();
         });
 
-        moduleFilterAll = (TextView) mainView.findViewById(R.id.attendance_module_filter_all);
-        moduleFilterAll.setOnClickListener(v -> {
-            final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.snippet_custom_spinner);
-            dialog.setCancelable(true);
-            dialog.setOnCancelListener(dialog13 -> {
-                dialog13.dismiss();
-                ((MainActivity) getActivity()).hideProgressBar();
-            });
+        if(!DataManager.getInstance().mainActivity.isLandscape) {
+            moduleFilterAll = (TextView) mainView.findViewById(R.id.attendance_module_filter_all);
+            moduleFilterAll.setOnClickListener(v -> {
+                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
+                dialog.setCancelable(true);
+                dialog.setOnCancelListener(dialog13 -> {
+                    dialog13.dismiss();
+                    ((MainActivity) getActivity()).hideProgressBar();
+                });
 
-            if (DataManager.getInstance().mainActivity.isLandscape) {
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                int width = (int) (displaymetrics.widthPixels * 0.3);
+                if (DataManager.getInstance().mainActivity.isLandscape) {
+                    DisplayMetrics displaymetrics = new DisplayMetrics();
+                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                    int width = (int) (displaymetrics.widthPixels * 0.3);
 
-                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                params.width = width;
-                dialog.getWindow().setAttributes(params);
-            }
-
-            ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-            ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.filter_modules);
-
-            final ListView listView1 = (ListView) dialog.findViewById(R.id.dialog_listview);
-            listView1.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, moduleFilterSummary.getText().toString()));
-            listView1.setOnItemClickListener((parent, view, position, id) -> {
-                String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
-
-                dialog.dismiss();
-                if (!titleText.equals("All Activity")) {
-                    moduleFilterSummary.setText(titleText);
-                    moduleFilterAll.setText(titleText);
-                } else {
-                    moduleFilterSummary.setText(R.string.filter_modules);
-                    moduleFilterAll.setText(R.string.filter_modules);
+                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                    params.width = width;
+                    dialog.getWindow().setAttributes(params);
                 }
-                ((MainActivity) getActivity()).hideProgressBar();
-                new Thread(() -> {
-                    loadData(0, PAGE_SIZE * 2, true);
-                    runOnUiThread(() -> {
-                        adapter.updateList(events);
-                        adapter.notifyDataSetChanged();
-                        ((MainActivity) getActivity()).hideProgressBar();
-                        isLoading = false;
-                    });
-                }).start();
+
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.filter_modules);
+
+                final ListView listView1 = (ListView) dialog.findViewById(R.id.dialog_listview);
+                listView1.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, moduleFilterSummary.getText().toString()));
+                listView1.setOnItemClickListener((parent, view, position, id) -> {
+                    String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
+
+                    dialog.dismiss();
+                    if (!titleText.equals("All Activity")) {
+                        moduleFilterSummary.setText(titleText);
+                        moduleFilterAll.setText(titleText);
+                    } else {
+                        moduleFilterSummary.setText(R.string.filter_modules);
+                        moduleFilterAll.setText(R.string.filter_modules);
+                    }
+                    ((MainActivity) getActivity()).hideProgressBar();
+                    new Thread(() -> {
+                        loadData(0, PAGE_SIZE * 2, true);
+                        runOnUiThread(() -> {
+                            adapter.updateList(events);
+                            adapter.notifyDataSetChanged();
+                            ((MainActivity) getActivity()).hideProgressBar();
+                            isLoading = false;
+                        });
+                    }).start();
+                });
+                ((MainActivity) getActivity()).showProgressBar2("");
+                dialog.show();
             });
-            ((MainActivity) getActivity()).showProgressBar2("");
-            dialog.show();
-        });
+        }
 
         loadWebView();
 
@@ -359,7 +370,9 @@ public class StatsAttendanceFragment extends BaseFragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
         if(dates.size() == 0){
-            mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.VISIBLE);
+            if(!DataManager.getInstance().mainActivity.isLandscape) {
+                mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.VISIBLE);
+            }
             webView.setVisibility(View.GONE);
         } else {
             mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.GONE);
@@ -410,12 +423,16 @@ public class StatsAttendanceFragment extends BaseFragment {
                 startDatePicked.set(Calendar.MONTH, monthOfYear);
                 startDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 startDateSummary.setText(dateFormat.format(startDatePicked.getTime()));
-                startDateAll.setText(dateFormat.format(startDatePicked.getTime()));
+                if(!DataManager.getInstance().mainActivity.isLandscape) {
+                    startDateAll.setText(dateFormat.format(startDatePicked.getTime()));
+                }
                 if (startDatePicked.after(Calendar.getInstance())) {
                     startDatePicked = Calendar.getInstance();
                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_in_future_hint, Snackbar.LENGTH_LONG).show();
                     startDateSummary.setText("Start");
-                    startDateAll.setText("Start");
+                    if(!DataManager.getInstance().mainActivity.isLandscape) {
+                        startDateAll.setText("Start");
+                    }
                     return;
                 }
                 if (!endDateSummary.getText().toString().equals("End")) {
@@ -423,7 +440,9 @@ public class StatsAttendanceFragment extends BaseFragment {
                         startDatePicked = Calendar.getInstance();
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_after_end_date_hint, Snackbar.LENGTH_LONG).show();
                         startDateSummary.setText("Start");
-                        startDateAll.setText("Start");
+                        if(!DataManager.getInstance().mainActivity.isLandscape) {
+                            startDateAll.setText("Start");
+                        }
                     } else {
                         new Thread(() -> {
                             loadData(0, PAGE_SIZE * 2, true);
@@ -447,12 +466,16 @@ public class StatsAttendanceFragment extends BaseFragment {
                 endDatePicked.set(Calendar.MONTH, monthOfYear);
                 endDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 endDateSummary.setText(dateFormat.format(endDatePicked.getTime()));
-                endDateAll.setText(dateFormat.format(endDatePicked.getTime()));
+                if(!DataManager.getInstance().mainActivity.isLandscape) {
+                    endDateAll.setText(dateFormat.format(endDatePicked.getTime()));
+                }
                 if (endDatePicked.after(Calendar.getInstance())) {
                     endDatePicked = Calendar.getInstance();
                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_in_future_hint, Snackbar.LENGTH_LONG).show();
                     endDateSummary.setText("End");
-                    endDateAll.setText("End");
+                    if(!DataManager.getInstance().mainActivity.isLandscape) {
+                        endDateAll.setText("End");
+                    }
                     return;
                 }
                 if (!endDateSummary.getText().toString().equals("Start")) {
@@ -460,7 +483,9 @@ public class StatsAttendanceFragment extends BaseFragment {
                         endDatePicked = Calendar.getInstance();
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_before_start_date_hint, Snackbar.LENGTH_LONG).show();
                         endDateSummary.setText("End");
-                        endDateAll.setText("End");
+                        if(!DataManager.getInstance().mainActivity.isLandscape) {
+                            endDateAll.setText("End");
+                        }
                     } else {
                         new Thread(() -> {
                             loadData(0, PAGE_SIZE * 2, true);
