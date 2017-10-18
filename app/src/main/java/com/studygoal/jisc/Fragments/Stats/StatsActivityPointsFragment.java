@@ -116,6 +116,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
             segmentButtonSummary.setOnClickListener(segmentClickListener);
             segmentButtonChart.setOnClickListener(segmentClickListener);
         }
+
         showAlertDialog();
         setUpDatePicker();
 
@@ -195,6 +196,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
         s.setJavaScriptEnabled(true);
 
         try {
+
             InputStream is = null;
             Log.d(TAG, "loadWebView: language " + DataManager.getInstance().language);
             if (LinguisticManager.getInstance().getLanguageCode() == "cy") {
@@ -202,6 +204,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
             } else {
                 is = getContext().getAssets().open("stats_points_pi_chart.html");
             }
+
             int size = is.available();
             final byte[] buffer = new byte[size];
             is.read(buffer);
