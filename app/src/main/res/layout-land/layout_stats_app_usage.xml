@@ -51,20 +51,15 @@
                     <TextView
                         android:id="@+id/app_usage_start"
                         android:layout_width="match_parent"
-<<<<<<< HEAD
                         android:layout_height="52dp"
-=======
-                        android:layout_height="42dp"
->>>>>>> add ipad screen for app usage
                         android:layout_marginEnd="10dp"
                         android:background="@drawable/round_corner_pink_hallow_transparent"
                         android:padding="5dp"
                         android:text="@string/start"
-<<<<<<< HEAD
                         android:gravity="center"
-=======
                         android:textAlignment="center"
->>>>>>> add ipad screen for app usage
+                        android:gravity="center"
+>>>>>>> adjust buttons for tablet version
                         android:textColor="@color/dark_grey"
                         android:textSize="24sp" />
 
@@ -85,21 +80,15 @@
                     <TextView
                         android:id="@+id/app_usage_end"
                         android:layout_width="match_parent"
-<<<<<<< HEAD
                         android:layout_height="52dp"
-=======
-                        android:layout_height="42dp"
->>>>>>> add ipad screen for app usage
+                        android:layout_height="52dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/round_corner_pink_hallow_transparent"
                         android:padding="5dp"
                         android:text="@string/end"
-<<<<<<< HEAD
                         android:gravity="center"
-=======
                         android:textAlignment="center"
->>>>>>> add ipad screen for app usage
                         android:textColor="@color/dark_grey"
                         android:textSize="24sp" />
 
@@ -119,13 +108,8 @@
                     android:gravity="center_horizontal">
 
                     <Button
-<<<<<<< HEAD
                         android:layout_width="52dp"
                         android:layout_height="52dp"
-=======
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
->>>>>>> add ipad screen for app usage
                         android:background="@drawable/round_corner_pink_hallow_settings_icon" />
                 </RelativeLayout>
             </LinearLayout>
