@@ -277,7 +277,6 @@ public class StatsAttendanceFragment extends BaseFragment {
                     if(!DataManager.getInstance().mainActivity.isLandscape) {
                         moduleFilterAll.setText(R.string.filter_modules);
                     }
-                    moduleFilterAll.setText(titleText);
                 }
                 ((MainActivity) getActivity()).hideProgressBar();
                 new Thread(() -> {
