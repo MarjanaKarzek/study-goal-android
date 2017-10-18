@@ -70,7 +70,7 @@ public class AppUsageListAdapter extends BaseAdapter {
 
             switch (position){
                 case 1:
-                    imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.activity_icon_2));
+                    imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.target_set_icon));
                     textView.setText(context.getString(R.string.targets_set_app_usage) + " " + data.get("set_targets"));
                     break;
                 case 2:

@@ -25,13 +25,13 @@
                 android:id="@+id/app_usage_start"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="2dp"
                 android:background="@drawable/round_corner_pink_hallow_transparent"
                 android:padding="5dp"
                 android:text="@string/start"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@color/dark_grey"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <Spinner
                 style="@style/Widget.AppCompat.DropDownItem.Spinner"
@@ -51,14 +51,14 @@
                 android:id="@+id/app_usage_end"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
                 android:background="@drawable/round_corner_pink_hallow_transparent"
                 android:padding="5dp"
                 android:text="@string/end"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@color/dark_grey"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <Spinner
                 style="@style/Widget.AppCompat.DropDownItem.Spinner"
@@ -68,6 +68,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignEnd="@+id/app_usage_end" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"

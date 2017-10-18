@@ -529,4 +529,5 @@
     <string name="days_overdue"> days overdue: </string>
     <string name="confirm_todo_task_done_message">Are you sure you want to mark this task as done?</string>
     <string name="filter_modules">Filter Modules</string>
+    <string name="compare_to_leader">Compare to Leader</string>
 </resources>
