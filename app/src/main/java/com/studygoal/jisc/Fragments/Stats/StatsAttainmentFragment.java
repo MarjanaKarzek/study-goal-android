@@ -1,18 +1,24 @@
 package com.studygoal.jisc.Fragments.Stats;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.studygoal.jisc.Activities.MainActivity;
 import com.studygoal.jisc.Adapters.AttainmentAdapter;
+import com.studygoal.jisc.Adapters.ModuleAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
@@ -29,6 +35,7 @@ public class StatsAttainmentFragment extends Fragment {
     private AttainmentAdapter adapter;
     private View mainview;
     private TextView nowData;
+    private TextView moduleFilter;
     private SwipeRefreshLayout layout;
 
     @Override
@@ -176,6 +183,48 @@ public class StatsAttainmentFragment extends Fragment {
             android.app.AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
+
+        moduleFilter = (TextView) mainview.findViewById(R.id.module_filter);
+        moduleFilter.setOnClickListener(v -> {
+            final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.snippet_custom_spinner);
+            dialog.setCancelable(true);
+            dialog.setOnCancelListener(dialog13 -> {
+                dialog13.dismiss();
+                ((MainActivity) getActivity()).hideProgressBar();
+            });
+
+            if (DataManager.getInstance().mainActivity.isLandscape) {
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                int width = (int) (displaymetrics.widthPixels * 0.3);
+
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width = width;
+                dialog.getWindow().setAttributes(params);
+            }
+
+            ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+            ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.filter_modules);
+
+            final ListView listView1 = (ListView) dialog.findViewById(R.id.dialog_listview);
+            listView1.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, moduleFilter.getText().toString()));
+            listView1.setOnItemClickListener((parent, view, position, id) -> {
+                String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
+
+                dialog.dismiss();
+                if(!titleText.equals("All Activity")){
+                    moduleFilter.setText(titleText);
+                } else {
+                    moduleFilter.setText(R.string.filter_modules);
+                }
+                ((MainActivity) getActivity()).hideProgressBar();
+                //loadData();
+            });
+            ((MainActivity) getActivity()).showProgressBar2("");
+            dialog.show();
+        });
 
         return mainview;
     }
