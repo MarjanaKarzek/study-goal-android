@@ -55,7 +55,7 @@ import com.studygoal.jisc.Fragments.Log.LogNewActivityFragment;
 import com.studygoal.jisc.Fragments.Settings.SettingsFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsAppUsageFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsAttainmentFragment;
-import com.studygoal.jisc.Fragments.Stats.StatsEventAttendanceFragment;
+import com.studygoal.jisc.Fragments.Stats.StatsAttendanceFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsLeaderBoardFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsPointsFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsVLEActivityFragment;
@@ -443,7 +443,7 @@ public class MainActivity extends FragmentActivity {
                 } else if (selection.equals(getString(R.string.leader_board))) {
                     destination = new StatsLeaderBoardFragment();
                 } else if (selection.equals(getString(R.string.attendance_menu))) {
-                    destination = new StatsEventAttendanceFragment();
+                    destination = new StatsAttendanceFragment();
                 } else if (selection.equals(getString(R.string.app_usage))) {
                     destination = new StatsAppUsageFragment();
                 }
