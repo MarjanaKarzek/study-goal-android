@@ -26,4 +26,5 @@
 
     <color name="to_do_item_general_background">#FBFBFB</color>
     <color name="to_do_item_tutor_background">#B9D8F4</color>
+    <color name="current_visual_pink">#bd00fa</color>
 </resources>
