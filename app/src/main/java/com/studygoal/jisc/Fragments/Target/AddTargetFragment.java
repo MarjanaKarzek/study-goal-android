@@ -805,6 +805,8 @@ public class AddTargetFragment extends BaseFragment {
                             DataManager.getInstance().mainActivity.onBackPressed();
 //                          Snackbar.make(root, R.string.target_saved, Snackbar.LENGTH_LONG).show();
                         });
+
+                        XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.AddRecurringTarget);
                     } else {
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                             (DataManager.getInstance().mainActivity).hideProgressBar();
@@ -939,6 +941,7 @@ public class AddTargetFragment extends BaseFragment {
                         DataManager.getInstance().mainActivity.hideProgressBar();
                         DataManager.getInstance().mainActivity.onBackPressed();
                     });
+                    XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.AddSingleTarget);
                 } else {
                     runOnUiThread(() -> {
                         (DataManager.getInstance().mainActivity).hideProgressBar();
