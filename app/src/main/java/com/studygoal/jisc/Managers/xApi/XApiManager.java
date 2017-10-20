@@ -270,35 +270,35 @@ public class XApiManager {
                     break;
                 }
                 case AcceptSingleTarget: {
-                    sendLogActivity("viewed", "targets-accept-tutor-target", "acceptTarget", modId);
+                    sendLogActivity("viewed", "targets-accept-tutor-target", "acceptTarget");
                     break;
                 }
                 case DeclineSingleTarget: {
-                    sendLogActivity("viewed", "targets-decline-tutor-target", "declineTarget", modId);
+                    sendLogActivity("viewed", "targets-decline-tutor-target", "declineTarget");
                     break;
                 }
                 case AddSingleTarget: {
-                    sendLogActivity("viewed", "targets-add-single", "addSingleTarget", modId);
+                    sendLogActivity("viewed", "targets-add-single", "addSingleTarget");
                     break;
                 }
                 case AddRecurringTarget: {
-                    sendLogActivity("viewed", "targets-add-recurring", "addRecurringTarget", modId);
+                    sendLogActivity("viewed", "targets-add-recurring", "addRecurringTarget");
                     break;
                 }
                 case DeleteSingleTarget: {
-                    sendLogActivity("viewed", "targets-delete-single", "deleteSingleTarget", modId);
+                    sendLogActivity("viewed", "targets-delete-single", "deleteSingleTarget");
                     break;
                 }
                 case DeleteRecurringTarget: {
-                    sendLogActivity("viewed", "targets-delete-recurring", "deleteRecurringTarget", modId);
+                    sendLogActivity("viewed", "targets-delete-recurring", "deleteRecurringTarget");
                     break;
                 }
                 case CompleteSingleTarget: {
-                    sendLogActivity("viewed", "targets-complete-single", "completeSingleTarget", modId);
+                    sendLogActivity("viewed", "targets-complete-single", "completeSingleTarget");
                     break;
                 }
                 case CompleteOverdueSingleTarget: {
-                    sendLogActivity("viewed", "targets-complete-overdue-single", "completeOverdueSingleTarget", modId);
+                    sendLogActivity("viewed", "targets-complete-overdue-single", "completeOverdueSingleTarget");
                     break;
                 }
             }
