@@ -17,6 +17,8 @@ import com.activeandroid.query.Select;
 import com.bumptech.glide.Glide;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.LinguisticManager;
+import com.studygoal.jisc.Managers.xApi.XApiManager;
+import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Models.ActivityHistory;
 import com.studygoal.jisc.Models.Module;
 import com.studygoal.jisc.Models.Targets;
@@ -235,6 +237,7 @@ public class TargetAdapter extends BaseAdapter {
 
                 if (listener != null) {
                     listener.onDelete(item, finalPosition);
+                    XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.DeleteRecurringTarget);
                 }
             });
 

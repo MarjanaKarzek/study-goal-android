@@ -34,6 +34,11 @@ import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import com.studygoal.jisc.databinding.TargetFragmentBinding;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -128,6 +133,20 @@ public class TargetFragment extends BaseFragment {
             public void onDone(ToDoTasks target) {
                 if(ConnectionHandler.isConnected(getContext())) {
                     completeToDoTask(target);
+
+                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    Date startDate;
+                    try {
+                        startDate = df.parse(target.endDate);
+                        if(startDate.getTime() <= Calendar.getInstance().getTimeInMillis()){
+                            XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.CompleteSingleTarget);
+                        } else {
+                            XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.CompleteOverdueSingleTarget);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
@@ -503,6 +522,7 @@ public class TargetFragment extends BaseFragment {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
                 });
+                XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.AcceptSingleTarget);
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
@@ -543,6 +563,7 @@ public class TargetFragment extends BaseFragment {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
                 });
+                XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.DeclineSingleTarget);
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
