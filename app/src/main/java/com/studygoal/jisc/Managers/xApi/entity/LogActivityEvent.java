@@ -23,5 +23,13 @@ public enum LogActivityEvent {
     FilterAttendanceGraph,
     AddTimedLog,
     AddReportedLog,
-    AddTarget
+    AddTarget,
+    AcceptSingleTarget,
+    DeclineSingleTarget,
+    AddSingleTarget,
+    AddRecurringTarget,
+    DeleteSingleTarget,
+    DeleteRecurringTarget,
+    CompleteSingleTarget,
+    CompleteOverdueSingleTarget
 }

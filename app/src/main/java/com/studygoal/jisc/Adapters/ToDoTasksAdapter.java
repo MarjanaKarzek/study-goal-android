@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.studygoal.jisc.Managers.DataManager;
+import com.studygoal.jisc.Managers.xApi.XApiManager;
+import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Models.ToDoTasks;
 import com.studygoal.jisc.R;
 
@@ -242,6 +244,8 @@ public class ToDoTasksAdapter extends BaseAdapter {
 
                 if (listener != null) {
                     listener.onDelete(item, finalPosition);
+
+                    XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.DeleteSingleTarget);
                 }
             });
             dialog.findViewById(R.id.dialog_no).setOnClickListener(v12 -> dialog.dismiss());
