@@ -68,11 +68,13 @@ public class TargetFragment extends BaseFragment {
                 binding.list.setVisibility(View.VISIBLE);
                 binding.listTodo.setVisibility(View.GONE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = false;
+                XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsMain);
             } else {
                 Log.d(TAG, "onCreateView: single target checked changed to true");
                 binding.list.setVisibility(View.GONE);
                 binding.listTodo.setVisibility(View.VISIBLE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = true;
+                XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsMain);
             }
 
             updateTutorialMessage();
