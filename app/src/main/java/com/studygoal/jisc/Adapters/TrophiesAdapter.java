@@ -24,7 +24,7 @@ public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener
     private Context context;
     private Fragment fragment;
 
-    public TrophiesAdapter(Context context,Fragment fragment) {
+    public TrophiesAdapter(Context context, Fragment fragment) {
         this.context = context;
         list = new Select().from(Trophy.class).execute();
         inflater = LayoutInflater.from(context);
@@ -71,7 +71,7 @@ public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener
     @Override
     public void onClick(View v) {
         Trophy trophy = list.get(Integer.parseInt((String) v.getTag()));
-        ((AllTrophiesFragment)fragment).showTrophy(trophy);
+        ((AllTrophiesFragment) fragment).showTrophy(trophy);
     }
 
 }

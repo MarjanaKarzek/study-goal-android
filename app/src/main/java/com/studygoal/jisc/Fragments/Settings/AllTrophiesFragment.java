@@ -7,17 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import com.studygoal.jisc.Adapters.TrophiesAdapter;
+
 import com.studygoal.jisc.Activities.MainActivity;
+import com.studygoal.jisc.Activities.SettingsActivity;
+import com.studygoal.jisc.Activities.TrophyDetailsActivity;
+import com.studygoal.jisc.Adapters.TrophiesAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Models.Trophy;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
-import com.studygoal.jisc.Activities.TrophyDetailsActivity;
 
 /**
  * Created by MarcelC on 1/14/16.
- *
  */
 public class AllTrophiesFragment extends Fragment {
     private static final String TAG = AllTrophiesFragment.class.getSimpleName();
@@ -25,8 +25,8 @@ public class AllTrophiesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(DataManager.getInstance().mainActivity.isLandscape) {
-            ((SettingsActivity)getActivity()).fragmentTitle.setText(DataManager.getInstance().mainActivity.getString(R.string.trophies_title));
+        if (DataManager.getInstance().mainActivity.isLandscape) {
+            ((SettingsActivity) getActivity()).fragmentTitle.setText(DataManager.getInstance().mainActivity.getString(R.string.trophies_title));
         } else {
             ((MainActivity) getActivity()).setTitle(DataManager.getInstance().mainActivity.getString(R.string.trophies_title));
             ((MainActivity) getActivity()).hideAllButtons();
@@ -39,14 +39,22 @@ public class AllTrophiesFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.layout_trophies_all, container, false);
 
         final GridView list = (GridView) mainView.findViewById(R.id.gridlist);
-        final TrophiesAdapter adapter = new TrophiesAdapter(getActivity(),this);
+        final View noData = mainView.findViewById(R.id.no_data);
+        final TrophiesAdapter adapter = new TrophiesAdapter(getActivity(), this);
         list.setAdapter(adapter);
+
+        if (adapter.getCount() > 0) {
+            list.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.GONE);
+        } else {
+            list.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
+        }
 
         return mainView;
     }
 
-    public void showTrophy(Trophy trophy)
-    {
+    public void showTrophy(Trophy trophy) {
         Intent intent = new Intent(DataManager.getInstance().mainActivity, TrophyDetailsActivity.class);
 
         intent.putExtra("type", trophy.trophy_type.substring(0, 1).toUpperCase() + trophy.trophy_type.substring(1, trophy.trophy_type.length()));
