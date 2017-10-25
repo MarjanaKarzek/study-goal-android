@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Cache;
 import com.activeandroid.query.Select;
 import com.studygoal.jisc.Fragments.Log.LogNewActivityFragment;
 import com.studygoal.jisc.Managers.DataManager;
@@ -44,6 +46,10 @@ public class Syncronize extends IntentService {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                if (!Cache.isInitialized()) {
+                    ActiveAndroid.initialize(getApplicationContext());
+                }
+
                 List<TrophyMy> currentList = new Select().from(TrophyMy.class).execute();
                 List<String> listOfIds = new ArrayList<>();
                 for (TrophyMy trophyMy : currentList)
