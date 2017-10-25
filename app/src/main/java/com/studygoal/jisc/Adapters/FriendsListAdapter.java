@@ -17,11 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.studygoal.jisc.Activities.SettingsActivity;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
 import com.studygoal.jisc.Utils.CircleTransform;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
@@ -44,7 +44,11 @@ public class FriendsListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return list.size();
+        if (list.size() == 0) {
+            return 1;
+        } else {
+            return list.size();
+        }
     }
 
     @Override
@@ -59,28 +63,33 @@ public class FriendsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item_friend_list, parent, false);
-        }
-        final Friend attendant = list.get(position);
+        if (list.size() == 0) {
+            convertView = inflater.inflate(R.layout.snippet_empty_friends, parent, false);
+            TextView name = (TextView) convertView.findViewById(R.id.name);
+            name.setTypeface(DataManager.getInstance().myriadpro_regular);
+            convertView.setTag("-1");
+        } else {
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.list_item_friend_list, parent, false);
+            }
 
-        if(attendant.profile_pic.equals(""))
-            GlideApp.with(context).load(R.drawable.profilenotfound).transform(new CircleTransform(context)).into(((ImageView) convertView.findViewById(R.id.portrait)));
-        else
-            GlideApp.with(context).load(NetworkManager.getInstance().host + attendant.profile_pic).transform(new CircleTransform(context)).placeholder(R.drawable.profilenotfound).into(((ImageView) convertView.findViewById(R.id.portrait)));
+            final Friend attendant = list.get(position);
 
-        TextView name = (TextView) convertView.findViewById(R.id.name);
-        name.setTypeface(DataManager.getInstance().myriadpro_regular);
-        name.setText(attendant.name);
+            if (attendant.profile_pic.equals(""))
+                GlideApp.with(context).load(R.drawable.profilenotfound).transform(new CircleTransform(context)).into(((ImageView) convertView.findViewById(R.id.portrait)));
+            else
+                GlideApp.with(context).load(NetworkManager.getInstance().host + attendant.profile_pic).transform(new CircleTransform(context)).placeholder(R.drawable.profilenotfound).into(((ImageView) convertView.findViewById(R.id.portrait)));
 
-        final View hide = convertView.findViewById(R.id.hide);
-        final View unhide = convertView.findViewById(R.id.unhide);
+            TextView name = (TextView) convertView.findViewById(R.id.name);
+            name.setTypeface(DataManager.getInstance().myriadpro_regular);
+            name.setText(attendant.name);
+
+            final View hide = convertView.findViewById(R.id.hide);
+            final View unhide = convertView.findViewById(R.id.unhide);
 
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(ConnectionHandler.isConnected(context)) {
+            convertView.setOnClickListener(v -> {
+                if (ConnectionHandler.isConnected(context)) {
                     final Dialog dialog = new Dialog(context);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.layout_send_friend_request);
@@ -119,57 +128,48 @@ public class FriendsListAdapter extends BaseAdapter {
                     switch_1.setTypeface(DataManager.getInstance().myriadpro_regular);
                     switch_1.setChecked(true);
 
-                    switch_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (isChecked) {
-                                switch_2.setChecked(true);
-                                switch_3.setChecked(true);
-                                switch_4.setChecked(true);
-                            } else {
-                                switch_2.setChecked(false);
-                                switch_3.setChecked(false);
-                                switch_4.setChecked(false);
-                            }
+                    switch_1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                        if (isChecked) {
+                            switch_2.setChecked(true);
+                            switch_3.setChecked(true);
+                            switch_4.setChecked(true);
+                        } else {
+                            switch_2.setChecked(false);
+                            switch_3.setChecked(false);
+                            switch_4.setChecked(false);
                         }
                     });
 
-                    dialog.findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            HashMap<String, String> params = new HashMap<>();
-                            params.put("student_id", DataManager.getInstance().user.id);
-                            params.put("friend_id", attendant.id);
-                            params.put("is_result", switch_2.isChecked() ? "yes" : "no");
-                            params.put("is_course_engagement", switch_3.isChecked() ? "yes" : "no");
-                            params.put("is_activity_log", switch_4.isChecked() ? "yes" : "no");
-                            if (NetworkManager.getInstance().changeFriendSettings(params)) {
-                                dialog.dismiss();
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.successfully_tochangefriend, Snackbar.LENGTH_LONG).show();
-                            } else {
-                                if (DataManager.getInstance().isLandscape)
-                                    try {
-                                        Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
-                                    } catch (Exception ignored) {
-                                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
-                                    }
-                                else
+                    dialog.findViewById(R.id.send).setOnClickListener(v1 -> {
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("student_id", DataManager.getInstance().user.id);
+                        params.put("friend_id", attendant.id);
+                        params.put("is_result", switch_2.isChecked() ? "yes" : "no");
+                        params.put("is_course_engagement", switch_3.isChecked() ? "yes" : "no");
+                        params.put("is_activity_log", switch_4.isChecked() ? "yes" : "no");
+                        if (NetworkManager.getInstance().changeFriendSettings(params)) {
+                            dialog.dismiss();
+                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.successfully_tochangefriend, Snackbar.LENGTH_LONG).show();
+                        } else {
+                            if (DataManager.getInstance().isLandscape)
+                                try {
+                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
+                                } catch (Exception ignored) {
                                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
-                                dialog.dismiss();
-                            }
+                                }
+                            else
+                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
+                            dialog.dismiss();
                         }
                     });
                     dialog.show();
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
-            }
-        });
+            });
 
-        convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(ConnectionHandler.isConnected(context)) {
+            convertView.findViewById(R.id.delete).setOnClickListener(v -> {
+                if (ConnectionHandler.isConnected(context)) {
                     final Dialog dialog = new Dialog(context);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.layout_dialog_confirmation);
@@ -195,62 +195,51 @@ public class FriendsListAdapter extends BaseAdapter {
                     ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
                     ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setText(R.string.yes);
 
-                    dialog.findViewById(R.id.dialog_ok).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    dialog.findViewById(R.id.dialog_ok).setOnClickListener(v12 -> {
 
-                            if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
-                                attendant.delete();
-                                list.remove(attendant);
-                                notifyDataSetChanged();
-                                return;
-                            }
+                        if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+                            attendant.delete();
+                            list.remove(attendant);
+                            notifyDataSetChanged();
+                            return;
+                        }
 
-                            dialog.dismiss();
-                            HashMap<String, String> params = new HashMap<>();
-                            params.put("student_id", DataManager.getInstance().user.id);
-                            params.put("friend_id", attendant.id);
-                            if (NetworkManager.getInstance().deleteFriend(params)) {
-                                attendant.delete();
-                                list.remove(attendant);
-                                notifyDataSetChanged();
-                                if (!DataManager.getInstance().isLandscape)
+                        dialog.dismiss();
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("student_id", DataManager.getInstance().user.id);
+                        params.put("friend_id", attendant.id);
+                        if (NetworkManager.getInstance().deleteFriend(params)) {
+                            attendant.delete();
+                            list.remove(attendant);
+                            notifyDataSetChanged();
+                            if (!DataManager.getInstance().isLandscape)
+                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
+                            else
+                                try {
+                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
+                                } catch (Exception ignored) {
                                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
-                                else
-                                    try {
-                                        Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
-                                    } catch (Exception ignored) {
-                                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
-                                    }
-                            } else {
-                                if (!DataManager.getInstance().isLandscape)
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
-                                else
-                                    try {
-                                        Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
-                                    } catch (Exception ignored) {
-                                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout).findViewById(R.id.whole_container), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
-                                    }
-                            }
+                                }
+                        } else {
+                            if (!DataManager.getInstance().isLandscape)
+                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
+                            else
+                                try {
+                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
+                                } catch (Exception ignored) {
+                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout).findViewById(R.id.whole_container), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
+                                }
                         }
                     });
-                    dialog.findViewById(R.id.dialog_no).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
+                    dialog.findViewById(R.id.dialog_no).setOnClickListener(v13 -> dialog.dismiss());
                     dialog.show();
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
-            }
-        });
+            });
 
-        hide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+            hide.setOnClickListener(v -> {
+                if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     attendant.hidden = true;
                     attendant.save();
                     hide.setVisibility(View.INVISIBLE);
@@ -258,7 +247,7 @@ public class FriendsListAdapter extends BaseAdapter {
                     return;
                 }
 
-                if(ConnectionHandler.isConnected(context)) {
+                if (ConnectionHandler.isConnected(context)) {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("from_student_id", DataManager.getInstance().user.id);
                     map.put("to_student_id", attendant.id);
@@ -280,14 +269,10 @@ public class FriendsListAdapter extends BaseAdapter {
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
-            }
-        });
+            });
 
-        unhide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+            unhide.setOnClickListener(v -> {
+                if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     attendant.hidden = false;
                     attendant.save();
                     unhide.setVisibility(View.INVISIBLE);
@@ -295,7 +280,7 @@ public class FriendsListAdapter extends BaseAdapter {
                     return;
                 }
 
-                if(ConnectionHandler.isConnected(context)) {
+                if (ConnectionHandler.isConnected(context)) {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("from_student_id", DataManager.getInstance().user.id);
                     map.put("to_student_id", attendant.id);
@@ -317,14 +302,15 @@ public class FriendsListAdapter extends BaseAdapter {
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
-            }
-        });
+            });
 
-        if(attendant.hidden) {
-            unhide.setVisibility(View.VISIBLE);
-        } else {
-            hide.setVisibility(View.VISIBLE);
+            if (attendant.hidden) {
+                unhide.setVisibility(View.VISIBLE);
+            } else {
+                hide.setVisibility(View.VISIBLE);
+            }
         }
+
         return convertView;
     }
 }

@@ -409,6 +409,7 @@
     <string name="what_would_you_like_friend_to_see">What would you like your friend to see?</string>
     <string name="are_you_sure_you_want_to_delete_this_friend">Are you sure you want to delete this friend?</string>
     <string name="no_friend_requests">You do not have any new friend requests at the moment.</string>
+    <string name="no_friend">You can add friends using their email addresses.</string>
     <string name="friend_deleted_successfully">Friend deleted successfully</string>
     <string name="target_deleted_successfully">Target deleted successfully</string>
 
