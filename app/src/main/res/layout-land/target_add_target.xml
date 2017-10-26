@@ -1,7 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data></data>
-
     <LinearLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
@@ -18,10 +16,10 @@
             android:orientation="horizontal"
             android:visibility="visible">
 
-          <RadioButton
+            <RadioButton
                 android:id="@+id/target_single"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_button_background_left"
                 android:button="@null"
@@ -29,11 +27,11 @@
                 android:padding="8dp"
                 android:text="@string/target_add_single"
                 android:textColor="@drawable/radio_button_text" />
-            
+
             <RadioButton
                 android:id="@+id/target_recurring"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_button_background_right"
                 android:button="@null"
@@ -42,510 +40,468 @@
                 android:padding="8dp"
                 android:text="@string/target_add_recurring"
                 android:textColor="@drawable/radio_button_text" />
-
-
         </RadioGroup>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/recurring_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="2">
 
-            <RelativeLayout
-                android:id="@+id/addtarget_container"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@color/background_color">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1.5dp">
 
-                    <android.support.v7.widget.CardView
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="70dp"
-                        android:layout_marginEnd="100dp"
-                        android:layout_marginStart="100dp"
-                        android:layout_marginTop="20dp">
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/type_icon"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/newactivity_choose_icon" />
+                        </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_toEndOf="@id/type_icon"
+                            android:weightSum="10">
+
+                            <TextView
+                                android:id="@+id/addtarget_activity_type_text"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="4"
+                                android:text="@string/activity_type"
+                                android:textColor="@color/default_blue"
+                                android:textSize="18sp" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/addtarget_activityType_textView"
+                                style="@style/AppSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="6"
+                                android:gravity="end"
+                                android:paddingStart="3dp"
+                                android:textColor="#8a63cc"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1.5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/choose_icon"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/log_activity_choose_activity" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_toEndOf="@id/choose_icon"
+                            android:weightSum="10">
+
+                            <TextView
+                                android:id="@+id/addtarget_text_choose"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="4.5"
+                                android:text="@string/choose_activity"
+                                android:textColor="@color/default_blue"
+                                android:textSize="18sp" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/addtarget_chooseActivity_textView"
+                                style="@style/AppSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="5.5"
+                                android:gravity="end"
+                                android:paddingStart="3dp"
+                                android:text=""
+                                android:textColor="#8a63cc"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1.5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/addtarget_text_for"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@string/_for"
+                            android:textColor="@color/default_blue"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/addtarget_cardView_timespent"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="1dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1.5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="15dp">
+
+                            <EditText
+                                android:id="@+id/addtarget_text_timer_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:inputType="number"
+                                android:maxLength="1"
+                                android:text="0"
+                                android:textColor="@color/login_btn_purple"
+                                android:textSize="50sp" />
+
+                            <TextView
+                                android:id="@+id/addtarget_text_hours"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:text="@string/hours"
+                                android:textColor="@color/login_btn_purple"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/addtarget_text_timer_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="2"
+                                android:text="00"
+                                android:textColor="@color/login_btn_purple"
+                                android:textSize="50sp" />
+
+                            <TextView
+                                android:id="@+id/addtarget_text_minutes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:text="@string/minutes"
+                                android:textColor="@color/login_btn_purple"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1.5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:weightSum="10">
+
+                            <TextView
+                                android:id="@+id/addtarget_every_text"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="4.5"
+                                android:text="@string/every"
+                                android:textColor="@color/default_blue"
+                                android:textSize="18sp" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/addtarget_every_textView"
+                                style="@style/AppSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="5.5"
+                                android:gravity="end"
+                                android:paddingStart="3dp"
+                                android:text=""
+                                android:textColor="#8a63cc"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="1.5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:weightSum="10">
+
+                            <TextView
+                                android:id="@+id/addtarget_in_text"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="4.5"
+                                android:text="@string/module_in"
+                                android:textColor="@color/default_blue"
+                                android:textSize="18sp" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/addtarget_in_textView"
+                                style="@style/AppSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="5.5"
+                                android:gravity="end"
+                                android:paddingStart="3dp"
+                                android:text=""
+                                android:textColor="#8a63cc"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@color/pink">
+                                android:layout_height="match_parent">
 
                                 <TextView
-                                    android:id="@+id/header_1"
+                                    android:id="@+id/addtarget_text_because_title"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginStart="20dp"
-                                    android:text="@string/choose_module_and_activity"
+                                    android:layout_centerInParent="true"
+                                    android:text="@string/because"
+                                    android:textColor="@color/default_blue"
                                     android:textSize="18sp" />
                             </RelativeLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="1dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2">
+                                android:layout_gravity="center">
 
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="70dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_marginTop="5dp"
-                                        card_view:cardCornerRadius="2dp"
-                                        card_view:cardElevation="1.5dp">
-
-                                        <RelativeLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                            <RelativeLayout
-                                                android:id="@+id/type_icon"
-                                                android:layout_width="60dp"
-                                                android:layout_height="match_parent">
-
-                                                <ImageView
-                                                    android:layout_width="30dp"
-                                                    android:layout_height="30dp"
-                                                    android:layout_centerInParent="true"
-                                                    android:src="@drawable/newactivity_choose_icon" />
-                                            </RelativeLayout>
-
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:layout_toEndOf="@id/type_icon"
-                                                android:weightSum="10">
-
-                                                <TextView
-                                                    android:id="@+id/addtarget_activity_type_text"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:layout_marginStart="10dp"
-                                                    android:layout_weight="4"
-                                                    android:text="@string/activity_type"
-                                                    android:textColor="@color/default_blue"
-                                                    android:textSize="18sp" />
-
-                                                <android.support.v7.widget.AppCompatTextView
-                                                    android:id="@+id/addtarget_activityType_textView"
-                                                    style="@style/AppSpinner"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:layout_weight="6"
-                                                    android:gravity="end"
-                                                    android:paddingStart="3dp"
-                                                    android:textColor="#8a63cc"
-                                                    android:textSize="18sp" />
-                                            </LinearLayout>
-                                        </RelativeLayout>
-                                    </android.support.v7.widget.CardView>
-
-                                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="70dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_marginTop="5dp"
-                                        card_view:cardCornerRadius="2dp"
-                                        card_view:cardElevation="1.5dp">
-
-                                        <RelativeLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                            <RelativeLayout
-                                                android:id="@+id/choose_icon"
-                                                android:layout_width="60dp"
-                                                android:layout_height="match_parent">
-
-                                                <ImageView
-                                                    android:layout_width="35dp"
-                                                    android:layout_height="35dp"
-                                                    android:layout_centerInParent="true"
-                                                    android:src="@drawable/log_activity_choose_activity" />
-                                            </RelativeLayout>
-
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:layout_toEndOf="@id/choose_icon"
-                                                android:weightSum="10">
-
-                                                <TextView
-                                                    android:id="@+id/addtarget_text_choose"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:layout_marginStart="10dp"
-                                                    android:layout_weight="4.5"
-                                                    android:text="@string/choose_activity"
-                                                    android:textColor="@color/default_blue"
-                                                    android:textSize="18sp" />
-
-                                                <android.support.v7.widget.AppCompatTextView
-                                                    android:id="@+id/addtarget_chooseActivity_textView"
-                                                    style="@style/AppSpinner"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:layout_weight="5.5"
-                                                    android:gravity="end"
-                                                    android:paddingStart="3dp"
-                                                    android:text=""
-                                                    android:textColor="#8a63cc"
-                                                    android:textSize="18sp" />
-                                            </LinearLayout>
-                                        </RelativeLayout>
-                                    </android.support.v7.widget.CardView>
-
-                                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="50dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_marginTop="10dp"
-                                        card_view:cardCornerRadius="2dp"
-                                        card_view:cardElevation="1.5dp">
-
-                                        <RelativeLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                            <TextView
-                                                android:id="@+id/addtarget_text_for"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:text="@string/_for"
-                                                android:textColor="@color/default_blue"
-                                                android:textSize="18sp" />
-                                        </RelativeLayout>
-                                    </android.support.v7.widget.CardView>
-
-                                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                        android:id="@+id/addtarget_cardView_timespent"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="100dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_marginTop="1dp"
-                                        card_view:cardCornerRadius="2dp"
-                                        card_view:cardElevation="1.5dp">
-
-                                        <RelativeLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                            <LinearLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:layout_margin="15dp">
-
-                                                <EditText
-                                                    android:id="@+id/addtarget_text_timer_1"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:background="@android:color/transparent"
-                                                    android:inputType="number"
-                                                    android:maxLength="1"
-                                                    android:text="0"
-                                                    android:textColor="@color/login_btn_purple"
-                                                    android:textSize="50sp" />
-
-                                                <TextView
-                                                    android:id="@+id/addtarget_text_hours"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginLeft="5dp"
-                                                    android:layout_marginRight="5dp"
-                                                    android:text="@string/hours"
-                                                    android:textColor="@color/login_btn_purple"
-                                                    android:textSize="18sp" />
-
-                                                <EditText
-                                                    android:id="@+id/addtarget_text_timer_3"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:background="@android:color/transparent"
-                                                    android:imeOptions="actionDone"
-                                                    android:inputType="number"
-                                                    android:maxLength="2"
-                                                    android:text="00"
-                                                    android:textColor="@color/login_btn_purple"
-                                                    android:textSize="50sp" />
-
-                                                <TextView
-                                                    android:id="@+id/addtarget_text_minutes"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginStart="5dp"
-                                                    android:text="@string/minutes"
-                                                    android:textColor="@color/login_btn_purple"
-                                                    android:textSize="18sp" />
-                                            </LinearLayout>
-                                        </RelativeLayout>
-                                    </android.support.v7.widget.CardView>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="70dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_marginTop="5dp"
-                                        card_view:cardCornerRadius="2dp"
-                                        card_view:cardElevation="1.5dp">
-
-                                        <RelativeLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:weightSum="10">
-
-                                                <TextView
-                                                    android:id="@+id/addtarget_every_text"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:layout_marginStart="10dp"
-                                                    android:layout_weight="4.5"
-                                                    android:text="@string/every"
-                                                    android:textColor="@color/default_blue"
-                                                    android:textSize="18sp" />
-
-                                                <android.support.v7.widget.AppCompatTextView
-                                                    android:id="@+id/addtarget_every_textView"
-                                                    style="@style/AppSpinner"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:layout_weight="5.5"
-                                                    android:gravity="end"
-                                                    android:paddingStart="3dp"
-                                                    android:text=""
-                                                    android:textColor="#8a63cc"
-                                                    android:textSize="18sp" />
-                                            </LinearLayout>
-                                        </RelativeLayout>
-                                    </android.support.v7.widget.CardView>
-
-                                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="70dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_marginTop="5dp"
-                                        card_view:cardCornerRadius="2dp"
-                                        card_view:cardElevation="1.5dp">
-
-                                        <RelativeLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:weightSum="10">
-
-                                                <TextView
-                                                    android:id="@+id/addtarget_in_text"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:layout_marginStart="10dp"
-                                                    android:layout_weight="4.5"
-                                                    android:text="@string/module_in"
-                                                    android:textColor="@color/default_blue"
-                                                    android:textSize="18sp" />
-
-                                                <android.support.v7.widget.AppCompatTextView
-                                                    android:id="@+id/addtarget_in_textView"
-                                                    style="@style/AppSpinner"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_gravity="center"
-                                                    android:layout_weight="5.5"
-                                                    android:gravity="end"
-                                                    android:paddingStart="3dp"
-                                                    android:text=""
-                                                    android:textColor="#8a63cc"
-                                                    android:textSize="18sp" />
-                                            </LinearLayout>
-                                        </RelativeLayout>
-                                    </android.support.v7.widget.CardView>
-
-                                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="50dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_marginTop="10dp"
-                                        card_view:cardCornerRadius="2dp"
-                                        card_view:cardElevation="1.5dp">
-
-                                        <RelativeLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                            <TextView
-                                                android:id="@+id/addtarget_text_because_title"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerInParent="true"
-                                                android:text="@string/because"
-                                                android:textColor="@color/default_blue"
-                                                android:textSize="18sp" />
-                                        </RelativeLayout>
-                                    </android.support.v7.widget.CardView>
-
-                                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="100dp"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_marginTop="1dp"
-                                        card_view:cardCornerRadius="2dp"
-                                        card_view:cardElevation="1.5dp">
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center">
-
-                                            <EditText
-                                                android:id="@+id/addtarget_edittext_because"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="100dp"
-                                                android:background="#00FFFFFF"
-                                                android:gravity="start"
-                                                android:overScrollMode="always"
-                                                android:padding="3dp"
-                                                android:scrollbarStyle="insideInset"
-                                                android:scrollbars="vertical"
-                                                android:textColor="@color/dark_grey" />
-                                        </LinearLayout>
-                                    </android.support.v7.widget.CardView>
-                                </LinearLayout>
+                                <EditText
+                                    android:id="@+id/addtarget_edittext_because"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:background="#00FFFFFF"
+                                    android:gravity="start"
+                                    android:overScrollMode="always"
+                                    android:padding="3dp"
+                                    android:scrollbarStyle="insideInset"
+                                    android:scrollbars="vertical"
+                                    android:textColor="@color/dark_grey" />
                             </LinearLayout>
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-                </LinearLayout>
+                        </android.support.v7.widget.CardView>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/addtarget_save_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="100dp"
+                    card_view:cardBackgroundColor="#C1A1F6"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="2dp">
+
+                    <TextView
+                        android:id="@+id/addtarget_btn_save_text"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/save"
+                        android:textColor="#FFF"
+                        android:textSize="16sp" />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/add_new_module_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FBFBFB"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="80dp"
+                android:background="#FBFBFB">
 
                 <RelativeLayout
-                    android:id="@+id/addtarget_footbar"
                     android:layout_width="match_parent"
-                    android:layout_height="75dp"
-                    android:layout_alignParentBottom="true">
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/round_corner_search">
 
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/addtarget_save_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        card_view:cardBackgroundColor="#C1A1F6"
-                        card_view:cardCornerRadius="2dp"
-                        card_view:cardElevation="2dp">
-
-                        <TextView
-                            android:id="@+id/addtarget_btn_save_text"
-                            android:layout_width="110dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:gravity="center"
-                            android:text="@string/save"
-                            android:textColor="#FFF"
-                            android:textSize="16sp" />
-                    </android.support.v7.widget.CardView>
+                    <EditText
+                        android:id="@+id/add_module_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="3dp"
+                        android:background="@null"
+                        android:hint="@string/add_module"
+                        android:imeOptions="actionSearch"
+                        android:lines="1"
+                        android:textColor="@color/dark_grey" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/add_new_module_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#FBFBFB"
-                    android:visibility="gone">
+                    android:id="@+id/add_module_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/round_corner_blue_fill">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_marginTop="80dp"
-                        android:background="#FBFBFB">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
-                            android:layout_marginTop="15dp"
-                            android:background="@drawable/round_corner_search">
-
-                            <EditText
-                                android:id="@+id/add_module_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:layout_centerVertical="true"
-                                android:layout_margin="3dp"
-                                android:background="@null"
-                                android:hint="@string/add_module"
-                                android:imeOptions="actionSearch"
-                                android:lines="1"
-                                android:textColor="@color/dark_grey" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/add_module_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="5dp"
-                            android:background="@drawable/round_corner_blue_fill">
-
-                            <TextView
-                                android:id="@+id/add_module_button_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:paddingBottom="10dp"
-                                android:paddingEnd="15dp"
-                                android:paddingStart="15dp"
-                                android:paddingTop="10dp"
-                                android:text="@string/add_module"
-                                android:textColor="#FFF" />
-                        </RelativeLayout>
-                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/add_module_button_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:paddingBottom="10dp"
+                        android:paddingEnd="15dp"
+                        android:paddingStart="15dp"
+                        android:paddingTop="10dp"
+                        android:text="@string/add_module"
+                        android:textColor="#FFF" />
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
@@ -555,7 +511,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -564,234 +520,311 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="15dp"
-                        card_view:cardCornerRadius="2dp"
-                        card_view:cardElevation="1.5dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        <RelativeLayout
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="15dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/addtarget_text_my_goal_title_single"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="@string/my_goal"
+                                    android:textColor="@color/default_blue"
+                                    android:textSize="18sp" />
+                            </RelativeLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="1dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:weightSum="10">
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp">
 
-                                <TextView
-                                    android:id="@+id/addtarget_in_text_single"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_weight="4.5"
-                                    android:text="@string/module_in"
-                                    android:textColor="@color/default_blue"
-                                    android:textSize="18sp" />
-
-                                <android.support.v7.widget.AppCompatTextView
-                                    android:id="@+id/addtarget_in_textView_single"
-                                    style="@style/AppSpinner"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="5.5"
-                                    android:paddingStart="3dp"
-                                    android:text=""
-                                    android:textColor="#8a63cc"
-                                    android:textSize="18sp" />
+                                <EditText
+                                    android:id="@+id/addtarget_edittext_my_goal_single"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:background="#00FFFFFF"
+                                    android:gravity="start"
+                                    android:hint="@string/add_a_reason_to_keep_this_target_single"
+                                    android:overScrollMode="always"
+                                    android:padding="3dp"
+                                    android:scrollbarStyle="insideInset"
+                                    android:scrollbars="vertical" />
                             </LinearLayout>
-                        </RelativeLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="15dp"
-                        card_view:cardCornerRadius="2dp"
-                        card_view:cardElevation="1.5dp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:id="@+id/addtarget_text_my_goal_title_single"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:text="@string/my_goal"
-                                android:textColor="@color/default_blue"
-                                android:textSize="18sp" />
-                        </RelativeLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="1dp"
-                        card_view:cardCornerRadius="2dp"
-                        card_view:cardElevation="1.5dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp">
-
-                            <EditText
-                                android:id="@+id/addtarget_edittext_my_goal_single"
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:background="#00FFFFFF"
-                                android:gravity="start"
-                                android:hint="@string/add_a_reason_to_keep_this_target_single"
-                                android:overScrollMode="always"
-                                android:padding="3dp"
-                                android:scrollbarStyle="insideInset"
-                                android:scrollbars="vertical" />
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
-                        card_view:cardCornerRadius="2dp"
-                        card_view:cardElevation="1.5dp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:id="@+id/addtarget_text_date_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:text="@string/by"
-                                android:textColor="@color/default_blue"
-                                android:textSize="18sp" />
-                        </RelativeLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/log_activity_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="1dp"
-                        card_view:cardCornerRadius="2dp"
-                        card_view:cardElevation="1.5dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp">
-
-                            <TextView
-                                android:id="@+id/addtarget_text_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:text="Monday 17th Aug 2015"
-                                android:textColor="@color/login_btn_purple"
-                                android:textSize="26sp" />
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="15dp"
-                        card_view:cardCornerRadius="2dp"
-                        card_view:cardElevation="1.5dp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:id="@+id/addtarget_text_because_title_single"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:text="@string/because"
-                                android:textColor="@color/default_blue"
-                                android:textSize="18sp" />
-                        </RelativeLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="1dp"
-                        card_view:cardCornerRadius="2dp"
-                        card_view:cardElevation="1.5dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp">
-
-                            <EditText
-                                android:id="@+id/addtarget_edittext_because_single"
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:background="#00FFFFFF"
-                                android:gravity="start"
-                                android:hint="@string/add_a_reason_to_keep_this_target"
-                                android:overScrollMode="always"
-                                android:padding="3dp"
-                                android:scrollbarStyle="insideInset"
-                                android:scrollbars="vertical" />
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp">
+                        </android.support.v7.widget.CardView>
 
                         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                            android:id="@+id/addtarget_save_btn_single"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            card_view:cardBackgroundColor="#C1A1F6"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
                             card_view:cardCornerRadius="2dp"
-                            card_view:cardElevation="2dp">
+                            card_view:cardElevation="1.5dp">
 
-                            <TextView
-                                android:layout_width="110dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:gravity="center"
-                                android:text="@string/save"
-                                android:textColor="#FFF"
-                                android:textSize="16sp" />
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/addtarget_text_date_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="@string/by"
+                                    android:textColor="@color/default_blue"
+                                    android:textSize="18sp" />
+                            </RelativeLayout>
                         </android.support.v7.widget.CardView>
-                    </RelativeLayout>
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/log_activity_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="1dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp">
+
+                                <TextView
+                                    android:id="@+id/addtarget_text_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Monday 17th Aug 2015"
+                                    android:textColor="@color/login_btn_purple"
+                                    android:textSize="26sp" />
+                            </LinearLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="15dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:weightSum="10">
+
+                                    <TextView
+                                        android:id="@+id/addtarget_in_text_single"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_weight="4.5"
+                                        android:text="@string/module_in"
+                                        android:textColor="@color/default_blue"
+                                        android:textSize="18sp" />
+
+                                    <android.support.v7.widget.AppCompatTextView
+                                        android:id="@+id/addtarget_in_textView_single"
+                                        style="@style/AppSpinner"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="5.5"
+                                        android:paddingStart="3dp"
+                                        android:text=""
+                                        android:textColor="#8a63cc"
+                                        android:textSize="18sp" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </android.support.v7.widget.CardView>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="15dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/addtarget_text_because_title_single"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="@string/because"
+                                    android:textColor="@color/default_blue"
+                                    android:textSize="18sp" />
+                            </RelativeLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="1dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp">
+
+                                <EditText
+                                    android:id="@+id/addtarget_edittext_because_single"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:background="#00FFFFFF"
+                                    android:gravity="start"
+                                    android:hint="@string/add_a_reason_to_keep_this_target"
+                                    android:overScrollMode="always"
+                                    android:padding="3dp"
+                                    android:scrollbarStyle="insideInset"
+                                    android:scrollbars="vertical" />
+                            </LinearLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="15dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/addtarget_text_reminder_title_single"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="@string/reminder"
+                                    android:textColor="@color/default_blue"
+                                    android:textSize="18sp" />
+                                <Switch
+                                    android:id="@+id/reminder_switch"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_alignParentEnd="true"
+                                    android:checked="true"/>
+                            </RelativeLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="1dp"
+                            card_view:cardCornerRadius="2dp"
+                            card_view:cardElevation="1.5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="5dp">
+
+                                <TextView
+                                    android:id="@+id/addtarget_reminder_date_and_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:text="Monday 17th Aug 2015 - 00 pm"
+                                    android:textColor="@color/login_btn_purple"
+                                    android:textSize="26sp"
+                                    android:gravity="center"/>
+
+                            </LinearLayout>
+                        </android.support.v7.widget.CardView>
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="100dp">
+
+                            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/addtarget_save_btn_single"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                card_view:cardBackgroundColor="#C1A1F6"
+                                card_view:cardCornerRadius="2dp"
+                                card_view:cardElevation="2dp">
+
+                                <TextView
+                                    android:layout_width="110dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:gravity="center"
+                                    android:text="@string/save"
+                                    android:textColor="#FFF"
+                                    android:textSize="16sp" />
+                            </android.support.v7.widget.CardView>
+                        </RelativeLayout>
+                    </LinearLayout>
                 </LinearLayout>
+
             </ScrollView>
         </RelativeLayout>
     </LinearLayout>
