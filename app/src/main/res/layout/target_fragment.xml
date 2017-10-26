@@ -1,7 +1,4 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <data></data>
-
     <RelativeLayout
         android:id="@+id/parent"
         android:layout_width="match_parent"
@@ -33,7 +30,7 @@
                     <RadioButton
                         android:id="@+id/target_single"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="52dp"
                         android:layout_weight="1"
                         android:background="@drawable/radio_button_background_left"
                         android:button="@null"
@@ -45,7 +42,7 @@
                     <RadioButton
                         android:id="@+id/target_recurring"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="52dp"
                         android:layout_weight="1"
                         android:background="@drawable/radio_button_background_right"
                         android:button="@null"
