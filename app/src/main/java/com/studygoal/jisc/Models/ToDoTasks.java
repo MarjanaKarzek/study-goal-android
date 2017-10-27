@@ -49,4 +49,7 @@ public class ToDoTasks extends Model {
 
     @Column(name = "modified")
     public String modified;
+
+    @Column(name = "reminder_date")
+    public String reminderDate;
 }

@@ -2,6 +2,7 @@ package com.studygoal.jisc.Fragments.Target;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
@@ -22,12 +23,16 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.activeandroid.query.Select;
 import com.studygoal.jisc.Adapters.ActivityTypeAdapter;
@@ -43,9 +48,12 @@ import com.studygoal.jisc.Models.Targets;
 import com.studygoal.jisc.Models.ToDoTasks;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.DatePicker.DatePickerForTargets;
+import com.studygoal.jisc.Utils.DatePicker.IntervalTimePickerDialog;
 import com.studygoal.jisc.Utils.Utils;
 import com.studygoal.jisc.databinding.TargetAddTargetBinding;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,6 +66,7 @@ public class AddTargetFragment extends BaseFragment {
     private static final String TAG = AddTargetFragment.class.getSimpleName();
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat databaseDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     public Boolean isInEditMode = false;
     public Boolean isSingleTarget = false;
@@ -65,6 +74,7 @@ public class AddTargetFragment extends BaseFragment {
     private TargetAddTargetBinding binding = null;
 
     private Calendar toDoDate = null;
+    private Calendar reminderDateObject = Calendar.getInstance();
 
     public Targets item;
     public ToDoTasks itemToDo;
@@ -80,6 +90,10 @@ public class AddTargetFragment extends BaseFragment {
 
     private View root;
     private RelativeLayout addModuleLayout;
+    private Switch reminderSwitch;
+    private TextView reminderDate;
+    private TextView reminderTime;
+    private LinearLayout reminderView;
 
     private TextWatcher hoursWatcher = new TextWatcher() {
         @Override
@@ -125,7 +139,6 @@ public class AddTargetFragment extends BaseFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-
             if (s.toString().length() != 0) {
                 int value = Integer.parseInt(s.toString());
                 if (value < 0)
@@ -239,6 +252,64 @@ public class AddTargetFragment extends BaseFragment {
         binding.addtargetTextDate.setText(Utils.formatDate(toDoDate.getTimeInMillis()));
         binding.addtargetTextDate.setOnClickListener(v -> onSelectDate());
 
+        reminderDate = (TextView) root.findViewById(R.id.addtarget_reminder_date);
+        reminderTime = (TextView) root.findViewById(R.id.addtarget_reminder_time);
+        reminderView = (LinearLayout) root.findViewById(R.id.addtarget_reminder_date_and_time);
+        reminderTime.setTypeface(DataManager.getInstance().myriadpro_regular);
+        reminderDate.setTypeface(DataManager.getInstance().myriadpro_regular);
+
+        reminderSwitch = (Switch) root.findViewById(R.id.reminder_switch);
+        reminderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    reminderView.setVisibility(View.VISIBLE);
+                } else {
+                    reminderView.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        reminderDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setReminderDate();
+            }
+        });
+
+        initialiseReminderDate();
+
+        IntervalTimePickerDialog timePickerDialog = new IntervalTimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hourOfDay, int selectedMinute) {
+                reminderDateObject.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                reminderDateObject.set(Calendar.MINUTE,selectedMinute);
+
+                String minutes = "" + selectedMinute;
+                if(selectedMinute == 0) {
+                    minutes = "00";
+                }
+
+                if(hourOfDay >= 12) {
+                    hourOfDay -= 12;
+                    if(hourOfDay == 0)
+                        hourOfDay = 12;
+                    reminderTime.setText(hourOfDay + ":" + minutes + " PM");
+                } else {
+                    if(hourOfDay == 0)
+                        hourOfDay = 12;
+                    reminderTime.setText(hourOfDay + ":" + minutes + " AM");
+                }
+            }
+        }, reminderDateObject.get(Calendar.HOUR_OF_DAY), reminderDateObject.get(Calendar.MINUTE), false);
+
+        reminderTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timePickerDialog.show();
+            }
+        });
+
         if (isInEditMode) {
             if (isSingleTarget) {
                 binding.addtargetEdittextMyGoalSingle.setText(itemToDo.description);
@@ -267,6 +338,42 @@ public class AddTargetFragment extends BaseFragment {
                 }
 
                 binding.addtargetInTextViewSingle.setText(moduleName);
+
+                //Set Reminder Date
+                Date date = Calendar.getInstance().getTime();
+                try {
+                    date = databaseDateFormat.parse(itemToDo.reminderDate);
+                    reminderDateObject.setTime(date);
+
+                    reminderDate.setText(Utils.formatDate(reminderDateObject.get(Calendar.YEAR), reminderDateObject.get(Calendar.MONTH), reminderDateObject.get(Calendar.DAY_OF_MONTH)));
+                    reminderDate.setTag(reminderDateObject.get(Calendar.YEAR) + "-" + ((reminderDateObject.get(Calendar.MONTH) + 1) < 10 ? "0" + (reminderDateObject.get(Calendar.MONTH) + 1) : (reminderDateObject.get(Calendar.MONTH) + 1)) + "-" + (reminderDateObject.get(Calendar.DAY_OF_MONTH) < 10 ? "0" + reminderDateObject.get(Calendar.DAY_OF_MONTH) : reminderDateObject.get(Calendar.DAY_OF_MONTH)));
+                    reminderDateObject.set(Calendar.HOUR_OF_DAY,reminderDateObject.get(Calendar.HOUR_OF_DAY));
+                    reminderDateObject.set(Calendar.MINUTE,reminderDateObject.get(Calendar.MINUTE));
+                    reminderDateObject.set(Calendar.SECOND,reminderDateObject.get(Calendar.SECOND));
+
+                    int hourOfDay = reminderDateObject.get(Calendar.HOUR_OF_DAY);
+                    int selectedMinute = reminderDateObject.get(Calendar.MINUTE);
+
+                    String minutes = "" + selectedMinute;
+                    if(selectedMinute == 0) {
+                        minutes = "00";
+                    }
+
+                    if(hourOfDay >= 12) {
+                        hourOfDay -= 12;
+                        if(hourOfDay == 0)
+                            hourOfDay = 12;
+                        reminderTime.setText(hourOfDay + ":" + minutes + " PM");
+                    } else {
+                        if(hourOfDay == 0)
+                            hourOfDay = 12;
+                        reminderTime.setText(hourOfDay + ":" + minutes + " AM");
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+
+                }
             } else {
                 for (Map.Entry<String, String> entry : DataManager.getInstance().api_values.entrySet()) {
                     if (entry.getValue().equals(item.activity_type))
@@ -792,18 +899,10 @@ public class AddTargetFragment extends BaseFragment {
 
                 new Thread(() -> {
                     if (NetworkManager.getInstance().addTarget(params)) {
-                        /*NetworkManager.getInstance().getAppUsage(null,null);
-                        NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
-                                DataManager.getInstance().appUsageData.activities,
-                                "" + (Integer.valueOf(DataManager.getInstance().appUsageData.setTargets) + 1),
-                                DataManager.getInstance().appUsageData.metTargets,
-                                DataManager.getInstance().appUsageData.failedTargets);*/
-
                         NetworkManager.getInstance().getTargets(DataManager.getInstance().user.id);
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                             DataManager.getInstance().mainActivity.hideProgressBar();
                             DataManager.getInstance().mainActivity.onBackPressed();
-//                          Snackbar.make(root, R.string.target_saved, Snackbar.LENGTH_LONG).show();
                         });
 
                         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.AddRecurringTarget);
@@ -924,19 +1023,17 @@ public class AddTargetFragment extends BaseFragment {
                 params.put("reason", binding.addtargetEdittextBecauseSingle.getText().toString());
             }
 
+            if (reminderSwitch.isChecked()){
+                params.put("reminder_date", databaseDateFormat.format(reminderDateObject.getTime()));
+            } else {
+                params.put("reminder_date", "0000-00-00 00:00:00");
+            }
+
             Log.d(TAG, "ADD_SINGLE_TARGET: " + params.toString());
             DataManager.getInstance().mainActivity.showProgressBar(null);
 
             new Thread(() -> {
                 if (NetworkManager.getInstance().addToDoTask(params)) {
-                    /*NetworkManager.getInstance().getAppUsage(null,null);
-                    NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
-                            DataManager.getInstance().appUsageData.activities,
-                            "" + (Integer.valueOf(DataManager.getInstance().appUsageData.setTargets) + 1),
-                            DataManager.getInstance().appUsageData.metTargets,
-                            DataManager.getInstance().appUsageData.failedTargets);
-                    NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);*/
-
                     runOnUiThread(() -> {
                         DataManager.getInstance().mainActivity.hideProgressBar();
                         DataManager.getInstance().mainActivity.onBackPressed();
@@ -990,8 +1087,39 @@ public class AddTargetFragment extends BaseFragment {
             toDoDate.set(year, monthOfYear, dayOfMonth);
             binding.addtargetTextDate.setText(Utils.formatDate(year, monthOfYear, dayOfMonth));
             binding.addtargetTextDate.setTag(year + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
+            reminderDateObject.set(Calendar.YEAR,year);
+            reminderDateObject.set(Calendar.MONTH,monthOfYear);
+            reminderDateObject.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            reminderDateObject.set(Calendar.HOUR_OF_DAY,23);
+            reminderDateObject.set(Calendar.MINUTE,0);
+
+            reminderDate.setText(Utils.formatDate(year, monthOfYear, dayOfMonth));
+            reminderDate.setTag(year + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
+
+            reminderTime.setText("11:00 PM");
         });
 
         newFragment.show(DataManager.getInstance().mainActivity.getSupportFragmentManager(), "datePicker");
+    }
+
+    private void setReminderDate() {
+        DatePickerForTargets newFragment = new DatePickerForTargets();
+        newFragment.setListener((view, year, monthOfYear, dayOfMonth) -> {
+            reminderDateObject.set(year, monthOfYear, dayOfMonth);
+            reminderDate.setText(Utils.formatDate(year, monthOfYear, dayOfMonth));
+            reminderDate.setTag(year + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
+        });
+
+        newFragment.show(DataManager.getInstance().mainActivity.getSupportFragmentManager(), "datePicker");
+    }
+
+    private void initialiseReminderDate() {
+        reminderDate.setText(Utils.formatDate(reminderDateObject.get(Calendar.YEAR), reminderDateObject.get(Calendar.MONTH), reminderDateObject.get(Calendar.DAY_OF_MONTH)));
+        reminderDate.setTag(reminderDateObject.get(Calendar.YEAR) + "-" + ((reminderDateObject.get(Calendar.MONTH) + 1) < 10 ? "0" + (reminderDateObject.get(Calendar.MONTH) + 1) : (reminderDateObject.get(Calendar.MONTH) + 1)) + "-" + (reminderDateObject.get(Calendar.DAY_OF_MONTH) < 10 ? "0" + reminderDateObject.get(Calendar.DAY_OF_MONTH) : reminderDateObject.get(Calendar.DAY_OF_MONTH)));
+        reminderDateObject.set(Calendar.HOUR_OF_DAY,23);
+        reminderDateObject.set(Calendar.MINUTE,0);
+        reminderDateObject.set(Calendar.SECOND,0);
+
+        reminderTime.setText("11:00 PM");
     }
 }
