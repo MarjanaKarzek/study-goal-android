@@ -501,13 +501,11 @@
     <string name="activity_description">Actifedd: </string>
     <string name="target_add_single">Unig</string>
     <string name="target_add_recurring">Rheolaidd</string>
-    <!--New Values-->
     <string name="attendance_menu">Mynychiad </string>
     <string name="mark_attainment">Marcio:</string>
     <string name="all">Holl</string>
     <string name="summary">Crynodeb </string>
     <string name="empty_events_page_message">Dim data ar gael </string>
-    <string name="module_in">PLACEHOLDER</string>
     <string name="my_goal">Fy amcan </string>
     <string name="add_a_reason_to_keep_this_target_single">Rheswm am darged</string>
     <string name="by">gan</string>
@@ -515,6 +513,9 @@
     <string name="days_overdue"> Dyddiau yn hwyr: </string>
     <string name="today">Heddiw </string>
     <string name="confirm_todo_task_done_message">Gallwch gadarnhau </string>
+    <string name="see_demo_account">Ewch i\'r Cyfrif Demo</string>
 
+    <!--New Values-->
     <string name="tomorrow">PLACEHOLDER</string>
+    <string name="module_in">PLACEHOLDER</string>
 </resources>

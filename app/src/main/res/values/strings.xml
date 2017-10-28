@@ -532,5 +532,6 @@
 
     <string name="trophies_not_data">Start logging activities to win trophies.</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="see_demo_account">See demo account</string>
 
 </resources>

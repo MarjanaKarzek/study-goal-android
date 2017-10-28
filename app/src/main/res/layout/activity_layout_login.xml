@@ -28,7 +28,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
@@ -52,15 +52,17 @@
                 android:textSize="50sp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/login_step_1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="vertical"
@@ -78,7 +80,7 @@
 
                     <TextView
                         android:id="@+id/login_step_1_imastaff"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/round_corners_transparent_2"
@@ -123,7 +125,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/rounded_corners_transparent_4"
             android:gravity="center"
-            android:text="@string/demo_mode"
+            android:text="@string/see_demo_account"
             android:textColor="#ffffff"
             android:textSize="18sp" />
     </RelativeLayout>
