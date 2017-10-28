@@ -531,5 +531,6 @@
     <string name="confirm_todo_task_done_message">Are you sure you want to mark this task as done?</string>
 
     <string name="trophies_not_data">Start logging activities to win trophies.</string>
+    <string name="tomorrow">Tomorrow</string>
 
 </resources>

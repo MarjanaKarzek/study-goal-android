@@ -515,4 +515,6 @@
     <string name="days_overdue"> Dyddiau yn hwyr: </string>
     <string name="today">Heddiw </string>
     <string name="confirm_todo_task_done_message">Gallwch gadarnhau </string>
+
+    <string name="tomorrow">PLACEHOLDER</string>
 </resources>

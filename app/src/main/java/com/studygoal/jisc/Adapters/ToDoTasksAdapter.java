@@ -97,6 +97,9 @@ public class ToDoTasksAdapter extends BaseAdapter {
         currentTime.set(Calendar.SECOND, 0);
         currentTime.set(Calendar.MILLISECOND, 0);
 
+        boolean isToday = false;
+        boolean isTomorrow = false;
+
         Date currentDate = currentTime.getTime();
         Date itemDate = null;
         try {
@@ -105,14 +108,14 @@ public class ToDoTasksAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         int difference = (int)((currentDate.getTime() - itemDate.getTime()) / (1000 * 60 * 60 * 24)) ;
-        Log.d(TAG, "getView: displaying " + item.description);
-        Log.d(TAG, "getView: due difference " + difference + " for item date " + item.endDate);
-        Log.d(TAG, "getView: due dates are " + currentDate.getTime() + " for item date " + itemDate.getTime());
 
         String overdueText = "";
         if (difference == 0) {
             activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_due_today));
+            isToday = true;
         } else if (difference == -1 || difference == -2) {
+            if(difference == -1)
+                isTomorrow = true;
             activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_2_left));
         } else if (difference <= -3 && difference > -7) {
             activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_7_left));
@@ -135,19 +138,10 @@ public class ToDoTasksAdapter extends BaseAdapter {
             text += " " + context.getString(R.string._for) + " " + item.module;
         text  += " " + context.getString(R.string.by).toLowerCase() + " ";
 
-        boolean isToday = false;
-
-        try {
-            Date date = simpleDateFormat.parse(item.endDate);
-            if(DateUtils.isToday(date.getTime())){
-                isToday = true;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-
         if (isToday) {
             text += context.getString(R.string.today);
+        } else if (isTomorrow){
+            text += context.getString(R.string.tomorrow);
         } else {
             text += getDateFromEndDateTag(item.endDate);
         }
