@@ -160,6 +160,7 @@ public class SettingsFragment extends Fragment {
 
         ((TextView) mainView.findViewById(R.id.email_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
         ((TextView) mainView.findViewById(R.id.privacy_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
+        ((TextView) mainView.findViewById(R.id.terms_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
         mainView.findViewById(R.id.email_layout).setOnClickListener(new View.OnClickListener() {
             @Override
