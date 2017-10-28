@@ -115,7 +115,7 @@ public class ToDoTasksAdapter extends BaseAdapter {
             if(difference == 1)
                 overdueText = "1 " + context.getString(R.string.day_overdue);
             else
-                overdueText = difference + context.getString(R.string.days_overdue);
+                overdueText = difference + " "+ context.getString(R.string.days_overdue);
         }
 
         TextView textView = (TextView) convertView.findViewById(R.id.target_item_text);
