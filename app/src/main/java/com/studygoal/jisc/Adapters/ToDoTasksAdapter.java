@@ -91,8 +91,13 @@ public class ToDoTasksAdapter extends BaseAdapter {
 
         ImageView activity_icon = (ImageView) convertView.findViewById(R.id.activity_icon);
 
-        Date currentDate = new Date();
-        currentDate.setTime(Calendar.getInstance().getTimeInMillis());
+        Calendar currentTime = Calendar.getInstance();
+        currentTime.set(Calendar.HOUR_OF_DAY, 0);
+        currentTime.set(Calendar.MINUTE, 0);
+        currentTime.set(Calendar.SECOND, 0);
+        currentTime.set(Calendar.MILLISECOND, 0);
+
+        Date currentDate = currentTime.getTime();
         Date itemDate = null;
         try {
             itemDate = simpleDateFormat.parse(item.endDate);
@@ -100,6 +105,9 @@ public class ToDoTasksAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         int difference = (int)((currentDate.getTime() - itemDate.getTime()) / (1000 * 60 * 60 * 24)) ;
+        Log.d(TAG, "getView: displaying " + item.description);
+        Log.d(TAG, "getView: due difference " + difference + " for item date " + item.endDate);
+        Log.d(TAG, "getView: due dates are " + currentDate.getTime() + " for item date " + itemDate.getTime());
 
         String overdueText = "";
         if (difference == 0) {
