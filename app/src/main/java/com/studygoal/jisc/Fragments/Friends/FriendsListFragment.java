@@ -34,19 +34,13 @@ public class FriendsListFragment extends Fragment {
             DataManager.getInstance().mainActivity.hideAllButtons();
             DataManager.getInstance().mainActivity.showCertainButtons(5);
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
+            new Thread(() -> {
+                NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
 
-                    DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter = new FriendsListAdapter(DataManager.getInstance().mainActivity);
-                            list.setAdapter(adapter);
-                        }
-                    });
-                }
+                DataManager.getInstance().mainActivity.runOnUiThread(() -> {
+                    adapter = new FriendsListAdapter(DataManager.getInstance().mainActivity);
+                    list.setAdapter(adapter);
+                });
             }).start();
         } else {
             try {
@@ -61,12 +55,9 @@ public class FriendsListFragment extends Fragment {
                 public void run() {
                     NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter = new FriendsListAdapter(getActivity());
-                            list.setAdapter(adapter);
-                        }
+                    getActivity().runOnUiThread(() -> {
+                        adapter = new FriendsListAdapter(getActivity());
+                        list.setAdapter(adapter);
                     });
                 }
             }).start();
@@ -86,7 +77,6 @@ public class FriendsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.layout_friends_list, container, false);
-
 
         EditText search = (EditText) mainView.findViewById(R.id.friends_search_edittext);
         search.addTextChangedListener(new TextWatcher() {

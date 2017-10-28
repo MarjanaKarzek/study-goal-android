@@ -73,12 +73,9 @@ public class MyTrophiesAdapter extends BaseAdapter implements View.OnClickListen
         textGold.setText(trophy.total);
         textSilver.setText(trophy.total);
 
-        if(trophy.trophy_type.equals("silver"))
-        {
+        if (trophy.trophy_type.equals("silver")) {
             textGold.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             textSilver.setVisibility(View.VISIBLE);
 
         }
