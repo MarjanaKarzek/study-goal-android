@@ -492,7 +492,7 @@ public class TargetFragment extends BaseFragment {
 
         new Thread(() -> {
             ActiveAndroid.beginTransaction();
-            item.isAccepted = "2";
+            item.isAccepted = "1";
             item.save();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
