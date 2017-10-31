@@ -324,10 +324,6 @@ public class TargetFragment extends BaseFragment {
 
                 while (iterator.hasNext()){
                     ToDoTasks currentTask = (ToDoTasks)iterator.next();
-
-                    Log.d(TAG, "loadData: currentTask: " + currentTask.description);
-                    Log.d(TAG, "loadData: status: " + currentTask.status);
-                    Log.d(TAG, "loadData: isAccepted: " + currentTask.isAccepted);
                 }
 
                 //do ordering of tutor tasks up here
@@ -528,7 +524,6 @@ public class TargetFragment extends BaseFragment {
             } else {
                 item.reasonForIgnoring = "";
             }
-            Log.d(TAG, "processDeclineTask: " + item.isAccepted);
             item.save();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
@@ -540,11 +535,10 @@ public class TargetFragment extends BaseFragment {
             params.put("module", item.module);
             params.put("description", item.description);
             params.put("reason", item.reason);
-            params.put("is_accepted ", item.isAccepted);
-            params.put("reason_for_ignoring ", item.reasonForIgnoring);
+            params.put("is_accepted", item.isAccepted);
+            params.put("reason_for_ignoring", item.reasonForIgnoring);
 
             if (NetworkManager.getInstance().editToDoTask(params)) {
-                //delete from list here
                 loadData(true);
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();

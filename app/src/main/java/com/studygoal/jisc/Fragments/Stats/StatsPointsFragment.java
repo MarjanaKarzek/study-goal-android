@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,7 +115,13 @@ public class StatsPointsFragment extends BaseFragment {
         s.setJavaScriptEnabled(true);
 
         try {
-            InputStream is = getContext().getAssets().open("stats_points_pi_chart.html");
+            InputStream is = null;
+            Log.d(TAG, "loadWebView: language " + DataManager.getInstance().language);
+            if (DataManager.getInstance().language.equals("welsh")) {
+                is = getContext().getAssets().open("stats_points_pi_chart_welsh.html");
+            } else {
+                is = getContext().getAssets().open("stats_points_pi_chart.html");
+            }
             int size = is.available();
             final byte[] buffer = new byte[size];
             is.read(buffer);
