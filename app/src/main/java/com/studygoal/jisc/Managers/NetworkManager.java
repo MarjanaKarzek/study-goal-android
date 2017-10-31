@@ -3665,7 +3665,7 @@ public class NetworkManager {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                String apiURL = "https://api.x-staging.data.alpha.jisc.ac.uk/att/checkin?checkinpin=" + this.pin + "&geo_tag=" + this.location + "&timestamp=" + sdf.format(new Date());
+                String apiURL = "https://api.datax.jisc.ac.uk/att/checkin?checkinpin=" + this.pin + "&geo_tag=" + this.location + "&timestamp=" + sdf.format(new Date());
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection;
