@@ -514,8 +514,7 @@
     <string name="today">Heddiw </string>
     <string name="confirm_todo_task_done_message">Gallwch gadarnhau </string>
     <string name="see_demo_account">Ewch i\'r Cyfrif Demo</string>
-
-    <!--New Values-->
-    <string name="tomorrow">PLACEHOLDER</string>
-    <string name="module_in">PLACEHOLDER</string>
+    <string name="tomorrow">yfory</string>
+    <string name="module_in">Dewis Modiwl</string>
+    <string name="not_change_activity_in_edit_mode_hint">Nid yw gweithgareddau yn editable. Sefydlu targed newydd.</string>
 </resources>

@@ -3460,6 +3460,7 @@ public class NetworkManager {
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.addRequestProperty("Authorization", "Bearer " + DataManager.getInstance().get_jwt());
+                Log.d("", "call: current JWT " + DataManager.getInstance().get_jwt());
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
@@ -4000,7 +4001,7 @@ public class NetworkManager {
                 is.close();
 
                 JSONArray jsonArray = new JSONArray(sb.toString());
-
+                Log.d("", "call: LOG array " + sb.toString());
                 ActiveAndroid.beginTransaction();
                 try {
                     new Delete().from(ActivityHistory.class).execute();
