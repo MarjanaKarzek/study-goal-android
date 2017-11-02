@@ -21,6 +21,7 @@ import com.studygoal.jisc.Adapters.ActivityPointsAdapter;
 import com.studygoal.jisc.Activities.MainActivity;
 import com.studygoal.jisc.Fragments.BaseFragment;
 import com.studygoal.jisc.Managers.DataManager;
+import com.studygoal.jisc.Managers.LinguisticManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Managers.xApi.XApiManager;
@@ -117,7 +118,7 @@ public class StatsPointsFragment extends BaseFragment {
         try {
             InputStream is = null;
             Log.d(TAG, "loadWebView: language " + DataManager.getInstance().language);
-            if (DataManager.getInstance().language.equals("welsh")) {
+            if (LinguisticManager.getInstance().getLanguageCode() == "cy") {
                 is = getContext().getAssets().open("stats_points_pi_chart_welsh.html");
             } else {
                 is = getContext().getAssets().open("stats_points_pi_chart.html");
