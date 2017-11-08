@@ -67,6 +67,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.common.SafeToast;
 
@@ -81,9 +82,9 @@ import io.fabric.sdk.android.services.common.SafeToast;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
 
-    private static final String TWITTER_KEY = "M0NKXVGquYoclGTcG81u49hka";
-    private static final String TWITTER_SECRET = "CCpca8rm2GuJFkuHmTdTiwBsTcWdv7Ybi5Qqi7POIA6BvCObY6";
-    private TwitterAuthClient twitterAuthClient;
+    // Use these information for twitter login in the future
+    // private static final String TWITTER_KEY = "M0NKXVGquYoclGTcG81u49hka";
+    // private static final String TWITTER_SECRET = "CCpca8rm2GuJFkuHmTdTiwBsTcWdv7Ybi5Qqi7POIA6BvCObY6";
 
     private CallbackManager callbackManager;
     private WebView webView;
@@ -300,7 +301,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         String firstlogin = DataManager.getInstance().first_time;
                                         Intent intent = null;
                                         if (firstlogin.equals("yes")) {
-                                            //NetworkManager.getInstance().updateAppUsage("0","0","0","0","0");
                                             intent = new Intent(LoginActivity.this, TermsActivity.class);
                                         } else {
                                             intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -324,7 +324,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         String firstlogin = DataManager.getInstance().first_time;
                                         Intent intent = null;
                                         if (firstlogin.equals("yes")) {
-                                            //NetworkManager.getInstance().updateAppUsage("0","0","0","0","0");
                                             intent = new Intent(LoginActivity.this, TermsActivity.class);
                                         } else {
                                             intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -491,45 +490,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             startActivityForResult(signInIntent, 5005);
         });
 
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
-
-        twitterAuthClient = new TwitterAuthClient();
-        ImageView login_with_twitter = (ImageView) findViewById(R.id.login_with_twitter);
-        login_with_twitter.setOnClickListener(view -> {
-            socialType = 2;
-            socialID = "";
-            email = "";
-
-            twitterAuthClient.authorize(LoginActivity.this, new Callback<TwitterSession>() {
-                @Override
-                public void success(Result<TwitterSession> twitterSessionResult) {
-                    // Success
-                    socialID = "" + twitterSessionResult.data.getUserId();
-                    twitterAuthClient.requestEmail(twitterSessionResult.data, new Callback<String>() {
-                        @Override
-                        public void success(Result<String> result) {
-                            email = result.data;
-                            runOnUiThread(() -> loginSocial());
-                        }
-
-                        @Override
-                        public void failure(TwitterException exception) {
-                            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
-                            alertDialogBuilder.setMessage(R.string.facebook_error_email);
-                            alertDialogBuilder.setNegativeButton("OK", (dialog, which) -> dialog.dismiss());
-                            android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                            alertDialog.show();
-                        }
-                    });
-                }
-
-                @Override
-                public void failure(TwitterException e) {
-                    e.printStackTrace();
-                }
-            });
-        });
+        Fabric.with(this, new Crashlytics());
 
         TextView backToFirstPage = (TextView) findViewById(R.id.back_to_firstpage);
         backToFirstPage.setOnClickListener(view -> onBackPressed());
@@ -718,7 +679,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (socialType == 1) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         } else if (socialType == 2) {
-            twitterAuthClient.onActivityResult(requestCode, resultCode, data);
+            //twitterAuthClient.onActivityResult(requestCode, resultCode, data);
         } else if (socialType == 3) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -827,6 +788,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
+    /**
+     * On successful login this method updates the information about the last known user
+     */
     private void updateLastKnownUser() {
         SharedPreferences sharedPref = this.getSharedPreferences("jisc",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();

@@ -11,7 +11,7 @@ buildscript {
 
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-        classpath 'io.fabric.tools:gradle:1.22.1'
+        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 
@@ -119,6 +119,11 @@ dependencies {
     // Custom libs
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.github.AndroidDeveloperLB:AutoFitTextView:4'
+
+    // Fabric
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true;
+    }
 
     // For testing
     testCompile 'junit:junit:4.12'

@@ -79,7 +79,8 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="aabe6f656cd29919a8d107f1347dc2c158eff1d7" />
+            android:value="aabe6f656cd29919a8d107f1347dc2c158eff1d7"
+            />
 
         <service
             android:name="com.studygoal.jisc.Utils.PushNotifications.MyGcmListenerService"
