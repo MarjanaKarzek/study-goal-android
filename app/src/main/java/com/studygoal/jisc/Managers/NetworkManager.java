@@ -873,9 +873,13 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-
-                String apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/attainment?"
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = "";
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                    apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_attainment?";
+                } else {
+                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/attainment?"
+                            + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                }
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();

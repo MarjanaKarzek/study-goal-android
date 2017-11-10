@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +107,9 @@ public class StatsAttainmentFragment extends Fragment {
         layout.setOnRefreshListener(() -> new Thread(() -> {
             if (NetworkManager.getInstance().getAssignmentRanking()) {
                 adapter.list = new Select().from(Attainment.class).execute();
+                for(Attainment obj:adapter.list){
+                    Log.d(TAG, "onCreateView: attainment element: " + obj.module);
+                }
             } else {
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 String attainmentDataBackup = sharedPref.getString(getString(R.string.attainmentData), "no_data_stored");
