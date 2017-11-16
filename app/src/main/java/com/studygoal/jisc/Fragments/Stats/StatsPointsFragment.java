@@ -92,8 +92,9 @@ public class StatsPointsFragment extends BaseFragment {
             @Override
             public void onClick(View view){
                 super.onClick(view);
+                Log.d(TAG, "onClick: segment controller activated. selected isThisWeek is " + isThisWeek);
                 isThisWeek = !isThisWeek;
-                callRefresh();
+                refreshView();
             }
         };
 
@@ -107,11 +108,6 @@ public class StatsPointsFragment extends BaseFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
-        if(adapter.list == null || adapter.list.size() == 0){
-            mainView.findViewById(R.id.points_list_emptyView).setVisibility(View.VISIBLE);
-        }else{
-            mainView.findViewById(R.id.points_list_emptyView).setVisibility(View.GONE);
-        }
         WebSettings s = piChartWebView.getSettings();
         s.setJavaScriptEnabled(true);
 
@@ -194,6 +190,12 @@ public class StatsPointsFragment extends BaseFragment {
         int sum = 0;
         for (ActivityPoints p : DataManager.getInstance().user.points) {
             sum += Integer.parseInt(p.points);
+        }
+
+        if(sum == 0){
+            mainView.findViewById(R.id.points_list_emptyView).setVisibility(View.VISIBLE);
+        }else{
+            mainView.findViewById(R.id.points_list_emptyView).setVisibility(View.GONE);
         }
 
         Log.d("", "callRefresh: isThisWeek " + isThisWeek);

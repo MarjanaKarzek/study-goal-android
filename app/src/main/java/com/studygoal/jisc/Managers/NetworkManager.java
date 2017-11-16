@@ -1123,9 +1123,17 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-
-                String apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/activity/points?scope=" + scope
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = "";
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                    if(scope.equals("7d")) {
+                        apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_activity_7d";
+                    } else {
+                        apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_activity_28d";
+                    }
+                } else {
+                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/activity/points?scope=" + scope
+                            + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                }
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
