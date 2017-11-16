@@ -776,19 +776,21 @@ public class NetworkManager {
 
                 Log.d("", "call: network manager json " + sb.toString());
 
-                //JSONObject jsonObject = new JSONObject(sb.toString());
-                //Iterator<String> iterator = jsonObject.keys();
-                int i = 0;
-                while (i != 5) {
+                JSONArray jsonArray = new JSONArray(sb.toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
                     Event item = new Event();
-                    item.setActivity("d");
-                    item.setDate("d");
-                    item.setModule("d");
-                    item.setTime(923758783);
-                    attendanceList.add(item);
-                    i++;
-                }
 
+                    JSONObject extensions = jsonArray.getJSONObject(i).getJSONObject("statement").getJSONObject("context").getJSONObject("extensions");
+                    String en = jsonArray.getJSONObject(i).getJSONObject("statement").getJSONObject("object").getJSONObject("definition").getJSONObject("name").getString("en");
+                    String[] dataInfo = en.split(" ");
+
+                    item.setModule(extensions.getJSONObject("http://xapi.jisc.ac.uk/courseArea").getString("http://xapi.jisc.ac.uk/uddModInstanceID"));
+
+                    item.setActivity(extensions.getString("http://xapi.jisc.ac.uk/activity_type_id"));
+                    item.setDate(dataInfo[dataInfo.length-1]);
+                    item.setTime(jsonArray.length()-i);
+                    attendanceList.add(item);
+                }
 
                 return attendanceList;
             } catch (Exception e) {
@@ -4170,7 +4172,12 @@ public class NetworkManager {
                 Date daysBeforeDate = cal.getTime();
                 String current = sdf.format(new Date());
                 String past = sdf.format(daysBeforeDate);
-                String apiURL = "https://api.datax.jisc.ac.uk/sg/weeklyattendance?startdate=" + past + "&enddate=" + current;
+                String apiURL = "";
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                    apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_attendance_summary";
+                } else {
+                    apiURL = "https://api.datax.jisc.ac.uk/sg/weeklyattendance?startdate=" + past + "&enddate=" + current;
+                }
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();

@@ -21,6 +21,7 @@ import com.studygoal.jisc.Adapters.EventsAttendedAdapter;
 import com.studygoal.jisc.Activities.MainActivity;
 import com.studygoal.jisc.Fragments.BaseFragment;
 import com.studygoal.jisc.Managers.DataManager;
+import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.Event;
@@ -174,10 +175,19 @@ public class StatsEventAttendanceFragment extends BaseFragment {
     }
 
     private void loadData(int skip, int limit, boolean reset) {
-        if (XApiManager.getInstance().getAttendance(skip, limit, reset)) {
-            events.clear();
-            List<Event> events = new Select().from(Event.class).execute();
-            this.events.addAll(events);
+        if(!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+            if (XApiManager.getInstance().getAttendance(skip, limit, reset)) {
+                events.clear();
+                List<Event> events = new Select().from(Event.class).execute();
+                this.events.addAll(events);
+            }
+        } else {
+            List<Event> calledEvents = NetworkManager.getInstance().getDemoAttendance();
+            if(calledEvents != null) {
+                events.clear();
+                this.events.addAll(calledEvents);
+            }
+
         }
     }
 
