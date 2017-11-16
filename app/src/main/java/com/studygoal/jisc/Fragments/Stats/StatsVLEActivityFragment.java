@@ -3,6 +3,7 @@ package com.studygoal.jisc.Fragments.Stats;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -122,8 +123,14 @@ public class StatsVLEActivityFragment extends Fragment {
                 loadData();
             }
         };
-        segmentButtonSevenDays.setOnClickListener(segmentClickListener);
-        segmentButtonTwentyeightDays.setOnClickListener(segmentClickListener);
+        if(!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+            segmentButtonSevenDays.setOnClickListener(segmentClickListener);
+            segmentButtonTwentyeightDays.setOnClickListener(segmentClickListener);
+        } else {
+            segmentButtonSevenDays.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_active_disabled));
+            mainView.findViewById(R.id.segment_buttons_period).setBackground(ContextCompat.getDrawable(getContext(), R.drawable.round_corners_segmented_disabled));
+            segmentButtonTwentyeightDays.setTextColor(Color.parseColor("#BBBBBB"));
+        }
 
         compareTo = (AppCompatTextView) mainView.findViewById(R.id.compareto);
         compareTo.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
@@ -229,63 +236,67 @@ public class StatsVLEActivityFragment extends Fragment {
         ((TextView) mainView.findViewById(R.id.compare_to)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
         //Setting the module
-        module.setOnClickListener(v -> {
-            final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.snippet_custom_spinner);
-            dialog.setCancelable(true);
-            dialog.setOnCancelListener(dialog13 -> {
-                dialog13.dismiss();
-                runOnUiThread(() -> ((MainActivity) getActivity()).hideProgressBar());
-            });
+        if(!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+            module.setOnClickListener(v -> {
+                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
+                dialog.setCancelable(true);
+                dialog.setOnCancelListener(dialog13 -> {
+                    dialog13.dismiss();
+                    runOnUiThread(() -> ((MainActivity) getActivity()).hideProgressBar());
+                });
 
-            if (DataManager.getInstance().mainActivity.isLandscape) {
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                int width = (int) (displaymetrics.widthPixels * 0.3);
+                if (DataManager.getInstance().mainActivity.isLandscape) {
+                    DisplayMetrics displaymetrics = new DisplayMetrics();
+                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                    int width = (int) (displaymetrics.widthPixels * 0.3);
 
-                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                params.width = width;
-                dialog.getWindow().setAttributes(params);
-            }
+                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                    params.width = width;
+                    dialog.getWindow().setAttributes(params);
+                }
 
-            ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-            ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
 
-            final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-            listView.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, module.getText().toString()));
-            listView.setOnItemClickListener((parent, view, position, id) -> {
-                String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
-                List<Courses> coursesList = new Select().from(Courses.class).execute();
+                final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
+                listView.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, module.getText().toString()));
+                listView.setOnItemClickListener((parent, view, position, id) -> {
+                    String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
+                    List<Courses> coursesList = new Select().from(Courses.class).execute();
 
-                for (int j = 0; j < coursesList.size(); j++) {
-                    String courseName = coursesList.get(j).name;
-                    if (courseName.equals(titleText)) {
-                        return;
+                    for (int j = 0; j < coursesList.size(); j++) {
+                        String courseName = coursesList.get(j).name;
+                        if (courseName.equals(titleText)) {
+                            return;
+                        }
                     }
-                }
 
-                dialog.dismiss();
-                module.setText(titleText);
+                    dialog.dismiss();
+                    module.setText(titleText);
 
-                if (!module.getText().toString().equals(getString(R.string.anymodule))) {
-                    compareTo.setOnClickListener(compareToListener);
-                    compareTo.setAlpha(1.0f);
-                } else {
-                    compareTo.setOnClickListener(null);
-                    compareTo.setAlpha(0.5f);
-                    compareTo.setText(getString(R.string.no_one));
-                }
+                    if (!module.getText().toString().equals(getString(R.string.anymodule))) {
+                        compareTo.setOnClickListener(compareToListener);
+                        compareTo.setAlpha(1.0f);
+                    } else {
+                        compareTo.setOnClickListener(null);
+                        compareTo.setAlpha(0.5f);
+                        compareTo.setText(getString(R.string.no_one));
+                    }
 
-                if (module.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (compareTo.getText().toString().equals(getString(R.string.average)) || compareTo.getText().toString().equals(getString(R.string.top10)))) {
-                    compareTo.setText(R.string.no_one);
-                }
+                    if (module.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (compareTo.getText().toString().equals(getString(R.string.average)) || compareTo.getText().toString().equals(getString(R.string.top10)))) {
+                        compareTo.setText(R.string.no_one);
+                    }
 
-                loadData();
+                    loadData();
+                });
+                ((MainActivity) getActivity()).showProgressBar2("");
+                dialog.show();
             });
-            ((MainActivity) getActivity()).showProgressBar2("");
-            dialog.show();
-        });
+        } else {
+            module.setAlpha(0.5f);
+        }
 
         ((ImageView) mainView.findViewById(R.id.change_graph_btn)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.bar_graph));
         mainView.findViewById(R.id.change_graph_btn).setOnClickListener(v -> {
