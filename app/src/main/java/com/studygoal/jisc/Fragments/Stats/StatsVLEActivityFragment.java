@@ -163,6 +163,7 @@ public class StatsVLEActivityFragment extends Fragment {
             segmentClickListener = new SegmentClickListener(null, segments, getContext(), 0) {
                 @Override
                 public void onClick(View view) {
+                    super.onClick(view);
                     loadData();
                     isBar = !isBar;
                     refreshUi();

@@ -58,8 +58,6 @@
                         android:text="@string/start"
                         android:gravity="center"
                         android:textAlignment="center"
-                        android:gravity="center"
->>>>>>> adjust buttons for tablet version
                         android:textColor="@color/dark_grey"
                         android:textSize="24sp" />
 
@@ -80,7 +78,6 @@
                     <TextView
                         android:id="@+id/app_usage_end"
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
                         android:layout_height="52dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
