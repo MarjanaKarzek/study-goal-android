@@ -52,8 +52,8 @@ public class DrawerAdapter extends BaseAdapter {
             valuesList.add(context.getString(R.string.friends));
             valuesList.add(context.getString(R.string.stats));
             valuesList.add(context.getString(R.string.points));
-            //valuesList.add(context.getString(R.string.app_usage));
-            //statOpenedNum++;
+            valuesList.add(context.getString(R.string.app_usage));
+            statOpenedNum++;
 
             valuesList.add(context.getString(R.string.attainment));
             statOpenedNum++;
@@ -64,8 +64,6 @@ public class DrawerAdapter extends BaseAdapter {
 //            }
 
             if (AppCore.getInstance().getPreferences().getAttendanceData()) {
-                //valuesList.add(con.getString(R.string.attendance));
-                //statOpenedNum++;
                 valuesList.add(context.getString(R.string.attendance_menu));
                 statOpenedNum++;
             }

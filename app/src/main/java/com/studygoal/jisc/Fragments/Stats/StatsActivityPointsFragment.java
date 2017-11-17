@@ -195,8 +195,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
         s.setJavaScriptEnabled(true);
 
         try {
-
-            InputStream is = null;
+            InputStream is;
             Log.d(TAG, "loadWebView: language " + DataManager.getInstance().language);
             if (LinguisticManager.getInstance().getLanguageCode() == "cy") {
                 is = getContext().getAssets().open("stats_points_pi_chart_welsh.html");
