@@ -20,6 +20,7 @@ import com.studygoal.jisc.Models.Attainment;
 import com.studygoal.jisc.Models.Courses;
 import com.studygoal.jisc.Models.CurrentUser;
 import com.studygoal.jisc.Models.ED;
+import com.studygoal.jisc.Models.Event;
 import com.studygoal.jisc.Models.Feed;
 import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.Models.Institution;
@@ -541,12 +542,17 @@ public class NetworkManager {
         @Override
         public List<ED> call() throws Exception {
             try {
-                String apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/engagement?"
-                        + "scope=" + this.scope
-                        + "&compareType=" + this.compareType
-                        + "&compareValue=" + this.compareValue
-                        + "&filterType=" + this.filterType
-                        + "&filterValue=" + this.filterValue;
+                String apiURL = "";
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                    apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_vle_activity";
+                } else {
+                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/engagement?"
+                            + "scope=" + this.scope
+                            + "&compareType=" + this.compareType
+                            + "&compareValue=" + this.compareValue
+                            + "&filterType=" + this.filterType
+                            + "&filterValue=" + this.filterValue;
+                }
 
                 URL url = new URL(apiURL);
 
@@ -710,6 +716,100 @@ public class NetworkManager {
             } catch (Exception e) {
                 e.printStackTrace();
                 return engagement_list;
+            }
+        }
+    }
+
+    public List<Event> getDemoAttendance() {
+        language = LinguisticManager.getInstance().getLanguageCode();
+        Future<List<Event>> future = executorService.submit(new getDemoAttendance());
+        try {
+            return future.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    private class getDemoAttendance implements Callable<List<Event>> {
+        ArrayList<Event> attendanceList;
+
+        getDemoAttendance() {
+            attendanceList = new ArrayList<>();
+        }
+
+        @Override
+        public List<Event> call() throws Exception {
+            try {
+                String apiURL = "";
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                    apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_attendance";
+                } else {
+                    return null;
+                }
+
+                URL url = new URL(apiURL);
+
+                HttpsURLConnection urlConnection;
+                urlConnection = (HttpsURLConnection) url.openConnection();
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+                urlConnection.setRequestMethod("GET");
+                urlConnection.addRequestProperty("Authorization", DataManager.getInstance().get_jwt());
+                urlConnection.setSSLSocketFactory(context.getSocketFactory());
+
+                Log.e("getDemoAttendance", "Call: " + apiURL);
+
+                int responseCode = urlConnection.getResponseCode();
+                forbidden(responseCode);
+                if (responseCode != 200) {
+
+                    InputStream is = new BufferedInputStream(urlConnection.getErrorStream());
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    is.close();
+
+                    Log.e("getDemoAttendance", "Code: " + responseCode);
+
+                    return attendanceList;
+                }
+
+                InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+                is.close();
+
+                Log.e("Jisc", "Compare graph: " + sb.toString());
+
+                Log.d("", "call: network manager json " + sb.toString());
+
+                JSONArray jsonArray = new JSONArray(sb.toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    Event item = new Event();
+
+                    JSONObject extensions = jsonArray.getJSONObject(i).getJSONObject("statement").getJSONObject("context").getJSONObject("extensions");
+                    String en = jsonArray.getJSONObject(i).getJSONObject("statement").getJSONObject("object").getJSONObject("definition").getJSONObject("name").getString("en");
+                    String[] dataInfo = en.split(" ");
+
+                    item.setModule(extensions.getJSONObject("http://xapi.jisc.ac.uk/courseArea").getString("http://xapi.jisc.ac.uk/uddModInstanceID"));
+
+                    item.setActivity(extensions.getString("http://xapi.jisc.ac.uk/activity_type_id"));
+                    item.setDate(dataInfo[dataInfo.length-1]);
+                    item.setTime(jsonArray.length()-i);
+                    attendanceList.add(item);
+                }
+
+                return attendanceList;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return attendanceList;
             }
         }
     }
@@ -887,9 +987,13 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-
-                String apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/attainment?"
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = "";
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                    apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_attainment";
+                } else {
+                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/attainment?"
+                            + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                }
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -1133,9 +1237,17 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-
-                String apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/activity/points?scope=" + scope
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = "";
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                    if(scope.equals("7d")) {
+                        apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_activity_7d";
+                    } else {
+                        apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_activity_28d";
+                    }
+                } else {
+                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/activity/points?scope=" + scope
+                            + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                }
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -3474,6 +3586,7 @@ public class NetworkManager {
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
                 urlConnection.addRequestProperty("Authorization", "Bearer " + DataManager.getInstance().get_jwt());
+                Log.d("", "call: current JWT " + DataManager.getInstance().get_jwt());
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
@@ -3679,7 +3792,7 @@ public class NetworkManager {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                String apiURL = "https://api.x-staging.data.alpha.jisc.ac.uk/att/checkin?checkinpin=" + this.pin + "&geo_tag=" + this.location + "&timestamp=" + sdf.format(new Date());
+                String apiURL = "https://api.datax.jisc.ac.uk/att/checkin?checkinpin=" + this.pin + "&geo_tag=" + this.location + "&timestamp=" + sdf.format(new Date());
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection;
@@ -4014,7 +4127,7 @@ public class NetworkManager {
                 is.close();
 
                 JSONArray jsonArray = new JSONArray(sb.toString());
-
+                Log.d("", "call: LOG array " + sb.toString());
                 ActiveAndroid.beginTransaction();
                 try {
                     new Delete().from(ActivityHistory.class).execute();
@@ -4073,7 +4186,13 @@ public class NetworkManager {
                 Date daysBeforeDate = cal.getTime();
                 String current = sdf.format(new Date());
                 String past = sdf.format(daysBeforeDate);
-                String apiURL = xapiHost + "/sg/weeklyattendance?startdate=" + past + "&enddate=" + current;
+                String apiURL = "";
+                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                    apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_attendance_summary";
+                } else {
+                    apiURL = xapiHost + "/sg/weeklyattendance?startdate=" + past + "&enddate=" + current;
+                }
+
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();

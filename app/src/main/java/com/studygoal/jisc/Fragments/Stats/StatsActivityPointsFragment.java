@@ -28,6 +28,7 @@ import com.studygoal.jisc.Activities.MainActivity;
 import com.studygoal.jisc.Adapters.ModuleAdapter;
 import com.studygoal.jisc.Fragments.BaseFragment;
 import com.studygoal.jisc.Managers.DataManager;
+import com.studygoal.jisc.Managers.LinguisticManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Managers.xApi.XApiManager;
@@ -111,10 +112,10 @@ public class StatsActivityPointsFragment extends BaseFragment {
                     callRefresh();
                 }
             };
-
             segmentButtonSummary.setOnClickListener(segmentClickListener);
             segmentButtonChart.setOnClickListener(segmentClickListener);
         }
+
         showAlertDialog();
         setUpDatePicker();
 
@@ -194,7 +195,14 @@ public class StatsActivityPointsFragment extends BaseFragment {
         s.setJavaScriptEnabled(true);
 
         try {
-            InputStream is = getContext().getAssets().open("stats_points_pi_chart.html");
+            InputStream is;
+            Log.d(TAG, "loadWebView: language " + DataManager.getInstance().language);
+            if (LinguisticManager.getInstance().getLanguageCode() == "cy") {
+                is = getContext().getAssets().open("stats_points_pi_chart_welsh.html");
+            } else {
+                is = getContext().getAssets().open("stats_points_pi_chart.html");
+            }
+            
             int size = is.available();
             final byte[] buffer = new byte[size];
             is.read(buffer);

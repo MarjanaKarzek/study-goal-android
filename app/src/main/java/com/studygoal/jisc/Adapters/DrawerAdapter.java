@@ -64,8 +64,6 @@ public class DrawerAdapter extends BaseAdapter {
 //            }
 
             if (AppCore.getInstance().getPreferences().getAttendanceData()) {
-                //valuesList.add(con.getString(R.string.attendance));
-                //statOpenedNum++;
                 valuesList.add(context.getString(R.string.attendance_menu));
                 statOpenedNum++;
             }

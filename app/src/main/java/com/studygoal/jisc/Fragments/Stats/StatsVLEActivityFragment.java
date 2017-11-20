@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -151,9 +152,6 @@ public class StatsVLEActivityFragment extends Fragment {
 
         moduleFilter = (TextView) mainView.findViewById(R.id.vle_activity_module_filter);
         if(!DataManager.getInstance().mainActivity.isLandscape) {
-            segmentButtonBarGraph = (TextView) mainView.findViewById(R.id.segment_button_bar_graph);
-            segmentButtonLineGraph = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
-
             ArrayList<TextView> segments = new ArrayList<>();
             segments.add(segmentButtonBarGraph);
             segments.add(segmentButtonLineGraph);
@@ -268,18 +266,18 @@ public class StatsVLEActivityFragment extends Fragment {
                 runOnUiThread(() -> ((MainActivity) getActivity()).hideProgressBar());
             });
 
-            if (DataManager.getInstance().mainActivity.isLandscape) {
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                int width = (int) (displaymetrics.widthPixels * 0.3);
+                if (DataManager.getInstance().mainActivity.isLandscape) {
+                    DisplayMetrics displaymetrics = new DisplayMetrics();
+                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                    int width = (int) (displaymetrics.widthPixels * 0.3);
 
-                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                params.width = width;
-                dialog.getWindow().setAttributes(params);
-            }
+                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                    params.width = width;
+                    dialog.getWindow().setAttributes(params);
+                }
 
-            ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-            ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
 
             final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
             listView.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, moduleFilter.getText().toString()));
@@ -287,12 +285,12 @@ public class StatsVLEActivityFragment extends Fragment {
                 String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
                 List<Courses> coursesList = new Select().from(Courses.class).execute();
 
-                for (int j = 0; j < coursesList.size(); j++) {
-                    String courseName = coursesList.get(j).name;
-                    if (courseName.equals(titleText)) {
-                        return;
+                    for (int j = 0; j < coursesList.size(); j++) {
+                        String courseName = coursesList.get(j).name;
+                        if (courseName.equals(titleText)) {
+                            return;
+                        }
                     }
-                }
 
                 dialog.dismiss();
                 moduleFilter.setText(titleText);

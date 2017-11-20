@@ -138,12 +138,6 @@ public class XApiManager {
                                 activityInfo = item.getContext().getExtensions().getActivityTypeId();
                             }
 
-                            /*if (item.getContext() != null && item.getContext().getExtensions() != null
-                                    && item.getContext().getExtensions().getCourseArea() != null
-                                    && item.getContext().getExtensions().getCourseArea().getUddModInstanceID() != null) {
-                                moduleName = item.getContext().getExtensions().getCourseArea().getUddModInstanceID().split("-")[0];
-                            }*/
-
                             if (dataInfo != null && dataInfo.length > 1) {
                                 dateString = dataInfo[dataInfo.length - 1] + " " + dataInfo[dataInfo.length - 2];
                                 if(dataInfo.length > 2){

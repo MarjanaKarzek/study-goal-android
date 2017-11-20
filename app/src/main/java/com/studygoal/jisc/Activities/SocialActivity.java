@@ -12,6 +12,8 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -97,7 +99,8 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
         });
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Twitter(authConfig));
 
         CookieSyncManager.createInstance(this);
         CookieManager cookieManager = CookieManager.getInstance();

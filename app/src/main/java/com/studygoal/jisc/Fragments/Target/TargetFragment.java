@@ -64,13 +64,11 @@ public class TargetFragment extends BaseFragment {
 
         binding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.target_recurring) {
-                Log.d(TAG, "onCreateView: single target checked changed to false");
                 binding.list.setVisibility(View.VISIBLE);
                 binding.listTodo.setVisibility(View.GONE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = false;
                 XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsMain);
             } else {
-                Log.d(TAG, "onCreateView: single target checked changed to true");
                 binding.list.setVisibility(View.GONE);
                 binding.listTodo.setVisibility(View.VISIBLE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = true;
@@ -342,20 +340,14 @@ public class TargetFragment extends BaseFragment {
                 targetAdapter.list = new Select().from(Targets.class).execute();
                 targetAdapter.notifyDataSetChanged();
 
-                //toDoTasksAdapter.updateList(new Select().from(ToDoTasks.class).execute());
-
-                List<ToDoTasks> currentTaskList = new Select().from(ToDoTasks.class).execute();
+                List<ToDoTasks> currentTaskList = new Select().from(ToDoTasks.class).where("status != 1 and is_accepted != 2").execute();
                 Iterator iterator = currentTaskList.iterator();
 
                 while (iterator.hasNext()){
                     ToDoTasks currentTask = (ToDoTasks)iterator.next();
-
-                    if(currentTask.status.equals("1")) {
-                        iterator.remove();
-                    } else if (currentTask.isAccepted.equals("2")) {
-                        iterator.remove();
-                    }
                 }
+
+                //do ordering of tutor tasks up here
 
                 /*Collections.sort(currentTaskList, new Comparator<ToDoTasks>() {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -513,7 +505,7 @@ public class TargetFragment extends BaseFragment {
 
         new Thread(() -> {
             ActiveAndroid.beginTransaction();
-            item.isAccepted = "2";
+            item.isAccepted = "1";
             item.save();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
@@ -554,7 +546,6 @@ public class TargetFragment extends BaseFragment {
             } else {
                 item.reasonForIgnoring = "";
             }
-
             item.save();
             ActiveAndroid.setTransactionSuccessful();
             ActiveAndroid.endTransaction();
@@ -566,10 +557,11 @@ public class TargetFragment extends BaseFragment {
             params.put("module", item.module);
             params.put("description", item.description);
             params.put("reason", item.reason);
-            params.put("is_accepted ", item.isAccepted);
-            params.put("reason_for_ignoring ", item.reasonForIgnoring);
+            params.put("is_accepted", item.isAccepted);
+            params.put("reason_for_ignoring", item.reasonForIgnoring);
 
             if (NetworkManager.getInstance().editToDoTask(params)) {
+                loadData(true);
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
                 });
