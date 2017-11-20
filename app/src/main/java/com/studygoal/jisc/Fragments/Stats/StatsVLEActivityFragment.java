@@ -153,6 +153,8 @@ public class StatsVLEActivityFragment extends Fragment {
         moduleFilter = (TextView) mainView.findViewById(R.id.vle_activity_module_filter);
         if(!DataManager.getInstance().mainActivity.isLandscape) {
             ArrayList<TextView> segments = new ArrayList<>();
+            segmentButtonBarGraph = (TextView) mainView.findViewById(R.id.segment_button_bar_graph);
+            segmentButtonLineGraph  = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
             segments.add(segmentButtonBarGraph);
             segments.add(segmentButtonLineGraph);
 

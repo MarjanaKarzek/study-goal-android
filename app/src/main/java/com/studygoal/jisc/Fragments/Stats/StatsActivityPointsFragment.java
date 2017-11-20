@@ -202,7 +202,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
             } else {
                 is = getContext().getAssets().open("stats_points_pi_chart.html");
             }
-            
+
             int size = is.available();
             final byte[] buffer = new byte[size];
             is.read(buffer);
