@@ -98,6 +98,54 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/vle_activity_7d"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/round_corner_pink_hallow"
+                        android:padding="5dp"
+                        android:text="@string/last_7_days_short"
+                        android:gravity="center"
+                        android:textColor="@color/default_blue"
+                        android:textSize="24sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/vle_activity_28d"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="2dp"
+                        android:background="@drawable/round_corner_pink_hallow"
+                        android:padding="5dp"
+                        android:text="@string/last_28_days_short"
+                        android:gravity="center"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="24sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!--<LinearLayout
+                android:id="@+id/activity_points_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
                 android:weightSum="7">
 
                 <RelativeLayout
@@ -164,7 +212,7 @@
                         android:layout_height="52dp"
                         android:background="@drawable/round_corner_pink_hallow_settings_icon" />
                 </RelativeLayout>
-            </LinearLayout>
+            </LinearLayout>-->
 
             <TextView
                 android:id="@+id/vle_activity_module_filter"
@@ -188,7 +236,8 @@
                 android:text="@string/compare_to"
                 android:gravity="center"
                 android:textColor="@color/dark_grey"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:alpha="0.5"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

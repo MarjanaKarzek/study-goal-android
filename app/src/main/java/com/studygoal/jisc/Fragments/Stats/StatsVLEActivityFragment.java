@@ -62,7 +62,6 @@ public class StatsVLEActivityFragment extends Fragment {
     private WebView webViewLineGraph;
 
     private List<ED> list;
-    private int[] offlineDemoData = {22,0,0,21,4,5,23,6,16,10,3,4,6,1,7,0,0,0,0,3,5,7,12,24,1,0,0,12,13,21};
     private float webViewHeight;
     private float webViewHeightLine;
     private boolean isBar = true;
@@ -81,6 +80,9 @@ public class StatsVLEActivityFragment extends Fragment {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private DatePickerDialog.OnDateSetListener datePickerEnd;
     private DatePickerDialog.OnDateSetListener datePickerStart;
+
+    private TextView sevenDaysButton;
+    private TextView twentyEightDaysButton;
 
     @Override
     public void onResume() {
@@ -124,6 +126,32 @@ public class StatsVLEActivityFragment extends Fragment {
             webViewLineGraph.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:white;\"></div></body></html>", "text/html", "UTF-8", "");
         }
 
+        sevenDaysButton = (TextView) mainView.findViewById(R.id.vle_activity_7d);
+        twentyEightDaysButton = (TextView) mainView.findViewById(R.id.vle_activity_28d);
+
+        sevenDaysButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isSevenDays = true;
+                isOverall = false;
+                twentyEightDaysButton.setTextColor(getResources().getColor(R.color.dark_grey));
+                sevenDaysButton.setTextColor(getResources().getColor(R.color.default_blue));
+                loadData();
+            }
+        });
+
+        twentyEightDaysButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isSevenDays = false;
+                isOverall = true;
+                sevenDaysButton.setTextColor(getResources().getColor(R.color.dark_grey));
+                twentyEightDaysButton.setTextColor(getResources().getColor(R.color.default_blue));
+                loadData();
+            }
+        });
+
+        /* used for future api update
         setUpDatePicker();
 
         DatePickerDialog startDateDatePickerDialog = new DatePickerDialog(getActivity(), datePickerStart, startDatePicked
@@ -148,7 +176,7 @@ public class StatsVLEActivityFragment extends Fragment {
             public void onClick(View view) {
                 endDateDatePickerDialog.show();
             }
-        });
+        });*/
 
         moduleFilter = (TextView) mainView.findViewById(R.id.vle_activity_module_filter);
         if(!DataManager.getInstance().mainActivity.isLandscape) {
@@ -299,9 +327,11 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 if (!moduleFilter.getText().toString().equals(getString(R.string.anymodule))) {
                     compareTo.setOnClickListener(compareToListener);
+                    compareTo.setAlpha(1.0f);
                 } else {
                     compareTo.setOnClickListener(null);
                     compareTo.setText(getString(R.string.compare_to));
+                    compareTo.setAlpha(0.5f);
                 }
 
                 if (moduleFilter.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (compareTo.getText().toString().equals(getString(R.string.average)) || compareTo.getText().toString().equals(getString(R.string.top10)))) {
@@ -488,8 +518,8 @@ public class StatsVLEActivityFragment extends Fragment {
 //            compareType = "top";
 //        } else
             if (!compareTo.getText().toString().equals(getString(R.string.compare_to))
-//                && !compareTo.getText().toString().equals(getString(R.string.top10))
-                    && !compareTo.getText().toString().equals(getString(R.string.average))) {
+                    && !compareTo.getText().toString().equals(getString(R.string.average))
+                    && !compareTo.getText().toString().equals(getString(R.string.no_one))) {
                 compareValue = ((Friend) new Select().from(Friend.class).where("name = ?", compareTo.getText().toString()).executeSingle()).jisc_student_id.replace("[", "").replace("]", "").replace("\"", "");
                 compareType = "friend";
             } else if (compareTo.getText().toString().equals(getString(R.string.average))) {
@@ -516,22 +546,6 @@ public class StatsVLEActivityFragment extends Fragment {
                     filterValue,
                     isCourse
             );
-
-            if((list.size() == 0 || list == null) && DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk") && !ConnectionHandler.isConnected(getContext())){
-                SimpleDateFormat logDate = new SimpleDateFormat("MM/dd");
-                Calendar currentDate = Calendar.getInstance();
-                if(!isSevenDays) {
-                    for(int i = 28; i > 0; i--) {
-                        currentDate.add(Calendar.DATE, -1);
-                        list.add(new ED(logDate.format(currentDate.getTime()), offlineDemoData[i]));
-                    }
-                } else {
-                    for(int i = 28; i > 21; i--) {
-                        currentDate.add(Calendar.DATE, -1);
-                        list.add(new ED(logDate.format(currentDate.getTime()), offlineDemoData[i]));
-                    }
-                }
-            }
 
             runOnUiThread(() -> {
                 refreshUi();
