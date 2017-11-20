@@ -176,6 +176,7 @@ public class StatsAttainmentFragment extends Fragment {
             alertDialog.show();
         }
 
+        /* used in future api update
         moduleFilter = (TextView) mainview.findViewById(R.id.module_filter);
         moduleFilter.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
@@ -216,7 +217,7 @@ public class StatsAttainmentFragment extends Fragment {
             });
             ((MainActivity) getActivity()).showProgressBar2("");
             dialog.show();
-        });
+        });*/
 
         return mainview;
     }

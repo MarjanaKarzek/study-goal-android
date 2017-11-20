@@ -8,13 +8,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="2">
-
+        android:weightSum="5">
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/stats_swipe_refresh"
-            android:layout_width="match_parent"
+            android:layout_width="0px"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_weight="3">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -46,6 +51,12 @@
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <!-- used in future api update
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -70,7 +81,7 @@
                     android:textSize="24sp" />
 
             </RelativeLayout>
-        </LinearLayout>
+        </LinearLayout>-->
 
     </LinearLayout>
 </RelativeLayout>

@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!-- used in future api update
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
                 android:textColor="@color/dark_grey"
                 android:textSize="24sp" />
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/stats_swipe_refresh"

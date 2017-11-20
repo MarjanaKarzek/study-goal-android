@@ -11,6 +11,39 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
+            <WebView
+                android:id="@+id/webview_graph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <ListView
+                android:id="@+id/event_attendance_listView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:background="#d1e0f3" />
+
+            <TextView
+                android:id="@+id/events_attended_list_emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/empty_events_page_message"
+                android:textColor="@color/dark_grey"
+                android:visibility="gone"/>
+        </LinearLayout>
+    <!-- used for future api update
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -171,5 +204,5 @@
                     android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </LinearLayout> -->
 </RelativeLayout>

@@ -95,6 +95,7 @@ public class StatsAttendanceFragment extends BaseFragment {
         mainView = inflater.inflate(R.layout.layout_stats_attendance, container, false);
         adapter = new EventsAttendedAdapter(getContext());
 
+        /* used for future api update
         setUpDatePicker();
 
         DatePickerDialog startDateDatePickerDialog = new DatePickerDialog(getActivity(), datePickerStart, startDatePicked
@@ -139,7 +140,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                     endDateDatePickerDialog.show();
                 }
             });
-        }
+        }*/
 
         listView = (ListView) mainView.findViewById(R.id.event_attendance_listView);
         listView.setAdapter(adapter);
@@ -237,6 +238,7 @@ public class StatsAttendanceFragment extends BaseFragment {
             je.printStackTrace();
         }
 
+        /* used for future api update
         moduleFilterSummary = (TextView) mainView.findViewById(R.id.attendance_module_filter_summary);
         moduleFilterSummary.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
@@ -345,7 +347,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                 ((MainActivity) getActivity()).showProgressBar2("");
                 dialog.show();
             });
-        }
+        }*/
 
         loadWebView();
 
@@ -376,7 +378,6 @@ public class StatsAttendanceFragment extends BaseFragment {
             }
             webView.setVisibility(View.GONE);
         } else {
-            mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.GONE);
             WebSettings s = webView.getSettings();
             s.setJavaScriptEnabled(true);
 
