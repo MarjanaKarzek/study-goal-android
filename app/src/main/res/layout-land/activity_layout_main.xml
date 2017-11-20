@@ -12,7 +12,7 @@
             android:id="@+id/main_screen_navbar"
             android:layout_width="match_parent"
             android:layout_height="124dp"
-            android:background="@color/current_visual_pink">
+            android:background="@color/default_blue">
             <LinearLayout
                 android:id="@+id/main_screen_menu"
                 android:layout_width="180dp"
