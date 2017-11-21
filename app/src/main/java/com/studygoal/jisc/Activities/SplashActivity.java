@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
@@ -35,42 +37,18 @@ public class SplashActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_layout_splash);
 
-        try {
-            VideoView videoHolder = (VideoView) findViewById(R.id.video_view);
-            float videoProportion = 1.5f;
-            int screenWidth = getResources().getDisplayMetrics().widthPixels;
-            int screenHeight = getResources().getDisplayMetrics().heightPixels;
-            float screenProportion = (float) screenHeight / (float) screenWidth;
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) videoHolder.getLayoutParams();
+        Handler handler = (Handler) new Handler();
 
-            if (videoProportion < screenProportion) {
-                lp.height = screenHeight;
-                lp.width = (int) ((float) screenHeight / videoProportion);
-            } else {
-                lp.width = screenWidth;
-                lp.height = (int) ((float) screenWidth * videoProportion);
-            }
-
-            Uri video = Uri.parse("android.resource://" + getPackageName() + "/"+ R.raw.splash);
-            if(DataManager.getInstance().isLandscape) {
-                video = Uri.parse("android.resource://" + getPackageName() + "/"+ R.raw.splash_screen_tablet);
-            }
-
-            videoHolder.setLayoutParams(lp);
-            videoHolder.setVideoURI(video);
-
-            videoHolder.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {
-                    jump();
-                }
-
-            });
-            videoHolder.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-            jump();
-        }
+        handler.postDelayed(
+                new Runnable() {
+                    public void run() {
+                        jump();
+                    }
+                },
+                1500);
     }
+
+
 
     public void jump() {
         Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
