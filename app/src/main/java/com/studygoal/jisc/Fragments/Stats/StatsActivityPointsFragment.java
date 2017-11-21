@@ -67,6 +67,8 @@ public class StatsActivityPointsFragment extends BaseFragment {
     private DatePickerDialog.OnDateSetListener datePickerStart;
 
     private TextView moduleFilter;
+    private TextView thisWeekButton;
+    private TextView overallButton;
 
     @Override
     public void onResume() {
@@ -108,8 +110,8 @@ public class StatsActivityPointsFragment extends BaseFragment {
                 @Override
                 public void onClick(View view) {
                     super.onClick(view);
-                    isThisWeek = !isThisWeek;
-                    callRefresh();
+                    //isThisWeek = !isThisWeek;
+                    //callRefresh();
                 }
             };
             segmentButtonSummary.setOnClickListener(segmentClickListener);
@@ -117,6 +119,33 @@ public class StatsActivityPointsFragment extends BaseFragment {
         }
 
         showAlertDialog();
+
+        thisWeekButton = (TextView) mainView.findViewById(R.id.activity_points_this_week);
+        overallButton = (TextView) mainView.findViewById(R.id.activity_points_overall);
+
+        thisWeekButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isThisWeek = true;
+                overallButton.setTextColor(getResources().getColor(R.color.dark_grey));
+                thisWeekButton.setTextColor(getResources().getColor(R.color.default_blue));
+                refreshView();
+                loadWebView();
+            }
+        });
+
+        overallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isThisWeek = false;
+                thisWeekButton.setTextColor(getResources().getColor(R.color.dark_grey));
+                overallButton.setTextColor(getResources().getColor(R.color.default_blue));
+                refreshView();
+                loadWebView();
+            }
+        });
+
+        /* used for future api update
         setUpDatePicker();
 
         DatePickerDialog startDateDatePickerDialog = new DatePickerDialog(getActivity(), datePickerStart, startDatePicked
@@ -184,7 +213,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
             });
             ((MainActivity) getActivity()).showProgressBar2("");
             dialog.show();
-        });
+        });*/
 
         return mainView;
     }
@@ -249,6 +278,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
         DataManager.getInstance().mainActivity.showProgressBar(null);
 
         new Thread(() -> {
+            Log.d(TAG, "refreshView: calling for data");
             if (!NetworkManager.getInstance().getStudentActivityPoint(isThisWeek ? "7d" : "overall")) {
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 String pointsDataBackup = sharedPref.getString(getString(R.string.pointsData), "no_data_stored");

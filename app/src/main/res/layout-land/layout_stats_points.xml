@@ -70,6 +70,57 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/activity_points_this_week"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:padding="5dp"
+                        android:text="@string/this_week"
+                        android:gravity="center"
+                        android:textColor="@color/default_blue"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/activity_points_overall"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="2dp"
+                        android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:padding="5dp"
+                        android:text="@string/overall"
+                        android:gravity="center"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!-- used for api update
+            <LinearLayout
+                android:id="@+id/activity_points_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
                 android:weightSum="7">
 
                 <RelativeLayout
@@ -148,7 +199,7 @@
                 android:padding="5dp"
                 android:text="@string/filter_modules"
                 android:textColor="@color/dark_grey"
-                android:textSize="24sp" />
+                android:textSize="24sp" /> -->
 
             <ListView
                 android:id="@+id/activity_points_list_view"
