@@ -491,7 +491,6 @@ public class MainActivity extends FragmentActivity {
                             adapter.selectedText.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
                         }
                     }
-                    android.util.Log.d(TAG, "onItemClick: selected Menu Text " + adapter.selectedText.getText());
 
                     int staticMenuItems = 8;
                     for (String menuItem : adapter.values) {
@@ -505,7 +504,6 @@ public class MainActivity extends FragmentActivity {
                     if (adapter.values[position].equals(getString(R.string.stats))) {
                         return;
                     } else {
-                        android.util.Log.d(TAG, "onItemClick: Menu Text something else then Stats");
                         for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
                             getSupportFragmentManager().popBackStackImmediate();
                         }
@@ -516,10 +514,12 @@ public class MainActivity extends FragmentActivity {
                         }
                         drawer.closeDrawer(GravityCompat.START);
 
-                        if (!isInsideStats(adapter.values[selectedPosition])) {
-                            lastSelected = selectedPosition;
+                        if(selectedPosition != adapter.values.length - 1) {
+                            if (!isInsideStats(adapter.values[selectedPosition])) {
+                                lastSelected = selectedPosition;
+                            }
+                            DataManager.getInstance().fragment = selectedPosition;
                         }
-                        DataManager.getInstance().fragment = selectedPosition;
 
                         if (adapter.selectedText != null && adapter.selectedText.getText().toString().equals(MainActivity.this.getString(R.string.logout))) {
                             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
@@ -726,7 +726,6 @@ public class MainActivity extends FragmentActivity {
             case 1: {
                 menu.setVisibility(View.VISIBLE);
                 friend.setVisibility(View.VISIBLE);
-                //settings.setVisibility(View.VISIBLE);
                 int count = new Select().from(ReceivedRequest.class).count();
                 if (count > 0) {
                     findViewById(R.id.incoming_fr).setVisibility(View.VISIBLE);
@@ -736,7 +735,6 @@ public class MainActivity extends FragmentActivity {
                 break;
             }
             case 3: {
-                //settings.setVisibility(View.VISIBLE);
                 addTarget.setVisibility(View.VISIBLE);
                 menu.setVisibility(View.VISIBLE);
 
@@ -771,7 +769,6 @@ public class MainActivity extends FragmentActivity {
             case 4: {
                 menu.setVisibility(View.VISIBLE);
                 addTarget.setVisibility(View.VISIBLE);
-                //settings.setVisibility(View.VISIBLE);
                 Context context = this;
 
                 addTarget.setOnClickListener(new View.OnClickListener() {
@@ -791,7 +788,6 @@ public class MainActivity extends FragmentActivity {
             }
             case 5: {
                 menu.setVisibility(View.VISIBLE);
-//                settings.setVisibility(View.VISIBLE);
                 break;
             }
             case 6: {
@@ -804,7 +800,6 @@ public class MainActivity extends FragmentActivity {
             }
             case 8: {
                 back.setVisibility(View.VISIBLE);
-                //settings.setVisibility(View.VISIBLE);
                 break;
             }
         }
@@ -872,7 +867,6 @@ public class MainActivity extends FragmentActivity {
                 new Thread(() -> {
                     if (NetworkManager.getInstance().updateProfileImage(imagePath)) {
                         MainActivity.this.runOnUiThread(() -> {
-                            //settingsFragment.refresh_image();
                             EventBus.getDefault().post(new EventReloadImage());
                             hideProgressBar();
                         });
@@ -895,7 +889,6 @@ public class MainActivity extends FragmentActivity {
                 new Thread(() -> {
                     if (NetworkManager.getInstance().updateProfileImage(imagePath)) {
                         MainActivity.this.runOnUiThread(() -> {
-                            //settingsFragment.refresh_image();
                             EventBus.getDefault().post(new EventReloadImage());
                             hideProgressBar();
                         });
@@ -912,9 +905,7 @@ public class MainActivity extends FragmentActivity {
 
         try {
             if (bitmap != null) {
-                if (isLandscape) {
-                    // no need rotate
-                } else {
+                if (!isLandscape) {
                     File imageFile = new File(filePath);
                     ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
                     int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);

@@ -191,37 +191,36 @@ public class DrawerAdapter extends BaseAdapter {
                     imageView.setColorFilter(ContextCompat.getColor(context, R.color.default_blue));
                     selectedImage = imageView;
                     selectedText = textView;
-                    //DataManager.getInstance().fragment = null;
                 }
             } else {
-                String selected_value = "";
+                String selectedValue = "";
                 switch (DataManager.getInstance().home_screen.toLowerCase()) {
                     case "feed": {
-                        selected_value = context.getString(R.string.feed);
+                        selectedValue = context.getString(R.string.feed);
                         break;
                     }
                     case "friends": {
-                        selected_value = context.getString(R.string.friends);
+                        selectedValue = context.getString(R.string.friends);
                         break;
                     }
                     case "stats": {
-                        selected_value = context.getString(R.string.stats);
+                        selectedValue = context.getString(R.string.stats);
                         break;
                     }
                     case "log": {
-                        selected_value = context.getString(R.string.log);
+                        selectedValue = context.getString(R.string.log);
                         break;
                     }
                     case "checkin": {
-                        selected_value = context.getString(R.string.check_in);
+                        selectedValue = context.getString(R.string.check_in);
                         break;
                     }
                     case "target": {
-                        selected_value = context.getString(R.string.target);
+                        selectedValue = context.getString(R.string.target);
                         break;
                     }
                 }
-                if (textView.getText().toString().toLowerCase().equals(selected_value.toLowerCase())) {
+                if (textView.getText().toString().toLowerCase().equals(selectedValue.toLowerCase())) {
                     textView.setTextColor(ContextCompat.getColor(context, R.color.default_blue));
                     imageView.setColorFilter(ContextCompat.getColor(context, R.color.default_blue));
                     selectedImage = imageView;
