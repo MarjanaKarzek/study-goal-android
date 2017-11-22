@@ -25,14 +25,8 @@ public class PrivacyWebViewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(DataManager.getInstance().mainActivity.isLandscape) {
-            ((SettingsActivity)getActivity()).fragmentTitle.setText(DataManager.getInstance().mainActivity.getString(R.string.privacy_statement));
-        } else {
-            DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.privacy_statement));
-            DataManager.getInstance().mainActivity.hideAllButtons();
-            DataManager.getInstance().mainActivity.showCertainButtons(7);
-        }
+        DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.privacy_statement));
+        DataManager.getInstance().mainActivity.hideAllButtons();
+        DataManager.getInstance().mainActivity.showCertainButtons(7);
     }
-
-
 }

@@ -57,22 +57,20 @@ public class LanguageScreenFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(ConnectionHandler.isConnected(getContext())) {
-                    if (!((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().equals(selectedValue)) {
-
-                        if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LanguageScreenFragment.this.getActivity());
-                            alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_changeappsettings) + "</font>"));
-                            alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-                            alertDialog.show();
-                            return;
+                if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LanguageScreenFragment.this.getActivity());
+                    alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_changeappsettings) + "</font>"));
+                    alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
                         }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                    return;
+                } else if(ConnectionHandler.isConnected(getContext())) {
+                    if (!((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().equals(selectedValue)) {
 
                         String lang = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().toLowerCase().equals(getActivity().getString(R.string.english).toLowerCase()) ? "english" : "welsh";
                         HashMap<String, String> map = new HashMap<>();

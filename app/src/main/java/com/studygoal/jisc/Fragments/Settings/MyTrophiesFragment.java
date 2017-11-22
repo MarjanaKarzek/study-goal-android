@@ -27,13 +27,9 @@ public class MyTrophiesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (DataManager.getInstance().mainActivity.isLandscape) {
-            ((SettingsActivity) getActivity()).fragmentTitle.setText(DataManager.getInstance().mainActivity.getString(R.string.trophies_title));
-        } else {
-            ((MainActivity) getActivity()).setTitle(DataManager.getInstance().mainActivity.getString(R.string.trophies_title));
-            ((MainActivity) getActivity()).hideAllButtons();
-            DataManager.getInstance().mainActivity.showCertainButtons(7);
-        }
+        ((MainActivity) getActivity()).setTitle(DataManager.getInstance().mainActivity.getString(R.string.trophies_title));
+        ((MainActivity) getActivity()).hideAllButtons();
+        DataManager.getInstance().mainActivity.showCertainButtons(7);
     }
 
     @Override
