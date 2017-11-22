@@ -54,7 +54,6 @@
     <string name="date">Dyddiad</string>
     <string name="save">Cadw</string>
     <string name="average">Cyfartaledd</string>
-    <string name="time">Amser</string>
     <string name="choose_module_and_activity">Dewis Modiwl a Actifedd</string>
     <string name="choose_activity">Dewis Actifedd</string>
     <string name="reminder_to_take_breather_after">Atgoffiad i Gymryd Seibiant Arol</string>
@@ -98,7 +97,6 @@
     <string name="something_went_wrong">Rhywbeth wedi mynd yn anghywir</string>
     <string name="add">Adio</string>
     <string name="report_activity">Dechrau Gweithgaredd Nawr (amseredig)</string>
-    <string name="log_activity">Logio Actifeddau Diweddar</string>
     <string name="log_recent_activity">Cofnodi Actifedd wedi ei Cwblhau</string>
 
     <string name="just_a_moment_ago">YchydigÂ eiliad yn ol</string>
@@ -127,8 +125,6 @@
     <string name="hour_ago">awr yn ol</string>
     <string name="hours_ago">awr yn ol</string>
 
-    <string name="friend_unhidden_successfully">Ffrind ddim wedi eu Cyddio</string>
-    <string name="friend_hidden_successfully">Ffrind wedi eu Cyddio</string>
     <string name="failed_to_unhide_friend">Mae nam wedi digwydd - rhaid treial eto</string>
     <string name="failed_to_hide_friend">Mae nam wedi digwydd - rhaid treial eto</string>
     <string name="friend_privacy_settings">Gosodiadau preifatrwydd ffrind</string>
@@ -145,7 +141,6 @@
     <string name="not_deleted_friend_request_message">Mae nam wedi digwydd - rhaid treial eto</string>
 
     <string name="confirm_delete_message">ydych chi\'n siwr eich bod chi eisiau dileu?</string>
-    <string name="friend_request_sent_successfully">Cais ffrind wedi ei yrru yn llwyddiannus!</string>
     <string name="fail_sendFriendRequest">Mae nam wedi digwydd - rhaid treial eto</string>
 
     <string name="cancel_pending_request">Canslo cais sydd ar aros</string>
@@ -159,27 +154,21 @@
     <string name="no_user_with_this_email">Dim defnyddiwr gyda\'r ebost yma</string>
     <string name="not_found">Dim i\'w gael</string>
 
-    <string name="please_enter_a_valid_email_address">Rhaid defnyddio cyfeiriad ebost dilys</string>
     <string name="invalid_email">Mae nam wedi digwydd - rhaid treial eto</string>
     <string name="fail">Mae nam wedi digwydd - rhaid treial eto</string>
     <string name="fail_to_delete_from_activity_history">Mae nam wedi digwydd - rhaid treial eto</string>
-
-    <string name="remember_me">Cofio fi</string>
 
     <string name="sent_from">Wedi cael ei gyrru gan.</string>
 
     <string name="add_target">Adio Targed</string>
     <string name="edit_target">Adnewyddu Targed</string>
 
-    <string name="choose_source">Dewis Ffynhonnell</string>
     <string name="library">Llyfrgell</string>
     <string name="camera">Camera</string>
 
     <string name="english">SAESNEG</string>
     <string name="welsh">CYMRAEG</string>
 
-
-    <string name="edit_activity">Golygu</string>
     <string name="edit_recent_activity">Golygu</string>
     <string name="choose_activity_type">Math Actifedd</string>
     <string name="activity_resumed">Ailddechreuodd</string>
@@ -240,25 +229,15 @@
 
     <string name="report_feature_bug">Cofnodi Nodwedd/Nam</string>
 
-    <string name="addtarget_for">Ar gyfer</string>
-    <string name="addtarget_every">Pob</string>
-    <string name="addtarget_in">Mewn</string>
-
     <string name="action_settings">Gosodiadau</string>
     <string name="login_password_hint">Cyfrinair</string>
     <string name="login_email_hint">Ebost</string>
     <string name="login_logintoyouraccount">Mewngofnodi i\'ch cyfrif</string>
-    <string name="login_chooseinstitution">Dewis eich Sefydliad</string>
     <string name="login_title">Study Goal</string>
     <string name="login_login_btn">Mewngofnodi</string>
-    <string name="login_tap_to_select">Tapiwch i ddewis</string>
     <string name="log_view_activities">Gweld Actifeddau</string>
     <string name="log_log_activity">Logio Actifeddau Diweddar</string>
     <string name="log_new_activity">Actifedd Newydd</string>
-    <string name="new_activity_module">Modiwl</string>
-    <string name="new_activity_activity_type">Math y Actifedd</string>
-    <string name="new_activity_choose_activity">Dewis Actifedd</string>
-    <string name="new_activity_reminder">Atgoffiad i Gymryd Seibiant Arol</string>
     <string name="activity_history">Gweld Actifeddau</string>
     <string name="log_recent">Logio Diweddar</string>
     <string name="write_a_note">…</string>
@@ -279,17 +258,12 @@
     <string name="email_notregistered">Nid ydy’r cyfeiriad ebost wedi’i gofrestru</string>
     <string name="for_text">Ar gyfer</string>
     <string name="top">Brig</string>
-    <string name="feed_menu">Porthiant</string>
-    <string name="stats_menu">Ystadegau</string>
-    <string name="log_menu">Log</string>
-    <string name="target_menu">Targed</string>
     <string name="saved_successfully">Wedi Cadw</string>
     <string name="no_internet">Gwirio Rhyngrwyd</string>
 
     <string name="please_search_for_friend">Edrych gyda ebost</string>
     <string name="session_expired_title">Edrych am ffrind gyda cyfeiriad ebost</string>
 
-    <string name="logout_menu">Allgofnodi</string>
     <string name="facebook_not_implemented">Facebook not implemented at this moment</string>
 
     <string name="deleted_friend_message">Ffrind yn cael ei ddileu o\'ch rhestr </string>
@@ -323,7 +297,6 @@
     <string name="activity_stopped">Actifedd wedi\'u Hatal</string>
     <string name="activity_started">Actifedd ar Dechrau</string>
     <string name="top10">10 Uchaf</string>
-    <string name="settings_title">Gosodiadau</string>
     <string name="stats_title">Ystadegau</string>
     <string name="you_are_in_top">Rydych yn y @@% o\'r brig</string>
     <string name="please_select_module">Dewisich y modiwl hoffech chi gymharu eich lefel ymrwymiad i fyrfywyr eraill</string>
@@ -336,7 +309,6 @@
     <string name="to_meet_stretch_target">i gwrdd â\'ch targed</string>
     <string name="set_stretch_target">Trefnu gol ymestynt</string>
     <string name="trophies_won">Tlysau wedi Ennill</string>
-    <string name="trophies_my">My Trophies</string>
     <string name="trophies_title">Tlysau</string>
     <string name="lowest_engagement">Ymrwymiad Isel</string>
     <string name="low_engagement">Ymrwymiad Isel-Ganol</string>
@@ -363,7 +335,6 @@
 
 
     <string name="already_added_activity">You have already logged same activity in past 48 hours</string>
-    <string name="receiving_request">Derbyn cais</string>
     <string name="cancel_pending_title">Gallwch gadarnhau</string>
     <string name="jisc_reminder_title">Study Goal - Reminder</string>
     <string name="dont_forget_break">Don\'t forget to take a break!</string>
@@ -373,7 +344,6 @@
     <string name="experimented">Arbrofwyd</string>
     <string name="in_an_exam_past">Mewn Arholiad</string>
     <string name="in_an_exam_past_2">Mewn Arholiad</string>
-    <string name="prepared_dissertation">Traethawd wedi ei paratoi</string>
     <string name="attended_tutorials">Wedi Mynychu Darlith</string>
     <string name="study">Study</string>
 
@@ -404,8 +374,6 @@
     <string name="experiment">Arbrofi</string>
     <string name="complete_assignment">Gorffen Aseiniad</string>
     <string name="completed_assignment">Cwblhau Aseiniad</string>
-    <string name="be_in_an_exam">Mewn Arholiad</string>
-    <string name="been_in_an_exam">Cwblhau Arholiad</string>
     <string name="prepare_a_dissertation">Paratoi traethawd</string>
     <string name="prepared_a_dissertation">Traethawd wedi ei paratoi</string>
     <string name="attend_lectures">Mynychu Darlith</string>
