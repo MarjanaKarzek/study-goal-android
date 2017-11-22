@@ -130,27 +130,29 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
         if (item.message_from.equals(DataManager.getInstance().user.id)) {
             //feedViewHolder.open.setVisibility(View.GONE);
-            if (!DataManager.getInstance().user.profile_pic.equals("")) {
-                Log.e("TEST", NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic);
-                GlideApp.with(feedViewHolder.itemView.getContext())
-                        .load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic)
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                e.printStackTrace();
-                                return false;
-                            }
+            if(DataManager.getInstance().user.profile_pic != null) {
+                if (!DataManager.getInstance().user.profile_pic.equals("")) {
+                    Log.e("TEST", NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic);
+                    GlideApp.with(feedViewHolder.itemView.getContext())
+                            .load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    e.printStackTrace();
+                                    return false;
+                                }
 
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                return false;
-                            }
-                        })
-                        .placeholder(R.drawable.profilenotfound)
-                        .transform(new CircleTransform(context))
-                        .into(feedViewHolder.profilePic);
-            } else {
-                GlideApp.with(context).load(R.drawable.profilenotfound).into(feedViewHolder.profilePic);
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+                            })
+                            .placeholder(R.drawable.profilenotfound)
+                            .transform(new CircleTransform(context))
+                            .into(feedViewHolder.profilePic);
+                } else {
+                    GlideApp.with(context).load(R.drawable.profilenotfound).into(feedViewHolder.profilePic);
+                }
             }
 
             feedViewHolder.swipelayout.setSwipeEnabled(true);
