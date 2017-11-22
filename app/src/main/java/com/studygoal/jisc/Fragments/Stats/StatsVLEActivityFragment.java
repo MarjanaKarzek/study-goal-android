@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -324,18 +325,19 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 dialog.dismiss();
                 moduleFilter.setText(titleText);
+                if(!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+                    if (!moduleFilter.getText().toString().equals(getString(R.string.anymodule))) {
+                        compareTo.setOnClickListener(compareToListener);
+                        compareTo.setAlpha(1.0f);
+                    } else {
+                        compareTo.setOnClickListener(null);
+                        compareTo.setText(getString(R.string.compare_to));
+                        compareTo.setAlpha(0.5f);
+                    }
 
-                if (!moduleFilter.getText().toString().equals(getString(R.string.anymodule))) {
-                    compareTo.setOnClickListener(compareToListener);
-                    compareTo.setAlpha(1.0f);
-                } else {
-                    compareTo.setOnClickListener(null);
-                    compareTo.setText(getString(R.string.compare_to));
-                    compareTo.setAlpha(0.5f);
-                }
-
-                if (moduleFilter.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (compareTo.getText().toString().equals(getString(R.string.average)) || compareTo.getText().toString().equals(getString(R.string.top10)))) {
-                    compareTo.setText(R.string.compare_to);
+                    if (moduleFilter.getText().toString().replace(" -", "").equals(getString(R.string.anymodule)) && (compareTo.getText().toString().equals(getString(R.string.average)) || compareTo.getText().toString().equals(getString(R.string.top10)))) {
+                        compareTo.setText(R.string.compare_to);
+                    }
                 }
 
                 loadData();

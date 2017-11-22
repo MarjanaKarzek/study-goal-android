@@ -4225,19 +4225,10 @@ public class NetworkManager {
                 JSONArray jsonArray = new JSONArray(sb.toString());
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
                 SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(appContext.getString(R.string.attendance), "");
                 editor.putString(appContext.getString(R.string.attendance), sb.toString());
                 editor.apply();
-                Log.e("Attendance", sb.toString());
 
-//                ActiveAndroid.beginTransaction();
-//                try {
-//
-//                    }
-//
-//                    ActiveAndroid.setTransactionSuccessful();
-//                } finally {
-//                    ActiveAndroid.endTransaction();
-//                }
                 return "Success";
             } catch (Exception e) {
                 e.printStackTrace();
