@@ -80,6 +80,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
         mainActivity.showCertainButtons(5);
 
         refreshView();
+        loadWebView();
 
         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigatePoints);
     }
@@ -89,7 +90,6 @@ public class StatsActivityPointsFragment extends BaseFragment {
         mainView = inflater.inflate(R.layout.layout_stats_points, container, false);
         activityPointsValue = (TextView) mainView.findViewById(R.id.activity_points_value);
         piChartWebView = (WebView) mainView.findViewById(R.id.pi_chart_web_view);
-        piChartWebView.setVisibility(View.INVISIBLE);
 
         ListView activityPointsListView = (ListView) mainView.findViewById(R.id.activity_points_list_view);
         adapter = new ActivityPointsAdapter(getContext());
@@ -111,7 +111,8 @@ public class StatsActivityPointsFragment extends BaseFragment {
                 public void onClick(View view) {
                     super.onClick(view);
                     //isThisWeek = !isThisWeek;
-                    //callRefresh();
+                    callRefresh();
+                    loadWebView();
                 }
             };
             segmentButtonSummary.setOnClickListener(segmentClickListener);
@@ -214,6 +215,9 @@ public class StatsActivityPointsFragment extends BaseFragment {
             ((MainActivity) getActivity()).showProgressBar2("");
             dialog.show();
         });*/
+
+        refreshView();
+        loadWebView();
 
         return mainView;
     }
