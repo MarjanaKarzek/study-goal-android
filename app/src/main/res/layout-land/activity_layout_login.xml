@@ -153,8 +153,8 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/search"
                 android:maxLines="1"
-                android:textColor="@color/dark_grey"
-                android:textColorHint="@color/light_grey"
+                android:textColor="@color/tw__solid_white"
+                android:textColorHint="@color/tw__solid_white"
                 android:textSize="20sp" />
 
             <RelativeLayout
@@ -169,7 +169,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:padding="10dp"
-                    android:src="@drawable/search_icon_gray" />
+                    android:src="@drawable/search_icon_white" />
             </RelativeLayout>
         </RelativeLayout>
 
