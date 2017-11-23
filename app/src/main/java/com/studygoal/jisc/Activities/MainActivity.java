@@ -568,6 +568,7 @@ public class MainActivity extends FragmentActivity {
 
                                     DataManager.getInstance().fromLogout = true;
                                     DataManager.getInstance().sessionLogged = false;
+                                    DataManager.getInstance().fragment = 1;
 
                                     new Delete().from(CurrentUser.class).execute();
                                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
