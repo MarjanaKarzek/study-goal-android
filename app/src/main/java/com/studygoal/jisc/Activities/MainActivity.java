@@ -437,7 +437,9 @@ public class MainActivity extends FragmentActivity {
                 } else if (selection.equals(getString(R.string.points))) {
                     destination = new StatsActivityPointsFragment();
                 } else if (selection.equals(getString(R.string.log))) {
-                    destination = new LogActivityHistoryFragment();
+                    //separated to have a copy of the object in logFragment
+                    logFragment = new LogActivityHistoryFragment();
+                    destination = logFragment;
                 } else if (selection.equals(getString(R.string.target))) {
                     destination = new TargetFragment();
                 } else if (selection.equals(getString(R.string.leader_board))) {
@@ -758,8 +760,11 @@ public class MainActivity extends FragmentActivity {
                     addTarget.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            android.util.Log.d(TAG, "onClick: log fragment hit");
                             if (logFragment != null) {
                                 logFragment.showDialog();
+                            } else {
+                                android.util.Log.d(TAG, "onClick: log fragment null");
                             }
                         }
                     });

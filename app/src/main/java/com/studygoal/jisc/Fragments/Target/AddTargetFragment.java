@@ -276,12 +276,7 @@ public class AddTargetFragment extends BaseFragment {
                 hours.setText(Integer.parseInt(item.total_time) / 60 > 10 ? "" + Integer.parseInt(item.total_time) / 60 : "0" + Integer.parseInt(item.total_time) / 60);
                 minutes.setText(Integer.parseInt(item.total_time) % 60 > 10 ? "" + Integer.parseInt(item.total_time) % 60 : "0" + Integer.parseInt(item.total_time) % 60);
 
-                Log.d(TAG, "onCreateView: edit target time span " + item.time_span);
-                Log.d(TAG, "onCreateView: edit target time span to lower case " + item.time_span.toLowerCase());
                 for (Map.Entry<String, String> entry : DataManager.getInstance().api_values.entrySet()) {
-                    Log.d(TAG, "onCreateView: edit target entry value " + entry.getKey());
-                    Log.d(TAG, "onCreateView: edit target entry value to lower case " + entry.getKey().toLowerCase());
-
                     if (entry.getValue().toLowerCase().equals(item.time_span.toLowerCase() + "ly")) {
                         String value = entry.getKey();
                         value = value.substring(0, 1).toUpperCase() + value.substring(1, value.length()-2);
