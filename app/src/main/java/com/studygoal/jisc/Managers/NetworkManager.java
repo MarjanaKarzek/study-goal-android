@@ -4186,6 +4186,12 @@ public class NetworkManager {
                 Date daysBeforeDate = cal.getTime();
                 String current = sdf.format(new Date());
                 String past = sdf.format(daysBeforeDate);
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(appContext.getString(R.string.attendance), "");
+                editor.apply();
+
                 String apiURL = "";
                 if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
                     apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_attendance_summary";
@@ -4193,6 +4199,7 @@ public class NetworkManager {
                     apiURL = xapiHost + "/sg/weeklyattendance?startdate=" + past + "&enddate=" + current;
                 }
 
+                Log.d("", "call: weekly attendance call " + apiURL);
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -4223,9 +4230,6 @@ public class NetworkManager {
                 is.close();
 
                 JSONArray jsonArray = new JSONArray(sb.toString());
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(appContext.getString(R.string.attendance), "");
                 editor.putString(appContext.getString(R.string.attendance), sb.toString());
                 editor.apply();
 
