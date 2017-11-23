@@ -171,13 +171,11 @@ public class AddTargetFragment extends BaseFragment {
         applyTypeface();
 
         if(DataManager.getInstance().mainActivity.displaySingleTarget){
-            Log.d(TAG, "onCreateView: single target add checked was true");
             binding.targetSingle.setChecked(true);
             isRecurringTarget = false;
             binding.recurringLayout.setVisibility(View.GONE);
             binding.singleLayout.setVisibility(View.VISIBLE);
         } else {
-            Log.d(TAG, "onCreateView: single target add checked was false");
             isRecurringTarget = true;
             binding.recurringLayout.setVisibility(View.VISIBLE);
             binding.singleLayout.setVisibility(View.GONE);
@@ -185,13 +183,11 @@ public class AddTargetFragment extends BaseFragment {
 
         binding.targetSelector.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.target_recurring) {
-                Log.d(TAG, "onCreateView: single target add checked changed to false");
                 isRecurringTarget = true;
                 binding.recurringLayout.setVisibility(View.VISIBLE);
                 binding.singleLayout.setVisibility(View.GONE);
                 DataManager.getInstance().mainActivity.displaySingleTarget = false;
             } else {
-                Log.d(TAG, "onCreateView: single target add checked changed to true");
                 isRecurringTarget = false;
                 binding.recurringLayout.setVisibility(View.GONE);
                 binding.singleLayout.setVisibility(View.VISIBLE);
@@ -280,10 +276,15 @@ public class AddTargetFragment extends BaseFragment {
                 hours.setText(Integer.parseInt(item.total_time) / 60 > 10 ? "" + Integer.parseInt(item.total_time) / 60 : "0" + Integer.parseInt(item.total_time) / 60);
                 minutes.setText(Integer.parseInt(item.total_time) % 60 > 10 ? "" + Integer.parseInt(item.total_time) % 60 : "0" + Integer.parseInt(item.total_time) % 60);
 
+                Log.d(TAG, "onCreateView: edit target time span " + item.time_span);
+                Log.d(TAG, "onCreateView: edit target time span to lower case " + item.time_span.toLowerCase());
                 for (Map.Entry<String, String> entry : DataManager.getInstance().api_values.entrySet()) {
-                    if (entry.getValue().toLowerCase().equals(item.time_span.toLowerCase())) {
+                    Log.d(TAG, "onCreateView: edit target entry value " + entry.getKey());
+                    Log.d(TAG, "onCreateView: edit target entry value to lower case " + entry.getKey().toLowerCase());
+
+                    if (entry.getValue().toLowerCase().equals(item.time_span.toLowerCase() + "ly")) {
                         String value = entry.getKey();
-                        value = value.substring(0, 1).toUpperCase() + value.substring(1, value.length());
+                        value = value.substring(0, 1).toUpperCase() + value.substring(1, value.length()-2);
                         every.setText(value);
                     }
                 }
@@ -464,7 +465,7 @@ public class AddTargetFragment extends BaseFragment {
         final NumberPicker hourPicker = (NumberPicker) dialog.findViewById(R.id.hour_picker);
         hourPicker.setMinValue(0);
 
-        if (every.getText().toString().equals(getString(R.string.daily))) {
+        if (every.getText().toString().equals(getString(R.string.day))) {
             hourPicker.setMaxValue(23);
         } else {
             hourPicker.setMaxValue(71);
@@ -567,7 +568,6 @@ public class AddTargetFragment extends BaseFragment {
         listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, in.getText().toString(), items));
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (DataManager.getInstance().user.isSocial && position == items.size() - 1) {
-                //add new module
                 EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
                 addModuleEditText.setText("");
                 addModuleLayout.setVisibility(View.VISIBLE);
@@ -617,7 +617,6 @@ public class AddTargetFragment extends BaseFragment {
         listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, binding.addtargetInTextViewSingle.getText().toString(), items));
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (DataManager.getInstance().user.isSocial && position == items.size() - 1) {
-                //add new module
                 EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
                 addModuleEditText.setText("");
                 addModuleLayout.setVisibility(View.VISIBLE);
@@ -673,12 +672,7 @@ public class AddTargetFragment extends BaseFragment {
                     id = module.id;
                 }
 
-                String selectedEvery = "";
-                if(every.getText().toString().toLowerCase().equals("day")){
-                    selectedEvery = "Daily";
-                } else {
-                    selectedEvery = every.getText().toString() + "ly";
-                }
+                String selectedEvery = every.getText().toString();
 
                 if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).exists()) {
                     Snackbar.make(root, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
@@ -716,7 +710,6 @@ public class AddTargetFragment extends BaseFragment {
 
                             DataManager.getInstance().mainActivity.hideProgressBar();
                             DataManager.getInstance().mainActivity.onBackPressed();
-//                          Snackbar.make(root, R.string.target_saved, Snackbar.LENGTH_LONG).show();
                         });
                     } else {
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
@@ -760,12 +753,7 @@ public class AddTargetFragment extends BaseFragment {
                     id = module.id;
                 }
 
-                String selectedEvery = "";
-                if(every.getText().toString().toLowerCase().equals("day")){
-                    selectedEvery = "Daily";
-                } else {
-                    selectedEvery = every.getText().toString() + "ly";
-                }
+                String selectedEvery = every.getText().toString();
 
                 if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).exists()) {
                     Snackbar.make(root, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
@@ -792,18 +780,11 @@ public class AddTargetFragment extends BaseFragment {
 
                 new Thread(() -> {
                     if (NetworkManager.getInstance().addTarget(params)) {
-                        /*NetworkManager.getInstance().getAppUsage(null,null);
-                        NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
-                                DataManager.getInstance().appUsageData.activities,
-                                "" + (Integer.valueOf(DataManager.getInstance().appUsageData.setTargets) + 1),
-                                DataManager.getInstance().appUsageData.metTargets,
-                                DataManager.getInstance().appUsageData.failedTargets);*/
 
                         NetworkManager.getInstance().getTargets(DataManager.getInstance().user.id);
                         DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                             DataManager.getInstance().mainActivity.hideProgressBar();
                             DataManager.getInstance().mainActivity.onBackPressed();
-//                          Snackbar.make(root, R.string.target_saved, Snackbar.LENGTH_LONG).show();
                         });
 
                         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.AddRecurringTarget);
@@ -929,13 +910,6 @@ public class AddTargetFragment extends BaseFragment {
 
             new Thread(() -> {
                 if (NetworkManager.getInstance().addToDoTask(params)) {
-                    /*NetworkManager.getInstance().getAppUsage(null,null);
-                    NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
-                            DataManager.getInstance().appUsageData.activities,
-                            "" + (Integer.valueOf(DataManager.getInstance().appUsageData.setTargets) + 1),
-                            DataManager.getInstance().appUsageData.metTargets,
-                            DataManager.getInstance().appUsageData.failedTargets);
-                    NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);*/
 
                     runOnUiThread(() -> {
                         DataManager.getInstance().mainActivity.hideProgressBar();

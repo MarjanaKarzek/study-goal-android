@@ -102,7 +102,7 @@ public class TargetAdapter extends BaseAdapter {
         String shortCurrentDate = shortDateFormat.format(Calendar.getInstance().getTime());
 
         switch (item.time_span.toLowerCase()) {
-            case "daily": {
+            case "day": {
                 String time = currentDate.split(" ")[0];
                 List<ActivityHistory> tmp = new ArrayList<>();
                 for (int i = 0; i < activityHistoryList.size(); i++) {
@@ -115,7 +115,7 @@ public class TargetAdapter extends BaseAdapter {
                 dueToday = true;
                 break;
             }
-            case "weekly": {
+            case "week": {
                 List<ActivityHistory> tmp = new ArrayList<>();
                 for (int i = 0; i < activityHistoryList.size(); i++) {
                     Log.d("", "getView: activity History all " + activityHistoryList.get(i).toString());
@@ -129,7 +129,7 @@ public class TargetAdapter extends BaseAdapter {
                 }
                 break;
             }
-            case "monthly": {
+            case "month": {
                 String time = currentDate.split(" ")[0].split("-")[0] + "-" + currentDate.split(" ")[0].split("-")[1];
                 List<ActivityHistory> tmp = new ArrayList<>();
                 for (int i = 0; i < activityHistoryList.size(); i++) {
@@ -181,7 +181,7 @@ public class TargetAdapter extends BaseAdapter {
             text += ((minute == 1) ? " " + context.getString(R.string.and) + " 1 " + context.getString(R.string.minute) + " " : " " + context.getString(R.string.and) + " " + minute + " " + context.getString(R.string.minutes) + " ");
 
         if (item.time_span.length() > 0)
-            text += item.time_span.toLowerCase();
+            text += item.time_span.toLowerCase() + "ly";
 
         if (module != null && module.name.length() > 0) {
             text += " " + context.getString(R.string._for) + " " + module.name;
