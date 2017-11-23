@@ -49,37 +49,7 @@ public class StatsAttainmentFragment extends Fragment {
         new Thread(() -> {
             if (NetworkManager.getInstance().getAssignmentRanking()) {
                 adapter.list = new Select().from(Attainment.class).execute();
-            } else {
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                String attainmentDataBackup = sharedPref.getString(getString(R.string.attainmentData), "no_data_stored");
-                adapter.list = new ArrayList<Attainment>();
-                String[] attainmentData = attainmentDataBackup.split("----");
-                for (String data : attainmentData) {
-                    String[] attainment = data.split(";");
-                    if (attainment.length == 4)
-                        adapter.list.add(new Attainment(attainment[0], attainment[1], attainment[2], attainment[3]));
-                }
             }
-
-            String attainmentDataBackup = "";
-            for (int i = 0; i < adapter.list.size(); i++) {
-                Attainment attainment = adapter.list.get(i);
-
-                if (attainment.percent.length() > 1
-                        && Integer.parseInt(attainment.percent.substring(0, attainment.percent.length() - 1)) == 0) {
-                    adapter.list.remove(i);
-                }
-
-                attainmentDataBackup += adapter.list.get(i).id + ";"
-                        + adapter.list.get(i).date + ";"
-                        + adapter.list.get(i).module + ";"
-                        + adapter.list.get(i).percent + "----";
-            }
-
-            SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(getString(R.string.attainmentData), attainmentDataBackup);
-            editor.commit();
 
             DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                 adapter.notifyDataSetChanged();
