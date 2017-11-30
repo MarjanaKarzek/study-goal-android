@@ -669,7 +669,7 @@ public class AddTargetFragment extends BaseFragment {
 
                 String selectedEvery = every.getText().toString();
 
-                if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).exists()) {
+                if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).and("total_time = ?",totalTime).exists()) {
                     Snackbar.make(root, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
                     return;
                 }
