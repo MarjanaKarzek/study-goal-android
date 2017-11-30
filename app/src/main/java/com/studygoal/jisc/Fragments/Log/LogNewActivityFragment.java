@@ -162,7 +162,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             ((TextView) mainView.findViewById(R.id.header_2)).setTypeface(DataManager.getInstance().myriadpro_regular);
         }
 
-
         timer = new Timer();
         timerTask = new TimerTask() {
             @Override
@@ -194,10 +193,8 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             }
         };
 
-
         sharedPreferences = DataManager.getInstance().mainActivity.getSharedPreferences("jisc", Context.MODE_PRIVATE);
         timestamp = sharedPreferences.getLong("timer", 0);
-
 
         RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
         if (activity != null) {
@@ -245,7 +242,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     }
                 });
 
-                //mainView.findViewById(R.id.new_activity_btn_pause).callOnClick();
                 mainView.findViewById(R.id.new_activity_btn_pause).setVisibility(View.VISIBLE);
                 mainView.findViewById(R.id.new_activity_btn_start).setVisibility(View.GONE);
                 mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(this);
@@ -270,10 +266,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             }
         }
 
-
-//        mainView.findViewById(R.id.new_activity_activityhistory_btn).setOnClickListener(this);
-//        mainView.findViewById(R.id.new_activity_logrecent_btn).setOnClickListener(this);
-
         return mainView;
     }
 
@@ -294,7 +286,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 }
 
                 timer.cancel();
-//                    timer = new Timer();
 
                 Calendar c = Calendar.getInstance();
                 c.setTimeInMillis(System.currentTimeMillis());
@@ -331,7 +322,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(null);
                     return;
                 }
-                //duration = 1;
                 params.put("time_spent", duration + "");
 
                 String responseCode = NetworkManager.getInstance().addActivity(params);
@@ -346,14 +336,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     activity.activity_date = params.get("activity_date");
                     activity.time_spent = params.get("time_spent");
                     activity.save();
-                } else {
-//                    NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
-                    /*NetworkManager.getInstance().getAppUsage(null,null);
-                    NetworkManager.getInstance().updateAppUsage(DataManager.getInstance().appUsageData.sessions,
-                            "" + Integer.valueOf((DataManager.getInstance().appUsageData.activities) + duration),
-                            DataManager.getInstance().appUsageData.setTargets,
-                            DataManager.getInstance().appUsageData.metTargets,
-                            DataManager.getInstance().appUsageData.failedTargets);*/
                 }
 
                 new Delete().from(RunningActivity.class).execute();
@@ -401,7 +383,16 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     Long _pause = System.currentTimeMillis() - sharedPreferences.getLong("pause", 0);
                     timestamp += _pause;
                     sharedPreferences.edit().putLong("pause", 0).apply();
-                    int reminder = (Integer.parseInt(reminderEditText.getText().toString().split(":")[0]) * 60) + Integer.parseInt(reminderEditText.getText().toString().split(":")[1]);
+                    if (!reminderEditText.getText().toString().equals("")) {
+                        int reminder = (Integer.parseInt(reminderEditText.getText().toString().split(":")[0]) * 60) + Integer.parseInt(reminderEditText.getText().toString().split(":")[1]);
+                        if (reminder != 0) {
+                            Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
+                            pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
+                                    intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            alarmManager.set(AlarmManager.RTC_WAKEUP,
+                                    System.currentTimeMillis() + reminder * 1000, pendingIntent);
+                        }
+                    }
                     timer = new Timer();
                     timerTask = new TimerTask() {
                         @Override
@@ -432,24 +423,16 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                             }
                         }
                     };
-                    if (reminder != 0) {
-                        Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
-                        pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
-                                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                                System.currentTimeMillis() + reminder * 1000, pendingIntent);
-                    }
+
                     timer.schedule(timerTask, 0, 1000);
                     sharedPreferences.edit().putLong("timer", timestamp).apply();
 
                     Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_resumed, Snackbar.LENGTH_LONG).show();
-
                     ((TextView) mainView.findViewById(R.id.new_activity_btn_pause_text)).setText(DataManager.getInstance().mainActivity.getString(R.string.pause));
                 }
                 break;
             }
             case R.id.new_activity_btn_start: {
-
                 if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LogNewActivityFragment.this.getActivity());
                     alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_addactivitylog) + "</font>"));
@@ -476,7 +459,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
                 timestamp = System.currentTimeMillis();
                 int reminder = 0;
-                if(!reminderEditText.getText().toString().equals(""))
+                if (!reminderEditText.getText().toString().equals(""))
                     reminder = Integer.parseInt(reminderEditText.getText().toString());
                 timer = new Timer();
                 timerTask = new TimerTask() {
@@ -526,12 +509,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
                 if (reminder != 0) {
                     Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
-                    //TODO: Bug Samsung devices - old code works on all except samsung
                     pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
                             intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + reminder * 1000, pendingIntent);
-
-                    //TODO: BUGFIX
                 }
                 break;
             }
@@ -632,7 +612,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
                         if (DataManager.getInstance().user.isSocial
                                 && position == moduleAdapter.moduleList.size() - 1) {
-                            //add new module
                             EditText add_module_edit_text = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
                             add_module_edit_text.setText("");
                             addModuleLayout.setVisibility(View.VISIBLE);
