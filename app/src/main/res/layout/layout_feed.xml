@@ -9,29 +9,37 @@
         android:layout_height="match_parent"
         android:background="@color/background_color" />
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipelayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_push"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipelayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_feed"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
-        </android.support.v4.widget.SwipeRefreshLayout>
+                android:orientation="vertical">
 
-    </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_push"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_feed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/floating_btn"
@@ -64,9 +72,9 @@
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             card_view:cardCornerRadius="2dp"
-            card_view:cardElevation="2dp"
-            android:visibility="gone">
+            card_view:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
