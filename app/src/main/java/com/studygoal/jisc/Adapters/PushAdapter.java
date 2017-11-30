@@ -16,8 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
@@ -26,13 +24,13 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.daimajia.swipe.SwipeLayout;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.LinguisticManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.SocialManager;
 import com.studygoal.jisc.Models.Feed;
 import com.studygoal.jisc.Models.Friend;
+import com.studygoal.jisc.Models.News;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.CircleTransform;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
@@ -44,32 +42,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
-    private static final String TAG = FeedAdapter.class.getSimpleName();
+/**
+ * Created by therapybox on 30/11/17.
+ */
 
-    public List<Feed> feedList = new ArrayList<>();
+public class PushAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
+    private static final String TAG = "PushAdapter";
+
     private Context context;
+    public List<News> newsList = new ArrayList<>();
     private SwipeRefreshLayout layout;
 
-    public FeedAdapter(Context context, SwipeRefreshLayout layout) {
+    public PushAdapter(Context context, SwipeRefreshLayout layout){
         this.context = context;
+        newsList = new ArrayList<>();
         this.layout = layout;
-        feedList = new ArrayList<>();
     }
 
     @Override
-    public int getItemCount() {
-        return feedList.size();
+    public FeedAdapter.FeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView;
+        itemView = LayoutInflater.
+                from(parent.getContext()).inflate(R.layout.list_item_feed, parent, false);
+        return new FeedAdapter.FeedViewHolder(itemView);
     }
 
     private void removeItem(int position) {
-        feedList.remove(position);
+        newsList.remove(position);
         notifyItemRemoved(position);
     }
 
     @Override
-    public void onBindViewHolder(final FeedViewHolder feedViewHolder, final int position) {
-        final Feed item = feedList.get(position);
+    public void onBindViewHolder(FeedAdapter.FeedViewHolder feedViewHolder, int position) {
+        final News item = newsList.get(position);
         Log.e(getClass().getCanonicalName(), item.toString());
         feedViewHolder.shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,80 +277,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                             + LinguisticManager.getInstance().convertMonth(item.created_date.split(" ")[0].split("-")[1]) + " " + item.created_date.split(" ")[0].split("-")[0]);
 
         feedViewHolder.feed.setText(item.message);
-
-        if (item.activity_type.toLowerCase().equals("friend_request"))
-            feedViewHolder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DataManager.getInstance().mainActivity.friend.setTag("from_list");
-                    DataManager.getInstance().mainActivity.friend.callOnClick();
-                }
-            });
     }
 
     @Override
-    public FeedViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View itemView;
-        itemView = LayoutInflater.
-                from(parent.getContext()).inflate(R.layout.list_item_feed, parent, false);
-        return new FeedViewHolder(itemView);
-    }
-
-    static class FeedViewHolder extends RecyclerView.ViewHolder {
-        protected TextView message;
-        public ImageView profilePic;
-        protected TextView feed;
-        public TextView timeAgo;
-        public TextView hidePost;
-        public TextView hideFriend;
-        public TextView deleteFriend;
-        public View menu;
-        protected View close;
-        public View bottomBar;
-        public View facebookButton, twitterButton, mailButton;
-        public View selfPost;
-
-        public SwipeLayout swipelayout;
-        public RelativeLayout deleteButton;
-        public RelativeLayout shareButton;
-
-        protected View share;
-
-        public View view;
-
-        public FeedViewHolder(View view) {
-            super(view);
-            try {
-                message = (TextView) view.findViewById(R.id.message);
-                message.setTypeface(DataManager.getInstance().myriadpro_regular);
-            } catch (Exception ignored) {
-            }
-            this.view = view;
-            try {
-                swipelayout = (SwipeLayout) view.findViewById(R.id.swipelayout);
-                deleteButton = (RelativeLayout) view.findViewById(R.id.delete);
-                shareButton = (RelativeLayout) view.findViewById(R.id.share);
-                profilePic = (ImageView) view.findViewById(R.id.feed_item_profile);
-                feed = (TextView) view.findViewById(R.id.feed_item_feed);
-                timeAgo = (TextView) view.findViewById(R.id.feed_item_time_ago);
-                hidePost = (TextView) view.findViewById(R.id.feed_item_hide_post);
-                hideFriend = (TextView) view.findViewById(R.id.feed_item_hide_friend);
-                deleteFriend = (TextView) view.findViewById(R.id.feed_item_delete_friend);
-                menu = view.findViewById(R.id.feed_item_menu);
-                close = view.findViewById(R.id.feed_item_close);
-                bottomBar = view.findViewById(R.id.feed_item_bottom_bar);
-                facebookButton = view.findViewById(R.id.facebook_btn);
-                twitterButton = view.findViewById(R.id.twitter_btn);
-                mailButton = view.findViewById(R.id.mail_btn);
-                selfPost = view.findViewById(R.id.feed_item_selfpost);
-
-                feed.setTypeface(DataManager.getInstance().myriadpro_regular);
-                timeAgo.setTypeface(DataManager.getInstance().myriadpro_regular);
-                hidePost.setTypeface(DataManager.getInstance().myriadpro_regular);
-                hideFriend.setTypeface(DataManager.getInstance().myriadpro_regular);
-                deleteFriend.setTypeface(DataManager.getInstance().myriadpro_regular);
-            } catch (Exception ignored) {
-            }
-        }
+    public int getItemCount() {
+        return newsList.size();
     }
 }

@@ -16,11 +16,13 @@ import android.widget.EditText;
 import com.activeandroid.query.Select;
 import com.activeandroid.util.Log;
 import com.studygoal.jisc.Adapters.FeedAdapter;
+import com.studygoal.jisc.Adapters.PushAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.Feed;
+import com.studygoal.jisc.Models.News;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import com.studygoal.jisc.Utils.EditTextCustom;
@@ -31,6 +33,7 @@ public class FeedFragment extends Fragment {
     private static final String TAG = FeedFragment.class.getSimpleName();
 
     public View mainView, tutorialMessage;
+    private PushAdapter adapterPush;
     private FeedAdapter adapter;
     private SwipeRefreshLayout layout;
 
@@ -62,6 +65,15 @@ public class FeedFragment extends Fragment {
                             tutorialMessage.setVisibility(View.VISIBLE);
                         else
                             tutorialMessage.setVisibility(View.INVISIBLE);
+                    }
+                });
+                NetworkManager.getInstance().getNewsFeed();
+                adapterPush.newsList = new Select().from(News.class).execute();
+
+                DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapterPush.notifyDataSetChanged();
                         DataManager.getInstance().mainActivity.hideProgressBar();
                     }
                 });
@@ -150,16 +162,28 @@ public class FeedFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) mainView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DataManager.getInstance().mainActivity);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        RecyclerView recyclerViewPush = (RecyclerView) mainView.findViewById(R.id.recycler_view_push);
+        recyclerViewPush.setHasFixedSize(false);
+        LinearLayoutManager linearLayoutManagerPush = new LinearLayoutManager(DataManager.getInstance().mainActivity);
+        linearLayoutManagerPush.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewPush.setLayoutManager(linearLayoutManagerPush);
+
+        RecyclerView recyclerViewFeed = (RecyclerView) mainView.findViewById(R.id.recycler_view_feed);
+        recyclerViewFeed.setHasFixedSize(false);
+        LinearLayoutManager linearLayoutManagerFeed = new LinearLayoutManager(DataManager.getInstance().mainActivity);
+        linearLayoutManagerFeed.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewFeed.setLayoutManager(linearLayoutManagerFeed);
 
         NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
 
+        adapterPush = new PushAdapter(DataManager.getInstance().mainActivity, layout);
+        recyclerViewPush.setAdapter(adapterPush);
+        recyclerViewPush.setScrollContainer(false);
+
         adapter = new FeedAdapter(DataManager.getInstance().mainActivity, layout);
-        recyclerView.setAdapter(adapter);
+        recyclerViewFeed.setAdapter(adapter);
+        recyclerViewFeed.setScrollContainer(false);
+
         Log.e(TAG, "FeedFragment Opened!");
         return mainView;
     }
