@@ -302,6 +302,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         public View menu;
         protected View close;
         public View bottomBar;
+        public View body;
         public View facebookButton, twitterButton, mailButton;
         public View selfPost;
 
@@ -334,6 +335,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 menu = view.findViewById(R.id.feed_item_menu);
                 close = view.findViewById(R.id.feed_item_close);
                 bottomBar = view.findViewById(R.id.feed_item_bottom_bar);
+                body = view.findViewById(R.id.feed_item_body);
                 facebookButton = view.findViewById(R.id.facebook_btn);
                 twitterButton = view.findViewById(R.id.twitter_btn);
                 mailButton = view.findViewById(R.id.mail_btn);

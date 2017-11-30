@@ -127,6 +127,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/feed_item_body"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/feed_item_bottom_bar">

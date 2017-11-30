@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -76,21 +77,8 @@ public class PushAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     public void onBindViewHolder(FeedAdapter.FeedViewHolder feedViewHolder, int position) {
         final News item = newsList.get(position);
         Log.e(getClass().getCanonicalName(), item.toString());
-        feedViewHolder.shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
-                    Snackbar.make(layout, R.string.demo_mode_sharefeedlog, Snackbar.LENGTH_LONG).show();
-                    return;
-                }
 
-                if(ConnectionHandler.isConnected(context)) {
-                    SocialManager.getInstance().shareOnIntent(item.message);
-                } else {
-                    ConnectionHandler.showNoInternetConnectionSnackbar();
-                }
-            }
-        });
+        feedViewHolder.body.setBackgroundColor(Color.parseColor("#ffbad8f7"));
 
         feedViewHolder.close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +122,6 @@ public class PushAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         });
 
         if (item.message_from.equals(DataManager.getInstance().user.id)) {
-            //feedViewHolder.open.setVisibility(View.GONE);
             if(DataManager.getInstance().user.profile_pic != null) {
                 if (!DataManager.getInstance().user.profile_pic.equals("")) {
                     Log.e("TEST", NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic);
