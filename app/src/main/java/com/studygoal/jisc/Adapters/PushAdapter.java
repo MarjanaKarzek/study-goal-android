@@ -79,6 +79,14 @@ public class PushAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         Log.e(getClass().getCanonicalName(), item.toString());
 
         feedViewHolder.body.setBackgroundColor(Color.parseColor("#ffbad8f7"));
+        feedViewHolder.body.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //set notification to read
+                NetworkManager.getInstance().markNewsAsRead(item);
+                removeItem(feedViewHolder.getAdapterPosition());
+            }
+        });
 
         feedViewHolder.close.setOnClickListener(new View.OnClickListener() {
             @Override
