@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class TargetAdapter extends BaseAdapter {
@@ -180,8 +181,13 @@ public class TargetAdapter extends BaseAdapter {
         if (minute > 0)
             text += ((minute == 1) ? " " + context.getString(R.string.and) + " 1 " + context.getString(R.string.minute) + " " : " " + context.getString(R.string.and) + " " + minute + " " + context.getString(R.string.minutes) + " ");
 
+        HashMap<String,String> spans = new HashMap<>();
+        spans.put("Day",context.getString(R.string.daily));
+        spans.put("Week",context.getString(R.string.Weekly));
+        spans.put("Month",context.getString(R.string.monthly));
+
         if (item.time_span.length() > 0)
-            text += item.time_span.toLowerCase() + "ly";
+            text += spans.get(item.time_span);
 
         if (module != null && module.name.length() > 0) {
             text += " " + context.getString(R.string._for) + " " + module.name;
