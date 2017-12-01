@@ -281,6 +281,8 @@ public class AddTargetFragment extends BaseFragment {
                         String value = entry.getKey();
                         value = value.substring(0, 1).toUpperCase() + value.substring(1, value.length()-2);
                         every.setText(value);
+                    } else if (entry.getValue().toLowerCase().equals(item.time_span.toLowerCase())) {
+                        every.setText(entry.getKey());
                     }
                 }
 
