@@ -220,12 +220,14 @@ public class ActivityDetailsFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(save.getVisibility() == View.INVISIBLE)
-                    save.setVisibility(View.VISIBLE);
+                    if(s.length() != 0)
+                        save.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if(s.length() == 0)
+                    save.setVisibility(View.INVISIBLE);
             }
         });
 
