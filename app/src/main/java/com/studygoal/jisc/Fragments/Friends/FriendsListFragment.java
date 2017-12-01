@@ -55,7 +55,7 @@ public class FriendsListFragment extends Fragment {
                 public void run() {
                     NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
 
-                    getActivity().runOnUiThread(() -> {
+                    DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                         adapter = new FriendsListAdapter(getActivity());
                         list.setAdapter(adapter);
                     });
