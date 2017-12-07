@@ -205,19 +205,7 @@ public class PushAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             feedViewHolder.swipelayout.setSwipeEnabled(false);
             feedViewHolder.deleteButton.setOnClickListener(null);
             Friend friend = new Select().from(Friend.class).where("friend_id = ?", item.message_from).executeSingle();
-            String photo;
-            if (friend != null) {
-                photo = friend.profile_pic;
-            } else
-                photo = "";
-
-            if (photo.equals(""))
-                GlideApp.with(context).load(R.drawable.profilenotfound).into(feedViewHolder.profilePic);
-            else
-                GlideApp.with(context)
-                        .load(NetworkManager.getInstance().host + photo)
-                        .transform(new CircleTransform(context))
-                        .into(feedViewHolder.profilePic);
+            GlideApp.with(context).load(R.drawable.notification_image).into(feedViewHolder.profilePic);
         }
 
         Calendar c = Calendar.getInstance();
