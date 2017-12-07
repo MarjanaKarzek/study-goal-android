@@ -276,6 +276,14 @@ public class StatsActivityPointsFragment extends BaseFragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if(DataManager.getInstance().user.points.size() == 0){
+            mainView.findViewById(R.id.pi_chart_web_view).setVisibility(View.GONE);
+            mainView.findViewById(R.id.points_chart_emptyView).setVisibility(View.VISIBLE);
+        } else {
+            mainView.findViewById(R.id.pi_chart_web_view).setVisibility(View.VISIBLE);
+            mainView.findViewById(R.id.points_chart_emptyView).setVisibility(View.GONE);
+        }
     }
 
     private void refreshView() {

@@ -79,6 +79,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 />
+            <TextView
+                android:id="@+id/points_chart_emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/empty_points_page_message"
+                android:textColor="@color/dark_grey"/>
 
         </LinearLayout>
     </ViewFlipper>
