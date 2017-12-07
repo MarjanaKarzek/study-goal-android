@@ -52,7 +52,7 @@
             <LinearLayout
                 android:id="@+id/multiple_button"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="34dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="5dp">
@@ -98,12 +98,12 @@
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/main_screen_addtarget"
-                    android:layout_width="30dp"
+                    android:layout_width="34dp"
                     android:layout_marginStart="5dp"
-                    android:layout_height="30dp">
+                    android:layout_height="34dp">
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
                         android:src="@drawable/addtarget_icon"
                         android:layout_centerInParent="true"/>
                 </RelativeLayout>
