@@ -1,6 +1,7 @@
 package com.studygoal.jisc.Adapters;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import com.studygoal.jisc.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstitutionsAdapter extends BaseAdapter {
+public class InstitutionsAdapter extends RecyclerView.Adapter<InstitutionsAdapter.ViewHolder> {
     private static final String TAG = InstitutionsAdapter.class.getSimpleName();
 
     private List<Institution> institutions;
@@ -36,52 +37,48 @@ public class InstitutionsAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public InstitutionsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        final View view = inflater.from(viewGroup.getContext()).inflate(R.layout.list_item_institution,null);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(InstitutionsAdapter.ViewHolder viewHolder, int i) {
+        final Institution item = institutions.get(i);
+
+        String tempName = item.name;
+        if (tempName.toLowerCase().contains("Gloucestershire".toLowerCase())) {
+            viewHolder.name.setText("University of Gloucestershire");
+        } else if (tempName.toLowerCase().contains("Oxford Brookes".toLowerCase())) {
+            viewHolder.name.setText("Oxford Brookes University");
+        } else if (tempName.toLowerCase().contains("South Wales".toLowerCase())) {
+            viewHolder.name.setText("University of South Wales | Prifysgol De Cymru");
+        } else if (tempName.toLowerCase().contains("Strathclyde".toLowerCase())) {
+            viewHolder.name.setText("University of Strathclyde");
+        } else {
+            viewHolder.name.setText(item.name);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
         return institutions.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
+    public Institution getItem(int position){
+        return institutions.get(position);
     }
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView name;
+        public Institution currentItem;
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        if (view == null) {
-            view = inflater.inflate(R.layout.list_item_institution, viewGroup, false);
+        public ViewHolder(View view) {
+            super(view);
+            name = view.findViewById(R.id.name);
+            name.setTypeface(DataManager.getInstance().myriadpro_regular);
+            name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            //view.setTag(currentItem);
         }
-
-        TextView name = (TextView) view.findViewById(R.id.name);
-        name.setTypeface(DataManager.getInstance().myriadpro_regular);
-
-        // set manually to change university name
-        // original code
-        // name.setText(institutions.get(i).name);
-        //it's hard coded part. so after web service updated.  it need to be removed.
-        //hard code start
-        String tempName = institutions.get(i).name;
-
-        if (tempName.toLowerCase().contains("Gloucestershire".toLowerCase())) {
-            name.setText("University of Gloucestershire");
-        } else if (tempName.toLowerCase().contains("Oxford Brookes".toLowerCase())) {
-            name.setText("Oxford Brookes University");
-        } else if (tempName.toLowerCase().contains("South Wales".toLowerCase())) {
-            name.setText("University of South Wales | Prifysgol De Cymru");
-        } else if (tempName.toLowerCase().contains("Strathclyde".toLowerCase())) {
-            name.setText("University of Strathclyde");
-        } else {
-            name.setText(institutions.get(i).name);
-        }
-
-        //hard code end
-
-        name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-        view.setTag(institutions.get(i));
-        return view;
     }
 }

@@ -13,6 +13,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -53,6 +55,7 @@ import com.studygoal.jisc.Managers.xApi.XApiManager;
 import com.studygoal.jisc.Models.CurrentUser;
 import com.studygoal.jisc.Models.Institution;
 import com.studygoal.jisc.R;
+import com.studygoal.jisc.Utils.RecyclerItemClickListener;
 import com.studygoal.jisc.Utils.Utils;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
@@ -170,9 +173,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         ((TextView) findViewById(R.id.login_step_1_imastaff)).setTypeface(DataManager.getInstance().myriadpro_bold);
 
         loginNextButton.setOnClickListener(v -> {
-            final InstitutionsAdapter adapter = (InstitutionsAdapter) ((ListView) findViewById(R.id.list)).getAdapter();
+            final InstitutionsAdapter adapter = (InstitutionsAdapter) ((RecyclerView) findViewById(R.id.list)).getAdapter();
 
-            if (adapter.getCount() == 0) {
+            if (adapter.getItemCount() == 0) {
                 final String dialogText;
 
                 if (isConnected()) {
@@ -361,34 +364,45 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
         final InstitutionsAdapter institutionsAdapter = new InstitutionsAdapter(LoginActivity.this);
-        ListView list = (ListView) findViewById(R.id.list);
-        list.setAdapter(institutionsAdapter);
+        RecyclerView institutionList = (RecyclerView) findViewById(R.id.list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        institutionList.setLayoutManager(linearLayoutManager);
+        institutionList.setAdapter(institutionsAdapter);
 
-        list.setOnItemClickListener((parent, view, position, id) -> {
-            showProgressBar();
+        institutionList.addOnItemTouchListener(new RecyclerItemClickListener(this, institutionList, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                showProgressBar();
 
-            if (getCurrentFocus() != null) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                if (getCurrentFocus() != null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
+
+                webView.loadUrl("about:blank");
+
+                LoginActivity.this.selectedInstitution = institutionsAdapter.getItem(position);
+
+                String url = "https://sp.data.alpha.jisc.ac.uk/Shibboleth.sso/Login?entityID=https://" +
+                        selectedInstitution.url + "&target=https://sp.data.alpha.jisc.ac.uk/secure/auth.php?u=" +
+                        DataManager.getInstance().guid;
+
+                if (LoginActivity.this.rememberMe) {
+                    url += "&lt=true";
+                }
+
+                webView.setVisibility(View.VISIBLE);
+                webView.clearCache(true);
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.loadUrl(url);
             }
 
-            webView.loadUrl("about:blank");
-
-            LoginActivity.this.selectedInstitution = (Institution) view.getTag();
-
-            String url = "https://sp.data.alpha.jisc.ac.uk/Shibboleth.sso/Login?entityID=https://" +
-                    selectedInstitution.url + "&target=https://sp.data.alpha.jisc.ac.uk/secure/auth.php?u=" +
-                    DataManager.getInstance().guid;
-
-            if (LoginActivity.this.rememberMe) {
-                url += "&lt=true";
+            @Override
+            public void onLongItemClick(View view, int position) {
+                return;
             }
-
-            webView.setVisibility(View.VISIBLE);
-            webView.clearCache(true);
-            webView.getSettings().setJavaScriptEnabled(true);
-            webView.loadUrl(url);
-        });
+        }));
 
         EditText editText = (EditText) findViewById(R.id.search_field);
         editText.setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -610,7 +624,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     public void refreshData() {
         new Thread(() -> NetworkManager.getInstance().getAllTrophies()).start();
-        final InstitutionsAdapter adapter = (InstitutionsAdapter) ((ListView) findViewById(R.id.list)).getAdapter();
+        final InstitutionsAdapter adapter = (InstitutionsAdapter) ((RecyclerView) findViewById(R.id.list)).getAdapter();
 
         if (!isRefreshing) {
             isRefreshing = true;
