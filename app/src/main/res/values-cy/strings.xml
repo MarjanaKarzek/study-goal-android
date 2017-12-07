@@ -488,6 +488,8 @@
     <string name="module_in">Dewis Modiwl</string>
     <string name="not_change_activity_in_edit_mode_hint">Nid yw gweithgareddau yn editable. Sefydlu targed newydd.</string>
 
+    <string name="jisc">Jisc</string>
+
     <!--New Values-->
     <string name="filter_modules">PLACEHOLDER</string>
     <string name="compare_to_leader">PLACEHOLDER</string>

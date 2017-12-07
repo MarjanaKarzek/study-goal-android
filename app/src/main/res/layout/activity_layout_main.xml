@@ -13,17 +13,28 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/default_blue">
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/main_screen_menu"
-                android:layout_width="50dp"
+                android:layout_width="80dp"
                 android:layout_height="50dp"
-                android:layout_centerVertical="true">
+                android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/menu_icon"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/menu_icon2"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="@string/jisc"
+                    android:textColor="#fff"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="12dp"/>
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/main_screen_back"
