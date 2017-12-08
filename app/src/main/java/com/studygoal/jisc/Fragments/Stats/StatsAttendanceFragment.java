@@ -373,9 +373,7 @@ public class StatsAttendanceFragment extends BaseFragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
         if(dates.size() == 0){
-            if(!DataManager.getInstance().mainActivity.isLandscape) {
-                mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.VISIBLE);
-            }
+            mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.VISIBLE);
             webView.setVisibility(View.GONE);
         } else {
             WebSettings s = webView.getSettings();
