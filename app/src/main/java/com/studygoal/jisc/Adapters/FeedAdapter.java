@@ -281,6 +281,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                     DataManager.getInstance().mainActivity.friend.callOnClick();
                 }
             });
+        else if (item.activity_type.toLowerCase().equals("push_notification"))
+            GlideApp.with(context).load(R.drawable.notification_image).into(feedViewHolder.profilePic);
     }
 
     @Override
