@@ -236,7 +236,11 @@ public class StatsVLEActivityFragment extends Fragment {
                 final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
                 listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, compareTo.getText().toString(), items));
                 listView.setOnItemClickListener((parent, view, position, id) -> {
-                    compareTo.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                    if(position == 0) {
+                        compareTo.setText(R.string.compare_to);
+                    } else {
+                        compareTo.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                    }
                     dialog.dismiss();
                     loadData();
                 });
