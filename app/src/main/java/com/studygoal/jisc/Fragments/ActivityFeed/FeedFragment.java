@@ -140,7 +140,7 @@ public class FeedFragment extends Fragment {
                             adapter.feedList = new Select().from(Feed.class).where("is_hidden = 0").execute();
 
                             if(NetworkManager.getInstance().getNewsFeed()){
-                                adapterPush.newsList = new Select().from(News.class).where("is_read = 0").execute();
+                                adapterPush.newsList = new Select().from(News.class).execute();
                             }
 
                             getActivity().runOnUiThread(new Runnable() {
