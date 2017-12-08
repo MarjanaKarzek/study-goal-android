@@ -138,10 +138,16 @@ public class FeedFragment extends Fragment {
                         }
                         if (NetworkManager.getInstance().getFeed(DataManager.getInstance().user.id)) {
                             adapter.feedList = new Select().from(Feed.class).where("is_hidden = 0").execute();
+
+                            if(NetworkManager.getInstance().getNewsFeed()){
+                                adapterPush.newsList = new Select().from(News.class).where("is_read = 0").execute();
+                            }
+
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     adapter.notifyDataSetChanged();
+                                    adapterPush.notifyDataSetChanged();
                                     layout.setRefreshing(false);
                                     if (adapter.feedList.size() == 0)
                                         tutorialMessage.setVisibility(View.VISIBLE);
@@ -149,6 +155,7 @@ public class FeedFragment extends Fragment {
                                         tutorialMessage.setVisibility(View.INVISIBLE);
                                 }
                             });
+
                         } else {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
