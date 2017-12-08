@@ -277,9 +277,16 @@ public class AddTargetFragment extends BaseFragment {
                 minutes.setText(Integer.parseInt(item.total_time) % 60 > 10 ? "" + Integer.parseInt(item.total_time) % 60 : "0" + Integer.parseInt(item.total_time) % 60);
 
                 for (Map.Entry<String, String> entry : DataManager.getInstance().api_values.entrySet()) {
-                    if (entry.getValue().toLowerCase().equals(item.time_span.toLowerCase() + "ly")) {
+                    String checkValue = item.time_span.toLowerCase() + "ly";
+                    if(item.time_span.toLowerCase().equals("day")){
+                        checkValue = "daily";
+                    }
+                    if (entry.getValue().toLowerCase().equals(checkValue)) {
                         String value = entry.getKey();
                         value = value.substring(0, 1).toUpperCase() + value.substring(1, value.length()-2);
+                        if(value.equals("Dai")){
+                            value = "Day";
+                        }
                         every.setText(value);
                     } else if (entry.getValue().toLowerCase().equals(item.time_span.toLowerCase())) {
                         every.setText(entry.getKey());
