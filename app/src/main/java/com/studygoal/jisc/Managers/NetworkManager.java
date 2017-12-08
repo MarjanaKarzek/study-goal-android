@@ -4682,8 +4682,7 @@ public class NetworkManager {
                         item.message = jsonObject.getString("message");
                         item.created_date = jsonObject.getString("created");
                         item.read = jsonObject.getString("is_read");
-                        if (!item.read.equals("1"))
-                            item.save();
+                        item.save();
                     }
                     ActiveAndroid.setTransactionSuccessful();
                 } finally {

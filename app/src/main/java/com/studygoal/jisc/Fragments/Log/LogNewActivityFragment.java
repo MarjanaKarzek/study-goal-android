@@ -19,6 +19,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -383,7 +384,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     Long _pause = System.currentTimeMillis() - sharedPreferences.getLong("pause", 0);
                     timestamp += _pause;
                     sharedPreferences.edit().putLong("pause", 0).apply();
-                    if (!reminderEditText.getText().toString().equals("")) {
+                    if (!reminderEditText.getText().toString().equals("") && !reminderEditText.getText().toString().equals("00")) {
                         int reminder = (Integer.parseInt(reminderEditText.getText().toString().split(":")[0]) * 60) + Integer.parseInt(reminderEditText.getText().toString().split(":")[1]);
                         if (reminder != 0) {
                             Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
