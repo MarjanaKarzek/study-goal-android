@@ -105,6 +105,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private int refreshCounter = 0;
     private String email;
     private String socialID;
+    private String token;
     private boolean isRefreshing = false;
     private boolean firstTimeConnectionProblem = true;
 
@@ -543,14 +544,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         (object, response) -> {
                             Log.e("LoginActivity", response.toString());
 
-                            try {
-                                socialID = object.getString("id");
-                                email = object.getString("email");
-
-                                runOnUiThread(() -> loginSocial());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            token = loginResult.getAccessToken().getToken();
+                            runOnUiThread(() -> loginSocial());
                         });
 
                 Bundle parameters = new Bundle();
@@ -728,11 +723,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             alertDialog.show();
         } else {
             if (result.isSuccess()) {
+                Log.d(TAG, "handleSignInResult: result " + result);
+                Log.d(TAG, "handleSignInResult: result " + result.getSignInAccount());
+
                 // Signed in successfully, show authenticated UI.
                 GoogleSignInAccount acct = result.getSignInAccount();
 
-                email = acct.getEmail();
-                socialID = acct.getId();
+                token = acct.getIdToken();
 
                 runOnUiThread(() -> loginSocial());
 
@@ -748,13 +745,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     void loginSocial() {
-        Integer response = NetworkManager.getInstance().loginSocial(email, socialID);
+        Integer response = NetworkManager.getInstance().loginSocial(token, socialType);
         updateLastKnownUser();
 
         if (response == 200) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             LoginActivity.this.finish();
+            getSharedPreferences("jisc", Context.MODE_PRIVATE).edit().putString("jwt", DataManager.getInstance().get_jwt()).apply();
             return;
         }
 

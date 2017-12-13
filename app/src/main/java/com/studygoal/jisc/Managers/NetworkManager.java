@@ -185,8 +185,7 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_delete_feed?student_id=" + DataManager.getInstance().user.id + "&feed_id=" + this.feedId + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_delete_feed?student_id=" + DataManager.getInstance().user.id + "&feed_id=" + this.feedId + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -256,8 +255,7 @@ public class NetworkManager {
         @Override
         public Friend call() {
             try {
-                String apiURL = host + "fn_search_student_by_email?student_id=" + student_id + "&email=" + email + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_search_student_by_email?student_id=" + student_id + "&email=" + email + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -347,8 +345,6 @@ public class NetworkManager {
         forgotPassword(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -443,6 +439,7 @@ public class NetworkManager {
                 wr.writeBytes(language);
 
 
+                //unknown use of is social parameter
                 wr.writeBytes(crlf + twoHyphens + boundary + crlf);
                 header = "Content-Disposition: form-data; name=\"is_social\"";
                 wr.writeBytes(header);
@@ -832,8 +829,7 @@ public class NetworkManager {
             try {
 
                 String api = "fn_get_student_trophies?student_id=" + DataManager.getInstance().user.id + "&language=" + language;
-                String apiURL = host + api
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + api;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -991,8 +987,7 @@ public class NetworkManager {
                 if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
                     apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_attainment";
                 } else {
-                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/attainment?"
-                            + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/attainment?";
                 }
                 URL url = new URL(apiURL);
 
@@ -1066,8 +1061,7 @@ public class NetworkManager {
         public String call() {
             try {
 
-                String apiURL = host + "fn_get_overall_ranking?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_get_overall_ranking?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -1152,8 +1146,7 @@ public class NetworkManager {
         public String call() {
             try {
 
-                String apiURL = host + "fn_get_current_week_ranking?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_get_current_week_ranking?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -1245,8 +1238,7 @@ public class NetworkManager {
                         apiURL = "https://stuapp.analytics.alpha.jisc.ac.uk/fn_fake_activity_28d";
                     }
                 } else {
-                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/activity/points?scope=" + scope
-                            + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                    apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/activity/points?scope=" + scope;
                 }
                 URL url = new URL(apiURL);
 
@@ -1345,8 +1337,7 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_get_student_app_settings?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_get_student_app_settings?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -1411,8 +1402,6 @@ public class NetworkManager {
         changeAppSettings(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -1480,8 +1469,6 @@ public class NetworkManager {
         postFeedMessage(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -1545,8 +1532,6 @@ public class NetworkManager {
         hidePost(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -1609,8 +1594,6 @@ public class NetworkManager {
         acceptFriendRequest(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -1672,15 +1655,12 @@ public class NetworkManager {
 
         deleteFriendRequest(HashMap<String, String> params) {
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_delete_friend_request?student_id=" + params.get("student_id") + "&deleted_user=" + params.get("deleted_user") + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_delete_friend_request?student_id=" + params.get("student_id") + "&deleted_user=" + params.get("deleted_user") + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -1720,15 +1700,12 @@ public class NetworkManager {
 
         cancelFriendRequest(HashMap<String, String> params) {
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_cancel_pending_friend_request?student_id=" + params.get("student_id") + "&friend_id=" + params.get("friend_id") + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_cancel_pending_friend_request?student_id=" + params.get("student_id") + "&friend_id=" + params.get("friend_id") + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -1768,15 +1745,12 @@ public class NetworkManager {
 
         deleteFriend(HashMap<String, String> params) {
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_delete_friend?student_id=" + params.get("student_id") + "&friend_id=" + params.get("friend_id") + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_delete_friend?student_id=" + params.get("student_id") + "&friend_id=" + params.get("friend_id") + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -1817,8 +1791,6 @@ public class NetworkManager {
         changeFriendSettings(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -1881,8 +1853,6 @@ public class NetworkManager {
         sendFriendRequest(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -1961,8 +1931,7 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_list_friend_requests?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_list_friend_requests?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -2104,8 +2073,7 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_list_sent_friend_requests?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_list_sent_friend_requests?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -2252,8 +2220,7 @@ public class NetworkManager {
                 ActiveAndroid.setTransactionSuccessful();
                 ActiveAndroid.endTransaction();
 
-                String apiURL = host + "fn_list_friends?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_list_friends?student_id=" + student_id + "&language=" + language;
 
                 // init ok http
                 Request request = new Request.Builder()
@@ -2382,8 +2349,7 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_get_feeds?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_get_feeds?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -2463,8 +2429,7 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_get_stretch_targets?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_get_stretch_targets?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -2539,8 +2504,6 @@ public class NetworkManager {
         addStretchTarget(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -2606,8 +2569,6 @@ public class NetworkManager {
         unhideFriend(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -2670,8 +2631,6 @@ public class NetworkManager {
         hideFriend(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -2734,8 +2693,6 @@ public class NetworkManager {
         deleteTarget(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -2798,17 +2755,12 @@ public class NetworkManager {
         deleteToDoTask(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-
-            if (DataManager.getInstance().user.isSocial) {
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
-            }
         }
 
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_delete_todo_task?student_id=" + params.get("student_id") + "&record_id=" + params.get("record_id") + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_delete_todo_task?student_id=" + params.get("student_id") + "&record_id=" + params.get("record_id") + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -2850,8 +2802,6 @@ public class NetworkManager {
         editTarget(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -2914,10 +2864,6 @@ public class NetworkManager {
         editToDoTask(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-
-            if (DataManager.getInstance().user.isSocial) {
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
-            }
         }
 
         @Override
@@ -2980,8 +2926,6 @@ public class NetworkManager {
         addTarget(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -3046,8 +2990,6 @@ public class NetworkManager {
         addTodoTask(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -3116,8 +3058,7 @@ public class NetworkManager {
         public Boolean call() {
             try {
 
-                String apiURL = host + "fn_get_targets?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_get_targets?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -3205,8 +3146,7 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_get_todo_list?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_get_todo_list?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -3291,15 +3231,12 @@ public class NetworkManager {
 
         deleteActivity(HashMap<String, String> params) {
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", DataManager.getInstance().user.isSocial ? "yes" : "no");
         }
 
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_delete_activity_log?student_id=" + DataManager.getInstance().user.id + "&log_id=" + params.get("log_id") + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_delete_activity_log?student_id=" + DataManager.getInstance().user.id + "&log_id=" + params.get("log_id") + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -3340,8 +3277,6 @@ public class NetworkManager {
         editActivity(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", DataManager.getInstance().user.isSocial ? "yes" : "no");
         }
 
         @Override
@@ -3404,8 +3339,6 @@ public class NetworkManager {
         addActivity(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
@@ -3655,9 +3588,9 @@ public class NetworkManager {
      *
      * @return true/false
      */
-    public Integer loginSocial(String email, String password) {
+    public Integer loginSocial(String token, int socialType) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Integer> futureResult = executorService.submit(new loginSocial(email, password));
+        Future<Integer> futureResult = executorService.submit(new loginSocial(token, socialType));
         try {
             return futureResult.get();
         } catch (Exception e) {
@@ -3668,18 +3601,18 @@ public class NetworkManager {
 
     private class loginSocial implements Callable<Integer> {
 
-        String email = "";
-        String password = "";
+        String token = "";
+        int socialType = 0;
 
-        loginSocial(String e, String p) {
-            email = e;
-            password = p;
+        loginSocial(String token, int socialType) {
+            this.token = token;
+            this.socialType = socialType;
         }
 
         @Override
         public Integer call() {
             try {
-                String apiURL = host + "fn_social_login";
+                String apiURL = host + "fn_oauth_social_login";
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -3690,11 +3623,8 @@ public class NetworkManager {
                 urlConnection.setSSLSocketFactory(context.getSocketFactory());
 
                 String urlParameters = "language=" + LinguisticManager.getInstance().getLanguageCode() +
-                        "&social_id=" + password +
-                        "&email=" + email +
-                        "&full_name=test" +
-                        "&is_social=yes" +
-                        "&institution=1";
+                        "&token=" + token +
+                        "&social_type=" + socialType;
 
                 DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
                 wr.writeBytes(urlParameters);
@@ -3735,7 +3665,7 @@ public class NetworkManager {
                 new Delete().from(CurrentUser.class).execute();
                 DataManager.getInstance().user = new CurrentUser();
                 DataManager.getInstance().user.id = jsonObject.getInt("id") + "";
-                DataManager.getInstance().user.password = password;
+                //DataManager.getInstance().user.password = password;
                 DataManager.getInstance().user.jisc_student_id = jsonObject.getString("id");
                 DataManager.getInstance().user.pid = jsonObject.getString("pid");
                 DataManager.getInstance().user.name = jsonObject.getString("name");
@@ -3755,6 +3685,10 @@ public class NetworkManager {
                 DataManager.getInstance().user.modified_date = jsonObject.getString("modified_date");
 
                 DataManager.getInstance().user.save();
+
+                String jwtToken = jsonObject.getString("token");
+                DataManager.getInstance().set_jwt(jwtToken);
+
                 return responseCode;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -4097,8 +4031,7 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-                String apiURL = host + "fn_get_activity_logs?student_id=" + student_id + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = host + "fn_get_activity_logs?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -4266,8 +4199,7 @@ public class NetworkManager {
         public Boolean call() {
             try {
 
-                String apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/filter?"
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "");
+                String apiURL = "https://app.analytics.alpha.jisc.ac.uk/v2/filter?";
 
                 URL url = new URL(apiURL);
 
@@ -4572,7 +4504,6 @@ public class NetworkManager {
             params = new HashMap<>();
             params.put("student_id", DataManager.getInstance().user.id);
             params.put("notification_id", id);
-            params.put("is_social", "yes");
         }
 
         @Override
@@ -4646,8 +4577,7 @@ public class NetworkManager {
             try {
                 String apiURL = host + "fn_get_push_notifications?student_id="
                         + DataManager.getInstance().user.id
-                        + "&language=" + language
-                        + ((DataManager.getInstance().user.isSocial) ? "&is_social=yes" : "&is_social=yes");
+                        + "&language=" + language;
                 URL url = new URL(apiURL);
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -4714,8 +4644,6 @@ public class NetworkManager {
         postNotificationMessage(HashMap<String, String> params) {
             params.put("language", language);
             this.params = params;
-            if (DataManager.getInstance().user.isSocial)
-                this.params.put("is_social", (DataManager.getInstance().user.isSocial ? "yes" : "no"));
         }
 
         @Override
