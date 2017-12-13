@@ -381,7 +381,8 @@ public class SettingsFragment extends Fragment {
             boolean needLoadImage = false;
 
             if (manager.user.isSocial) {
-                Integer response = NetworkManager.getInstance().loginSocial(manager.user.email, manager.user.password);
+
+                Integer response = NetworkManager.getInstance().loginSocial(manager.socialToken, manager.socialType);
 
                 if (response != 200) {
                     return;

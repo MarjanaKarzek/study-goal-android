@@ -3688,6 +3688,8 @@ public class NetworkManager {
 
                 String jwtToken = jsonObject.getString("token");
                 DataManager.getInstance().set_jwt(jwtToken);
+                DataManager.getInstance().socialToken = token;
+                DataManager.getInstance().socialType = socialType;
 
                 return responseCode;
             } catch (Exception e) {

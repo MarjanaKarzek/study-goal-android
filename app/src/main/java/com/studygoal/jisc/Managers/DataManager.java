@@ -52,6 +52,8 @@ public class DataManager {
 
     public String guid;
     private String jwt;
+    public String socialToken = "";
+    public int socialType = 0;
     public Integer fragment;
     public String institution;
     public android.app.Activity currActivity;
