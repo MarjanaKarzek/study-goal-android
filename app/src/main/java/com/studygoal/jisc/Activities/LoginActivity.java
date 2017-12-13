@@ -746,7 +746,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     void loginSocial() {
         Integer response = NetworkManager.getInstance().loginSocial(token, socialType);
-        updateLastKnownUser();
 
         if (response == 200) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -823,24 +822,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      * On successful login this method updates the information about the last known user
      */
     private void updateLastKnownUser() {
-        SharedPreferences sharedPref = this.getSharedPreferences("jisc",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("last_user_id", DataManager.getInstance().user.id);
-        editor.putString("last_user_staff_id", DataManager.getInstance().user.staff_id);
-        editor.putString("last_user_jisc_student_id", DataManager.getInstance().user.jisc_student_id);
-        editor.putString("last_user_pid", DataManager.getInstance().user.pid);
-        editor.putString("last_user_name", DataManager.getInstance().user.name);
-        editor.putString("last_user_email", DataManager.getInstance().user.email);
-        editor.putString("last_user_eppn", DataManager.getInstance().user.eppn);
-        editor.putString("last_user_affiliation", DataManager.getInstance().user.affiliation);
-        editor.putString("last_user_profile_pic", DataManager.getInstance().user.profile_pic);
-        editor.putString("last_user_modules", DataManager.getInstance().user.modules);
-        editor.putString("last_user_created_date", DataManager.getInstance().user.created_date);
-        editor.putString("last_user_modified_date", DataManager.getInstance().user.modified_date);
-        editor.putBoolean("last_user_isStaff", DataManager.getInstance().user.isStaff);
-        editor.putBoolean("last_user_isSocial", DataManager.getInstance().user.isSocial);
-        editor.putString("last_user_institution", DataManager.getInstance().institution);
-        editor.commit();
+        if(DataManager.getInstance().socialType == 0) {
+            SharedPreferences sharedPref = this.getSharedPreferences("jisc", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("last_user_id", DataManager.getInstance().user.id);
+            editor.putString("last_user_staff_id", DataManager.getInstance().user.staff_id);
+            editor.putString("last_user_jisc_student_id", DataManager.getInstance().user.jisc_student_id);
+            editor.putString("last_user_pid", DataManager.getInstance().user.pid);
+            editor.putString("last_user_name", DataManager.getInstance().user.name);
+            editor.putString("last_user_email", DataManager.getInstance().user.email);
+            editor.putString("last_user_eppn", DataManager.getInstance().user.eppn);
+            editor.putString("last_user_affiliation", DataManager.getInstance().user.affiliation);
+            editor.putString("last_user_profile_pic", DataManager.getInstance().user.profile_pic);
+            editor.putString("last_user_modules", DataManager.getInstance().user.modules);
+            editor.putString("last_user_created_date", DataManager.getInstance().user.created_date);
+            editor.putString("last_user_modified_date", DataManager.getInstance().user.modified_date);
+            editor.putBoolean("last_user_isStaff", DataManager.getInstance().user.isStaff);
+            editor.putBoolean("last_user_isSocial", DataManager.getInstance().user.isSocial);
+            editor.putString("last_user_institution", DataManager.getInstance().institution);
+            editor.commit();
+        }
     }
 
     /**
