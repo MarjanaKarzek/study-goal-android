@@ -339,38 +339,9 @@ public class TargetFragment extends BaseFragment {
             DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                 targetAdapter.list = new Select().from(Targets.class).execute();
                 targetAdapter.notifyDataSetChanged();
-
-                List<ToDoTasks> currentTaskList = new Select().from(ToDoTasks.class).where("status != 1 and is_accepted != 2").execute();
-                Iterator iterator = currentTaskList.iterator();
-
-                while (iterator.hasNext()){
-                    ToDoTasks currentTask = (ToDoTasks)iterator.next();
-                }
-
-                //do ordering of tutor tasks up here
-
-                /*Collections.sort(currentTaskList, new Comparator<ToDoTasks>() {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    @Override
-                    public int compare(ToDoTasks taskA, ToDoTasks taskB)
-                    {
-                        Date date1 = new Date();
-                        try {
-                            date1 = dateFormat.parse(taskA.endDate);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        Date date2 = new Date();
-                        try {
-                            date2 = dateFormat.parse(taskB.endDate);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        return Long.valueOf(date1.getTime()).compareTo(Long.valueOf(date2.getTime()));
-                    }
-                });*/
+                
+                List<ToDoTasks> currentTaskList = new Select().from(ToDoTasks.class).where("status != 1 and from_tutor = ? and is_accepted = 0","yes").execute();
+                currentTaskList.addAll(new Select().from(ToDoTasks.class).where("status != 1 and is_accepted != 2 and ((from_tutor = ? and is_accepted = 1) or from_tutor = ?)","yes","no").execute());
 
                 toDoTasksAdapter.updateList(currentTaskList);
                 toDoTasksAdapter.notifyDataSetChanged();
