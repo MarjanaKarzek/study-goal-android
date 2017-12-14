@@ -4588,6 +4588,11 @@ public class NetworkManager {
 
                 int responseCode = urlConnection.getResponseCode();
                 if (responseCode != 200) {
+                    if (responseCode == 204) {
+                        Log.i("getNews", "No records found");
+                        new Delete().from(News.class).execute();
+                    } else
+                        Log.e("getNews", "Code: " + responseCode);
                     return false;
                 }
 
