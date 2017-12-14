@@ -87,47 +87,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             }
         });
 
-        feedViewHolder.close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                feedViewHolder.bottomBar.setVisibility(View.VISIBLE);
-                feedViewHolder.close.setVisibility(View.GONE);
-                feedViewHolder.menu.setVisibility(View.GONE);
-                feedViewHolder.feed.setVisibility(View.VISIBLE);
-            }
-        });
-
-        if (feedViewHolder.close.getVisibility() == View.VISIBLE)
-            feedViewHolder.close.callOnClick();
-
-        feedViewHolder.hidePost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
-                    feedViewHolder.close.callOnClick();
-                    removeItem(feedViewHolder.getAdapterPosition());
-                    Snackbar.make(layout, R.string.post_hidden_message, Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-
-                if(ConnectionHandler.isConnected(context)) {
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("feed_id", item.id);
-                    map.put("student_id", DataManager.getInstance().user.id);
-                    if (NetworkManager.getInstance().hidePost(map)) {
-                        feedViewHolder.close.callOnClick();
-                        removeItem(feedViewHolder.getAdapterPosition());
-                        Snackbar.make(layout, R.string.post_hidden_message, Snackbar.LENGTH_LONG).show();
-                    } else {
-                        Snackbar.make(layout, R.string.failed_to_hide_message, Snackbar.LENGTH_LONG).show();
-                    }
-                } else {
-                    ConnectionHandler.showNoInternetConnectionSnackbar();
-                }
-            }
-        });
-
         if (item.message_from.equals(DataManager.getInstance().user.id)) {
             //feedViewHolder.open.setVisibility(View.GONE);
             if(DataManager.getInstance().user.profile_pic != null) {
@@ -298,11 +257,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         public ImageView profilePic;
         protected TextView feed;
         public TextView timeAgo;
-        public TextView hidePost;
-        public TextView hideFriend;
-        public TextView deleteFriend;
         public View menu;
-        protected View close;
         public View bottomBar;
         public View body;
         public View facebookButton, twitterButton, mailButton;
@@ -331,11 +286,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 profilePic = (ImageView) view.findViewById(R.id.feed_item_profile);
                 feed = (TextView) view.findViewById(R.id.feed_item_feed);
                 timeAgo = (TextView) view.findViewById(R.id.feed_item_time_ago);
-                hidePost = (TextView) view.findViewById(R.id.feed_item_hide_post);
-                hideFriend = (TextView) view.findViewById(R.id.feed_item_hide_friend);
-                deleteFriend = (TextView) view.findViewById(R.id.feed_item_delete_friend);
                 menu = view.findViewById(R.id.feed_item_menu);
-                close = view.findViewById(R.id.feed_item_close);
                 bottomBar = view.findViewById(R.id.feed_item_bottom_bar);
                 body = view.findViewById(R.id.feed_item_body);
                 facebookButton = view.findViewById(R.id.facebook_btn);
@@ -345,9 +296,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
                 feed.setTypeface(DataManager.getInstance().myriadpro_regular);
                 timeAgo.setTypeface(DataManager.getInstance().myriadpro_regular);
-                hidePost.setTypeface(DataManager.getInstance().myriadpro_regular);
-                hideFriend.setTypeface(DataManager.getInstance().myriadpro_regular);
-                deleteFriend.setTypeface(DataManager.getInstance().myriadpro_regular);
             } catch (Exception ignored) {
             }
         }

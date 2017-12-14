@@ -87,47 +87,6 @@ public class PushAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             }
         });
 
-        feedViewHolder.close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                feedViewHolder.bottomBar.setVisibility(View.VISIBLE);
-                feedViewHolder.close.setVisibility(View.GONE);
-                feedViewHolder.menu.setVisibility(View.GONE);
-                feedViewHolder.feed.setVisibility(View.VISIBLE);
-            }
-        });
-
-        if (feedViewHolder.close.getVisibility() == View.VISIBLE)
-            feedViewHolder.close.callOnClick();
-
-        feedViewHolder.hidePost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
-                    feedViewHolder.close.callOnClick();
-                    removeItem(feedViewHolder.getAdapterPosition());
-                    Snackbar.make(layout, R.string.post_hidden_message, Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-
-                if(ConnectionHandler.isConnected(context)) {
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("feed_id", item.id);
-                    map.put("student_id", DataManager.getInstance().user.id);
-                    if (NetworkManager.getInstance().hidePost(map)) {
-                        feedViewHolder.close.callOnClick();
-                        removeItem(feedViewHolder.getAdapterPosition());
-                        Snackbar.make(layout, R.string.post_hidden_message, Snackbar.LENGTH_LONG).show();
-                    } else {
-                        Snackbar.make(layout, R.string.failed_to_hide_message, Snackbar.LENGTH_LONG).show();
-                    }
-                } else {
-                    ConnectionHandler.showNoInternetConnectionSnackbar();
-                }
-            }
-        });
-
         GlideApp.with(context).load(R.drawable.notification_image).into(feedViewHolder.profilePic);
 
         if (item.message_from.equals(DataManager.getInstance().user.id)) {
