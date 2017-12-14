@@ -42,11 +42,15 @@ import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
 import com.studygoal.jisc.Adapters.InstitutionsAdapter;
 import com.studygoal.jisc.Constants;
 import com.studygoal.jisc.Managers.DataManager;
@@ -500,16 +504,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .requestEmail()
                 .build();
 
-        final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         ImageView login_with_google = (ImageView) findViewById(R.id.login_with_google);
         login_with_google.setOnClickListener(view -> {
             socialType = 3;
 
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            Intent signInIntent = googleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 5005);
         });
 
@@ -710,33 +711,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         } else if (socialType == 2) {
             //twitterAuthClient.onActivityResult(requestCode, resultCode, data);
         } else if (socialType == 3) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
         }
     }
 
-    private void handleSignInResult(GoogleSignInResult result) {
-        if (result.getStatus().getResolution() == null) {
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            signInGoogleAccount(account);
+        } catch (ApiException e) {
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+
             android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this);
             alertDialogBuilder.setMessage(R.string.google_play_services_update_required);
             alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#000000'>OK</font>"), (dialog, which) -> dialog.dismiss());
             android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-        } else {
-            if (result.isSuccess()) {
-                Log.d(TAG, "handleSignInResult: result " + result);
-                Log.d(TAG, "handleSignInResult: result " + result.getSignInAccount());
-
-                // Signed in successfully, show authenticated UI.
-                GoogleSignInAccount account = result.getSignInAccount();
-
-                token = account.getIdToken();
-
-                runOnUiThread(() -> loginSocial());
-
-            } else {
-                Log.e("JISC", "handleSignInResult: " + result.getStatus().getResolution());
-            }
         }
     }
 
@@ -872,5 +863,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        signInGoogleAccount(account);
+    }
+
+    private void signInGoogleAccount(GoogleSignInAccount account) {
+        if(account != null) {
+            token = account.getIdToken();
+
+            runOnUiThread(() -> loginSocial());
+        }
     }
 }

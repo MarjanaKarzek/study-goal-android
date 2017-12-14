@@ -44,15 +44,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "172717420956-e1ulocgbcd0k9lj0otssf2ul9vfh6ohn.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "172717420956-qrqlhm946bqf2134qo3buut1bd342bq8.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.therapybox.studentapp"
               }
+            },
+            {
+              "client_id": "172717420956-e1ulocgbcd0k9lj0otssf2ul9vfh6ohn.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         },
