@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:paddingBottom="145dp"
             android:orientation="vertical"
+            android:paddingBottom="145dp"
             android:visibility="visible">
 
             <ImageView
@@ -40,7 +40,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/study_goal"
                 android:textColor="#FFF"
-                android:textSize="50sp" />
+                android:textSize="@dimen/text_size_study_goal_title" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                         android:gravity="center"
                         android:text="@string/login_imastudent_member"
                         android:textColor="#ffffff"
-                        android:textSize="20sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                     <TextView
                         android:id="@+id/login_step_1_imastaff"
@@ -78,7 +78,7 @@
                         android:paddingStart="70dp"
                         android:text="@string/login_imastaff_member"
                         android:textColor="#ffffff"
-                        android:textSize="20sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                     <CheckBox
                         android:id="@+id/login_check_rememberme"
@@ -89,9 +89,12 @@
                         android:buttonTint="#ffffff"
                         android:text="@string/login_keeplogged"
                         android:textColor="#ffffff"
-                        android:textSize="20sp" />
+                        android:textSize="@dimen/text_size_normal" />
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
         <ImageView
@@ -116,7 +119,8 @@
             android:gravity="center"
             android:text="@string/demo_mode"
             android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_normal" />
+
     </RelativeLayout>
 
     <LinearLayout
@@ -138,7 +142,7 @@
             android:gravity="center"
             android:text="@string/login_search_institution"
             android:textColor="#FFF"
-            android:textSize="20sp" />
+            android:textSize="@dimen/text_size_normal" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -155,7 +159,7 @@
                 android:maxLines="1"
                 android:textColor="@color/tw__solid_white"
                 android:textColorHint="@color/tw__solid_white"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <RelativeLayout
                 android:layout_width="50dp"
@@ -170,7 +174,9 @@
                     android:layout_centerInParent="true"
                     android:padding="10dp"
                     android:src="@drawable/search_icon_white" />
+
             </RelativeLayout>
+
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -197,7 +203,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/login_institution_not_listed"
                 android:textColor="#FFF"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/login_signinwith"
@@ -207,7 +213,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/login_institution_signinwith"
                 android:textColor="#FFF"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_small" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -253,7 +259,7 @@
                 android:text="@string/login_back_to_first_page"
                 android:textAlignment="center"
                 android:textColor="#FFF"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_small" />
 
         </LinearLayout>
 
@@ -296,7 +302,9 @@
             android:id="@+id/logo_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:clickable="true" />
+            android:clickable="true"
+            android:focusable="true" />
 
     </RelativeLayout>
+
 </RelativeLayout>

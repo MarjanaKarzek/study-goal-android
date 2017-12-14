@@ -296,8 +296,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
                 feed.setTypeface(DataManager.getInstance().myriadpro_regular);
                 timeAgo.setTypeface(DataManager.getInstance().myriadpro_regular);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) { }
         }
     }
 }
