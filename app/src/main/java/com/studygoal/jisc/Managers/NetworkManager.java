@@ -3057,7 +3057,6 @@ public class NetworkManager {
         @Override
         public Boolean call() {
             try {
-
                 String apiURL = host + "fn_get_targets?student_id=" + student_id + "&language=" + language;
                 URL url = new URL(apiURL);
 

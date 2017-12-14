@@ -545,6 +545,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.e("LoginActivity", response.toString());
 
                             token = loginResult.getAccessToken().getToken();
+
                             runOnUiThread(() -> loginSocial());
                         });
 
@@ -727,9 +728,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Log.d(TAG, "handleSignInResult: result " + result.getSignInAccount());
 
                 // Signed in successfully, show authenticated UI.
-                GoogleSignInAccount acct = result.getSignInAccount();
+                GoogleSignInAccount account = result.getSignInAccount();
 
-                token = acct.getIdToken();
+                token = account.getIdToken();
 
                 runOnUiThread(() -> loginSocial());
 
