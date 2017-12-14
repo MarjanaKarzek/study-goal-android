@@ -141,7 +141,7 @@ public class TargetItemFragment extends Fragment {
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.setPadding(0, 0, 0, 0);
         webView.getSettings().setLoadWithOverviewMode(true);
-        webView.setBackgroundColor(Color.TRANSPARENT);
+        webView.setBackgroundColor(getResources().getColor(R.color.background_color));
         webView.getSettings().setUserAgentString("Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/20 Safari/537.31");
         webView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -150,7 +150,7 @@ public class TargetItemFragment extends Fragment {
                 webViewWidth = Utils.pxToDp(webView.getWidth() - 40);
             }
         });
-        webView.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:white;\"></div></body></html>", "text/html", "UTF-8", "");
+        webView.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:#fbfbfb;\"></div></body></html>", "text/html", "UTF-8", "");
 
         Module module = new Select().from(Module.class).where("module_id = ?", target.module_id).executeSingle();
 
