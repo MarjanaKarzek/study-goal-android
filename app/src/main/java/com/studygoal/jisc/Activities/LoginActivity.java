@@ -168,7 +168,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         loginStep3 = (LinearLayout) findViewById(R.id.login_step_3);
 
         loginNextButton = (ImageView) findViewById(R.id.login_next_button);
-        loginNextButton.setVisibility(View.GONE);
+        loginNextButton.setVisibility(View.INVISIBLE);
         relativeLayout.setVisibility(View.VISIBLE);
         loginStep1.setVisibility(View.VISIBLE);
         loginStep3.setVisibility(View.GONE);

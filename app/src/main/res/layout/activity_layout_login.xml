@@ -19,35 +19,45 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
             android:orientation="vertical"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/jisc_header_logo" />
-
-            <TextView
-                android:id="@+id/login_logo_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:text="@string/study_goal"
-                android:textColor="#FFF"
-                android:textSize="50sp" />
+            android:visibility="visible"
+            android:weightSum="13">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="5"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/jisc_header_logo" />
+
+                <TextView
+                    android:id="@+id/login_logo_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/study_goal"
+                    android:textColor="#FFF"
+                    android:textSize="50sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginStart="50dp"
+                android:layout_weight="4"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -92,32 +102,38 @@
                         android:textColor="#ffffff"
                         android:textSize="20sp" />
                 </LinearLayout>
+
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/login_next_button"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/login_next_arrow" />
+
+                <TextView
+                    android:id="@+id/login_demomode"
+                    android:layout_width="280dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/rounded_corners_transparent_4"
+                    android:gravity="center"
+                    android:text="@string/see_demo_account"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/login_next_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_above="@+id/login_demomode"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/login_next_arrow" />
 
-        <TextView
-            android:id="@+id/login_demomode"
-            android:layout_width="280dp"
-            android:layout_height="45dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_corners_transparent_4"
-            android:gravity="center"
-            android:text="@string/see_demo_account"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
     </RelativeLayout>
 
     <LinearLayout
@@ -291,10 +307,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/mini_logo" />
+
         <Button
             android:id="@+id/logo_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:clickable="true" />
     </RelativeLayout>
+
 </RelativeLayout>
