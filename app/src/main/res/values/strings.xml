@@ -186,7 +186,7 @@
     <string name="not_deleted_friend_request_message">Failed to remove friend request</string>
     <string name="fail_sendFriendRequest">Failed to send friend request!</string>
     <string name="any_module">Any Module</string>
-    <string name="hour">"hour "</string>
+    <string name="hour">hour</string>
     <string name="and">and</string>
     <string name="minute">minute</string>
     <string name="activity_details_title">Activity Details</string>
@@ -288,9 +288,9 @@
     <string name="empty_target_page_message">"Welcome to Study Goal.\nStart adding targets by pressing the \"+\" button.</string>
     <string name="empty_events_page_message">"No events attended yet.</string>
     <string name="empty_points_page_message">"No points achieved yet.</string>
-    <string name="daily">Daily</string>
-    <string name="Weekly">Weekly</string>
-    <string name="monthly">Monthly</string>
+    <string name="daily">daily</string>
+    <string name="Weekly">weekly</string>
+    <string name="monthly">monthly</string>
     <string name="already_added_activity">You have already logged same activity in past 48 hours</string>
     <string name="received_request">Receiving Request</string>
     <string name="fail_cancelFriendRequest">Failed to cancel sent friend request</string>

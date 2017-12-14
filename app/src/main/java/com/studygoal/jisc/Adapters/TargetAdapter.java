@@ -177,7 +177,7 @@ public class TargetAdapter extends BaseAdapter {
         text += LinguisticManager.getInstance().present.get(item.activity) + " ";
         int hour = Integer.parseInt(item.total_time) / 60;
         int minute = Integer.parseInt(item.total_time) % 60;
-        text += (hour == 1) ? "1 " + context.getString(R.string.hour) : hour + " " + context.getString(R.string.hours) + " ";
+        text += (hour == 1) ? "1 " + context.getString(R.string.hour) + " " : hour + " " + context.getString(R.string.hours) + " ";
         if (minute > 0)
             text += ((minute == 1) ? " " + context.getString(R.string.and) + " 1 " + context.getString(R.string.minute) + " " : " " + context.getString(R.string.and) + " " + minute + " " + context.getString(R.string.minutes) + " ");
 
