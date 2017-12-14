@@ -59,7 +59,6 @@ public class TargetItemFragment extends Fragment {
     public int position;
     private int necessaryTime;
     private int spentTime;
-    private boolean piChart;
     private TextView incompleteTextView;
     private List<ActivityHistory> activityHistoryList;
     private StretchTarget stretchTarget;
@@ -249,8 +248,6 @@ public class TargetItemFragment extends Fragment {
             }
         });
         webView.loadDataWithBaseURL("", "<html><head></head><body><div style=\"height:100%;width:100%;background:#fbfbfb;\"></div></body></html>", "text/html", "UTF-8", "");
-
-        piChart = true;
 
         stretchTarget = new Select().from(StretchTarget.class).where("target_id = ?", target.target_id).executeSingle();
         Module module = new Select().from(Module.class).where("module_id = ?", target.module_id).executeSingle();
