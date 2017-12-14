@@ -3158,10 +3158,10 @@ public class NetworkManager {
 
                 if (responseCode != 200) {
                     if (responseCode == 204) {
-                        Log.i("getTargets", "No records found");
-                        new Delete().from(Targets.class).execute();
+                        Log.i("getToDoTargets", "No records found");
+                        new Delete().from(ToDoTasks.class).execute();
                     } else {
-                        Log.e("getTargets", "Code: " + responseCode);
+                        Log.e("getToDoTargets", "Code: " + responseCode);
                     }
 
                     return false;
