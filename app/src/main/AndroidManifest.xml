@@ -75,8 +75,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.ForgotPasswordActivity" />
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="aabe6f656cd29919a8d107f1347dc2c158eff1d7"
