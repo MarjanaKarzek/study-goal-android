@@ -125,7 +125,7 @@ public class TargetAdapter extends BaseAdapter {
                 }
                 activityHistoryList.clear();
                 activityHistoryList.addAll(tmp);
-                if(dueDate.DAY_OF_WEEK == 7){
+                if(dueDate.get(Calendar.DAY_OF_WEEK) == 7){
                     dueToday = true;
                 }
                 break;
