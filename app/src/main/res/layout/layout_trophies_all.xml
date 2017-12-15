@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="@string/trophies_not_data"
         android:textColor="@color/light_grey"
-        android:textSize="@dimen/text_size_normal" />
+        android:textSize="@dimen/text_size_small" />
 
     <GridView
         android:id="@+id/gridlist"
