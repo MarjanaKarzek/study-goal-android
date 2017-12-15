@@ -37,16 +37,11 @@
                 android:layout_toEndOf="@+id/friends_search_imagesearch"
                 android:background="@null"
                 android:singleLine="true"
-                android:textColor="@color/dark_grey" />
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal" />
+
         </RelativeLayout>
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginBottom="5dp"-->
-        <!--android:text="@string/people_on_your_course"-->
-        <!--android:textColor="@color/light_grey"/>-->
+
     </RelativeLayout>
 
     <ListView
@@ -55,4 +50,5 @@
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:listSelector="@android:color/transparent" />
+
 </LinearLayout>

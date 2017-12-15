@@ -13,6 +13,7 @@
         android:layout_marginStart="15dp"
         android:gravity="top|center_horizontal"
         android:text="@string/no_friend"
-        android:textColor="@color/dark_grey" />
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/text_size_small"/>
 
 </LinearLayout>
