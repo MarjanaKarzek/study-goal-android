@@ -14,7 +14,8 @@
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="@string/trophies_not_data"
-        android:textColor="@color/light_grey" />
+        android:textColor="@color/light_grey"
+        android:textSize="@dimen/text_size_normal" />
 
     <GridView
         android:id="@+id/gridlist"
@@ -24,4 +25,5 @@
         android:gravity="center"
         android:numColumns="auto_fit"
         android:stretchMode="spacingWidthUniform" />
+
 </RelativeLayout>
