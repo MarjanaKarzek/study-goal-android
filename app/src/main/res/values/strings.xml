@@ -538,4 +538,7 @@
     <string name="bar_graph">Bar Graph</string>
     <string name="line_graph">Line Graph</string>
     <string name="jisc">Jisc</string>
+
+    <string name="i_agree">I Agree</string>
+    <string name="i_don_t_agree">I don\'t Agree</string>
 </resources>

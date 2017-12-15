@@ -17,7 +17,8 @@
             android:layout_centerInParent="true"
             android:text="@string/module"
             android:textColor="#FFF"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_size_normal" />
+
     </RelativeLayout>
 
     <TextView
@@ -26,7 +27,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="30dp"
-        android:textColor="@color/dark_grey" />
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/text_size_normal" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,9 +55,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/cancel"
-                    android:textSize="16sp"
-                    android:textColor="#FFF"/>
+                    android:textColor="#FFF"
+                    android:textSize="@dimen/text_size_normal" />
+
             </RelativeLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -76,9 +80,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/no"
-                    android:textSize="16sp"
-                    android:textColor="#FFF" />
+                    android:textColor="#FFF"
+                    android:textSize="@dimen/text_size_normal" />
+
             </RelativeLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -99,9 +105,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/yes"
-                    android:textSize="16sp"
-                    android:textColor="#FFF" />
+                    android:textColor="#FFF"
+                    android:textSize="@dimen/text_size_normal" />
+
             </RelativeLayout>
+
         </RelativeLayout>
+
     </LinearLayout>
+
 </LinearLayout>
