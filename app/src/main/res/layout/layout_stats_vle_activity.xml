@@ -23,7 +23,8 @@
             android:background="@drawable/round_corners_segmented_active"
             android:gravity="center"
             android:text="@string/bar_graph"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="@dimen/text_size_normal" />
 
         <TextView
             android:id="@+id/segment_button_line_graph"
@@ -32,12 +33,12 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/line_graph"
-            android:textColor="#3792ef" />
+            android:textColor="#3792ef"
+            android:textSize="@dimen/text_size_normal" />
 
     </LinearLayout>
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
@@ -64,16 +65,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp" />
+
             </RelativeLayout>
 
         </LinearLayout>
+
     </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/activity_points_date"
             android:layout_width="match_parent"
@@ -96,11 +100,12 @@
                     android:layout_height="42dp"
                     android:layout_marginEnd="2dp"
                     android:background="@drawable/round_corner_pink_hallow"
+                    android:gravity="center"
                     android:padding="5dp"
                     android:text="@string/last_7_days_short"
-                    android:gravity="center"
                     android:textColor="@color/default_blue"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size_normal" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -114,13 +119,16 @@
                     android:layout_height="42dp"
                     android:layout_marginStart="2dp"
                     android:background="@drawable/round_corner_pink_hallow"
+                    android:gravity="center"
                     android:padding="5dp"
                     android:text="@string/last_28_days_short"
-                    android:gravity="center"
                     android:textColor="@color/dark_grey"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size_normal" />
+
             </RelativeLayout>
+
         </LinearLayout>
+
         <!-- Used for future api update
         <LinearLayout
             android:id="@+id/activity_points_date"
@@ -148,7 +156,7 @@
                     android:text="@string/start"
                     android:gravity="center"
                     android:textColor="@color/dark_grey"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <Spinner
                     android:id="@+id/startDateSpinner"
@@ -157,6 +165,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@+id/vle_activity_start"
                     android:layout_centerVertical="true" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -175,7 +184,7 @@
                     android:text="@string/end"
                     android:gravity="center"
                     android:textColor="@color/dark_grey"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <Spinner
                     android:id="@+id/endDateSpinner"
@@ -184,6 +193,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@+id/vle_activity_end"
                     android:layout_centerVertical="true" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -196,7 +206,9 @@
                     android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+
             </RelativeLayout>
+
         </LinearLayout> -->
 
         <TextView
@@ -209,19 +221,21 @@
             android:text="@string/filter_modules"
             android:textAlignment="center"
             android:textColor="@color/dark_grey"
-            android:textSize="24sp" />
+            android:textSize="@dimen/text_size_normal" />
 
         <TextView
             android:id="@+id/activity_points_compare_to"
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_margin="10dp"
+            android:alpha="0.5"
             android:background="@drawable/round_corner_pink_hallow"
             android:padding="5dp"
             android:text="@string/compare_to"
             android:textAlignment="center"
             android:textColor="@color/dark_grey"
-            android:textSize="24sp"
-            android:alpha="0.5"/>
+            android:textSize="@dimen/text_size_normal" />
+
     </LinearLayout>
+
 </LinearLayout>

@@ -18,8 +18,8 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
                 android:layout_gravity="center"
                 android:background="@drawable/circle_purple"
                 android:gravity="center"
@@ -32,7 +32,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/activity_points"
                     android:textColor="#ffffff"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <TextView
                     android:id="@+id/activity_points_value"
@@ -40,8 +40,9 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="#ffffff"
-                    android:textSize="30sp"
+                    android:textSize="@dimen/text_size_large"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
             <WebView
@@ -83,11 +84,11 @@
                         android:layout_height="52dp"
                         android:layout_marginEnd="2dp"
                         android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/this_week"
-                        android:gravity="center"
                         android:textColor="@color/default_blue"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                 </RelativeLayout>
 
@@ -102,13 +103,14 @@
                         android:layout_height="52dp"
                         android:layout_marginStart="2dp"
                         android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/overall"
-                        android:gravity="center"
                         android:textColor="@color/dark_grey"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                 </RelativeLayout>
+
             </LinearLayout>
 
             <!-- used for api update
@@ -138,7 +140,7 @@
                         android:padding="5dp"
                         android:text="@string/start"
                         android:textColor="@color/dark_grey"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                     <Spinner
                         android:id="@+id/startDateSpinner"
@@ -147,6 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/activity_points_start"
                         android:layout_centerVertical="true" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -165,7 +168,7 @@
                         android:padding="5dp"
                         android:text="@string/end"
                         android:textColor="@color/dark_grey"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                     <Spinner
                         android:id="@+id/endDateSpinner"
@@ -174,6 +177,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/activity_points_end"
                         android:layout_centerVertical="true" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -186,7 +190,9 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+
                 </RelativeLayout>
+
             </LinearLayout>
 
             <TextView
@@ -199,7 +205,7 @@
                 android:padding="5dp"
                 android:text="@string/filter_modules"
                 android:textColor="@color/dark_grey"
-                android:textSize="24sp" /> -->
+                android:textSize="@dimen/text_size_normal" /> -->
 
             <ListView
                 android:id="@+id/activity_points_list_view"
@@ -215,7 +221,11 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:text="@string/empty_points_page_message"
-                android:textColor="@color/dark_grey" />
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal" />
+
         </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>

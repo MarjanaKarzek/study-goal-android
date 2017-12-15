@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal"
         android:weightSum="7">
 
@@ -27,19 +27,20 @@
                 android:layout_height="42dp"
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/round_corner_pink_hallow_transparent"
+                android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/start"
-                android:gravity="center"
                 android:textColor="@color/dark_grey"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <Spinner
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:id="@+id/startDateSpinner"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignEnd="@+id/app_usage_start" />
+                android:layout_alignEnd="@+id/app_usage_start"
+                android:layout_centerVertical="true" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -54,19 +55,20 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginStart="2dp"
                 android:background="@drawable/round_corner_pink_hallow_transparent"
+                android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/end"
-                android:gravity="center"
                 android:textColor="@color/dark_grey"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <Spinner
-                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:id="@+id/endDateSpinner"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignEnd="@+id/app_usage_end" />
+                android:layout_alignEnd="@+id/app_usage_end"
+                android:layout_centerVertical="true" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -74,11 +76,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_horizontal">
+
             <Button
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+
         </RelativeLayout>
+
     </LinearLayout>
 
     <ListView
@@ -86,4 +91,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="2dp" />
+
 </LinearLayout>

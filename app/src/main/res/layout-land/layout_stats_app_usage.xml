@@ -14,8 +14,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:gravity="center">
 
             <ListView
@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:divider="@color/tw__solid_white"
                 android:dividerHeight="30dp" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -54,12 +55,12 @@
                         android:layout_height="52dp"
                         android:layout_marginEnd="10dp"
                         android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/start"
-                        android:gravity="center"
                         android:textAlignment="center"
                         android:textColor="@color/dark_grey"
-                        android:textSize="24sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                     <Spinner
                         android:id="@+id/startDateSpinner"
@@ -68,6 +69,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/app_usage_start"
                         android:layout_centerVertical="true" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -82,12 +84,12 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/round_corner_pink_hallow_transparent"
+                        android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/end"
-                        android:gravity="center"
                         android:textAlignment="center"
                         android:textColor="@color/dark_grey"
-                        android:textSize="24sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                     <Spinner
                         android:id="@+id/endDateSpinner"
@@ -96,6 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/app_usage_end"
                         android:layout_centerVertical="true" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -108,8 +111,13 @@
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+
                 </RelativeLayout>
+
             </LinearLayout>
+
         </RelativeLayout>
+
     </LinearLayout>
+
 </LinearLayout>

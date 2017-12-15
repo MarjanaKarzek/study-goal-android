@@ -21,7 +21,8 @@
             android:background="@drawable/round_corners_segmented_active"
             android:gravity="center"
             android:text="@string/summary"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="@dimen/text_size_normal" />
 
         <TextView
             android:id="@+id/segment_button_all_events"
@@ -30,7 +31,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/all"
-            android:textColor="#3792ef" />
+            android:textColor="#3792ef"
+            android:textSize="@dimen/text_size_normal" />
 
     </LinearLayout>
 
@@ -39,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/segment_controller">
+
         <LinearLayout
             android:id="@+id/viewFlipperChild2"
             android:layout_width="match_parent"
@@ -46,6 +49,7 @@
             android:background="@color/background_color"
             android:orientation="vertical"
             android:weightSum="10">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -65,6 +69,7 @@
                     android:gravity="center"
                     android:text="@string/empty_events_page_message"
                     android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_small"
                     android:visibility="gone" />
 
                 <!-- used for future api update
@@ -94,7 +99,7 @@
                             android:text="@string/start"
                             android:gravity="center"
                             android:textColor="@color/dark_grey"
-                            android:textSize="18sp" />
+                            android:textSize="@dimen/text_size_normal" />
 
                         <Spinner
                             android:id="@+id/startDateSpinner"
@@ -103,6 +108,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignEnd="@+id/attendance_start_summary"
                             android:layout_centerVertical="true" />
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -121,7 +127,7 @@
                             android:text="@string/end"
                             android:gravity="center"
                             android:textColor="@color/dark_grey"
-                            android:textSize="18sp" />
+                            android:textSize="@dimen/text_size_normal" />
 
                         <Spinner
                             android:id="@+id/endDateSpinner"
@@ -130,6 +136,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignEnd="@+id/attendance_end_summary"
                             android:layout_centerVertical="true" />
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -142,6 +149,7 @@
                             android:layout_width="42dp"
                             android:layout_height="42dp"
                             android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -155,7 +163,7 @@
                     android:text="@string/filter_modules"
                     android:textAlignment="center"
                     android:textColor="@color/dark_grey"
-                    android:textSize="24sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -163,27 +171,33 @@
                     android:orientation="horizontal"
                     android:weightSum="5"
                     android:layout_margin="10dp">
+
                     <ImageView
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_weight="1"
                         android:src="@drawable/compare_icon"/>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:layout_gravity="center"
                         android:text="@string/compare_to_leader"
-                        android:textSize="24sp"
+                        android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/dark_grey"
                         android:layout_marginStart="15dp"/>
+
                     <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center"/>
+
                     </LinearLayout>-->
+
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -191,6 +205,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <!-- used for future api update
             <LinearLayout
                 android:id="@+id/attendace_date_all"
@@ -218,7 +233,7 @@
                         android:text="@string/start"
                         android:gravity="center"
                         android:textColor="@color/dark_grey"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                     <Spinner
                         android:id="@+id/startDateSpinnerAll"
@@ -227,6 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/attendance_start_all"
                         android:layout_centerVertical="true" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -245,7 +261,7 @@
                         android:text="@string/end"
                         android:gravity="center"
                         android:textColor="@color/dark_grey"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/text_size_normal" />
 
                     <Spinner
                         android:id="@+id/endDateSpinnerAll"
@@ -254,6 +270,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/attendance_end_all"
                         android:layout_centerVertical="true" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -266,7 +283,9 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:background="@drawable/round_corner_pink_hallow_settings_icon" />
+
                 </RelativeLayout>
+
             </LinearLayout>
 
             <TextView
@@ -279,7 +298,8 @@
                 android:text="@string/filter_modules"
                 android:textAlignment="center"
                 android:textColor="@color/dark_grey"
-                android:textSize="24sp" /> -->
+                android:textSize="@dimen/text_size_normal" /> -->
+
             <ListView
                 android:id="@+id/event_attendance_listView"
                 android:layout_width="match_parent"
@@ -289,15 +309,20 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="15dp"
                 android:background="#d1e0f3" />
+
             <TextView
                 android:id="@+id/events_attended_list_emptyView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="50dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="50dp"
                 android:gravity="center"
                 android:text="@string/empty_events_page_message"
-                android:textColor="@color/dark_grey"/>
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_small" />
+
         </LinearLayout>
+
     </ViewFlipper>
+
 </RelativeLayout>
