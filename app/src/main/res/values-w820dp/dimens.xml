@@ -9,6 +9,8 @@
     <dimen name="text_size_heading">30sp</dimen>
     <dimen name="text_size_title">37sp</dimen>
 
+    <dimen name="text_size_checkin_pin">48sp</dimen>
+    <dimen name="text_size_x_large">50sp</dimen>
     <dimen name="text_size_jisc_title">32sp</dimen>
     <dimen name="text_size_study_goal_title">55sp</dimen>
     <dimen name="text_size_notification_number">16sp</dimen>

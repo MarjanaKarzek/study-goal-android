@@ -11,7 +11,9 @@
     <dimen name="text_size_normal">18sp</dimen>
     <dimen name="text_size_title">20sp</dimen>
     <dimen name="text_size_large">30sp</dimen>
+    <dimen name="text_size_x_large">50sp</dimen>
 
+    <dimen name="text_size_checkin_pin">48sp</dimen>
     <dimen name="text_size_jisc_title">18sp</dimen>
     <dimen name="text_size_study_goal_title">50sp</dimen>
     <dimen name="text_size_notification_number">12sp</dimen>

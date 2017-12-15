@@ -43,14 +43,13 @@ import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.activeandroid.util.Log;
-import com.lb.auto_fit_textview.AutoResizeTextView;
 import com.studygoal.jisc.Adapters.DrawerAdapter;
 import com.studygoal.jisc.AppCore;
 import com.studygoal.jisc.Constants;
 import com.studygoal.jisc.Fragments.ActivityFeed.FeedFragment;
 import com.studygoal.jisc.Fragments.Checkin.CheckInFragment;
 import com.studygoal.jisc.Fragments.Friends.FriendsFragment;
-import com.studygoal.jisc.Fragments.Log.LogActivityHistoryFragment;
+import com.studygoal.jisc.Fragments.Log.LogFragment;
 import com.studygoal.jisc.Fragments.Log.LogNewActivityFragment;
 import com.studygoal.jisc.Fragments.Settings.SettingsFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsAppUsageFragment;
@@ -94,7 +93,7 @@ public class MainActivity extends FragmentActivity {
     public DrawerLayout drawer;
     public RelativeLayout friend, settings, addTarget, send, timer, back;
     private SettingsFragment settingsFragment;
-    private LogActivityHistoryFragment logFragment;
+    private LogFragment logFragment;
     public FeedFragment feedFragment;
     public boolean isLandscape = DataManager.getInstance().isLandscape;
     private int selectedPosition;
@@ -344,7 +343,7 @@ public class MainActivity extends FragmentActivity {
                                 .commit();
                         break;
                     case "log":
-                        logFragment = new LogActivityHistoryFragment();
+                        logFragment = new LogFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_fragment, logFragment)
                                 .commit();
@@ -438,7 +437,7 @@ public class MainActivity extends FragmentActivity {
                     destination = new StatsActivityPointsFragment();
                 } else if (selection.equals(getString(R.string.log))) {
                     //separated to have a copy of the object in logFragment
-                    logFragment = new LogActivityHistoryFragment();
+                    logFragment = new LogFragment();
                     destination = logFragment;
                 } else if (selection.equals(getString(R.string.target))) {
                     destination = new TargetFragment();
@@ -650,7 +649,7 @@ public class MainActivity extends FragmentActivity {
             for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
                 getSupportFragmentManager().popBackStackImmediate();
             }
-            logFragment = new LogActivityHistoryFragment();
+            logFragment = new LogFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, logFragment)
                     .commit();

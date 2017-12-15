@@ -34,8 +34,8 @@ import com.studygoal.jisc.Utils.Utils;
 
 import java.util.HashMap;
 
-public class ActivityDetailsFragment extends Fragment {
-    private static final String TAG = ActivityDetailsFragment.class.getSimpleName();
+public class LogActivityDetailsFragment extends Fragment {
+    private static final String TAG = LogActivityDetailsFragment.class.getSimpleName();
 
     private View mainView;
     public ActivityHistory activityHistory;
@@ -54,7 +54,7 @@ public class ActivityDetailsFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 
-        mainView = inflater.inflate(R.layout.layout_activity_details, container, false);
+        mainView = inflater.inflate(R.layout.layout_log_activity_details, container, false);
 
         save = (ImageView) mainView.findViewById(R.id.save);
         Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.getInstance().images.get(activityHistory.activity)).into((ImageView)mainView.findViewById(R.id.activity_icon));
@@ -91,7 +91,7 @@ public class ActivityDetailsFragment extends Fragment {
             public void onClick(View v) {
 
                 if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ActivityDetailsFragment.this.getActivity());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LogActivityDetailsFragment.this.getActivity());
                     alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_deleteactivitylog) + "</font>"));
                     alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                         @Override

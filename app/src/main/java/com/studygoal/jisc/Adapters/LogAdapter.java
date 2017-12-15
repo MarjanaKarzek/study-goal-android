@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Fragments.Log.LogActivityHistoryFragment;
+import com.studygoal.jisc.Fragments.Log.LogFragment;
 import com.studygoal.jisc.Fragments.Log.LogLogActivityFragment;
 import com.studygoal.jisc.Fragments.Log.LogNewActivityFragment;
 import com.studygoal.jisc.Activities.MainActivity;
@@ -31,16 +31,16 @@ import com.studygoal.jisc.Utils.Utils;
 
 import java.util.List;
 
-public class ActivitiesHistoryAdapter extends BaseAdapter {
-    private static final String TAG = ActivitiesHistoryAdapter.class.getSimpleName();
+public class LogAdapter extends BaseAdapter {
+    private static final String TAG = LogAdapter.class.getSimpleName();
 
     public List<ActivityHistory> historyList;
     private LayoutInflater inflater;
     private Context context;
-    private LogActivityHistoryFragment fragment;
+    private LogFragment fragment;
     private Boolean hasRunning = false;
 
-    public ActivitiesHistoryAdapter(LogActivityHistoryFragment fragment) {
+    public LogAdapter(LogFragment fragment) {
         this.fragment = fragment;
         this.context = fragment.getActivity();
 
@@ -110,7 +110,7 @@ public class ActivitiesHistoryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item_history, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_log, parent, false);
         }
         final ActivityHistory activityHistory = historyList.get(position);
 

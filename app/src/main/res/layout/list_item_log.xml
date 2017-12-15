@@ -34,8 +34,10 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/edit"
                     android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_size_normal" />
+
             </LinearLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -62,7 +64,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/delete"
                     android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_size_normal" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -94,6 +96,8 @@
             android:layout_margin="15dp"
             android:layout_weight="8"
             android:textColor="@color/light_purple_text"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_normal" />
+
     </LinearLayout>
+    
 </com.daimajia.swipe.SwipeLayout>

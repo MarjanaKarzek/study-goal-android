@@ -1,17 +1,18 @@
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipelayout"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="130dp">
+
     <!-- Bottom View Start-->
     <LinearLayout
         android:id="@+id/bottom_wrapper"
-        android:layout_width="120dp"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:weightSum="1">
 
         <RelativeLayout
             android:id="@+id/edit"
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@color/default_blue">
 
@@ -22,8 +23,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_centerInParent="true"
                     android:src="@drawable/edit_image" />
 
@@ -33,13 +34,15 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/edit"
                     android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_size_normal" />
+
             </LinearLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/delete"
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@color/default_red">
 
@@ -50,8 +53,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/delete_image" />
 
@@ -61,9 +64,12 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/delete"
                     android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_size_normal" />
+
             </LinearLayout>
+
         </RelativeLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -93,19 +99,8 @@
             android:layout_margin="15dp"
             android:layout_weight="8"
             android:textColor="@color/light_purple_text"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_normal" />
 
-        <!--<RelativeLayout-->
-        <!--android:id="@+id/history_item_ellipse"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1">-->
-        <!--<ImageView-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:layout_width="15dp"-->
-        <!--android:layout_height="15dp"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:src="@drawable/ellipse"/>-->
-        <!--</RelativeLayout>-->
     </LinearLayout>
+
 </com.daimajia.swipe.SwipeLayout>

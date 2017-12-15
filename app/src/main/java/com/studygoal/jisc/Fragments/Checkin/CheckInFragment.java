@@ -15,9 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.studygoal.jisc.Adapters.ActivitiesHistoryAdapter;
+import com.studygoal.jisc.Adapters.LogAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.R;
@@ -37,7 +35,7 @@ public class CheckInFragment extends Fragment {
 
     private View mainView;
     private ListView list;
-    private ActivitiesHistoryAdapter adapter;
+    private LogAdapter adapter;
     private SwipeRefreshLayout layout;
     private boolean gps_enabled = false;
     private boolean network_enabled = false;
