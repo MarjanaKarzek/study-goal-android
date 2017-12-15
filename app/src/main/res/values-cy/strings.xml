@@ -496,4 +496,6 @@
     <string name="chart">PLACEHOLDER</string>
     <string name="bar_graph">PLACEHOLDER</string>
     <string name="line_graph">PLACEHOLDER</string>
+    <string name="i_agree">PLACEHOLDER</string>
+    <string name="i_don_t_agree">PLACEHOLDER</string>
 </resources>

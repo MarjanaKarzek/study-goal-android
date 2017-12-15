@@ -45,6 +45,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/camera" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -61,16 +62,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2.5dp"
                     android:textColor="#FFF"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <TextView
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#FFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
+
             </LinearLayout>
+
         </RelativeLayout>
+
     </RelativeLayout>
 
     <ScrollView
@@ -81,7 +85,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="8.05">
 
             <RelativeLayout
                 android:id="@+id/friends_layout"
@@ -107,7 +112,7 @@
                     android:layout_toEndOf="@+id/image_friends"
                     android:text="@string/my_friends"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <TextView
                     android:id="@+id/friends_value"
@@ -120,7 +125,7 @@
                     android:layout_toStartOf="@+id/arrow_friends"
                     android:gravity="end"
                     android:textColor="@color/light_purple_text"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
                     android:id="@+id/arrow_friends"
@@ -136,6 +141,7 @@
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
                     android:background="#edeeee" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -162,7 +168,7 @@
                     android:layout_toEndOf="@+id/image_trophies"
                     android:text="@string/trophies"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <TextView
                     android:id="@+id/trophies_value"
@@ -175,7 +181,7 @@
                     android:layout_toStartOf="@+id/arrow_trophies"
                     android:gravity="end"
                     android:textColor="@color/light_purple_text"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
                     android:id="@+id/arrow_trophies"
@@ -191,6 +197,7 @@
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
                     android:background="#edeeee" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -217,7 +224,7 @@
                     android:layout_toEndOf="@+id/image_home"
                     android:text="@string/home_screen"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <TextView
                     android:id="@+id/home_value"
@@ -229,7 +236,7 @@
                     android:layout_toStartOf="@+id/arrow_home"
                     android:gravity="end"
                     android:textColor="@color/light_purple_text"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
                     android:id="@+id/arrow_home"
@@ -245,6 +252,7 @@
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
                     android:background="#edeeee" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -271,7 +279,7 @@
                     android:layout_toEndOf="@+id/image_language"
                     android:text="@string/language"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <TextView
                     android:id="@+id/language_value"
@@ -284,7 +292,7 @@
                     android:layout_toStartOf="@+id/arrow_language"
                     android:gravity="end"
                     android:textColor="@color/light_purple_text"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
                     android:id="@+id/arrow_language"
@@ -300,6 +308,7 @@
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
                     android:background="#edeeee" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -326,7 +335,7 @@
                     android:layout_toEndOf="@+id/image_terms"
                     android:text="@string/terms"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <TextView
                     android:id="@+id/terms_value"
@@ -339,7 +348,7 @@
                     android:layout_toStartOf="@+id/arrow_terms"
                     android:gravity="end"
                     android:textColor="@color/light_purple_text"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
                     android:id="@+id/arrow_terms"
@@ -355,6 +364,7 @@
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
                     android:background="#edeeee" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -366,7 +376,7 @@
                 <ImageView
                     android:id="@+id/image_bugreport"
                     android:layout_width="50dp"
-                    android:layout_height="20dp"
+                    android:layout_height="50dp"
                     android:layout_marginBottom="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"
@@ -381,7 +391,7 @@
                     android:layout_toEndOf="@id/image_bugreport"
                     android:text="@string/report_feature_bug"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -396,9 +406,8 @@
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
                     android:background="#edeeee" />
+
             </RelativeLayout>
-
-
 
             <RelativeLayout
                 android:id="@+id/privacy_layout"
@@ -409,7 +418,7 @@
                 <ImageView
                     android:id="@+id/image_privacystatement"
                     android:layout_width="50dp"
-                    android:layout_height="20dp"
+                    android:layout_height="50dp"
                     android:layout_marginBottom="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"
@@ -424,7 +433,7 @@
                     android:layout_toEndOf="@id/image_privacystatement"
                     android:text="@string/privacy_statement"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -433,8 +442,11 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/arrow_right" />
+
             </RelativeLayout>
+
         </LinearLayout>
+
     </ScrollView>
 
 </RelativeLayout>

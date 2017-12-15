@@ -286,13 +286,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 profilePic = (ImageView) view.findViewById(R.id.feed_item_profile);
                 feed = (TextView) view.findViewById(R.id.feed_item_feed);
                 timeAgo = (TextView) view.findViewById(R.id.feed_item_time_ago);
-                menu = view.findViewById(R.id.feed_item_menu);
                 bottomBar = view.findViewById(R.id.feed_item_bottom_bar);
                 body = view.findViewById(R.id.feed_item_body);
                 facebookButton = view.findViewById(R.id.facebook_btn);
                 twitterButton = view.findViewById(R.id.twitter_btn);
                 mailButton = view.findViewById(R.id.mail_btn);
-                selfPost = view.findViewById(R.id.feed_item_selfpost);
 
                 feed.setTypeface(DataManager.getInstance().myriadpro_regular);
                 timeAgo.setTypeface(DataManager.getInstance().myriadpro_regular);
