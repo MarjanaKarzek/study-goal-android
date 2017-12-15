@@ -3,35 +3,51 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     android:orientation="vertical"
-    android:weightSum="10"
-    android:background="@color/background_color">
+    android:weightSum="10">
+
     <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipelayout"
-        android:layout_width="match_parent" android:layout_height="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:layout_marginTop="10dp">
+
         <!-- Bottom View Start-->
         <LinearLayout
             android:id="@+id/bottom_wrapper"
-            android:layout_width="120dp"
-            android:weightSum="1"
-            android:layout_height="match_parent">
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+
             <RelativeLayout
                 android:id="@+id/edit"
-                android:layout_width="60dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:background="@color/default_blue">
+
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/edit_image"
-                    android:layout_centerInParent="true"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/edit_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/edit"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/text_size_normal" />
+
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/delete"
-                android:layout_width="60dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:background="@color/default_red">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,200 +55,244 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/delete_image"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/delete_image" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#ffffff"
-                        android:text="@string/delete"
                         android:layout_marginTop="10dp"
-                        android:textSize="14sp"/>
+                        android:text="@string/delete"
+                        android:textColor="#ffffff"
+                        android:textSize="@dimen/text_size_normal" />
+
                 </LinearLayout>
+
             </RelativeLayout>
+
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="10"
-            android:background="#FFF">
+            android:background="#FFF"
+            android:weightSum="10">
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.55">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:orientation="vertical">
+
                     <ImageView
                         android:id="@+id/activity_icon"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/activity_icon_1"/>
+                        android:src="@drawable/activity_icon_1" />
+
                     <RelativeLayout
                         android:id="@+id/colorbar"
                         android:layout_width="35dp"
-                        android:layout_marginTop="10dp"
                         android:layout_height="1.5dp"
-                        android:background="#000"/>
+                        android:layout_marginTop="10dp"
+                        android:background="#000" />
+
                 </LinearLayout>
+
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/target_item_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:layout_margin="10dp"
                 android:layout_gravity="center"
-                android:textSize="16sp"
-                android:textColor="@color/dark_grey"/>
+                android:layout_margin="10dp"
+                android:layout_weight="8"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_normal" />
+
         </LinearLayout>
+
     </com.daimajia.swipe.SwipeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#DCDCDC"/>
+        android:background="#DCDCDC" />
+
     <RelativeLayout
         android:id="@+id/main_all_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7">
+
         <WebView
             android:id="@+id/piechart"
             android:layout_width="285dp"
             android:layout_height="285dp"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
+
         <RelativeLayout
             android:id="@+id/piechart_aux"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_centerInParent="true">
+
             <TextView
                 android:id="@+id/target_item_incomplete_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="32sp"
-                android:visibility="gone"
-                android:textColor="@color/login_btn_purple"/>
+                android:textColor="@color/login_btn_purple"
+                android:textSize="@dimen/text_size_large"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/target_item_complete_imageview"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_gravity="center"
-                    android:visibility="gone"
-                    android:src="@drawable/star"/>
+                    android:src="@drawable/star"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/target_item_complete_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:visibility="gone"
-                    android:textSize="24sp"
-                    android:textColor="@color/login_btn_purple"/>
+                    android:textColor="@color/login_btn_purple"
+                    android:textSize="@dimen/text_size_normal"
+                    android:visibility="gone" />
+
             </LinearLayout>
+
         </RelativeLayout>
+
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/share_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:visibility="gone">
+
                 <ImageView
                     android:id="@+id/facebook_btn"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/facebook_color"
+                    android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
-                    android:layout_gravity="center"/>
+                    android:src="@drawable/facebook_color" />
+
                 <ImageView
                     android:id="@+id/twitter_btn"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/twitter_color"
+                    android:layout_gravity="center"
                     android:layout_marginEnd="25dp"
                     android:layout_marginStart="25dp"
-                    android:layout_gravity="center"/>
+                    android:src="@drawable/twitter_color" />
+
                 <ImageView
                     android:id="@+id/mail_btn"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/email_color"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:src="@drawable/email_color" />
+
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/target_reached_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:visibility="gone">
+
                 <LinearLayout
                     android:id="@+id/target_reached_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/target_reached"
-                        android:textSize="24sp"
-                        android:textColor="#AE65D0"/>
+                        android:textColor="#AE65D0"
+                        android:textSize="@dimen/text_size_normal" />
+
                     <ImageView
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/target_share_btn"/>
+                        android:src="@drawable/target_share_btn" />
+
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/target_reached_stretch_present"
-                    android:visibility="gone"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:textColor="@color/dark_grey"
-                    android:gravity="center"/>
+                    android:visibility="gone" />
+
             </LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/target_set_stretch_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="0dp"
                 android:background="@drawable/round_corner_btn"
-                android:visibility="gone"
-                android:layout_gravity="center_horizontal">
+                android:visibility="gone">
+
                 <TextView
                     android:id="@+id/target_stretch_btn_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_centerInParent="true"
                     android:layout_marginBottom="12dp"
                     android:layout_marginLeft="35dp"
                     android:layout_marginRight="35dp"
-                    android:textSize="16sp"
-                    android:layout_centerInParent="true"
+                    android:layout_marginTop="12dp"
                     android:text="@string/set_stretch_goal"
-                    android:textColor="#FFF"/>
+                    android:textColor="#FFF"
+                    android:textSize="@dimen/text_size_normal" />
+
             </RelativeLayout>
+
         </LinearLayout>
+
     </RelativeLayout>
+
 </LinearLayout>

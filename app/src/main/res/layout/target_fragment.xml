@@ -29,7 +29,7 @@
                     android:orientation="horizontal"
                     android:visibility="visible">
 
-          
+
                     <RadioButton
                         android:id="@+id/target_single"
                         android:layout_width="match_parent"
@@ -40,8 +40,8 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/target_add_single"
-                        android:textColor="@drawable/radio_button_text" />        
-                    
+                        android:textColor="@drawable/radio_button_text" />
+
                     <RadioButton
                         android:id="@+id/target_recurring"
                         android:layout_width="match_parent"
@@ -68,8 +68,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:visibility="gone"
-                    android:listSelector="@color/tw__transparent"/>
+                    android:listSelector="@color/tw__transparent"
+                    android:visibility="gone" />
 
                 <RelativeLayout
                     android:id="@+id/tutorial_message"
@@ -86,9 +86,14 @@
                         android:text="@string/empty_target_page_message"
                         android:textAlignment="center"
                         android:textColor="@color/dark_grey"
-                        android:textSize="22sp" />
+                        android:textSize="@dimen/text_size_normal" />
+
                 </RelativeLayout>
+
             </LinearLayout>
+
         </android.support.v4.widget.SwipeRefreshLayout>
+
     </RelativeLayout>
+
 </layout>

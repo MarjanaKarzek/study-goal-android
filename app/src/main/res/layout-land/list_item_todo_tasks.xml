@@ -1,18 +1,48 @@
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipelayout"
     android:layout_width="match_parent"
-    android:layout_height="108dp">
+    android:layout_height="130dp">
 
     <!-- Bottom View Start-->
     <LinearLayout
         android:id="@+id/bottom_wrapper"
-        android:layout_width="120dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:weightSum="1">
 
         <RelativeLayout
+            android:id="@+id/done"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/default_green">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/done_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/done"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/text_size_normal" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/edit"
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@color/default_blue">
 
@@ -23,9 +53,9 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerInParent="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/edit_image" />
 
                 <TextView
@@ -42,7 +72,7 @@
 
         <RelativeLayout
             android:id="@+id/delete"
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@color/default_red">
 
@@ -53,8 +83,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/delete_image" />
 
@@ -73,9 +103,10 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_color"
+        android:background="@color/to_do_item_general_background"
         android:weightSum="10">
 
         <RelativeLayout
@@ -91,16 +122,9 @@
 
                 <ImageView
                     android:id="@+id/activity_icon"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/activity_icon_1" />
-
-                <RelativeLayout
-                    android:id="@+id/colorbar"
-                    android:layout_width="35dp"
-                    android:layout_height="1.5dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#000" />
 
             </LinearLayout>
 
@@ -117,5 +141,5 @@
             android:textSize="@dimen/text_size_normal" />
 
     </LinearLayout>
-
+    
 </com.daimajia.swipe.SwipeLayout>

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/drawer_layout"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:fitsSystemWindows="true" tools:openDrawer="start">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/main_screen_navbar"
@@ -24,21 +27,21 @@
 
                 <ImageView
                     android:id="@+id/menu_icon"
-                    android:layout_marginStart="20dp"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                    android:src="@drawable/menu_icon2"
-                    android:layout_centerInParent="true"/>
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/menu_icon2" />
 
                 <TextView
-                    android:layout_toEndOf="@id/menu_icon"
-                    android:layout_marginStart="10dp"
                     android:layout_width="85dp"
                     android:layout_height="65dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/menu_icon"
+                    android:gravity="center"
                     android:text="Jisc"
                     android:textColor="@color/tw__solid_white"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_jisc_title"/>
+                    android:textSize="@dimen/text_size_jisc_title" />
 
             </LinearLayout>
 
@@ -46,59 +49,59 @@
                 android:id="@+id/main_screen_back"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:layout_marginStart="10dp"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp">
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_centerInParent="true"
                     android:src="@drawable/arrow_left"
-                    android:tint="@android:color/white"
-                    android:layout_centerInParent="true"/>
+                    android:tint="@android:color/white" />
 
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:layout_centerVertical="true"
+                android:layout_height="65dp"
                 android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp">
 
                 <RelativeLayout
                     android:id="@+id/send"
                     android:layout_width="55dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_height="55dp">
+                    android:layout_height="55dp"
+                    android:layout_marginEnd="5dp">
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/send"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/send" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/main_screen_friend"
                     android:layout_width="55dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_height="55dp">
+                    android:layout_height="55dp"
+                    android:layout_marginStart="15dp">
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/friend_icon"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/friend_icon" />
 
                     <RelativeLayout
                         android:id='@+id/incoming_fr'
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:background="@drawable/circle_red"
-                        android:visibility="gone"
                         android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true">
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/circle_red"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/incoming_fr_text"
@@ -107,8 +110,8 @@
                             android:layout_centerInParent="true"
                             android:layout_marginEnd="3dp"
                             android:text="1"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_notification_number"/>
+                            android:textSize="@dimen/text_size_notification_number"
+                            android:textStyle="bold" />
 
                     </RelativeLayout>
 
@@ -116,29 +119,29 @@
 
                 <RelativeLayout
                     android:id="@+id/main_screen_addtarget"
-                    android:layout_width="55dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_height="55dp">
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="15dp">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/addtarget_icon"
-                        android:layout_centerInParent="true"/>
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/addtarget_icon" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/main_screen_running"
                     android:layout_width="55dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_height="55dp">
+                    android:layout_height="55dp"
+                    android:layout_marginStart="15dp">
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/timer_white"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/timer_white" />
 
                 </RelativeLayout>
 
@@ -146,14 +149,14 @@
                     android:id="@+id/main_screen_settings"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp">
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp">
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/settings"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/settings" />
 
                 </RelativeLayout>
 
@@ -166,7 +169,7 @@
                 android:layout_centerInParent="true"
                 android:text="@string/settings"
                 android:textColor="#FFF"
-                android:textSize="@dimen/text_size_title"/>
+                android:textSize="@dimen/text_size_title" />
 
         </RelativeLayout>
 
@@ -174,31 +177,32 @@
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/main_screen_navbar"/>
+            android:layout_below="@+id/main_screen_navbar" />
 
         <RelativeLayout
             android:id="@+id/blackout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:background="#88000000">
+            android:background="#88000000"
+            android:visibility="gone">
 
             <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_margin="20dp"
-                android:indeterminate="true"
                 android:layout_centerInParent="true"
-                />
+                android:layout_margin="20dp"
+                android:indeterminate="true" />
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <ListView android:id="@+id/nav_view"
-        android:layout_width="300dp" android:layout_height="match_parent"
+    <ListView
+        android:id="@+id/nav_view"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#FFF"/>
+        android:background="#FFF" />
 
 </android.support.v4.widget.DrawerLayout>

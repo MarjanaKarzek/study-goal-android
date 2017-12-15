@@ -28,7 +28,8 @@
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="@string/target_add_single"
-                android:textColor="@drawable/radio_button_text" />
+                android:textColor="@drawable/radio_button_text"
+              android:textSize="@dimen/text_size_normal"/>
             
             <RadioButton
                 android:id="@+id/target_recurring"
@@ -41,8 +42,8 @@
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="@string/target_add_recurring"
-                android:textColor="@drawable/radio_button_text" />
-
+                android:textColor="@drawable/radio_button_text"
+                android:textSize="@dimen/text_size_normal"/>
 
         </RadioGroup>
 
@@ -89,7 +90,8 @@
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="20dp"
                                     android:text="@string/choose_module_and_activity"
-                                    android:textSize="18sp" />
+                                    android:textSize="@dimen/text_size_normal" />
+
                             </RelativeLayout>
 
                             <LinearLayout
@@ -127,6 +129,7 @@
                                                     android:layout_height="30dp"
                                                     android:layout_centerInParent="true"
                                                     android:src="@drawable/newactivity_choose_icon" />
+
                                             </RelativeLayout>
 
                                             <LinearLayout
@@ -141,10 +144,10 @@
                                                     android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
                                                     android:layout_marginStart="10dp"
-                                                    android:layout_weight="4"
+                                                    android:layout_weight="5"
                                                     android:text="@string/activity_type"
                                                     android:textColor="@color/default_blue"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
 
                                                 <android.support.v7.widget.AppCompatTextView
                                                     android:id="@+id/addtarget_activityType_textView"
@@ -152,13 +155,16 @@
                                                     android:layout_width="0dp"
                                                     android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
-                                                    android:layout_weight="6"
+                                                    android:layout_weight="5"
                                                     android:gravity="end"
                                                     android:paddingStart="3dp"
                                                     android:textColor="#8a63cc"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
+
                                             </LinearLayout>
+
                                         </RelativeLayout>
+
                                     </android.support.v7.widget.CardView>
 
                                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -184,6 +190,7 @@
                                                     android:layout_height="35dp"
                                                     android:layout_centerInParent="true"
                                                     android:src="@drawable/log_activity_choose_activity" />
+
                                             </RelativeLayout>
 
                                             <LinearLayout
@@ -198,10 +205,10 @@
                                                     android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
                                                     android:layout_marginStart="10dp"
-                                                    android:layout_weight="4.5"
+                                                    android:layout_weight="5"
                                                     android:text="@string/choose_activity"
                                                     android:textColor="@color/default_blue"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
 
                                                 <android.support.v7.widget.AppCompatTextView
                                                     android:id="@+id/addtarget_chooseActivity_textView"
@@ -209,14 +216,17 @@
                                                     android:layout_width="0dp"
                                                     android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
-                                                    android:layout_weight="5.5"
+                                                    android:layout_weight="5"
                                                     android:gravity="end"
                                                     android:paddingStart="3dp"
                                                     android:text=""
                                                     android:textColor="#8a63cc"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
+
                                             </LinearLayout>
+
                                         </RelativeLayout>
+
                                     </android.support.v7.widget.CardView>
 
                                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -239,8 +249,10 @@
                                                 android:layout_centerInParent="true"
                                                 android:text="@string/_for"
                                                 android:textColor="@color/default_blue"
-                                                android:textSize="18sp" />
+                                                android:textSize="@dimen/text_size_normal" />
+
                                         </RelativeLayout>
+
                                     </android.support.v7.widget.CardView>
 
                                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -272,7 +284,7 @@
                                                     android:maxLength="1"
                                                     android:text="0"
                                                     android:textColor="@color/login_btn_purple"
-                                                    android:textSize="50sp" />
+                                                    android:textSize="@dimen/text_size_x_large" />
 
                                                 <TextView
                                                     android:id="@+id/addtarget_text_hours"
@@ -282,7 +294,7 @@
                                                     android:layout_marginRight="5dp"
                                                     android:text="@string/hours"
                                                     android:textColor="@color/login_btn_purple"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
 
                                                 <EditText
                                                     android:id="@+id/addtarget_text_timer_3"
@@ -294,7 +306,7 @@
                                                     android:maxLength="2"
                                                     android:text="00"
                                                     android:textColor="@color/login_btn_purple"
-                                                    android:textSize="50sp" />
+                                                    android:textSize="@dimen/text_size_x_large" />
 
                                                 <TextView
                                                     android:id="@+id/addtarget_text_minutes"
@@ -303,10 +315,14 @@
                                                     android:layout_marginStart="5dp"
                                                     android:text="@string/minutes"
                                                     android:textColor="@color/login_btn_purple"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
+
                                             </LinearLayout>
+
                                         </RelativeLayout>
+
                                     </android.support.v7.widget.CardView>
+
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -342,7 +358,7 @@
                                                     android:layout_weight="4.5"
                                                     android:text="@string/every"
                                                     android:textColor="@color/default_blue"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
 
                                                 <android.support.v7.widget.AppCompatTextView
                                                     android:id="@+id/addtarget_every_textView"
@@ -355,9 +371,12 @@
                                                     android:paddingStart="3dp"
                                                     android:text=""
                                                     android:textColor="#8a63cc"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
+
                                             </LinearLayout>
+
                                         </RelativeLayout>
+
                                     </android.support.v7.widget.CardView>
 
                                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -384,10 +403,10 @@
                                                     android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
                                                     android:layout_marginStart="10dp"
-                                                    android:layout_weight="4.5"
+                                                    android:layout_weight="6"
                                                     android:text="@string/module_in"
                                                     android:textColor="@color/default_blue"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
 
                                                 <android.support.v7.widget.AppCompatTextView
                                                     android:id="@+id/addtarget_in_textView"
@@ -395,14 +414,17 @@
                                                     android:layout_width="0dp"
                                                     android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
-                                                    android:layout_weight="5.5"
+                                                    android:layout_weight="4"
                                                     android:gravity="end"
                                                     android:paddingStart="3dp"
                                                     android:text=""
                                                     android:textColor="#8a63cc"
-                                                    android:textSize="18sp" />
+                                                    android:textSize="@dimen/text_size_normal" />
+
                                             </LinearLayout>
+
                                         </RelativeLayout>
+
                                     </android.support.v7.widget.CardView>
 
                                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -425,8 +447,10 @@
                                                 android:layout_centerInParent="true"
                                                 android:text="@string/because"
                                                 android:textColor="@color/default_blue"
-                                                android:textSize="18sp" />
+                                                android:textSize="@dimen/text_size_normal" />
+
                                         </RelativeLayout>
+
                                     </android.support.v7.widget.CardView>
 
                                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -453,13 +477,21 @@
                                                 android:padding="3dp"
                                                 android:scrollbarStyle="insideInset"
                                                 android:scrollbars="vertical"
-                                                android:textColor="@color/dark_grey" />
+                                                android:textColor="@color/dark_grey"
+                                                android:textSize="@dimen/text_size_normal"/>
+
                                         </LinearLayout>
+
                                     </android.support.v7.widget.CardView>
+
                                 </LinearLayout>
+
                             </LinearLayout>
+
                         </LinearLayout>
+
                     </android.support.v7.widget.CardView>
+
                 </LinearLayout>
 
                 <RelativeLayout
@@ -485,8 +517,10 @@
                             android:gravity="center"
                             android:text="@string/save"
                             android:textColor="#FFF"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/text_size_normal" />
+
                     </android.support.v7.widget.CardView>
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -500,7 +534,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
                         android:layout_marginTop="80dp"
-                        android:background="#FBFBFB">
+                        android:background="@color/background_color">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -521,7 +555,9 @@
                                 android:hint="@string/add_module"
                                 android:imeOptions="actionSearch"
                                 android:lines="1"
-                                android:textColor="@color/dark_grey" />
+                                android:textColor="@color/dark_grey"
+                                android:textSize="@dimen/text_size_normal"/>
+
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -543,11 +579,17 @@
                                 android:paddingStart="15dp"
                                 android:paddingTop="10dp"
                                 android:text="@string/add_module"
-                                android:textColor="#FFF" />
+                                android:textColor="#FFF"
+                                android:textSize="@dimen/text_size_normal"/>
+
                         </RelativeLayout>
+
                     </RelativeLayout>
+
                 </RelativeLayout>
+
             </RelativeLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -594,7 +636,7 @@
                                     android:layout_weight="4.5"
                                     android:text="@string/module_in"
                                     android:textColor="@color/default_blue"
-                                    android:textSize="18sp" />
+                                    android:textSize="@dimen/text_size_normal" />
 
                                 <android.support.v7.widget.AppCompatTextView
                                     android:id="@+id/addtarget_in_textView_single"
@@ -606,9 +648,12 @@
                                     android:paddingStart="3dp"
                                     android:text=""
                                     android:textColor="#8a63cc"
-                                    android:textSize="18sp" />
+                                    android:textSize="@dimen/text_size_normal" />
+
                             </LinearLayout>
+
                         </RelativeLayout>
+
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -631,8 +676,10 @@
                                 android:layout_centerInParent="true"
                                 android:text="@string/my_goal"
                                 android:textColor="@color/default_blue"
-                                android:textSize="18sp" />
+                                android:textSize="@dimen/text_size_normal" />
+
                         </RelativeLayout>
+
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -660,8 +707,11 @@
                                 android:overScrollMode="always"
                                 android:padding="3dp"
                                 android:scrollbarStyle="insideInset"
-                                android:scrollbars="vertical" />
+                                android:scrollbars="vertical"
+                                android:textSize="@dimen/text_size_normal"/>
+
                         </LinearLayout>
+
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -684,8 +734,10 @@
                                 android:layout_centerInParent="true"
                                 android:text="@string/by"
                                 android:textColor="@color/default_blue"
-                                android:textSize="18sp" />
+                                android:textSize="@dimen/text_size_normal" />
+
                         </RelativeLayout>
+
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -711,8 +763,10 @@
                                 android:layout_margin="10dp"
                                 android:text="Monday 17th Aug 2015"
                                 android:textColor="@color/login_btn_purple"
-                                android:textSize="26sp" />
+                                android:textSize="@dimen/text_size_normal" />
+
                         </LinearLayout>
+
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -735,8 +789,10 @@
                                 android:layout_centerInParent="true"
                                 android:text="@string/because"
                                 android:textColor="@color/default_blue"
-                                android:textSize="18sp" />
+                                android:textSize="@dimen/text_size_normal" />
+
                         </RelativeLayout>
+
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -764,8 +820,11 @@
                                 android:overScrollMode="always"
                                 android:padding="3dp"
                                 android:scrollbarStyle="insideInset"
-                                android:scrollbars="vertical" />
+                                android:scrollbars="vertical"
+                                android:textSize="@dimen/text_size_normal"/>
+
                         </LinearLayout>
+
                     </android.support.v7.widget.CardView>
 
                     <RelativeLayout
@@ -788,11 +847,18 @@
                                 android:gravity="center"
                                 android:text="@string/save"
                                 android:textColor="#FFF"
-                                android:textSize="16sp" />
+                                android:textSize="@dimen/text_size_normal" />
+
                         </android.support.v7.widget.CardView>
+
                     </RelativeLayout>
+
                 </LinearLayout>
+
             </ScrollView>
+
         </RelativeLayout>
+
     </LinearLayout>
+
 </layout>
