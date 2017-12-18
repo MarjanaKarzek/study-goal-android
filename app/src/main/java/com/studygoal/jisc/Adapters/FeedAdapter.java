@@ -70,6 +70,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     @Override
     public void onBindViewHolder(final FeedViewHolder feedViewHolder, final int position) {
         final Feed item = feedList.get(position);
+        android.util.Log.d(TAG, "onBindViewHolder: item Message " + item.message);
+
         Log.e(getClass().getCanonicalName(), item.toString());
         feedViewHolder.shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +82,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 }
 
                 if(ConnectionHandler.isConnected(context)) {
-                    SocialManager.getInstance().shareOnIntent(item.message);
+                    SocialManager.getInstance().shareOnIntent(context.getString(R.string.share_message) + "\n\n" + item.message, context.getString(R.string.share_message_subject));
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
@@ -88,7 +90,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         });
 
         if (item.message_from.equals(DataManager.getInstance().user.id)) {
-            //feedViewHolder.open.setVisibility(View.GONE);
             if(DataManager.getInstance().user.profile_pic != null) {
                 if (!DataManager.getInstance().user.profile_pic.equals("")) {
                     Log.e("TEST", NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic);

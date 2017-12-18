@@ -541,4 +541,6 @@
 
     <string name="i_agree">I Agree</string>
     <string name="i_don_t_agree">I don\'t Agree</string>
+    <string name="share_message">I would like to share this feed with you: </string>
+    <string name="share_message_subject">Message from Study Goal</string>
 </resources>

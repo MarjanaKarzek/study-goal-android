@@ -498,4 +498,6 @@
     <string name="line_graph">PLACEHOLDER</string>
     <string name="i_agree">PLACEHOLDER</string>
     <string name="i_don_t_agree">PLACEHOLDER</string>
+    <string name="share_message">PLACEHOLDER</string>
+    <string name="share_message_subject">PLACEHOLDER</string>
 </resources>

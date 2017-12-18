@@ -44,7 +44,9 @@
                         android:text="@string/share"
                         android:textColor="#ffffff"
                         android:textSize="@dimen/text_size_normal" />
+
                 </LinearLayout>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -72,8 +74,11 @@
                         android:text="@string/delete"
                         android:textColor="#ffffff"
                         android:textSize="@dimen/text_size_normal" />
+
                 </LinearLayout>
+
             </RelativeLayout>
+
         </LinearLayout>
 
         <RelativeLayout
@@ -102,6 +107,7 @@
                     android:layout_marginStart="50dp"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/text_size_small" />
+
             </RelativeLayout>
 
             <RelativeLayout

@@ -442,7 +442,7 @@ public class TargetItemFragment extends Fragment {
         mainView.findViewById(R.id.target_reached_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SocialManager.getInstance().shareOnIntent(getActivity().getString(R.string.target_reached_2) + " " + finalText);
+                SocialManager.getInstance().shareOnIntent(getActivity().getString(R.string.target_reached_2) + " " + finalText, getString(R.string.share_message_subject));
             }
         });
 
