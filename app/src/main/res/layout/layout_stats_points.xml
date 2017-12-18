@@ -21,7 +21,7 @@
             android:background="@drawable/round_corners_segmented_active"
             android:gravity="center"
             android:text="@string/summary"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_white"
             android:textSize="@dimen/text_size_normal" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/chart"
-            android:textColor="#3792ef"
+            android:textColor="@color/text_medium_blue_primary"
             android:textSize="@dimen/text_size_normal" />
 
     </LinearLayout>
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="@string/activity_points"
-                android:textColor="#ffffff"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_normal" />
 
             <TextView
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textColor="#ffffff"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -124,7 +124,7 @@
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="@string/this_week"
-                    android:textColor="@color/default_blue"
+                    android:textColor="@color/text_medium_blue_primary"
                     android:textSize="@dimen/text_size_normal" />
 
             </RelativeLayout>

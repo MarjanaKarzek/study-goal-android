@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@color/default_purple"
+                android:background="@color/purple"
                 android:text="@string/i_don_t_agree"
                 android:textSize="@dimen/text_size_normal" />
 
@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@color/default_purple"
+                android:background="@color/purple"
                 android:text="@string/i_agree"
                 android:textSize="@dimen/text_size_normal" />
 

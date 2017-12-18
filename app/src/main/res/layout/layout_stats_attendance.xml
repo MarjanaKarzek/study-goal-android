@@ -21,7 +21,7 @@
             android:background="@drawable/round_corners_segmented_active"
             android:gravity="center"
             android:text="@string/summary"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_white"
             android:textSize="@dimen/text_size_normal" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/all"
-            android:textColor="#3792ef"
+            android:textColor="@color/text_medium_blue_primary"
             android:textSize="@dimen/text_size_normal" />
 
     </LinearLayout>

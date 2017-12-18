@@ -484,12 +484,12 @@ public class MainActivity extends FragmentActivity {
                         if (adapter.selectedImage != null) {
                             adapter.selectedImage.setColorFilter(0x00FFFFFF);
                             adapter.selectedImage = (ImageView) view.findViewById(R.id.drawer_item_icon);
-                            adapter.selectedImage.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
+                            adapter.selectedImage.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
                         }
                         if (adapter.selectedText != null) {
                             adapter.selectedText.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.light_grey));
                             adapter.selectedText = (TextView) view.findViewById(R.id.drawer_item_text);
-                            adapter.selectedText.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.default_blue));
+                            adapter.selectedText.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
                         }
                     }
 

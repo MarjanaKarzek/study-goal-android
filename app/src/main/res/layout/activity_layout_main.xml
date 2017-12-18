@@ -16,7 +16,7 @@
             android:id="@+id/main_screen_navbar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/default_blue">
+            android:background="@color/blue">
 
             <LinearLayout
                 android:id="@+id/main_screen_menu"
@@ -39,7 +39,7 @@
                     android:layout_marginTop="12dp"
                     android:text="@string/jisc"
                     android:textAlignment="center"
-                    android:textColor="#fff"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_jisc_title" />
 
             </LinearLayout>
@@ -168,7 +168,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="@string/settings"
-                android:textColor="#FFF"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_title" />
 
         </RelativeLayout>
@@ -204,6 +204,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#FFF" />
+        android:background="@color/white" />
 
 </android.support.v4.widget.DrawerLayout>

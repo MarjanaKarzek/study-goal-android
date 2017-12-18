@@ -63,7 +63,7 @@
                 android:layout_marginStart="16dp"
                 android:padding="5dp"
                 android:text="@string/send_friend_request"
-                android:textColor="#FFF"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_normal" />
 
         </RelativeLayout>

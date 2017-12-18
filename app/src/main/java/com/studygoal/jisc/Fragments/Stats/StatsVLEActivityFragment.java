@@ -136,7 +136,7 @@ public class StatsVLEActivityFragment extends Fragment {
                 isSevenDays = true;
                 isOverall = false;
                 twentyEightDaysButton.setTextColor(getResources().getColor(R.color.dark_grey));
-                sevenDaysButton.setTextColor(getResources().getColor(R.color.default_blue));
+                sevenDaysButton.setTextColor(getResources().getColor(R.color.text_medium_blue_primary));
                 loadData();
             }
         });
@@ -147,7 +147,7 @@ public class StatsVLEActivityFragment extends Fragment {
                 isSevenDays = false;
                 isOverall = true;
                 sevenDaysButton.setTextColor(getResources().getColor(R.color.dark_grey));
-                twentyEightDaysButton.setTextColor(getResources().getColor(R.color.default_blue));
+                twentyEightDaysButton.setTextColor(getResources().getColor(R.color.text_medium_blue_primary));
                 loadData();
             }
         });

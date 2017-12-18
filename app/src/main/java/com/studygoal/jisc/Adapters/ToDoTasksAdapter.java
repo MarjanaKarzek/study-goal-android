@@ -3,9 +3,7 @@ package com.studygoal.jisc.Adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,9 +204,9 @@ public class ToDoTasksAdapter extends BaseAdapter {
         View mainLayout = convertView.findViewById(R.id.mainLayout);
 
         if (item.fromTutor != null && item.isAccepted != null && item.fromTutor.toLowerCase().equals("yes") && item.isAccepted.equals("0")) {
-            mainLayout.setBackgroundColor(context.getResources().getColor(R.color.to_do_item_tutor_background));
+            mainLayout.setBackgroundColor(context.getResources().getColor(R.color.background_action_pending));
         } else {
-            mainLayout.setBackgroundColor(context.getResources().getColor(R.color.to_do_item_general_background));
+            mainLayout.setBackgroundColor(context.getResources().getColor(R.color.background_action_pending));
         }
 
         final int finalPosition = position;

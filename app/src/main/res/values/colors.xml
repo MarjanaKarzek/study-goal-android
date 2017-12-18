@@ -1,30 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Android colors -->
     <color name="colorPrimary">#3791ee</color>
     <color name="colorPrimaryDark">#3d83cb</color>
+
+    <!-- Background colors -->
+    <color name="background_color">#fbfbfb</color>
+    <color name="background_action_pending">#b9d8f4</color>
+    <color name="background_black">#000000</color>
+
+    <!-- Text colors -->
+    <color name="text_white">#ffffff</color>
+    <color name="text_light_purple">#a47cea</color>
+    <color name="text_medium_purple">#ae65d0</color>
+    <color name="text_dark_purple">#8a63cc</color>
+    <color name="text_medium_blue_primary">#3791ee</color>
+    <color name="text_grey">#cacaca</color>
+    <color name="text_medium_grey">#555555</color>
+    <color name="text_black">#000000</color>
+
+
+    <!-- Color constants -->
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="blue">#3791ee</color>
+    <color name="red">#ed5154</color>
+    <color name="purple">#cb9ee2</color>
+    <color name="green">#519b18</color>
+    <color name="pink">#c7a1f2</color>
     <color name="light_grey">#a9a9a9</color>
     <color name="dark_grey">#808080</color>
-    <color name="login_btn_purple">#8864C8</color>
-    <color name="background_color">#FBFBFB</color>
-
-    <color name="text_hint_color">#CACACA</color>
-    <color name="inactive_text">#a4b1c5</color>
-    <color name="login_btn_purple_inactive">#656fa4</color>
     <color name="light_purple">#C09FF6</color>
-    <color name="light_purple_text">#b097db</color>
-    <color name="default_background_color">#FBFBFB</color>
-    <color name="default_blue">#3791ee</color>
-    <color name="default_red">#ed5154</color>
-    <color name="default_purple">#cb9ee2</color>
-    <color name="default_green">#519b18</color>
-    <color name="pink">#c7a1f2</color>
+
+    <!-- Separator colors -->
+    <color name="separator_light_grey">#edeeee</color>
+
+    <!-- Special Colors -->
+    <color name="login_btn_purple_inactive">#656fa4</color>
     <color name="checkinButtonActive">#a47cea</color>
     <color name="checkinButtonInactive">#aaaaaa</color>
-
-    <color name="color_text">#ffffff</color>
-    <color name="color_text_dialog_content">#3791ee</color>
-
-    <color name="to_do_item_general_background">#FBFBFB</color>
-    <color name="to_do_item_tutor_background">#B9D8F4</color>
-    <color name="current_visual_pink">#bd00fa</color>
+    <color name="login_btn_purple">#8864C8</color>
 </resources>

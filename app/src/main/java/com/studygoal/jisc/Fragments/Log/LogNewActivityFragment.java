@@ -19,7 +19,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -318,7 +317,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
                     ((TextView) mainView.findViewById(R.id.new_activity_btn_pause_text)).setText(DataManager.getInstance().mainActivity.getString(R.string.pause));
 
-                    ((CardView) mainView.findViewById(R.id.new_activity_btn_start)).setCardBackgroundColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.default_blue));//getResources().getColor(R.color.default_blue));
+                    ((CardView) mainView.findViewById(R.id.new_activity_btn_start)).setCardBackgroundColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.blue));//getResources().getColor(R.color.default_blue));
                     mainView.findViewById(R.id.new_activity_btn_start).setOnClickListener(this);
                     mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(null);
                     return;
@@ -354,7 +353,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_stopped, Snackbar.LENGTH_LONG).show();
                 countdownTextView.setText("00:00");
 
-                ((CardView) mainView.findViewById(R.id.new_activity_btn_start)).setCardBackgroundColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.default_blue));//getResources().getColor(R.color.default_blue));
+                ((CardView) mainView.findViewById(R.id.new_activity_btn_start)).setCardBackgroundColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.blue));//getResources().getColor(R.color.default_blue));
                 mainView.findViewById(R.id.new_activity_btn_start).setOnClickListener(this);
                 mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(null);
 

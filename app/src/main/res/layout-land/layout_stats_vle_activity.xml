@@ -122,7 +122,7 @@
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/last_7_days_short"
-                        android:textColor="@color/default_blue"
+                        android:textColor="@color/text_medium_blue_primary"
                         android:textSize="@dimen/text_size_normal" />
 
                 </RelativeLayout>

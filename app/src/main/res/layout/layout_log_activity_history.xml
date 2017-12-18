@@ -18,7 +18,7 @@
             android:layout_centerInParent="true"
             android:layout_margin="10dp"
             android:text="@string/all_activities"
-            android:textColor="@color/default_blue"
+            android:textColor="@color/text_medium_blue_primary"
             android:textSize="@dimen/text_size_large" />
 
         <RelativeLayout

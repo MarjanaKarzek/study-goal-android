@@ -187,8 +187,8 @@ public class DrawerAdapter extends BaseAdapter {
             Log.d(TAG, "getView: fragment Menu Text" + DataManager.getInstance().fragment);
             if (DataManager.getInstance().fragment != null) {
                 if (DataManager.getInstance().fragment == position) {
-                    textView.setTextColor(ContextCompat.getColor(context, R.color.default_blue));
-                    imageView.setColorFilter(ContextCompat.getColor(context, R.color.default_blue));
+                    textView.setTextColor(ContextCompat.getColor(context, R.color.text_medium_blue_primary));
+                    imageView.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary));
                     selectedImage = imageView;
                     selectedText = textView;
                 }
@@ -221,8 +221,8 @@ public class DrawerAdapter extends BaseAdapter {
                     }
                 }
                 if (textView.getText().toString().toLowerCase().equals(selectedValue.toLowerCase())) {
-                    textView.setTextColor(ContextCompat.getColor(context, R.color.default_blue));
-                    imageView.setColorFilter(ContextCompat.getColor(context, R.color.default_blue));
+                    textView.setTextColor(ContextCompat.getColor(context, R.color.text_medium_blue_primary));
+                    imageView.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary));
                     selectedImage = imageView;
                     selectedText = textView;
                 }

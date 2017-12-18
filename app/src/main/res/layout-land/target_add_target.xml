@@ -100,7 +100,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="4"
                                 android:text="@string/activity_type"
-                                android:textColor="@color/default_blue"
+                                android:textColor="@color/text_medium_blue_primary"
                                 android:textSize="@dimen/text_size_normal" />
 
                             <android.support.v7.widget.AppCompatTextView
@@ -112,7 +112,7 @@
                                 android:layout_weight="6"
                                 android:gravity="end"
                                 android:paddingStart="3dp"
-                                android:textColor="#8a63cc"
+                                android:textColor="@color/text_dark_purple"
                                 android:textSize="@dimen/text_size_normal" />
 
                         </LinearLayout>
@@ -161,7 +161,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="4.5"
                                 android:text="@string/choose_activity"
-                                android:textColor="@color/default_blue"
+                                android:textColor="@color/text_medium_blue_primary"
                                 android:textSize="@dimen/text_size_normal" />
 
                             <android.support.v7.widget.AppCompatTextView
@@ -174,7 +174,7 @@
                                 android:gravity="end"
                                 android:paddingStart="3dp"
                                 android:text=""
-                                android:textColor="#8a63cc"
+                                android:textColor="@color/text_dark_purple"
                                 android:textSize="@dimen/text_size_normal" />
 
                         </LinearLayout>
@@ -202,7 +202,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:text="@string/_for"
-                            android:textColor="@color/default_blue"
+                            android:textColor="@color/text_medium_blue_primary"
                             android:textSize="@dimen/text_size_normal" />
 
                     </RelativeLayout>
@@ -304,7 +304,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="4.5"
                                 android:text="@string/every"
-                                android:textColor="@color/default_blue"
+                                android:textColor="@color/text_medium_blue_primary"
                                 android:textSize="@dimen/text_size_normal" />
 
                             <android.support.v7.widget.AppCompatTextView
@@ -317,7 +317,7 @@
                                 android:gravity="end"
                                 android:paddingStart="3dp"
                                 android:text=""
-                                android:textColor="#8a63cc"
+                                android:textColor="@color/text_dark_purple"
                                 android:textSize="@dimen/text_size_normal" />
 
                         </LinearLayout>
@@ -352,7 +352,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="4.5"
                                 android:text="@string/module_in"
-                                android:textColor="@color/default_blue"
+                                android:textColor="@color/text_medium_blue_primary"
                                 android:textSize="@dimen/text_size_normal" />
 
                             <android.support.v7.widget.AppCompatTextView
@@ -365,7 +365,7 @@
                                 android:gravity="end"
                                 android:paddingStart="3dp"
                                 android:text=""
-                                android:textColor="#8a63cc"
+                                android:textColor="@color/text_dark_purple"
                                 android:textSize="@dimen/text_size_normal" />
 
                         </LinearLayout>
@@ -410,7 +410,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
                                     android:text="@string/because"
-                                    android:textColor="@color/default_blue"
+                                    android:textColor="@color/text_medium_blue_primary"
                                     android:textSize="@dimen/text_size_normal" />
 
                             </RelativeLayout>
@@ -471,7 +471,7 @@
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="@string/save"
-                        android:textColor="#FFF"
+                        android:textColor="@color/text_white"
                         android:textSize="@dimen/text_size_normal" />
 
                 </android.support.v7.widget.CardView>
@@ -536,7 +536,7 @@
                         android:paddingStart="15dp"
                         android:paddingTop="10dp"
                         android:text="@string/add_module"
-                        android:textColor="#FFF"
+                        android:textColor="@color/text_white"
                         android:textSize="@dimen/text_size_normal" />
 
                 </RelativeLayout>
@@ -588,7 +588,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
                                     android:text="@string/my_goal"
-                                    android:textColor="@color/default_blue"
+                                    android:textColor="@color/text_medium_blue_primary"
                                     android:textSize="@dimen/text_size_normal" />
 
                             </RelativeLayout>
@@ -646,7 +646,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
                                     android:text="@string/by"
-                                    android:textColor="@color/default_blue"
+                                    android:textColor="@color/text_medium_blue_primary"
                                     android:textSize="@dimen/text_size_add_target_date" />
 
                             </RelativeLayout>
@@ -708,7 +708,7 @@
                                         android:layout_marginStart="10dp"
                                         android:layout_weight="4.5"
                                         android:text="@string/module_in"
-                                        android:textColor="@color/default_blue"
+                                        android:textColor="@color/text_medium_blue_primary"
                                         android:textSize="@dimen/text_size_normal" />
 
                                     <android.support.v7.widget.AppCompatTextView
@@ -720,7 +720,7 @@
                                         android:layout_weight="5.5"
                                         android:paddingStart="3dp"
                                         android:text=""
-                                        android:textColor="#8a63cc"
+                                        android:textColor="@color/text_dark_purple"
                                         android:textSize="@dimen/text_size_normal" />
 
                                 </LinearLayout>
@@ -756,7 +756,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
                                     android:text="@string/because"
-                                    android:textColor="@color/default_blue"
+                                    android:textColor="@color/text_medium_blue_primary"
                                     android:textSize="@dimen/text_size_normal" />
 
                             </RelativeLayout>
@@ -815,7 +815,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
                                     android:text="@string/reminder"
-                                    android:textColor="@color/default_blue"
+                                    android:textColor="@color/text_medium_blue_primary"
                                     android:textSize="18sp" />
 
                                 <Switch
@@ -889,7 +889,7 @@
                                     android:layout_margin="10dp"
                                     android:gravity="center"
                                     android:text="@string/save"
-                                    android:textColor="#FFF"
+                                    android:textColor="@color/text_white"
                                     android:textSize="@dimen/text_size_normal" />
 
                             </android.support.v7.widget.CardView>

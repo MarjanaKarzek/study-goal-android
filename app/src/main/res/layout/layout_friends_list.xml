@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#FBFBFB">
+        android:background="@color/background_color">
 
         <RelativeLayout
             android:layout_width="match_parent"

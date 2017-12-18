@@ -2,30 +2,24 @@ package com.studygoal.jisc.Fragments.Stats;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.studygoal.jisc.Adapters.ActivityPointsAdapter;
 import com.studygoal.jisc.Activities.MainActivity;
-import com.studygoal.jisc.Adapters.ModuleAdapter;
 import com.studygoal.jisc.Fragments.BaseFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.LinguisticManager;
@@ -129,7 +123,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
             public void onClick(View view) {
                 isThisWeek = true;
                 overallButton.setTextColor(getResources().getColor(R.color.dark_grey));
-                thisWeekButton.setTextColor(getResources().getColor(R.color.default_blue));
+                thisWeekButton.setTextColor(getResources().getColor(R.color.blue));
                 refreshView();
                 loadWebView();
             }
@@ -140,7 +134,7 @@ public class StatsActivityPointsFragment extends BaseFragment {
             public void onClick(View view) {
                 isThisWeek = false;
                 thisWeekButton.setTextColor(getResources().getColor(R.color.dark_grey));
-                overallButton.setTextColor(getResources().getColor(R.color.default_blue));
+                overallButton.setTextColor(getResources().getColor(R.color.blue));
                 refreshView();
                 loadWebView();
             }

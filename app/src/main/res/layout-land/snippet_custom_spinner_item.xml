@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:textColor="@color/default_blue"
+        android:textColor="@color/text_medium_blue_primary"
         android:textSize="@dimen/text_size_normal" />
 
     <ImageView
@@ -29,6 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="#edeeee" />
+        android:background="@color/separator_light_grey" />
 
 </RelativeLayout>

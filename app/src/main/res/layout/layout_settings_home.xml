@@ -61,14 +61,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2.5dp"
-                    android:textColor="#FFF"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
                 <TextView
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#FFF"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
             </LinearLayout>
@@ -124,7 +124,7 @@
                     android:layout_toEndOf="@+id/friends"
                     android:layout_toStartOf="@+id/arrow_friends"
                     android:gravity="end"
-                    android:textColor="@color/light_purple_text"
+                    android:textColor="@color/text_light_purple"
                     android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#edeeee" />
+                    android:background="@color/separator_light_grey" />
 
             </RelativeLayout>
 
@@ -180,7 +180,7 @@
                     android:layout_toEndOf="@+id/trophies"
                     android:layout_toStartOf="@+id/arrow_trophies"
                     android:gravity="end"
-                    android:textColor="@color/light_purple_text"
+                    android:textColor="@color/text_light_purple"
                     android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
@@ -196,7 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#edeeee" />
+                    android:background="@color/separator_light_grey" />
 
             </RelativeLayout>
 
@@ -235,7 +235,7 @@
                     android:layout_toEndOf="@+id/home"
                     android:layout_toStartOf="@+id/arrow_home"
                     android:gravity="end"
-                    android:textColor="@color/light_purple_text"
+                    android:textColor="@color/text_light_purple"
                     android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
@@ -251,7 +251,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#edeeee" />
+                    android:background="@color/separator_light_grey" />
 
             </RelativeLayout>
 
@@ -291,7 +291,7 @@
                     android:layout_toEndOf="@+id/language"
                     android:layout_toStartOf="@+id/arrow_language"
                     android:gravity="end"
-                    android:textColor="@color/light_purple_text"
+                    android:textColor="@color/text_light_purple"
                     android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
@@ -307,7 +307,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#edeeee" />
+                    android:background="@color/separator_light_grey" />
 
             </RelativeLayout>
 
@@ -347,7 +347,7 @@
                     android:layout_toEndOf="@+id/terms_text"
                     android:layout_toStartOf="@+id/arrow_terms"
                     android:gravity="end"
-                    android:textColor="@color/light_purple_text"
+                    android:textColor="@color/text_light_purple"
                     android:textSize="@dimen/text_size_normal" />
 
                 <ImageView
@@ -363,7 +363,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#edeeee" />
+                    android:background="@color/separator_light_grey" />
 
             </RelativeLayout>
 
@@ -405,7 +405,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#edeeee" />
+                    android:background="@color/separator_light_grey" />
 
             </RelativeLayout>
 

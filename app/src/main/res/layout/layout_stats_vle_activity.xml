@@ -23,7 +23,7 @@
             android:background="@drawable/round_corners_segmented_active"
             android:gravity="center"
             android:text="@string/bar_graph"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_white"
             android:textSize="@dimen/text_size_normal" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/line_graph"
-            android:textColor="#3792ef"
+            android:textColor="@color/text_medium_blue_primary"
             android:textSize="@dimen/text_size_normal" />
 
     </LinearLayout>
@@ -103,7 +103,7 @@
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="@string/last_7_days_short"
-                    android:textColor="@color/default_blue"
+                    android:textColor="@color/text_medium_blue_primary"
                     android:textSize="@dimen/text_size_normal" />
 
             </RelativeLayout>

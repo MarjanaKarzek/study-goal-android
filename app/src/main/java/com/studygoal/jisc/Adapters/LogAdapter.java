@@ -206,7 +206,7 @@ public class LogAdapter extends BaseAdapter {
                     String text = LinguisticManager.getInstance().verbs.get(activityHistory.activity) + " " + context.getString(R.string._for) + " " + Utils.getMinutesToHour(activityHistory.time_spent); // + " " + context.getString(R.string.for_text) + " " + ((Module) (new Select().from(Module.class).where("module_id=?", activityHistory.module_id).executeSingle())).name + " " + context.getString(R.string.module);
                     textView.setTypeface(DataManager.getInstance().myriadpro_regular);
                     textView.setText(text);
-                    textView.setTextColor(ContextCompat.getColor(context, R.color.light_purple_text));
+                    textView.setTextColor(ContextCompat.getColor(context, R.color.text_light_purple));
                     convertView.setTag(activityHistory.id + ";" + text);
                 } catch (Exception ignored) {
                 }
@@ -332,7 +332,7 @@ public class LogAdapter extends BaseAdapter {
 
                 textView.setTypeface(DataManager.getInstance().myriadpro_regular);
                 textView.setText(text);
-                textView.setTextColor(ContextCompat.getColor(context, R.color.light_purple_text));
+                textView.setTextColor(ContextCompat.getColor(context, R.color.text_light_purple));
                 convertView.setTag(activityHistory.id + ";" + text);
             } catch (Exception e) {
                 e.printStackTrace();

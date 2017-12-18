@@ -37,7 +37,7 @@ public class SegmentClickListener implements View.OnClickListener {
         //deactivate previous segment
         segments.get(previousPosition).setBackground(null);
         segments.get(previousPosition).setBackgroundColor(Color.TRANSPARENT);
-        segments.get(previousPosition).setTextColor(Color.parseColor("#3792ef"));
+        segments.get(previousPosition).setTextColor(Color.parseColor("#3791ee"));
 
         //activate current segment
         int position = segments.indexOf(view);

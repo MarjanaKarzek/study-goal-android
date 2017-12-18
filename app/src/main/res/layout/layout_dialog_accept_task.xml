@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/default_blue">
+        android:background="@color/blue">
 
         <TextView
             android:id="@+id/dialog_title"
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/module"
-            android:textColor="#FFF"
+            android:textColor="@color/text_white"
             android:textSize="@dimen/text_size_normal" />
 
     </RelativeLayout>
@@ -47,7 +47,7 @@
                 android:layout_height="40dp"
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="10dp"
-                android:background="@color/default_red">
+                android:background="@color/red">
 
                 <TextView
                     android:id="@+id/dialog_cancel_text"
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/cancel"
-                    android:textColor="#FFF"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
             </RelativeLayout>
@@ -72,7 +72,7 @@
                 android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:layout_centerInParent="true"
-                android:background="@color/default_red">
+                android:background="@color/red">
 
                 <TextView
                     android:id="@+id/dialog_no_text"
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/no"
-                    android:textColor="#FFF"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
             </RelativeLayout>
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/yes"
-                    android:textColor="#FFF"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
             </RelativeLayout>

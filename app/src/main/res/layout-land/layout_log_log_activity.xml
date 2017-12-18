@@ -94,7 +94,7 @@
                                         android:layout_marginStart="10dp"
                                         android:layout_weight="4"
                                         android:text="@string/module"
-                                        android:textColor="@color/default_blue"
+                                        android:textColor="@color/text_medium_blue_primary"
                                         android:textSize="@dimen/text_size_normal" />
 
                                     <android.support.v7.widget.AppCompatTextView
@@ -106,7 +106,7 @@
                                         android:layout_weight="6"
                                         android:gravity="end"
                                         android:paddingStart="3dp"
-                                        android:textColor="#8a63cc"
+                                        android:textColor="@color/text_dark_purple"
                                         android:textSize="@dimen/text_size_normal" />
 
                                 </LinearLayout>
@@ -155,7 +155,7 @@
                                         android:layout_marginStart="10dp"
                                         android:layout_weight="6"
                                         android:text="@string/activity_type"
-                                        android:textColor="@color/default_blue"
+                                        android:textColor="@color/text_medium_blue_primary"
                                         android:textSize="@dimen/text_size_normal" />
 
                                     <android.support.v7.widget.AppCompatTextView
@@ -167,7 +167,7 @@
                                         android:layout_weight="4"
                                         android:gravity="end"
                                         android:paddingStart="3dp"
-                                        android:textColor="#8a63cc"
+                                        android:textColor="@color/text_dark_purple"
                                         android:textSize="@dimen/text_size_large" />
 
                                 </LinearLayout>
@@ -216,7 +216,7 @@
                                         android:layout_marginStart="10dp"
                                         android:layout_weight="6"
                                         android:text="@string/choose_activity"
-                                        android:textColor="@color/default_blue"
+                                        android:textColor="@color/text_medium_blue_primary"
                                         android:textSize="@dimen/text_size_normal" />
 
                                     <android.support.v7.widget.AppCompatTextView
@@ -228,7 +228,7 @@
                                         android:layout_weight="4"
                                         android:gravity="end"
                                         android:paddingStart="3dp"
-                                        android:textColor="#8a63cc"
+                                        android:textColor="@color/text_dark_purple"
                                         android:textSize="@dimen/text_size_normal" />
 
                                 </LinearLayout>
@@ -354,7 +354,7 @@
                         <RelativeLayout
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/text_hint_color">
+                            android:background="@color/text_grey">
 
                         </RelativeLayout>
 
@@ -446,7 +446,7 @@
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="@string/save"
-                android:textColor="#FFF"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_normal" />
 
         </android.support.v7.widget.CardView>
@@ -457,14 +457,14 @@
         android:id="@+id/add_new_module_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FBFBFB"
+        android:background="@color/background_color"
         android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_marginTop="80dp"
-            android:background="#FBFBFB">
+            android:background="@color/background_color">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -509,7 +509,7 @@
                     android:paddingStart="15dp"
                     android:paddingTop="10dp"
                     android:text="@string/add_module"
-                    android:textColor="#FFF"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
             </RelativeLayout>

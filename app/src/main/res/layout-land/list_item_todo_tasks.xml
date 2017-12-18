@@ -14,7 +14,7 @@
             android:id="@+id/done"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:background="@color/default_green">
+            android:background="@color/green">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/done"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
             </LinearLayout>
@@ -44,7 +44,7 @@
             android:id="@+id/edit"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:background="@color/default_blue">
+            android:background="@color/blue">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/edit"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
             </LinearLayout>
@@ -74,7 +74,7 @@
             android:id="@+id/delete"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:background="@color/default_red">
+            android:background="@color/red">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/delete"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/text_white"
                     android:textSize="@dimen/text_size_normal" />
 
             </LinearLayout>
@@ -106,7 +106,7 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/to_do_item_general_background"
+        android:background="@color/background_color"
         android:weightSum="10">
 
         <RelativeLayout

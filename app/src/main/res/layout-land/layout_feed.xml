@@ -47,7 +47,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/floating_icon"
-        app:backgroundTint="@color/default_blue" />
+        app:backgroundTint="@color/blue" />
 
     <LinearLayout
         android:id="@+id/overlay"
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_margin="15dp"
-            android:background="#FFF"
+            android:background="@color/white"
             android:gravity="start"
             android:padding="3dp" />
 
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/send_to"
-                    android:textColor="@color/default_blue"
+                    android:textColor="@color/text_medium_blue_primary"
                     android:textSize="18sp" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -97,7 +97,7 @@
                     android:layout_gravity="center"
                     android:gravity="end"
                     android:text="@string/everyone"
-                    android:textColor="#8a63cc"
+                    android:textColor="@color/text_dark_purple"
                     android:textSize="18sp" />
 
             </LinearLayout>

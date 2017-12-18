@@ -39,7 +39,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:text="@string/study_goal"
-                android:textColor="#FFF"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_study_goal_title" />
 
             <LinearLayout
@@ -64,7 +64,7 @@
                         android:background="@drawable/round_corners_transparent_2"
                         android:gravity="center"
                         android:text="@string/login_imastudent_member"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/text_white"
                         android:textSize="@dimen/text_size_normal" />
 
                     <TextView
@@ -77,7 +77,7 @@
                         android:paddingEnd="70dp"
                         android:paddingStart="70dp"
                         android:text="@string/login_imastaff_member"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/text_white"
                         android:textSize="@dimen/text_size_normal" />
 
                     <CheckBox
@@ -86,9 +86,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:buttonTint="#ffffff"
+                        android:buttonTint="@color/white"
                         android:text="@string/login_keeplogged"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/text_white"
                         android:textSize="@dimen/text_size_normal" />
 
                 </LinearLayout>
@@ -118,7 +118,7 @@
             android:background="@drawable/rounded_corners_transparent_4"
             android:gravity="center"
             android:text="@string/demo_mode"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_white"
             android:textSize="@dimen/text_size_normal" />
 
     </RelativeLayout>
@@ -141,7 +141,7 @@
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:text="@string/login_search_institution"
-            android:textColor="#FFF"
+            android:textColor="@color/text_white"
             android:textSize="@dimen/text_size_normal" />
 
         <RelativeLayout
@@ -202,7 +202,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:text="@string/login_institution_not_listed"
-                android:textColor="#FFF"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_small" />
 
             <TextView
@@ -212,7 +212,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:text="@string/login_institution_signinwith"
-                android:textColor="#FFF"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_small" />
 
             <LinearLayout
@@ -258,7 +258,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/login_back_to_first_page"
                 android:textAlignment="center"
-                android:textColor="#FFF"
+                android:textColor="@color/text_white"
                 android:textSize="@dimen/text_size_small" />
 
         </LinearLayout>

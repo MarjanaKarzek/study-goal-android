@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:text="@string/last_7_days_short"
             android:background="@drawable/circle_background_blue_left"
-            android:textColor="#ffffff"/>
+            android:textColor="@color/text_white"/>
         <TextView
             android:id="@+id/last_30d_text_view"
             android:layout_width="0dp"
@@ -84,7 +84,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight="4"
                     android:text="@string/module"
-                    android:textColor="@color/default_blue"
+                    android:textColor="@color/text_medium_blue_primary"
                     android:textSize="18sp" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -97,7 +97,7 @@
                     android:gravity="end"
                     android:paddingStart="3dp"
                     android:text=""
-                    android:textColor="#8a63cc"
+                    android:textColor="@color/text_dark_purple"
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>

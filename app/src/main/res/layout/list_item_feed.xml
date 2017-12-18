@@ -23,7 +23,7 @@
                 android:id="@+id/share"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:background="@color/default_purple">
+                android:background="@color/purple">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="@string/share"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/text_white"
                         android:textSize="@dimen/text_size_normal" />
 
                 </LinearLayout>
@@ -53,7 +53,7 @@
                 android:id="@+id/delete"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:background="@color/default_red">
+                android:background="@color/red">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="@string/delete"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/text_white"
                         android:textSize="@dimen/text_size_normal" />
 
                 </LinearLayout>
@@ -91,7 +91,7 @@
                 android:id="@+id/feed_item_bottom_bar"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="#FFF">
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="20dp"

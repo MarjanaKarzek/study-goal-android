@@ -9,7 +9,7 @@
         android:id="@+id/main_screen_navbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/default_blue">
+        android:background="@color/blue">
 
         <TextView
             android:id="@+id/main_screen_title"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Tackle"
-            android:textColor="#FFF"
+            android:textColor="@color/text_white"
             android:textSize="@dimen/text_size_normal" />
 
     </RelativeLayout>
@@ -36,7 +36,7 @@
             android:padding="10dp"
             android:text="Silver"
             android:textAlignment="center"
-            android:textColor="#555555"
+            android:textColor="@color/text_medium_grey"
             android:textSize="@dimen/text_size_normal" />
 
         <LinearLayout

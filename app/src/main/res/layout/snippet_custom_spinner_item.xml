@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:textColor="@color/default_blue"
+        android:textColor="@color/blue"
         android:textSize="@dimen/text_size_normal" />
 
     <ImageView

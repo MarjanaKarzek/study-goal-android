@@ -23,7 +23,7 @@
         <LinearLayout
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="#ffffff" />
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/count_title"
@@ -38,7 +38,7 @@
         <LinearLayout
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="#ffffff" />
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/points_title"
