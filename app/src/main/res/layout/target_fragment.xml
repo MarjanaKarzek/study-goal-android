@@ -24,7 +24,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="16dp"
+                    android:layout_margin="10dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:visibility="visible">
@@ -40,7 +40,8 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/target_add_single"
-                        android:textColor="@drawable/radio_button_text" />
+                        android:textColor="@drawable/radio_button_text"
+                        android:textSize="@dimen/text_size_normal" />
 
                     <RadioButton
                         android:id="@+id/target_recurring"
@@ -53,7 +54,8 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/target_add_recurring"
-                        android:textColor="@drawable/radio_button_text" />
+                        android:textColor="@drawable/radio_button_text"
+                        android:textSize="@dimen/text_size_normal" />
 
                 </RadioGroup>
 

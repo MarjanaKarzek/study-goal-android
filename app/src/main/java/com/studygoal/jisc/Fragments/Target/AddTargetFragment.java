@@ -170,7 +170,7 @@ public class AddTargetFragment extends BaseFragment {
         DataManager.getInstance().reload();
         applyTypeface();
 
-        if(DataManager.getInstance().mainActivity.displaySingleTarget){
+        if (DataManager.getInstance().mainActivity.displaySingleTarget) {
             binding.targetSingle.setChecked(true);
             isRecurringTarget = false;
             binding.recurringLayout.setVisibility(View.GONE);
@@ -278,13 +278,13 @@ public class AddTargetFragment extends BaseFragment {
 
                 for (Map.Entry<String, String> entry : DataManager.getInstance().api_values.entrySet()) {
                     String checkValue = item.time_span.toLowerCase() + "ly";
-                    if(item.time_span.toLowerCase().equals("day")){
+                    if (item.time_span.toLowerCase().equals("day")) {
                         checkValue = "daily";
                     }
                     if (entry.getValue().toLowerCase().equals(checkValue)) {
                         String value = entry.getKey();
-                        value = value.substring(0, 1).toUpperCase() + value.substring(1, value.length()-2);
-                        if(value.equals("Dai")){
+                        value = value.substring(0, 1).toUpperCase() + value.substring(1, value.length() - 2);
+                        if (value.equals("Dai")) {
                             value = "Day";
                         }
                         every.setText(value);
@@ -678,7 +678,7 @@ public class AddTargetFragment extends BaseFragment {
 
                 String selectedEvery = every.getText().toString();
 
-                if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).and("total_time = ?",totalTime).exists()) {
+                if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?", selectedEvery).and("module_id = ?", id).and("total_time = ?", totalTime).exists()) {
                     Snackbar.make(root, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -687,7 +687,7 @@ public class AddTargetFragment extends BaseFragment {
                 params.put("student_id", DataManager.getInstance().user.id);
                 params.put("target_id", item.target_id);
                 params.put("total_time", totalTime + "");
-                params.put("time_span",selectedEvery);
+                params.put("time_span", selectedEvery);
 
                 if (!in.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase()))
                     params.put("module", ((Module) (new Select().from(Module.class).where("module_name = ?", in.getText().toString()).executeSingle())).id);
@@ -759,7 +759,7 @@ public class AddTargetFragment extends BaseFragment {
 
                 String selectedEvery = every.getText().toString();
 
-                if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?",selectedEvery).and("module_id = ?", id).exists()) {
+                if (new Select().from(Targets.class).where("activity = ?", chooseActivity.getText().toString()).and("time_span = ?", selectedEvery).and("module_id = ?", id).exists()) {
                     Snackbar.make(root, R.string.target_same_parameters, Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -769,7 +769,7 @@ public class AddTargetFragment extends BaseFragment {
                 params.put("activity_type", DataManager.getInstance().api_values.get(activityType.getText().toString()));
                 params.put("activity", DataManager.getInstance().api_values.get(chooseActivity.getText().toString()));
                 params.put("total_time", total_time + "");
-                params.put("time_span",selectedEvery);
+                params.put("time_span", selectedEvery);
 
                 if (!in.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase())) {
                     params.put("module", ((Module) (new Select().from(Module.class).where("module_name = ?", in.getText().toString()).executeSingle())).id);
@@ -959,6 +959,8 @@ public class AddTargetFragment extends BaseFragment {
             binding.addtargetTextBecauseTitleSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
             binding.addtargetTextDateTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
             binding.addtargetTextDate.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextMyGoalTitleSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetActivityTypeTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
         }
     }
 

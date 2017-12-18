@@ -17,4 +17,5 @@
     <dimen name="text_size_jisc_title">18sp</dimen>
     <dimen name="text_size_study_goal_title">50sp</dimen>
     <dimen name="text_size_notification_number">12sp</dimen>
+    <dimen name="text_size_add_target_date">22sp</dimen>
 </resources>
