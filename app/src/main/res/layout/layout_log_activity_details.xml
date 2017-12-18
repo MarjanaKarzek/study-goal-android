@@ -54,9 +54,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
+                android:layout_height="2dp"
                 android:layout_alignParentBottom="true"
-                android:background="#7ADF11" />
+                android:background="@color/light_grey" />
 
         </RelativeLayout>
 
