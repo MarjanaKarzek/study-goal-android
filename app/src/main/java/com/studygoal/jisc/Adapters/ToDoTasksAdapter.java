@@ -206,7 +206,7 @@ public class ToDoTasksAdapter extends BaseAdapter {
         if (item.fromTutor != null && item.isAccepted != null && item.fromTutor.toLowerCase().equals("yes") && item.isAccepted.equals("0")) {
             mainLayout.setBackgroundColor(context.getResources().getColor(R.color.background_action_pending));
         } else {
-            mainLayout.setBackgroundColor(context.getResources().getColor(R.color.background_action_pending));
+            mainLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
         }
 
         final int finalPosition = position;
