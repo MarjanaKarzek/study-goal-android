@@ -158,7 +158,6 @@ public class TargetFragment extends BaseFragment {
 
         binding.list.setOnItemClickListener((parent, v, position, id) -> {
             TargetDetailsFragment fragment = new TargetDetailsFragment();
-            fragment.list = recurringTargetAdapter.list;
             fragment.position = position;
             DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, fragment)

@@ -59,6 +59,7 @@ import com.studygoal.jisc.Fragments.Stats.StatsLeaderBoardFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsActivityPointsFragment;
 import com.studygoal.jisc.Fragments.Stats.StatsVLEActivityFragment;
 import com.studygoal.jisc.Fragments.Target.AddTargetFragment;
+import com.studygoal.jisc.Fragments.Target.TargetDetailsFragment;
 import com.studygoal.jisc.Fragments.Target.TargetFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
@@ -589,6 +590,24 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
+        if(DataManager.getInstance().fromTargetDetail){
+            selectedPosition = 4;
+            DataManager.getInstance().fragment = 4;
+            adapter.notifyDataSetChanged();
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                getSupportFragmentManager().popBackStackImmediate();
+            }
+
+            TargetDetailsFragment fragment = new TargetDetailsFragment();
+            fragment.position = DataManager.getInstance().fromTargetDetailPosition;
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, fragment)
+                    .commit();
+            DataManager.getInstance().fromTargetDetail = false;
+            DataManager.getInstance().fromTargetDetailPosition = -1;
+            return;
+        }
         if (DataManager.getInstance().fromTargetItem) {
             DataManager.getInstance().fragment = 3;
             selectedPosition = 3;

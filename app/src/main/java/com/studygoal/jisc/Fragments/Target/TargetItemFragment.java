@@ -94,6 +94,7 @@ public class TargetItemFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DataManager.getInstance().fromTargetDetail = true;
                 if (position == 0) {
                     DataManager.getInstance().fromTargetItem = true;
                     DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
@@ -355,10 +356,11 @@ public class TargetItemFragment extends Fragment {
             incompleteTextView.setText(percentage + "%");
 
             if (spentTime < necessaryTime) {
-                View set_stretch = mainView.findViewById(R.id.target_set_stretch_btn);
-                set_stretch.setVisibility(View.VISIBLE);
+                View setStretch = mainView.findViewById(R.id.target_set_stretch_btn);
+                setStretch.setVisibility(View.VISIBLE);
                 ((TextView) mainView.findViewById(R.id.target_stretch_btn_text)).setText(DataManager.getInstance().mainActivity.getString(R.string.start_your_new_activity));
-                set_stretch.setOnClickListener(new View.OnClickListener() {
+
+                setStretch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showDialog();

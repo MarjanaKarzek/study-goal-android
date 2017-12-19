@@ -29,14 +29,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TargetDetailsFragment extends Fragment {
+
     private static final String TAG = AddTargetFragment.class.getSimpleName();
 
     private View mainView;
     private ViewPager pager;
     private RecurringTargetPagerAdapter adapter;
 
-    public List<Targets> list;
-    public int position;
+    public int position = 0;
 
     @Override
     public void onResume() {
@@ -45,13 +45,11 @@ public class TargetDetailsFragment extends Fragment {
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(4);
 
-        if (pager != null && adapter != null && adapter.list.size() != new Select().from(Targets.class).count()) {
-            adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
-            adapter.reference = this;
-            adapter.list = new Select().from(Targets.class).execute();
-            adapter.notifyDataSetChanged();
-            pager.setAdapter(adapter);
-        }
+        adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
+        adapter.reference = this;
+        adapter.list = new Select().from(Targets.class).execute();
+        adapter.notifyDataSetChanged();
+        pager.setAdapter(adapter);
 
         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsGraphs);
     }
@@ -65,17 +63,13 @@ public class TargetDetailsFragment extends Fragment {
         pager = (ViewPager) mainView.findViewById(R.id.pager);
         adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
         adapter.reference = this;
-        if (list == null) {
-            adapter.list = new Select().from(Targets.class).execute();
-        } else {
-            adapter.list = list;
-        }
+        adapter.list = new Select().from(Targets.class).execute();
 
         pager.setAdapter(adapter);
         pager.setCurrentItem(position);
 
         final PageControl pageControl = (PageControl) mainView.findViewById(R.id.page_control);
-        pageControl.setPageCount(list.size());
+        pageControl.setPageCount(adapter.list.size());
         pageControl.setActiveDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.dot_active));
         pageControl.setInactiveDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.dot_inactive));
         pageControl.setCurrentPage(position);
@@ -84,6 +78,7 @@ public class TargetDetailsFragment extends Fragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 pageControl.setCurrentPage(position);
+                DataManager.getInstance().fromTargetDetailPosition = position;
             }
 
             @Override

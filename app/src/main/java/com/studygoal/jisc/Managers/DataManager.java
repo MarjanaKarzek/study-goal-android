@@ -64,6 +64,8 @@ public class DataManager {
 
     public String selfie_url;
     public boolean languageChanged = false;
+    public boolean fromTargetDetail = false;
+    public int fromTargetDetailPosition = -1;
 
     public static DataManager getInstance() {
         return ourInstance;
