@@ -36,7 +36,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * Stats Activity Points Fragment
+ * <p>
+ * Displays the activity points of the user.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class StatsActivityPointsFragment extends BaseFragment {
+
     private static final String TAG = StatsActivityPointsFragment.class.getSimpleName();
 
     private View mainView;
@@ -216,6 +226,11 @@ public class StatsActivityPointsFragment extends BaseFragment {
         return mainView;
     }
 
+    // Charts
+
+    /**
+     * Sets up the web views.
+     */
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
         WebSettings s = piChartWebView.getSettings();
@@ -282,6 +297,9 @@ public class StatsActivityPointsFragment extends BaseFragment {
         }
     }
 
+    /**
+     * Reloads data from server and calls for a refresh of the web views.
+     */
     private void refreshView() {
         DataManager.getInstance().mainActivity.showProgressBar(null);
 
@@ -305,6 +323,9 @@ public class StatsActivityPointsFragment extends BaseFragment {
         }).start();
     }
 
+    /**
+     * Reloads the data and prepares view.
+     */
     private void callRefresh() {
         DataManager.getInstance().mainActivity.hideProgressBar();
         adapter.notifyDataSetChanged();
@@ -323,28 +344,13 @@ public class StatsActivityPointsFragment extends BaseFragment {
         activityPointsValue.setText(String.valueOf(sum));
     }
 
-    private void showAlertDialog() {
-        final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        boolean isStaff = DataManager.getInstance().user.isStaff;
-        boolean isStatsAlert = preferences.getBoolean("stats_alert", true);
+    // Chart Settings
 
-        if (isStaff && isStatsAlert) {
-            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getContext());
-            alertDialogBuilder.setMessage(R.string.statistics_admin_view);
-            alertDialogBuilder.setPositiveButton("Don't show again", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("stats_alert", false);
-                    editor.apply();
-                }
-            });
-            alertDialogBuilder.setNegativeButton("OK", (dialog, which) -> dialog.dismiss());
-            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        }
-    }
-
+    /**
+     * Settings selector for the period of time the charts should display.
+     * <p>
+     * not used yet
+     */
     private void setUpDatePicker() {
         datePickerStart = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -399,5 +405,32 @@ public class StatsActivityPointsFragment extends BaseFragment {
                 }
             }
         };
+    }
+
+    // Alert Dialog
+
+    /**
+     * Displays alert for staff members that the statistics are demonstrations only.
+     */
+    private void showAlertDialog() {
+        final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        boolean isStaff = DataManager.getInstance().user.isStaff;
+        boolean isStatsAlert = preferences.getBoolean("stats_alert", true);
+
+        if (isStaff && isStatsAlert) {
+            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getContext());
+            alertDialogBuilder.setMessage(R.string.statistics_admin_view);
+            alertDialogBuilder.setPositiveButton("Don't show again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("stats_alert", false);
+                    editor.apply();
+                }
+            });
+            alertDialogBuilder.setNegativeButton("OK", (dialog, which) -> dialog.dismiss());
+            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 }

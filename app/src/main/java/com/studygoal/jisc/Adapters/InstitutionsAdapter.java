@@ -15,7 +15,17 @@ import com.studygoal.jisc.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Institutions Adapter
+ * <p>
+ * Handles institution items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class InstitutionsAdapter extends RecyclerView.Adapter<InstitutionsAdapter.ViewHolder> {
+
     private static final String TAG = InstitutionsAdapter.class.getSimpleName();
 
     private List<Institution> institutions;
@@ -28,17 +38,9 @@ public class InstitutionsAdapter extends RecyclerView.Adapter<InstitutionsAdapte
         inflater = LayoutInflater.from(this.context);
     }
 
-    public void updateItems(List<Institution> items) {
-        if (items != null && items.size() > 0) {
-            institutions.clear();
-            institutions.addAll(items);
-            notifyDataSetChanged();
-        }
-    }
-
     @Override
     public InstitutionsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        final View view = inflater.from(viewGroup.getContext()).inflate(R.layout.list_item_institution,null);
+        final View view = inflater.from(viewGroup.getContext()).inflate(R.layout.list_item_institution, null);
         return new ViewHolder(view);
     }
 
@@ -65,10 +67,32 @@ public class InstitutionsAdapter extends RecyclerView.Adapter<InstitutionsAdapte
         return institutions.size();
     }
 
-    public Institution getItem(int position){
+    /**
+     * Gets the item at the specified position.
+     *
+     * @param position position of the item
+     * @return item
+     */
+    public Institution getItem(int position) {
         return institutions.get(position);
     }
 
+    /**
+     * Changes the current list of items to the given list.
+     *
+     * @param items list to be exchanged
+     */
+    public void updateItems(List<Institution> items) {
+        if (items != null && items.size() > 0) {
+            institutions.clear();
+            institutions.addAll(items);
+            notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * View holder for the recycler view of institutions.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public Institution currentItem;

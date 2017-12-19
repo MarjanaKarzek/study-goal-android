@@ -27,6 +27,15 @@ import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Friends List Adapter
+ * <p>
+ * Handles friends items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FriendsListAdapter extends BaseAdapter {
     private static final String TAG = FriendsListAdapter.class.getSimpleName();
 
@@ -85,7 +94,6 @@ public class FriendsListAdapter extends BaseAdapter {
             final View hide = convertView.findViewById(R.id.hide);
             final View unhide = convertView.findViewById(R.id.unhide);
 
-
             convertView.setOnClickListener(v -> {
                 if (ConnectionHandler.isConnected(context)) {
                     final Dialog dialog = new Dialog(context);
@@ -111,7 +119,6 @@ public class FriendsListAdapter extends BaseAdapter {
                     } else {
                         ((TextView) dialog.findViewById(R.id.question)).setText(context.getString(R.string.what_would_you_like_student_to_see).replace("%s", attendant.name));
                     }
-
 
                     final SwitchCompat switch_2 = (SwitchCompat) dialog.findViewById(R.id.switch2);
                     switch_2.setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -187,7 +194,6 @@ public class FriendsListAdapter extends BaseAdapter {
                     ((TextView) dialog.findViewById(R.id.dialog_ok_text)).setText(R.string.yes);
 
                     dialog.findViewById(R.id.dialog_ok).setOnClickListener(v12 -> {
-
                         if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                             attendant.delete();
                             list.remove(attendant);
@@ -273,7 +279,6 @@ public class FriendsListAdapter extends BaseAdapter {
                 hide.setVisibility(View.VISIBLE);
             }
         }
-
         return convertView;
     }
 }

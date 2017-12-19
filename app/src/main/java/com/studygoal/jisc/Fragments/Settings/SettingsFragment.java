@@ -37,6 +37,11 @@ import com.bumptech.glide.request.target.Target;
 import com.studygoal.jisc.Adapters.GenericAdapter;
 import com.studygoal.jisc.Constants;
 import com.studygoal.jisc.Fragments.Friends.FriendsFragment;
+import com.studygoal.jisc.Fragments.Settings.Submenu.HomeSettingsFragment;
+import com.studygoal.jisc.Fragments.Settings.Submenu.LanguageSettingsFragment;
+import com.studygoal.jisc.Fragments.Settings.Submenu.PrivacySettingsFragment;
+import com.studygoal.jisc.Fragments.Settings.Submenu.TermsSettingsFragment;
+import com.studygoal.jisc.Fragments.Settings.Submenu.Trophies.TrophiesFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.Friend;
@@ -55,6 +60,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Settings Fragment
+ * <p>
+ * Provides the possibility to change settings.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class SettingsFragment extends Fragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
@@ -102,6 +116,12 @@ public class SettingsFragment extends Fragment {
         }
 
         homeValue.setText(selectedValue.toUpperCase());
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -165,7 +185,7 @@ public class SettingsFragment extends Fragment {
         mainView.findViewById(R.id.email_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ConnectionHandler.isConnected(getContext())) {
+                if (ConnectionHandler.isConnected(getContext())) {
                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                             "mailto", "support@jisclearninganalytics.freshdesk.com", null));
                     emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Bug/Feature idea " + DataManager.getInstance().institution);
@@ -216,7 +236,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.e("Test", "Click Camera");
-                if(ConnectionHandler.isConnected(getContext())) {
+                if (ConnectionHandler.isConnected(getContext())) {
                     if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SettingsFragment.this.getActivity());
                         alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_updateprofileimage) + "</font>"));
@@ -281,7 +301,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, new HomeScreenFragment())
+                        .replace(R.id.main_fragment, new HomeSettingsFragment())
                         .addToBackStack(null)
                         .commit();
             }
@@ -291,7 +311,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, new LanguageScreenFragment())
+                        .replace(R.id.main_fragment, new LanguageSettingsFragment())
                         .addToBackStack(null)
                         .commit();
             }
@@ -300,9 +320,9 @@ public class SettingsFragment extends Fragment {
         mainView.findViewById(R.id.privacy_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ConnectionHandler.isConnected(getContext())) {
+                if (ConnectionHandler.isConnected(getContext())) {
                     DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, new PrivacyWebViewFragment())
+                            .replace(R.id.main_fragment, new PrivacySettingsFragment())
                             .addToBackStack(null)
                             .commit();
                 } else {
@@ -314,9 +334,9 @@ public class SettingsFragment extends Fragment {
         mainView.findViewById(R.id.terms_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ConnectionHandler.isConnected(getContext())) {
+                if (ConnectionHandler.isConnected(getContext())) {
                     DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, new TermsScreenFragment())
+                            .replace(R.id.main_fragment, new TermsSettingsFragment())
                             .addToBackStack(null)
                             .commit();
                 } else {
@@ -347,6 +367,52 @@ public class SettingsFragment extends Fragment {
         super.onDestroyView();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    // Permission handler
+
+    /**
+     * Handles the permissions for the camera.
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == 103) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                DataManager.getInstance().mainActivity.startActivityForResult(intent, 101);
+            }
+        } else if (requestCode == 102) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                ContentValues values = new ContentValues();
+
+                values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+
+                imageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                DataManager.getInstance().mainActivity.startActivityForResult(intent, 100);
+            }
+        }
+    }
+
+    // Image handler
+
+    /**
+     * Loads the image view.
+     *
+     * @param manager
+     */
     private void loadImageView(final DataManager manager) {
         manager.mainActivity.runOnUiThread(() -> {
             profileSpinner.setVisibility(View.VISIBLE);
@@ -374,6 +440,9 @@ public class SettingsFragment extends Fragment {
         });
     }
 
+    /**
+     * Reloads the profile image.
+     */
     private void reloadUserProfile() {
         final DataManager manager = DataManager.getInstance();
 
@@ -403,47 +472,21 @@ public class SettingsFragment extends Fragment {
         }).start();
     }
 
+    /**
+     * Reloads the profile image on reload event.
+     *
+     * @param eventReloadImage event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshImageEvenFired(EventReloadImage eventReloadImage) {
         reloadUserProfile();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        if (requestCode == 103) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                DataManager.getInstance().mainActivity.startActivityForResult(intent, 101);
-            }
-        } else if (requestCode == 102) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                ContentValues values = new ContentValues();
-
-                values.put(MediaStore.Images.Media.TITLE, "New Picture");
-                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-
-                imageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                DataManager.getInstance().mainActivity.startActivityForResult(intent, 100);
-            }
-        }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
+    /**
+     * Creates the camera intent to take a photo.
+     *
+     * @return intent
+     */
     private Intent getIntentGetPhotoFromCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -465,13 +508,18 @@ public class SettingsFragment extends Fragment {
         return takePictureIntent;
     }
 
+    /**
+     * Creates an image file.
+     *
+     * @return image
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
-        // Create an image file name
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                Constants.TEMP_IMAGE_FILE_NAME,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                Constants.TEMP_IMAGE_FILE_NAME, /* prefix */
+                ".jpg",                         /* suffix */
+                storageDir                      /* directory */
         );
 
         DataManager manager = DataManager.getInstance();

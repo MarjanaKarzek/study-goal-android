@@ -33,8 +33,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class TargetAdapter extends BaseAdapter {
-    private static final String TAG = TargetAdapter.class.getSimpleName();
+/**
+ * Recurring Target Adapter
+ * <p>
+ * Handles recurring target list.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
+public class RecurringTargetAdapter extends BaseAdapter {
+
+    private static final String TAG = RecurringTargetAdapter.class.getSimpleName();
 
     private Context context;
     public List<Targets> list;
@@ -42,10 +52,11 @@ public class TargetAdapter extends BaseAdapter {
 
     public interface TargetAdapterListener {
         void onDelete(Targets target, int finalPosition);
+
         void onEdit(Targets targets);
     }
 
-    public TargetAdapter(Context context, TargetAdapterListener listener) {
+    public RecurringTargetAdapter(Context context, TargetAdapterListener listener) {
         this.context = context;
         this.listener = listener;
         list = new ArrayList<>();
@@ -125,7 +136,7 @@ public class TargetAdapter extends BaseAdapter {
                 }
                 activityHistoryList.clear();
                 activityHistoryList.addAll(tmp);
-                if(dueDate.get(Calendar.DAY_OF_WEEK) == 7){
+                if (dueDate.get(Calendar.DAY_OF_WEEK) == 7) {
                     dueToday = true;
                 }
                 break;
@@ -142,7 +153,7 @@ public class TargetAdapter extends BaseAdapter {
                 activityHistoryList.addAll(tmp);
                 dueDate.set(Calendar.DAY_OF_MONTH, dueDate.getActualMaximum(Calendar.DAY_OF_MONTH));
                 String nextDueDate = shortDateFormat.format(dueDate.getTime());
-                if(shortCurrentDate.equals(nextDueDate)){
+                if (shortCurrentDate.equals(nextDueDate)) {
                     dueToday = true;
                 }
                 break;
@@ -181,10 +192,10 @@ public class TargetAdapter extends BaseAdapter {
         if (minute > 0)
             text += ((minute == 1) ? " " + context.getString(R.string.and) + " 1 " + context.getString(R.string.minute) + " " : " " + context.getString(R.string.and) + " " + minute + " " + context.getString(R.string.minutes) + " ");
 
-        HashMap<String,String> spans = new HashMap<>();
-        spans.put("Day",context.getString(R.string.daily));
-        spans.put("Week",context.getString(R.string.Weekly));
-        spans.put("Month",context.getString(R.string.monthly));
+        HashMap<String, String> spans = new HashMap<>();
+        spans.put("Day", context.getString(R.string.daily));
+        spans.put("Week", context.getString(R.string.Weekly));
+        spans.put("Month", context.getString(R.string.monthly));
 
         if (item.time_span.length() > 0)
             text += spans.get(item.time_span);
@@ -193,7 +204,7 @@ public class TargetAdapter extends BaseAdapter {
             text += " " + context.getString(R.string._for) + " " + module.name;
         }
 
-        if(item.because != null && item.because.length() > 0){
+        if (item.because != null && item.because.length() > 0) {
             text += " " + context.getString(R.string.because) + " " + item.because;
         }
 

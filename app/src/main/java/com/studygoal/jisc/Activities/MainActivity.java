@@ -85,10 +85,17 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Locale;
 
+/**
+ * Main Activity
+ * <p>
+ * Provides activity for all action inside the app after login.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class MainActivity extends FragmentActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    public static final int CAMERA_REQUEST_CODE = 100;
 
     public DrawerLayout drawer;
     public RelativeLayout friend, settings, addTarget, send, timer, back;
@@ -101,10 +108,6 @@ public class MainActivity extends FragmentActivity {
     public DrawerAdapter adapter;
     private View menu, blackout;
     public boolean displaySingleTarget = false;
-
-    private Context context;
-    private int statOpenedNum = 4;
-    //statOpenedNum should be variable depending on whether or not attendance is being shown. This is a temp fix only.
 
     public String mCurrentPhotoPath;
     private int backpressed = 0;
@@ -121,12 +124,6 @@ public class MainActivity extends FragmentActivity {
                     .transform(new CircleTransform(DataManager.getInstance().mainActivity))
                     .into(DataManager.getInstance().mainActivity.adapter.profilePicture);
         } catch (Exception ignored) {
-        }
-    }
-
-    public void refreshDrawer() {
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
         }
     }
 
@@ -320,7 +317,7 @@ public class MainActivity extends FragmentActivity {
         Intent intentService = new Intent(this, Syncronize.class);
         startService(intentService);
 
-        if(DataManager.getInstance().languageChanged){
+        if (DataManager.getInstance().languageChanged) {
             navigateToSettings();
             DataManager.getInstance().languageChanged = false;
         } else {
@@ -510,7 +507,7 @@ public class MainActivity extends FragmentActivity {
                         }
                         drawer.closeDrawer(GravityCompat.START);
 
-                        if(selectedPosition != adapter.values.length - 1) {
+                        if (selectedPosition != adapter.values.length - 1) {
                             if (!isInsideStats(adapter.values[selectedPosition])) {
                                 lastSelected = selectedPosition;
                             }
@@ -590,50 +587,6 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private boolean isInsideStats(String selection) {
-        if (selection.equals(getString(R.string.attainment))
-                || (selection.equals(getString(R.string.graphs)))
-                || (selection.equals(getString(R.string.points)))
-                || (selection.equals(getString(R.string.attendance_menu)))
-                || (selection.equals(getString(R.string.attendance)))
-                || (selection.equals(getString(R.string.app_usage)))) {
-            return true;
-        }
-        return false;
-    }
-
-    private void updateDeviceInfo() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.contains("push_token")
-                && sharedPreferences.getString("push_token", "").length() > 0) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkManager.getInstance().updateDeviceDetails();
-                }
-            }).start();
-        }
-    }
-
-    private void updateDeviceInfoSocial() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.contains("push_token")
-                && sharedPreferences.getString("push_token", "").length() > 0) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkManager.getInstance().updateDeviceDetailsSocial();
-                }
-            }).start();
-        }
-    }
-
-    public void setTitle(String title) {
-        ((TextView) findViewById(R.id.main_screen_title)).setText(title);
-        ((TextView) findViewById(R.id.main_screen_title)).setLines(1);
-        ((TextView) findViewById(R.id.main_screen_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-    }
-
     @Override
     public void onBackPressed() {
         if (DataManager.getInstance().fromTargetItem) {
@@ -680,34 +633,49 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public void showProgressBar(@Nullable String text) {
-        if (blackout != null) {
-            blackout.setVisibility(View.VISIBLE);
-            blackout.requestLayout();
-            blackout.setOnClickListener(null);
-        }
+    // Navigation handler
+
+    /**
+     * Navigates to settings fragment
+     */
+    public void navigateToSettings() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, new SettingsFragment());
+        fragmentTransaction.commit();
     }
 
-    public void showProgressBar2(@Nullable String text) {
-        if (blackout != null) {
-            blackout.setVisibility(View.VISIBLE);
-
-            if (blackout.findViewById(R.id.progress_bar) != null)
-                blackout.findViewById(R.id.progressbar).setVisibility(View.GONE);
-
-            blackout.requestLayout();
-            blackout.setOnClickListener(null);
+    /**
+     * Checks the selection string whether it is an item of the stats sub menu.
+     *
+     * @param selection String to be checked
+     * @return check result
+     */
+    private boolean isInsideStats(String selection) {
+        if (selection.equals(getString(R.string.attainment))
+                || (selection.equals(getString(R.string.graphs)))
+                || (selection.equals(getString(R.string.points)))
+                || (selection.equals(getString(R.string.attendance_menu)))
+                || (selection.equals(getString(R.string.attendance)))
+                || (selection.equals(getString(R.string.app_usage)))) {
+            return true;
         }
+        return false;
     }
 
-    public void hideProgressBar() {
-        try {
-            blackout.findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
-        } catch (Exception ignored) {
-        }
-        blackout.setVisibility(View.GONE);
+    /**
+     * Sets the title of the main activity.
+     *
+     * @param title String to be set
+     */
+    public void setTitle(String title) {
+        ((TextView) findViewById(R.id.main_screen_title)).setText(title);
+        ((TextView) findViewById(R.id.main_screen_title)).setLines(1);
+        ((TextView) findViewById(R.id.main_screen_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
     }
 
+    /**
+     * Hides all navigation button items.
+     */
     public void hideAllButtons() {
         friend.setVisibility(View.GONE);
         settings.setVisibility(View.GONE);
@@ -718,6 +686,11 @@ public class MainActivity extends FragmentActivity {
         menu.setVisibility(View.GONE);
     }
 
+    /**
+     * Shows certain buttons in the navigation header.
+     *
+     * @param fragment view that displayes the buttons
+     */
     public void showCertainButtons(int fragment) {
         switch (fragment) {
             case 1: {
@@ -805,44 +778,84 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private void saveBitmap(Bitmap bmp) {
-        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-        OutputStream outStream;
-        File file = new File(extStorageDirectory, Constants.TEMP_IMAGE_FILE);
+    // Progress bar handler
 
-        if (file.exists()) {
-            file.delete();
-            file = new File(extStorageDirectory, Constants.TEMP_IMAGE_FILE);
-        }
-
-        try {
-            int width = bmp.getWidth();
-            int height = bmp.getHeight();
-            int newWidth;
-            int newHeight;
-
-            if (width >= Constants.DEFAULT_PROFILE_IMAGE_SIZE && height >= Constants.DEFAULT_PROFILE_IMAGE_SIZE) {
-                if (width > height) {
-                    newWidth = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
-                    newHeight = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * height / width);
-                } else {
-                    newHeight = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
-                    newWidth = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * width / height);
-                }
-            } else {
-                newWidth = width;
-                newHeight = height;
-            }
-
-            outStream = new FileOutputStream(file);
-            bmp = Bitmap.createScaledBitmap(bmp, newWidth, newHeight, false);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-            outStream.flush();
-            outStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * Displays progress bar.
+     *
+     * @param text String to be displayed
+     */
+    public void showProgressBar(@Nullable String text) {
+        if (blackout != null) {
+            blackout.setVisibility(View.VISIBLE);
+            blackout.requestLayout();
+            blackout.setOnClickListener(null);
         }
     }
+
+    /**
+     * Displays progress bar.
+     *
+     * @param text String to be displayed
+     */
+    public void showProgressBar2(@Nullable String text) {
+        if (blackout != null) {
+            blackout.setVisibility(View.VISIBLE);
+
+            if (blackout.findViewById(R.id.progress_bar) != null)
+                blackout.findViewById(R.id.progressbar).setVisibility(View.GONE);
+
+            blackout.requestLayout();
+            blackout.setOnClickListener(null);
+        }
+    }
+
+    /**
+     * Hides progress bar.
+     */
+    public void hideProgressBar() {
+        try {
+            blackout.findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
+        } catch (Exception ignored) {
+        }
+        blackout.setVisibility(View.GONE);
+    }
+
+    // Device info update
+
+    /**
+     * Updates the information about the device for a university user.
+     */
+    private void updateDeviceInfo() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPreferences.contains("push_token")
+                && sharedPreferences.getString("push_token", "").length() > 0) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    NetworkManager.getInstance().updateDeviceDetails();
+                }
+            }).start();
+        }
+    }
+
+    /**
+     * Updated the information about the device for a social service user.
+     */
+    private void updateDeviceInfoSocial() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPreferences.contains("push_token")
+                && sharedPreferences.getString("push_token", "").length() > 0) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    NetworkManager.getInstance().updateDeviceDetailsSocial();
+                }
+            }).start();
+        }
+    }
+
+    // Image Handling
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -900,6 +913,57 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * Saves the given bitmap to external storage.
+     *
+     * @param bmp image to be saved
+     */
+    private void saveBitmap(Bitmap bmp) {
+        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+        OutputStream outStream;
+        File file = new File(extStorageDirectory, Constants.TEMP_IMAGE_FILE);
+
+        if (file.exists()) {
+            file.delete();
+            file = new File(extStorageDirectory, Constants.TEMP_IMAGE_FILE);
+        }
+
+        try {
+            int width = bmp.getWidth();
+            int height = bmp.getHeight();
+            int newWidth;
+            int newHeight;
+
+            if (width >= Constants.DEFAULT_PROFILE_IMAGE_SIZE && height >= Constants.DEFAULT_PROFILE_IMAGE_SIZE) {
+                if (width > height) {
+                    newWidth = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
+                    newHeight = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * height / width);
+                } else {
+                    newHeight = Constants.DEFAULT_PROFILE_IMAGE_SIZE;
+                    newWidth = (Constants.DEFAULT_PROFILE_IMAGE_SIZE * width / height);
+                }
+            } else {
+                newWidth = width;
+                newHeight = height;
+            }
+
+            outStream = new FileOutputStream(file);
+            bmp = Bitmap.createScaledBitmap(bmp, newWidth, newHeight, false);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Changes the orientation of the bitmap.
+     *
+     * @param filePath path of the image
+     * @param bitmap   image object
+     * @return changed image
+     */
     private Bitmap fixOrientation(String filePath, Bitmap bitmap) {
         Bitmap result = bitmap;
 
@@ -937,6 +1001,13 @@ public class MainActivity extends FragmentActivity {
         return result;
     }
 
+    /**
+     * Gets the image path from the uri.
+     *
+     * @param context    context of the call
+     * @param contentUri uri
+     * @return path
+     */
     public static String getRealPathFromURI(Context context, Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         CursorLoader cursorLoader = new CursorLoader(context, contentUri, proj, null, null, null);
@@ -944,11 +1015,5 @@ public class MainActivity extends FragmentActivity {
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
-    }
-
-    public void navigateToSettings() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, new SettingsFragment());
-        fragmentTransaction.commit();
     }
 }

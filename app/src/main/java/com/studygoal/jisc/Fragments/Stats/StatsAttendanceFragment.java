@@ -2,19 +2,15 @@ package com.studygoal.jisc.Fragments.Stats;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AbsListView;
@@ -24,9 +20,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Adapters.EventsAttendedAdapter;
+import com.studygoal.jisc.Adapters.AttendanceAdapter;
 import com.studygoal.jisc.Activities.MainActivity;
-import com.studygoal.jisc.Adapters.ModuleAdapter;
 import com.studygoal.jisc.Fragments.BaseFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
@@ -46,14 +41,24 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Stats Attendance Fragment
+ * <p>
+ * Displays the attendance information of the user.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class StatsAttendanceFragment extends BaseFragment {
+
     private static final String TAG = StatsAttendanceFragment.class.getSimpleName();
 
     private static final int PAGE_SIZE = 10;
 
     private ListView listView;
     private int previousLast;
-    private EventsAttendedAdapter adapter;
+    private AttendanceAdapter adapter;
     private ArrayList<Event> events = new ArrayList<>();
     private boolean isLoading = false;
 
@@ -93,7 +98,7 @@ public class StatsAttendanceFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.layout_stats_attendance, container, false);
-        adapter = new EventsAttendedAdapter(getContext());
+        adapter = new AttendanceAdapter(getContext());
 
         /* used for future api update
         setUpDatePicker();
@@ -197,7 +202,7 @@ public class StatsAttendanceFragment extends BaseFragment {
             }
         }).start();
 
-        if(!DataManager.getInstance().mainActivity.isLandscape) {
+        if (!DataManager.getInstance().mainActivity.isLandscape) {
             summary = (TextView) mainView.findViewById(R.id.segment_button_attendance_summary);
             all = (TextView) mainView.findViewById(R.id.segment_button_all_events);
 
@@ -228,7 +233,7 @@ public class StatsAttendanceFragment extends BaseFragment {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String[] dateInfo = jsonObject.getString("date").substring(0, 10).split("-");
-                String date = dateInfo[2]+ "/" + dateInfo[1];
+                String date = dateInfo[2] + "/" + dateInfo[1];
                 dates.add(date);
                 count.add(jsonObject.getString("count"));
                 Log.e(dates.get(i), count.get(i));
@@ -354,8 +359,15 @@ public class StatsAttendanceFragment extends BaseFragment {
         return mainView;
     }
 
+    /**
+     * Loads the data from the server.
+     *
+     * @param skip
+     * @param limit
+     * @param reset
+     */
     private void loadData(int skip, int limit, boolean reset) {
-        if(!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+        if (!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
             if (XApiManager.getInstance().getAttendance(skip, limit, reset)) {
                 events.clear();
                 List<Event> events = new Select().from(Event.class).execute();
@@ -363,16 +375,19 @@ public class StatsAttendanceFragment extends BaseFragment {
             }
         } else {
             List<Event> calledEvents = NetworkManager.getInstance().getDemoAttendance();
-            if(calledEvents != null) {
+            if (calledEvents != null) {
                 events.clear();
                 this.events.addAll(calledEvents);
             }
         }
     }
 
+    /**
+     * Loads the web views.
+     */
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView() {
-        if(dates.size() == 0){
+        if (dates.size() == 0) {
             mainView.findViewById(R.id.events_attended_graph_emptyView).setVisibility(View.VISIBLE);
             webView.setVisibility(View.GONE);
         } else {
@@ -414,6 +429,11 @@ public class StatsAttendanceFragment extends BaseFragment {
         }
     }
 
+    /**
+     * Sets up the date picker to set the period to display.
+     *
+     * not used yet
+     */
     private void setUpDatePicker() {
         datePickerStart = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -424,7 +444,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                 startDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 startDateSummary.setText(dateFormat.format(startDatePicked.getTime()));
 
-                if(!DataManager.getInstance().mainActivity.isLandscape) {
+                if (!DataManager.getInstance().mainActivity.isLandscape) {
                     startDateAll.setText(dateFormat.format(startDatePicked.getTime()));
                 }
 
@@ -433,7 +453,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_in_future_hint, Snackbar.LENGTH_LONG).show();
                     startDateSummary.setText("Start");
 
-                    if(!DataManager.getInstance().mainActivity.isLandscape) {
+                    if (!DataManager.getInstance().mainActivity.isLandscape) {
                         startDateAll.setText("Start");
                     }
 
@@ -445,7 +465,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.start_date_after_end_date_hint, Snackbar.LENGTH_LONG).show();
                         startDateSummary.setText("Start");
 
-                        if(!DataManager.getInstance().mainActivity.isLandscape) {
+                        if (!DataManager.getInstance().mainActivity.isLandscape) {
                             startDateAll.setText("Start");
                         }
 
@@ -473,7 +493,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                 endDatePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 endDateSummary.setText(dateFormat.format(endDatePicked.getTime()));
 
-                if(!DataManager.getInstance().mainActivity.isLandscape) {
+                if (!DataManager.getInstance().mainActivity.isLandscape) {
                     endDateAll.setText(dateFormat.format(endDatePicked.getTime()));
                 }
 
@@ -481,7 +501,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                     endDatePicked = Calendar.getInstance();
                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_in_future_hint, Snackbar.LENGTH_LONG).show();
                     endDateSummary.setText("End");
-                    if(!DataManager.getInstance().mainActivity.isLandscape) {
+                    if (!DataManager.getInstance().mainActivity.isLandscape) {
                         endDateAll.setText("End");
                     }
 
@@ -493,7 +513,7 @@ public class StatsAttendanceFragment extends BaseFragment {
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.end_date_before_start_date_hint, Snackbar.LENGTH_LONG).show();
                         endDateSummary.setText("End");
 
-                        if(!DataManager.getInstance().mainActivity.isLandscape) {
+                        if (!DataManager.getInstance().mainActivity.isLandscape) {
                             endDateAll.setText("End");
                         }
 

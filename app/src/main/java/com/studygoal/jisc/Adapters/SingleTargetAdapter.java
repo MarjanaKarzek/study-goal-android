@@ -26,44 +26,36 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ToDoTasksAdapter extends BaseAdapter {
-    private static final String TAG = ToDoTasksAdapter.class.getSimpleName();
+/**
+ * Single Target Adapter
+ * <p>
+ * Handles single target list.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
+public class SingleTargetAdapter extends BaseAdapter {
+
+    private static final String TAG = SingleTargetAdapter.class.getSimpleName();
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private Context context;
     private ArrayList<ToDoTasks> list;
-    private ToDoTasksAdapterListener listener;
+    private SingleTargetAdapterListener listener;
 
-    public interface ToDoTasksAdapterListener {
+    public interface SingleTargetAdapterListener {
         void onDelete(ToDoTasks target, int finalPosition);
+
         void onEdit(ToDoTasks targets);
+
         void onDone(ToDoTasks target);
     }
 
-    public ToDoTasksAdapter(Context context, ToDoTasksAdapterListener listener) {
+    public SingleTargetAdapter(Context context, SingleTargetAdapterListener listener) {
         this.context = context;
         this.listener = listener;
         list = new ArrayList<>();
-    }
-
-    public void updateList(List<ToDoTasks> list) {
-        if (this.list != null) {
-            this.list.clear();
-        } else {
-            this.list = new ArrayList<>();
-        }
-
-        if (list != null) {
-            this.list.addAll(list);
-            notifyDataSetChanged();
-        }
-    }
-
-    public void deleteItem(int position) {
-        if (list != null && position < list.size()) {
-            list.remove(position);
-            notifyDataSetChanged();
-        }
     }
 
     @Override
@@ -107,26 +99,26 @@ public class ToDoTasksAdapter extends BaseAdapter {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        int difference = (int)((currentDate.getTime() - itemDate.getTime()) / (1000 * 60 * 60 * 24)) ;
+        int difference = (int) ((currentDate.getTime() - itemDate.getTime()) / (1000 * 60 * 60 * 24));
 
         String overdueText = "";
         if (difference == 0) {
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_due_today));
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.watch_time_due_today));
             isToday = true;
         } else if (difference == -1 || difference == -2) {
-            if(difference == -1)
+            if (difference == -1)
                 isTomorrow = true;
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_2_left));
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.watch_time_2_left));
         } else if (difference <= -3 && difference > -7) {
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_7_left));
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.watch_time_7_left));
         } else if (difference <= -7) {
-            activity_icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.watch_time_idle));
-        } else if (difference > 0){
+            activity_icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.watch_time_idle));
+        } else if (difference > 0) {
             activity_icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.watch_time_overdue));
-            if(difference == 1)
+            if (difference == 1)
                 overdueText = "1 " + context.getString(R.string.day_overdue);
             else
-                overdueText = difference + " "+ context.getString(R.string.days_overdue);
+                overdueText = difference + " " + context.getString(R.string.days_overdue);
         }
 
         TextView textView = (TextView) convertView.findViewById(R.id.target_item_text);
@@ -134,13 +126,13 @@ public class ToDoTasksAdapter extends BaseAdapter {
 
         String text = "";
         text += overdueText + item.description;
-        if(!item.module.equals("no_module"))
+        if (!item.module.equals("no_module"))
             text += " " + context.getString(R.string._for) + " " + item.module;
-        text  += " " + context.getString(R.string.by).toLowerCase() + " ";
+        text += " " + context.getString(R.string.by).toLowerCase() + " ";
 
         if (isToday) {
             text += context.getString(R.string.today);
-        } else if (isTomorrow){
+        } else if (isTomorrow) {
             text += context.getString(R.string.tomorrow);
         } else {
             text += getDateFromEndDateTag(item.endDate);
@@ -256,13 +248,19 @@ public class ToDoTasksAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private String getDateFromEndDateTag(String dateTag){
+    /**
+     * Creates detailed date String from tag.
+     *
+     * @param dateTag tag to be processed
+     * @return date string
+     */
+    private String getDateFromEndDateTag(String dateTag) {
         String[] date = dateTag.split("-");
         int day = Integer.valueOf(date[2]);
         int month = Integer.valueOf(date[1]);
 
         String returnDate = "";
-        switch(day){
+        switch (day) {
             case 1:
             case 21:
             case 31:
@@ -280,7 +278,7 @@ public class ToDoTasksAdapter extends BaseAdapter {
                 returnDate += day + context.getString(R.string._th);
         }
 
-        switch(month){
+        switch (month) {
             case 1:
                 returnDate += " " + context.getString(R.string.january);
                 break;
@@ -321,5 +319,35 @@ public class ToDoTasksAdapter extends BaseAdapter {
         returnDate += " " + date[0];
 
         return returnDate;
+    }
+
+    /**
+     * Replaces the current list with the given list.
+     *
+     * @param list list that is going to be the new list
+     */
+    public void updateList(List<ToDoTasks> list) {
+        if (this.list != null) {
+            this.list.clear();
+        } else {
+            this.list = new ArrayList<>();
+        }
+
+        if (list != null) {
+            this.list.addAll(list);
+            notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * Deletes the item at the given position.
+     *
+     * @param position position of the item that is supposed to be deleted
+     */
+    public void deleteItem(int position) {
+        if (list != null && position < list.size()) {
+            list.remove(position);
+            notifyDataSetChanged();
+        }
     }
 }

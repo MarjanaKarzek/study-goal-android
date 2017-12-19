@@ -15,7 +15,17 @@ import com.studygoal.jisc.Utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Attainment Adapter
+ * <p>
+ * Handles list of attainment data.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class AttainmentAdapter extends BaseAdapter {
+
     private static final String TAG = AttainmentAdapter.class.getSimpleName();
 
     public List<Attainment> list;
@@ -29,7 +39,7 @@ public class AttainmentAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         int size = list.size();
-        if(DataManager.getInstance().user.affiliation.contains("glos.ac.uk")) {
+        if (DataManager.getInstance().user.affiliation.contains("glos.ac.uk")) {
             size++;
         }
         return size;
@@ -47,7 +57,7 @@ public class AttainmentAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item_attainment, parent, false);
         }
 
@@ -55,14 +65,14 @@ public class AttainmentAdapter extends BaseAdapter {
         TextView mark = (TextView) convertView.findViewById(R.id.attainment_item_marks);
         TextView date = (TextView) convertView.findViewById(R.id.attainment_item_date);
 
-        if(position >= list.size() && DataManager.getInstance().user.affiliation.contains("glos.ac.uk")) {
+        if (position >= list.size() && DataManager.getInstance().user.affiliation.contains("glos.ac.uk")) {
             module.setText(DataManager.getInstance().mainActivity.getString(R.string.attainment_info));
             mark.setVisibility(View.GONE);
             date.setVisibility(View.GONE);
         } else {
             Attainment attainment = list.get(position);
             date.setVisibility(View.VISIBLE);
-            date.setText(Utils.attainmentDate(attainment.date).replace("-","/"));
+            date.setText(Utils.attainmentDate(attainment.date).replace("-", "/"));
             mark.setVisibility(View.VISIBLE);
             mark.setText(attainment.percent + "%");
             module.setText(attainment.module);
@@ -70,5 +80,4 @@ public class AttainmentAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 }

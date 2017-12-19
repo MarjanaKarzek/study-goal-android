@@ -18,9 +18,13 @@ import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 import junit.framework.Assert;
 
 /**
- * Created by MarcelC on 1/14/16.
+ * Trophies Details Activity
+ * <p>
+ * Displays details of selected Trophy.
  *
- *
+ * @author Therapy Box - Marcel C
+ * @version 1.5
+ * @date 14/01/16
  */
 public class TrophyDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = TrophyDetailsActivity.class.getSimpleName();
@@ -53,9 +57,9 @@ public class TrophyDetailsActivity extends AppCompatActivity implements View.OnC
         TextView trophyDetailsType = (TextView) findViewById(R.id.trophy_details_type);
         trophyDetailsType.setTypeface(DataManager.getInstance().myriadpro_regular);
 
-        if (bundle.getString("type").contains("Silver")){
+        if (bundle.getString("type").contains("Silver")) {
             trophyDetailsType.setText(getString(R.string.silver));
-        }else{
+        } else {
             trophyDetailsType.setText(getString(R.string.gold));
         }
 

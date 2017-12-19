@@ -15,21 +15,23 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Marjana-Tbox on 12/09/17.
+ * Attendance Adapter
+ * <p>
+ * Handles events attended information.
+ *
+ * @author Therapy Box - Marjana Karzek
+ * @version 1.5
+ * @date 12/09/17
  */
-public class EventsAttendedAdapter extends BaseAdapter {
-    private static final String TAG = EventsAttendedAdapter.class.getSimpleName();
+public class AttendanceAdapter extends BaseAdapter {
+    private static final String TAG = AttendanceAdapter.class.getSimpleName();
 
     private Context context;
     private List<Event> list;
 
-    public EventsAttendedAdapter(Context context) {
+    public AttendanceAdapter(Context context) {
         this.context = context;
         list = new ArrayList<>();
-    }
-
-    public List<Event> getList() {
-        return list;
     }
 
     @Override
@@ -65,6 +67,22 @@ public class EventsAttendedAdapter extends BaseAdapter {
         return convertView;
     }
 
+    // Change list options
+
+    /**
+     * Gets the current list.
+     *
+     * @return list
+     */
+    public List<Event> getList() {
+        return list;
+    }
+
+    /**
+     * Changes the current list to the list provided.
+     *
+     * @param events list to be added
+     */
     public void updateList(ArrayList<Event> events) {
         if (events != null && events.size() > 0) {
             list.clear();
@@ -83,6 +101,11 @@ public class EventsAttendedAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * Extends the list by the given list of events.
+     *
+     * @param events events to be added
+     */
     public void addToList(ArrayList<Event> events) {
         if (events != null && events.size() > 0) {
             list.addAll(events);

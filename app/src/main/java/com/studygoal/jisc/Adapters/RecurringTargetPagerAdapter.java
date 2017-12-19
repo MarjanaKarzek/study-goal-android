@@ -11,18 +11,28 @@ import com.studygoal.jisc.Models.Targets;
 
 import java.util.List;
 
-public class TargetPagerAdapter extends FragmentStatePagerAdapter {
-    private static final String TAG = TargetPagerAdapter.class.getSimpleName();
+/**
+ * Recurring Target Pager Adapter
+ * <p>
+ * Handles recurring target slider.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
+public class RecurringTargetPagerAdapter extends FragmentStatePagerAdapter {
+
+    private static final String TAG = RecurringTargetPagerAdapter.class.getSimpleName();
 
     public List<Targets> list;
     public TargetDetailsFragment reference;
 
-    public TargetPagerAdapter(FragmentManager fm) {
+    public RecurringTargetPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
     @Override
-    public int getItemPosition(Object object){
+    public int getItemPosition(Object object) {
         return PagerAdapter.POSITION_NONE;
     }
 

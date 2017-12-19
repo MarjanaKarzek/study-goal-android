@@ -9,14 +9,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Fragments.Settings.AllTrophiesFragment;
+import com.studygoal.jisc.Fragments.Settings.Submenu.Trophies.AllTrophiesFragment;
 import com.studygoal.jisc.Models.Trophy;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 
 import java.util.List;
 
+/**
+ * Trophies Adapter
+ * <p>
+ * Handles trophy items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener {
+
     private static final String TAG = TrophiesAdapter.class.getSimpleName();
 
     private LayoutInflater inflater;
@@ -73,5 +83,4 @@ public class TrophiesAdapter extends BaseAdapter implements View.OnClickListener
         Trophy trophy = list.get(Integer.parseInt((String) v.getTag()));
         ((AllTrophiesFragment) fragment).showTrophy(trophy);
     }
-
 }

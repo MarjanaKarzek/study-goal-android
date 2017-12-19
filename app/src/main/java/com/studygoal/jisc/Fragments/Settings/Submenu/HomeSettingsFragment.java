@@ -1,4 +1,4 @@
-package com.studygoal.jisc.Fragments.Settings;
+package com.studygoal.jisc.Fragments.Settings.Submenu;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -24,8 +24,25 @@ import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class HomeScreenFragment extends Fragment {
-    private static final String TAG = HomeScreenFragment.class.getSimpleName();
+/**
+ * Home Settings Fragment
+ * <p>
+ * Provides the possibility to change the home screen settings to the following screens:
+ * <p>
+ * Activity Feed
+ * Friends
+ * Stats
+ * Check-in
+ * Log
+ * Target
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
+public class HomeSettingsFragment extends Fragment {
+
+    private static final String TAG = HomeSettingsFragment.class.getSimpleName();
 
     public String selected_value;
 
@@ -36,6 +53,7 @@ public class HomeScreenFragment extends Fragment {
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(7);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.layout_generic_screen, container, false);
@@ -74,7 +92,7 @@ public class HomeScreenFragment extends Fragment {
         en_menu.add("log");
         en_menu.add("target");
 
-        ((TextView)mainView.findViewById(R.id.title)).setText(DataManager.getInstance().mainActivity.getString(R.string.select_home_string));
+        ((TextView) mainView.findViewById(R.id.title)).setText(DataManager.getInstance().mainActivity.getString(R.string.select_home_string));
 
         final ArrayList<String> list = new ArrayList<>();
         list.add(getString(R.string.feed).toUpperCase());
@@ -91,8 +109,8 @@ public class HomeScreenFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-               if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(HomeScreenFragment.this.getActivity());
+                if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(HomeSettingsFragment.this.getActivity());
                     alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_changeappsettings) + "</font>"));
                     alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -105,7 +123,7 @@ public class HomeScreenFragment extends Fragment {
                     return;
                 }
 
-                if(ConnectionHandler.isConnected(getContext())) {
+                if (ConnectionHandler.isConnected(getContext())) {
                     if (!((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().equals(selected_value)) {
                         HashMap<String, String> map = new HashMap<>();
                         map.put("student_id", DataManager.getInstance().user.id);
@@ -131,5 +149,4 @@ public class HomeScreenFragment extends Fragment {
 
         return mainView;
     }
-
 }

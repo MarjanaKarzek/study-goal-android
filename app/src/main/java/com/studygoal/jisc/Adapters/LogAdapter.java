@@ -31,7 +31,17 @@ import com.studygoal.jisc.Utils.Utils;
 
 import java.util.List;
 
+/**
+ * Log Adapter
+ * <p>
+ * Handles log items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class LogAdapter extends BaseAdapter {
+
     private static final String TAG = LogAdapter.class.getSimpleName();
 
     public List<ActivityHistory> historyList;
@@ -52,43 +62,8 @@ public class LogAdapter extends BaseAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-
         checkRunning();
         super.notifyDataSetChanged();
-    }
-
-    private void checkRunning() {
-        if (new Select().from(RunningActivity.class).count() > 0) {
-            SharedPreferences saves = context.getSharedPreferences("jisc", Context.MODE_PRIVATE);
-            Long timestamp = saves.getLong("timer", 0);
-            Long pause;
-            Long timeSpent;
-            if(saves.contains("pause")) {
-                if(saves.getLong("pause", 0) > 0) {
-                    pause = saves.getLong("pause", 0);
-                    timeSpent = (pause - timestamp) / 60000;
-                } else
-                    timeSpent = (System.currentTimeMillis() - timestamp)/60000;
-            } else
-                timeSpent = (System.currentTimeMillis() - timestamp)/60000;
-            RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
-
-            ActivityHistory history = new ActivityHistory();
-            history.id = "";
-            history.student_id = activity.student_id;
-            history.module_id = "";//activity.module_id;
-            history.activity_type = activity.activity_type;
-            history.activity = activity.activity;
-            history.activity_date = activity.activity_date;
-            history.time_spent = timeSpent + "";
-            history.note = "";
-            history.created_date = "";
-            history.modified_date = "";
-            hasRunning = true;
-            historyList.add(0, history);
-        } else {
-            hasRunning = false;
-        }
     }
 
     @Override
@@ -339,5 +314,42 @@ public class LogAdapter extends BaseAdapter {
             }
         }
         return convertView;
+    }
+
+    /**
+     * Checks the currently running activities.
+     */
+    private void checkRunning() {
+        if (new Select().from(RunningActivity.class).count() > 0) {
+            SharedPreferences saves = context.getSharedPreferences("jisc", Context.MODE_PRIVATE);
+            Long timestamp = saves.getLong("timer", 0);
+            Long pause;
+            Long timeSpent;
+            if(saves.contains("pause")) {
+                if(saves.getLong("pause", 0) > 0) {
+                    pause = saves.getLong("pause", 0);
+                    timeSpent = (pause - timestamp) / 60000;
+                } else
+                    timeSpent = (System.currentTimeMillis() - timestamp)/60000;
+            } else
+                timeSpent = (System.currentTimeMillis() - timestamp)/60000;
+            RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
+
+            ActivityHistory history = new ActivityHistory();
+            history.id = "";
+            history.student_id = activity.student_id;
+            history.module_id = "";//activity.module_id;
+            history.activity_type = activity.activity_type;
+            history.activity = activity.activity;
+            history.activity_date = activity.activity_date;
+            history.time_spent = timeSpent + "";
+            history.note = "";
+            history.created_date = "";
+            history.modified_date = "";
+            hasRunning = true;
+            historyList.add(0, history);
+        } else {
+            hasRunning = false;
+        }
     }
 }

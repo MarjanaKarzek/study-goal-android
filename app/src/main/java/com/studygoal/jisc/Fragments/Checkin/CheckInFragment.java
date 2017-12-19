@@ -30,13 +30,19 @@ import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 
+/**
+ * Check In Fragment class
+ *
+ * Provides the handling of the view "Check In". Handles the code input and location of the user.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class CheckInFragment extends Fragment {
     private static final String TAG = CheckInFragment.class.getSimpleName();
 
     private View mainView;
-    private ListView list;
-    private LogAdapter adapter;
-    private SwipeRefreshLayout layout;
     private boolean gps_enabled = false;
     private boolean network_enabled = false;
 
@@ -173,12 +179,6 @@ public class CheckInFragment extends Fragment {
                             }
 
                             final boolean result = NetworkManager.getInstance().setUserPin(pinTextEditText, "LOCATION");
-
-                            // commented, not used
-                            //debug for testing getsettings - by tmobiledevcore
-                            //final boolean result_getsetting_attendanceData = NetworkManager.getInstance().getSetting("attendanceData");
-                            //final boolean result_getsetting_checkinData = NetworkManager.getInstance().getSetting("checkinData");
-
 
                             CheckInFragment.this.getActivity().runOnUiThread(new Runnable() {
                                 @Override

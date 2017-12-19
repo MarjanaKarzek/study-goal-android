@@ -7,13 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.studygoal.jisc.Adapters.AppUsageListAdapter;
+import com.studygoal.jisc.Adapters.AppUsageAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Managers.NetworkManager;
@@ -27,9 +25,14 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 /**
- * Created by Marjana-Tbox on 07/09/17.
+ * Stats VLE Activity Fragment
+ * <p>
+ * Displays the VLE activity of the user.
+ *
+ * @author Therapy Box - Marjana Karzek
+ * @version 1.5
+ * @date 07/09/17
  */
-
 public class StatsAppUsageFragment extends Fragment {
 
     private TextView startDate;
@@ -43,7 +46,7 @@ public class StatsAppUsageFragment extends Fragment {
 
     private ArrayList<String> list = new ArrayList<>(Arrays.asList("targets", "setTarget", "activities", "sessions"));
     private HashMap<String, String> data = new HashMap<>();
-    private AppUsageListAdapter adapter;
+    private AppUsageAdapter adapter;
 
     public void onResume() {
         super.onResume();
@@ -85,7 +88,7 @@ public class StatsAppUsageFragment extends Fragment {
         });
 
         loadData(null, null);
-        adapter = new AppUsageListAdapter(getContext());
+        adapter = new AppUsageAdapter(getContext());
         adapter.list = list;
         adapter.data = data;
         ListView listView = (ListView) mainView.findViewById(R.id.app_usage_data_list);
@@ -94,6 +97,12 @@ public class StatsAppUsageFragment extends Fragment {
         return mainView;
     }
 
+    /**
+     * Calls the data from the server according to the settings.
+     *
+     * @param startDate period beginning
+     * @param endDate period ending
+     */
     private void loadData(String startDate, String endDate) {
         DataManager.getInstance().mainActivity.showProgressBar("");
         NetworkManager.getInstance().getAppUsage(startDate, endDate);
@@ -108,6 +117,11 @@ public class StatsAppUsageFragment extends Fragment {
         DataManager.getInstance().mainActivity.hideProgressBar();
     }
 
+    // Settings
+
+    /**
+     * Sets up the date pickers for the settings.
+     */
     private void setUpDatePicker() {
         datePickerStart = new DatePickerDialog.OnDateSetListener() {
             @Override

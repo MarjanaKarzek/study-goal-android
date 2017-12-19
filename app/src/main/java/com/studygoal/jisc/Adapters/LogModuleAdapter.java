@@ -15,7 +15,17 @@ import com.studygoal.jisc.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Log Module Adapter
+ * <p>
+ * Handles log module items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class LogModuleAdapter extends BaseAdapter {
+
     private static final String TAG = LogModuleAdapter.class.getSimpleName();
 
     public ArrayList<String> moduleList;
@@ -66,5 +76,4 @@ public class LogModuleAdapter extends BaseAdapter {
         }
         return convertView;
     }
-
 }

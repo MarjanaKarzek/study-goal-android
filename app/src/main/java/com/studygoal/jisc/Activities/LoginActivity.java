@@ -77,15 +77,17 @@ import java.util.List;
 import java.util.UUID;
 
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.common.SafeToast;
 
 /**
  * Login Activity
+ * <p>
+ * Handles user login over three steps. Handles university and social login.
  *
- * Handles user login over three steps.
- *
- * @author unknown
+ * @author Therapy Box
+ * @version 1.5
  * @date unknown
  */
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -107,8 +109,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private boolean rememberMe;
     private int socialType;
     private int refreshCounter = 0;
-    private String email;
-    private String socialID;
     private String token;
     private boolean isRefreshing = false;
     private boolean firstTimeConnectionProblem = true;
@@ -116,6 +116,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Institution selectedInstitution;
     private int developerModeCounter = 0;
     private Button logoButton;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        signInGoogleAccount(account);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -566,7 +574,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
         if (!isConnected()) {
-            if(!DataManager.getInstance().fromLogout & restoreLastKnownUser()) {
+            if (!DataManager.getInstance().fromLogout & restoreLastKnownUser()) {
                 String jwtLastKnownUser = getSharedPreferences("jisc", Context.MODE_PRIVATE).getString("jwt", "");
                 DataManager.getInstance().set_jwt(jwtLastKnownUser);
                 showProgressBar();
@@ -580,22 +588,30 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             } else {
                 refreshData();
             }
-        } else{
+        } else {
             refreshData();
         }
     }
 
-    private void setUpDeveloperModeListener() {
-        logoButton.setOnClickListener(view -> {
-            developerModeCounter++;
-            if(developerModeCounter == 5){
-                developerModeCounter = 0;
-                XApiManager.getInstance().changeDeveloperMode();
-                NetworkManager.getInstance().changeDeveloperMode(LoginActivity.this);
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        if (loginStep3.getVisibility() == View.VISIBLE) {
+            loginStep3.setVisibility(View.GONE);
+
+            relativeLayout.setVisibility(View.VISIBLE);
+            loginStep1.setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
+        }
     }
 
+    // Progress Bar handler
+
+    /**
+     * Shows progress dialog while logging in the user.
+     *
+     * @param show whether the dialog should be shown or not.
+     */
     private void showProgressDialog(final boolean show) {
         runOnUiThread(() -> {
             if (!isFinishing()) {
@@ -619,6 +635,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
+    /**
+     * Shows progress bar.
+     */
+    public void showProgressBar() {
+        findViewById(R.id.blackout).setVisibility(View.VISIBLE);
+        findViewById(R.id.blackout).setOnClickListener(null);
+    }
+
+    /**
+     * Hides progress bar.
+     */
+    public void hideProgressBar() {
+        findViewById(R.id.blackout).setVisibility(View.INVISIBLE);
+    }
+
+    // Login handler
+
+    /**
+     * Refreshes the app data and provides connection failure handling.
+     */
     public void refreshData() {
         new Thread(() -> NetworkManager.getInstance().getAllTrophies()).start();
         final InstitutionsAdapter adapter = (InstitutionsAdapter) ((RecyclerView) findViewById(R.id.list)).getAdapter();
@@ -637,7 +673,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else {
                     boolean isConnectionIssue = false;
 
-                    //refreshCounter is increased to 99 to improve the chance of a connection being made.
+                    //refreshCounter is set to 99 to improve the chance of a connection being made.
                     while (refreshCounter < Constants.LOGIN_COUNT_CONNECTION_TRY) {
                         if (!isConnected()) {
                             if (firstTimeConnectionProblem) {
@@ -682,27 +718,37 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (loginStep3.getVisibility() == View.VISIBLE) {
-            loginStep3.setVisibility(View.GONE);
+    /**
+     * Gets the institutions from the server.
+     *
+     * @return list of available institutions
+     */
+    private List<Institution> getInstitution() {
+        List<Institution> result = null;
 
-            relativeLayout.setVisibility(View.VISIBLE);
-            loginStep1.setVisibility(View.VISIBLE);
-        } else {
-            super.onBackPressed();
+        boolean requestResult = NetworkManager.getInstance().downloadInstitutions();
+        int institutionsCount = 0;
+
+        if (requestResult) {
+            institutionsCount = new Select().from(Institution.class).count();
+
+            if (institutionsCount > 0) {
+                result = new Select().from(Institution.class).orderBy("name").execute();
+            }
         }
+
+        return result;
     }
 
-    public void showProgressBar() {
-        findViewById(R.id.blackout).setVisibility(View.VISIBLE);
-        findViewById(R.id.blackout).setOnClickListener(null);
-    }
+    // Social login handler
 
-    public void hideProgressBar() {
-        findViewById(R.id.blackout).setVisibility(View.INVISIBLE);
-    }
-
+    /**
+     * Handles social login result to login the social services user according to the service type.
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -716,6 +762,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
+    /**
+     * Logs in Google user.
+     *
+     * @param completedTask task holding the google user
+     */
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
@@ -731,12 +782,33 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
+    /**
+     * Signs in the provided google user.
+     *
+     * @param account account object of the user
+     */
+    private void signInGoogleAccount(GoogleSignInAccount account) {
+        if (account != null) {
+            token = account.getIdToken();
+
+            runOnUiThread(() -> loginSocial());
+        }
+    }
+
+    /**
+     * Listens on the connection for a google sign in and gets executed if the connection fails.
+     *
+     * @param connectionResult
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e("JISC", "connection result: " + connectionResult);
     }
 
-    void loginSocial() {
+    /**
+     * Logs in the social services user on the server. Retrieves a jwt for security.
+     */
+    private void loginSocial() {
         Integer response = NetworkManager.getInstance().loginSocial(token, socialType);
 
         if (response == 200) {
@@ -762,59 +834,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    private boolean isConnected() {
-        boolean result = false;
-
-        ConnectivityManager cm = (ConnectivityManager) LoginActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if (cm != null) {
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            result = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        }
-
-        return result;
-    }
-
-    private List<Institution> getInstitution() {
-        List<Institution> result = null;
-
-        boolean requestResult = NetworkManager.getInstance().downloadInstitutions();
-        int institutionsCount = 0;
-
-        if (requestResult) {
-            institutionsCount = new Select().from(Institution.class).count();
-
-            if (institutionsCount > 0) {
-                result = new Select().from(Institution.class).orderBy("name").execute();
-            }
-        }
-
-        return result;
-    }
-
-    private void showBadConnectDialog(String message) {
-        LoginActivity.this.runOnUiThread(() -> {
-            if (!isFinishing()) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-                alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + message + "</font>"));
-                alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#000000'>OK</font>"), (dialog, which) -> {
-                    refreshCounter = 0;
-                    refreshData();
-                    dialog.dismiss();
-                });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-                DataManager.getInstance().toast = false;
-            }
-        });
-    }
+    // Bad internet connection handler
 
     /**
      * On successful login this method updates the information about the last known user
      */
     private void updateLastKnownUser() {
-        if(DataManager.getInstance().socialType == 0) {
+        if (DataManager.getInstance().socialType == 0) {
             SharedPreferences sharedPref = this.getSharedPreferences("jisc", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("last_user_id", DataManager.getInstance().user.id);
@@ -865,19 +891,61 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         return false;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    /**
+     * Checks for a connection to the internet.
+     *
+     * @return result of the connection test
+     */
+    private boolean isConnected() {
+        boolean result = false;
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        signInGoogleAccount(account);
+        ConnectivityManager cm = (ConnectivityManager) LoginActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm != null) {
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            result = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        }
+
+        return result;
     }
 
-    private void signInGoogleAccount(GoogleSignInAccount account) {
-        if(account != null) {
-            token = account.getIdToken();
+    /**
+     * Displays a dialog to inform the user about the bad internet connection.
+     *
+     * @param message String to be displayed
+     */
+    private void showBadConnectDialog(String message) {
+        LoginActivity.this.runOnUiThread(() -> {
+            if (!isFinishing()) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
+                alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + message + "</font>"));
+                alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#000000'>OK</font>"), (dialog, which) -> {
+                    refreshCounter = 0;
+                    refreshData();
+                    dialog.dismiss();
+                });
 
-            runOnUiThread(() -> loginSocial());
-        }
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                DataManager.getInstance().toast = false;
+            }
+        });
+    }
+
+    // Developer Mode
+
+    /**
+     * Sets up the developer mode listener on the icon button tap.
+     * Switches to developer mode, which uses a different API, after 5 taps.
+     */
+    private void setUpDeveloperModeListener() {
+        logoButton.setOnClickListener(view -> {
+            developerModeCounter++;
+            if (developerModeCounter == 5) {
+                developerModeCounter = 0;
+                XApiManager.getInstance().changeDeveloperMode();
+                NetworkManager.getInstance().changeDeveloperMode(LoginActivity.this);
+            }
+        });
     }
 }

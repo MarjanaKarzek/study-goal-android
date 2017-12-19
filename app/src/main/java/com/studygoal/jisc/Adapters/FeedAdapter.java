@@ -38,13 +38,26 @@ import com.studygoal.jisc.Utils.CircleTransform;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+
+/**
+ * Feed Adapter
+ * <p>
+ * Handles feed items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
+
     private static final String TAG = FeedAdapter.class.getSimpleName();
 
     public List<Feed> feedList = new ArrayList<>();
@@ -62,6 +75,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         return feedList.size();
     }
 
+    /**
+     * Removes the item at the given position from the list.
+     *
+     * @param position position of the item that is supposed to be deleted
+     */
     private void removeItem(int position) {
         feedList.remove(position);
         notifyItemRemoved(position);
@@ -204,27 +222,28 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                         .into(feedViewHolder.profilePic);
         }
 
-        Calendar c = Calendar.getInstance();
-        c.setTimeZone(TimeZone.getTimeZone("UTC"));
-        long current_time = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        long currentTime = System.currentTimeMillis();
 
-        c.set(Integer.parseInt(item.created_date.split(" ")[0].split("-")[0]),
-                Integer.parseInt(item.created_date.split(" ")[0].split("-")[1]) - 1,
-                Integer.parseInt(item.created_date.split(" ")[0].split("-")[2]),
-                Integer.parseInt(item.created_date.split(" ")[1].split(":")[0]),
-                Integer.parseInt(item.created_date.split(" ")[1].split(":")[1]));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            calendar.setTime(dateFormat.parse(item.created_date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        long created_date = c.getTimeInMillis();
-        long diff = (current_time - created_date) / 60000;
+        long createdDate = calendar.getTimeInMillis();
+        long difference = (currentTime - createdDate) / 60000;
 
-        if (diff <= 1)
+        if (difference <= 1)
             feedViewHolder.timeAgo.setText(context.getString(R.string.just_a_moment_ago));
-        else if (diff < 59)
-            feedViewHolder.timeAgo.setText(diff + " " + context.getString(R.string.minutes_ago));
-        else if (diff < 120)
+        else if (difference < 59)
+            feedViewHolder.timeAgo.setText(difference + " " + context.getString(R.string.minutes_ago));
+        else if (difference < 120)
             feedViewHolder.timeAgo.setText("1 " + context.getString(R.string.hour_ago));
-        else if (diff < 1440)
-            feedViewHolder.timeAgo.setText((diff / 60) + " " + context.getString(R.string.hours_ago));
+        else if (difference < 1440)
+            feedViewHolder.timeAgo.setText((difference / 60) + " " + context.getString(R.string.hours_ago));
         else
             feedViewHolder.timeAgo.setText(
                     context.getString(R.string.on) + " "
@@ -253,22 +272,23 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         return new FeedViewHolder(itemView);
     }
 
+    /**
+     * Feed View Holder class
+     *
+     * Holds the view items.
+     */
     static class FeedViewHolder extends RecyclerView.ViewHolder {
         protected TextView message;
         public ImageView profilePic;
         protected TextView feed;
         public TextView timeAgo;
-        public View menu;
         public View bottomBar;
         public View body;
         public View facebookButton, twitterButton, mailButton;
-        public View selfPost;
 
         public SwipeLayout swipelayout;
         public RelativeLayout deleteButton;
         public RelativeLayout shareButton;
-
-        protected View share;
 
         public View view;
 

@@ -15,14 +15,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Adapters.TargetAdapter;
-import com.studygoal.jisc.Adapters.ToDoTasksAdapter;
+import com.studygoal.jisc.Adapters.RecurringTargetAdapter;
+import com.studygoal.jisc.Adapters.SingleTargetAdapter;
 import com.studygoal.jisc.Fragments.BaseFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
@@ -40,14 +39,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class TargetFragment extends BaseFragment {
     private static final String TAG = TargetFragment.class.getSimpleName();
 
-    private TargetAdapter targetAdapter;
-    private ToDoTasksAdapter toDoTasksAdapter;
+    private RecurringTargetAdapter recurringTargetAdapter;
+    private SingleTargetAdapter singleTargetAdapter;
 
     private View rootView;
     private View tutorialMessage;
@@ -92,7 +90,7 @@ public class TargetFragment extends BaseFragment {
         tutorialMessage = rootView.findViewById(R.id.tutorial_message);
         layout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipelayout);
 
-        targetAdapter = new TargetAdapter(getActivity(), new TargetAdapter.TargetAdapterListener() {
+        recurringTargetAdapter = new RecurringTargetAdapter(getActivity(), new RecurringTargetAdapter.TargetAdapterListener() {
             @Override
             public void onDelete(Targets target, int finalPosition) {
                 if(ConnectionHandler.isConnected(getContext())) {
@@ -112,7 +110,7 @@ public class TargetFragment extends BaseFragment {
             }
         });
 
-        toDoTasksAdapter = new ToDoTasksAdapter(getActivity(), new ToDoTasksAdapter.ToDoTasksAdapterListener() {
+        singleTargetAdapter = new SingleTargetAdapter(getActivity(), new SingleTargetAdapter.SingleTargetAdapterListener() {
             @Override
             public void onDelete(ToDoTasks target, int finalPosition) {
                 if(ConnectionHandler.isConnected(getContext())) {
@@ -155,12 +153,12 @@ public class TargetFragment extends BaseFragment {
             }
         });
 
-        binding.list.setAdapter(targetAdapter);
-        binding.listTodo.setAdapter(toDoTasksAdapter);
+        binding.list.setAdapter(recurringTargetAdapter);
+        binding.listTodo.setAdapter(singleTargetAdapter);
 
         binding.list.setOnItemClickListener((parent, v, position, id) -> {
             TargetDetailsFragment fragment = new TargetDetailsFragment();
-            fragment.list = targetAdapter.list;
+            fragment.list = recurringTargetAdapter.list;
             fragment.position = position;
             DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, fragment)
@@ -169,7 +167,7 @@ public class TargetFragment extends BaseFragment {
         });
 
         binding.listTodo.setOnItemClickListener((parent, v, position, id) -> {
-            ToDoTasks item = toDoTasksAdapter.getItem(position);
+            ToDoTasks item = singleTargetAdapter.getItem(position);
 
             if (item != null) {
                 if (item.fromTutor != null && item.isAccepted != null && item.fromTutor.toLowerCase().equals("yes") && item.isAccepted.equals("0")) {
@@ -243,12 +241,12 @@ public class TargetFragment extends BaseFragment {
             if (NetworkManager.getInstance().deleteTarget(params)) {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     target.delete();
-                    targetAdapter.list.remove(finalPosition);
-                    if (targetAdapter.list.size() == 0)
+                    recurringTargetAdapter.list.remove(finalPosition);
+                    if (recurringTargetAdapter.list.size() == 0)
                         tutorialMessage.setVisibility(View.VISIBLE);
                     else
                         tutorialMessage.setVisibility(View.GONE);
-                    targetAdapter.notifyDataSetChanged();
+                    recurringTargetAdapter.notifyDataSetChanged();
                     DataManager.getInstance().mainActivity.hideProgressBar();
                     Snackbar.make(rootView.findViewById(R.id.parent), R.string.target_deleted_successfully, Snackbar.LENGTH_LONG).show();
                 });
@@ -280,7 +278,7 @@ public class TargetFragment extends BaseFragment {
             if (NetworkManager.getInstance().deleteToDoTask(params)) {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     task.delete();
-                    toDoTasksAdapter.deleteItem(finalPosition);
+                    singleTargetAdapter.deleteItem(finalPosition);
                     DataManager.getInstance().mainActivity.hideProgressBar();
                     updateTutorialMessage();
                     Snackbar.make(rootView.findViewById(R.id.parent), R.string.target_deleted_successfully, Snackbar.LENGTH_LONG).show();
@@ -337,14 +335,14 @@ public class TargetFragment extends BaseFragment {
             NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);
 
             DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                targetAdapter.list = new Select().from(Targets.class).execute();
-                targetAdapter.notifyDataSetChanged();
+                recurringTargetAdapter.list = new Select().from(Targets.class).execute();
+                recurringTargetAdapter.notifyDataSetChanged();
                 
                 List<ToDoTasks> currentTaskList = new Select().from(ToDoTasks.class).where("status != 1 and from_tutor = ? and is_accepted = 0","yes").execute();
                 currentTaskList.addAll(new Select().from(ToDoTasks.class).where("status != 1 and is_accepted != 2 and ((from_tutor = ? and is_accepted = 1) or from_tutor = ?)","yes","no").execute());
 
-                toDoTasksAdapter.updateList(currentTaskList);
-                toDoTasksAdapter.notifyDataSetChanged();
+                singleTargetAdapter.updateList(currentTaskList);
+                singleTargetAdapter.notifyDataSetChanged();
 
                 if (showProgress) {
                     DataManager.getInstance().mainActivity.hideProgressBar();
@@ -360,13 +358,13 @@ public class TargetFragment extends BaseFragment {
     private void updateTutorialMessage() {
         runOnUiThread(() -> {
             if (binding.targetRecurring.isChecked()) {
-                if (targetAdapter != null && targetAdapter.list.size() > 0) {
+                if (recurringTargetAdapter != null && recurringTargetAdapter.list.size() > 0) {
                     tutorialMessage.setVisibility(View.GONE);
                 } else {
                     tutorialMessage.setVisibility(View.VISIBLE);
                 }
             } else if (binding.targetSingle.isChecked()) {
-                if (toDoTasksAdapter != null && toDoTasksAdapter.getCount() > 0) {
+                if (singleTargetAdapter != null && singleTargetAdapter.getCount() > 0) {
                     tutorialMessage.setVisibility(View.GONE);
                 } else {
                     tutorialMessage.setVisibility(View.VISIBLE);

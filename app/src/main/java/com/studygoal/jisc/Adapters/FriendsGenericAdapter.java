@@ -17,7 +17,17 @@ import com.studygoal.jisc.R;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Friends Generic Adapter
+ * <p>
+ * Handles friend item information.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FriendsGenericAdapter extends BaseAdapter {
+
     private static final String TAG = FriendsGenericAdapter.class.getSimpleName();
 
     public List<Friend> list;
@@ -100,5 +110,4 @@ public class FriendsGenericAdapter extends BaseAdapter {
         }
         return convertView;
     }
-
 }

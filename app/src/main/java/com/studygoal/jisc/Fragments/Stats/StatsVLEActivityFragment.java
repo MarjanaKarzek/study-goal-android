@@ -1,17 +1,10 @@
 package com.studygoal.jisc.Fragments.Stats;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -23,7 +16,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,6 +23,7 @@ import com.activeandroid.query.Select;
 import com.studygoal.jisc.Adapters.GenericAdapter;
 import com.studygoal.jisc.Adapters.ModuleAdapter;
 import com.studygoal.jisc.Activities.MainActivity;
+import com.studygoal.jisc.Fragments.BaseFragment;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.Courses;
@@ -38,7 +31,6 @@ import com.studygoal.jisc.Models.ED;
 import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.Models.Module;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import com.studygoal.jisc.Utils.SegmentController.SegmentClickListener;
 import com.studygoal.jisc.Utils.Utils;
 
@@ -53,7 +45,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class StatsVLEActivityFragment extends Fragment {
+/**
+ * Stats VLE Activity Fragment
+ * <p>
+ * Displays the VLE activity of the user.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
+public class StatsVLEActivityFragment extends BaseFragment {
+
     private static final String TAG = StatsVLEActivityFragment.class.getSimpleName();
 
     private View mainView;
@@ -180,10 +182,10 @@ public class StatsVLEActivityFragment extends Fragment {
         });*/
 
         moduleFilter = (TextView) mainView.findViewById(R.id.vle_activity_module_filter);
-        if(!DataManager.getInstance().mainActivity.isLandscape) {
+        if (!DataManager.getInstance().mainActivity.isLandscape) {
             ArrayList<TextView> segments = new ArrayList<>();
             segmentButtonBarGraph = (TextView) mainView.findViewById(R.id.segment_button_bar_graph);
-            segmentButtonLineGraph  = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
+            segmentButtonLineGraph = (TextView) mainView.findViewById(R.id.segment_button_line_graph);
             segments.add(segmentButtonBarGraph);
             segments.add(segmentButtonLineGraph);
 
@@ -237,7 +239,7 @@ public class StatsVLEActivityFragment extends Fragment {
                 final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
                 listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, compareTo.getText().toString(), items));
                 listView.setOnItemClickListener((parent, view, position, id) -> {
-                    if(position == 0) {
+                    if (position == 0) {
                         compareTo.setText(R.string.compare_to);
                     } else {
                         compareTo.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
@@ -302,18 +304,18 @@ public class StatsVLEActivityFragment extends Fragment {
                 runOnUiThread(() -> ((MainActivity) getActivity()).hideProgressBar());
             });
 
-                if (DataManager.getInstance().mainActivity.isLandscape) {
-                    DisplayMetrics displaymetrics = new DisplayMetrics();
-                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                    int width = (int) (displaymetrics.widthPixels * 0.3);
+            if (DataManager.getInstance().mainActivity.isLandscape) {
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                int width = (int) (displaymetrics.widthPixels * 0.3);
 
-                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                    params.width = width;
-                    dialog.getWindow().setAttributes(params);
-                }
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width = width;
+                dialog.getWindow().setAttributes(params);
+            }
 
-                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
+            ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+            ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
 
             final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
             listView.setAdapter(new ModuleAdapter(DataManager.getInstance().mainActivity, moduleFilter.getText().toString()));
@@ -321,16 +323,16 @@ public class StatsVLEActivityFragment extends Fragment {
                 String titleText = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString();
                 List<Courses> coursesList = new Select().from(Courses.class).execute();
 
-                    for (int j = 0; j < coursesList.size(); j++) {
-                        String courseName = coursesList.get(j).name;
-                        if (courseName.equals(titleText)) {
-                            return;
-                        }
+                for (int j = 0; j < coursesList.size(); j++) {
+                    String courseName = coursesList.get(j).name;
+                    if (courseName.equals(titleText)) {
+                        return;
                     }
+                }
 
                 dialog.dismiss();
                 moduleFilter.setText(titleText);
-                if(!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+                if (!DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     if (!moduleFilter.getText().toString().equals(getString(R.string.anymodule))) {
                         compareTo.setOnClickListener(compareToListener);
                         compareTo.setAlpha(1.0f);
@@ -361,6 +363,11 @@ public class StatsVLEActivityFragment extends Fragment {
         return mainView;
     }
 
+    // Data
+
+    /**
+     * Loads the VLE activity of the user according to the settings selected.
+     */
     private void loadData() {
         runOnUiThread(() -> ((MainActivity) getActivity()).showProgressBar2(""));
 
@@ -561,6 +568,11 @@ public class StatsVLEActivityFragment extends Fragment {
         }).start();
     }
 
+    // High charts
+
+    /**
+     * Sets up and displays the high charts according to the settings.
+     */
     private void refreshUi() {
         if (list == null) {
             list = new ArrayList<>();
@@ -598,7 +610,7 @@ public class StatsVLEActivityFragment extends Fragment {
                 html = html.replace("height:1000px", "height:" + webViewHeight + "px");
                 webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
 
-                if(DataManager.getInstance().mainActivity.isLandscape) {
+                if (DataManager.getInstance().mainActivity.isLandscape) {
                     html = getHighCartsTabletString();
                     html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
                     html = html.replace("height:1000px", "height:" + webViewHeightLine + "px");
@@ -644,7 +656,7 @@ public class StatsVLEActivityFragment extends Fragment {
 
                 Log.e("JISC", "HTML: " + html);
                 webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
-                if(DataManager.getInstance().mainActivity.isLandscape) {
+                if (DataManager.getInstance().mainActivity.isLandscape) {
                     html = getHighCartsTabletString();
                     html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
                     html = html.replace("height:1000px", "height:" + webViewHeightLine + "px");
@@ -721,7 +733,7 @@ public class StatsVLEActivityFragment extends Fragment {
                 html = html.replace("height:1000px", "height:" + webViewHeight + "px");
 
                 webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
-                if(DataManager.getInstance().mainActivity.isLandscape) {
+                if (DataManager.getInstance().mainActivity.isLandscape) {
                     html = getHighCartsTabletString();
                     html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
                     html = html.replace("height:1000px", "height:" + webViewHeightLine + "px");
@@ -813,7 +825,7 @@ public class StatsVLEActivityFragment extends Fragment {
                 html = html.replace("height:1000px", "height:" + webViewHeight + "px");
 
                 webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
-                if(DataManager.getInstance().mainActivity.isLandscape) {
+                if (DataManager.getInstance().mainActivity.isLandscape) {
                     html = getHighCartsTabletString();
                     html = html.replace("<<<REPLACE_DATA_HERE>>>", webData);
                     html = html.replace("height:1000px", "height:" + webViewHeightLine + "px");
@@ -823,6 +835,11 @@ public class StatsVLEActivityFragment extends Fragment {
         }
     }
 
+    /**
+     * Gets the path of the high chart file according to the display settings.
+     *
+     * @return high chart path
+     */
     private String getHighCartsString() {
         try {
             String path;
@@ -849,6 +866,11 @@ public class StatsVLEActivityFragment extends Fragment {
         }
     }
 
+    /**
+     * Gets the path of the line high chart file for tablet to display both high charts at the same time.
+     *
+     * @return line high chart path
+     */
     private String getHighCartsTabletString() {
         try {
             String path = "highcharts/linegraph.html";
@@ -868,14 +890,13 @@ public class StatsVLEActivityFragment extends Fragment {
         }
     }
 
-    private void runOnUiThread(Runnable run) {
-        final Activity activity = getActivity();
+    // High chart settings
 
-        if (activity != null && run != null) {
-            activity.runOnUiThread(run);
-        }
-    }
-
+    /**
+     * Settings selector for the period of time the high charts should display.
+     * <p>
+     * not used yet
+     */
     private void setUpDatePicker() {
         datePickerStart = new DatePickerDialog.OnDateSetListener() {
             @Override

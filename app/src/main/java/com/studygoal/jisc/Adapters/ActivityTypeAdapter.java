@@ -12,7 +12,17 @@ import com.studygoal.jisc.R;
 
 import java.util.ArrayList;
 
+/**
+ * Activity Type Adapter
+ * <p>
+ * Handles list of activity types.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class ActivityTypeAdapter extends BaseAdapter {
+
     private static final String TAG = ActivityTypeAdapter.class.getSimpleName();
 
     public ArrayList<String> activityTypeList;
@@ -42,19 +52,20 @@ public class ActivityTypeAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.snippet_custom_spinner_item, parent, false);
         }
-        TextView textView = (TextView)convertView.findViewById(R.id.dialog_item_name);
+
+        TextView textView = (TextView) convertView.findViewById(R.id.dialog_item_name);
         textView.setTypeface(DataManager.getInstance().myriadpro_regular);
         textView.setText(activityTypeList.get(position));
 
-        if(activityTypeList.get(position).equals(selected)) {
+        if (activityTypeList.get(position).equals(selected)) {
             convertView.findViewById(R.id.dialog_item_selected).setVisibility(View.VISIBLE);
         } else {
             convertView.findViewById(R.id.dialog_item_selected).setVisibility(View.GONE);
         }
+
         return convertView;
     }
-
 }

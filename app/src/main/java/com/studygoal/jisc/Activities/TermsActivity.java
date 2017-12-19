@@ -12,10 +12,17 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.R;
 
 /**
- * Created by Marjana Karzek on 06/09/17.
+ * Terms Activity
+ * <p>
+ * Displays the terms for the use of Study Goal and handles the users input.
+ *
+ * @author Therapy Box - Marjana Karzek
+ * @version 1.5
+ * @date 06/09/17
  */
 
-public class TermsActivity extends AppCompatActivity{
+public class TermsActivity extends AppCompatActivity {
+
     private static final String TAG = TermsActivity.class.getSimpleName();
 
     @Override

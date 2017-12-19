@@ -29,6 +29,15 @@ import com.studygoal.jisc.Utils.EditTextCustom;
 
 import java.util.HashMap;
 
+/**
+ * Feed Fragment class
+ *
+ * Provides the handling of the view "Activity Feed". Displays push notifications and feed items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FeedFragment extends Fragment {
     private static final String TAG = FeedFragment.class.getSimpleName();
 
@@ -183,7 +192,7 @@ public class FeedFragment extends Fragment {
 
         NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
 
-        adapterPush = new PushAdapter(DataManager.getInstance().mainActivity, layout);
+        adapterPush = new PushAdapter(DataManager.getInstance().mainActivity);
         recyclerViewPush.setAdapter(adapterPush);
         recyclerViewPush.setScrollContainer(false);
 
@@ -195,6 +204,9 @@ public class FeedFragment extends Fragment {
         return mainView;
     }
 
+    /**
+     * Sends a newly created post by the user to the server.
+     */
     public void post() {
         String message = ((EditText) mainView.findViewById(R.id.message)).getText().toString();
         HashMap<String, String> map = new HashMap<>();

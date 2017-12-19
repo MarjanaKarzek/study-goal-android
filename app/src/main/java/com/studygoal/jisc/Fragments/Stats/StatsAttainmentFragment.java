@@ -1,25 +1,19 @@
 package com.studygoal.jisc.Fragments.Stats;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Activities.MainActivity;
 import com.studygoal.jisc.Adapters.AttainmentAdapter;
-import com.studygoal.jisc.Adapters.ModuleAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
@@ -29,6 +23,15 @@ import com.studygoal.jisc.R;
 
 import java.util.ArrayList;
 
+/**
+ * Stats Attainment Fragment
+ * <p>
+ * Displays the attainment data of the user.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class StatsAttainmentFragment extends Fragment {
     private static final String TAG = StatsAttainmentFragment.class.getSimpleName();
 
@@ -71,7 +74,7 @@ public class StatsAttainmentFragment extends Fragment {
         layout.setOnRefreshListener(() -> new Thread(() -> {
             if (NetworkManager.getInstance().getAssignmentRanking()) {
                 adapter.list = new Select().from(Attainment.class).execute();
-                for(Attainment obj:adapter.list){
+                for (Attainment obj : adapter.list) {
                     Log.d(TAG, "onCreateView: attainment element: " + obj.module);
                 }
             } else {
@@ -116,7 +119,7 @@ public class StatsAttainmentFragment extends Fragment {
 
             DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                 adapter.notifyDataSetChanged();
-                callRefresh();
+                layout.setRefreshing(false);
             });
         }).start());
 
@@ -190,10 +193,6 @@ public class StatsAttainmentFragment extends Fragment {
         });*/
 
         return mainview;
-    }
-
-    private void callRefresh() {
-        layout.setRefreshing(false);
     }
 
     @Override

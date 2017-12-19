@@ -21,7 +21,17 @@ import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 
 import java.util.ArrayList;
 
+/**
+ * Drawer Adapter
+ * <p>
+ * Handles menu items and submenu open/ close state.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class DrawerAdapter extends BaseAdapter {
+
     private static final String TAG = DrawerAdapter.class.getSimpleName();
 
     public String[] values;
@@ -80,10 +90,6 @@ public class DrawerAdapter extends BaseAdapter {
             valuesList.add(context.getString(R.string.logout));
             values = valuesList.toArray(new String[valuesList.size()]);
         }
-    }
-
-    public int getCount() {
-        return statsOpened ? values.length : values.length - statOpenedNum;
     }
 
     @Override
@@ -230,5 +236,14 @@ public class DrawerAdapter extends BaseAdapter {
         }
 
         return convertView;
+    }
+
+    /**
+     * Gets the total number of items in the current drawer view.
+     *
+     * @return total item number
+     */
+    public int getCount() {
+        return statsOpened ? values.length : values.length - statOpenedNum;
     }
 }

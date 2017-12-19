@@ -16,7 +16,17 @@ import com.studygoal.jisc.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Module Adapter
+ * <p>
+ * Handles module list.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class ModuleAdapter extends BaseAdapter {
+
     private static final String TAG = ModuleAdapter.class.getSimpleName();
 
     private ArrayList<String> moduleList;
@@ -71,9 +81,9 @@ public class ModuleAdapter extends BaseAdapter {
 
         String titleString = moduleList.get(position);
 
-        if (!coursesList.contains(titleString) && position != 0){
+        if (!coursesList.contains(titleString) && position != 0) {
             textView.setText(" -" + moduleList.get(position));
-        } else if(coursesList.contains(titleString)) {
+        } else if (coursesList.contains(titleString)) {
             textView.setText(moduleList.get(position));
             textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         } else {
@@ -87,5 +97,4 @@ public class ModuleAdapter extends BaseAdapter {
         }
         return convertView;
     }
-
 }

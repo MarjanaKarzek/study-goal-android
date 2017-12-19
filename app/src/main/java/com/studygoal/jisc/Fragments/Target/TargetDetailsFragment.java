@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Adapters.TargetPagerAdapter;
+import com.studygoal.jisc.Adapters.RecurringTargetPagerAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
@@ -33,7 +33,7 @@ public class TargetDetailsFragment extends Fragment {
 
     private View mainView;
     private ViewPager pager;
-    private TargetPagerAdapter adapter;
+    private RecurringTargetPagerAdapter adapter;
 
     public List<Targets> list;
     public int position;
@@ -46,7 +46,7 @@ public class TargetDetailsFragment extends Fragment {
         DataManager.getInstance().mainActivity.showCertainButtons(4);
 
         if (pager != null && adapter != null && adapter.list.size() != new Select().from(Targets.class).count()) {
-            adapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
+            adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
             adapter.reference = this;
             adapter.list = new Select().from(Targets.class).execute();
             adapter.notifyDataSetChanged();
@@ -63,7 +63,7 @@ public class TargetDetailsFragment extends Fragment {
         mainView = inflater.inflate(R.layout.target_details, container, false);
 
         pager = (ViewPager) mainView.findViewById(R.id.pager);
-        adapter = new TargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
+        adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
         adapter.reference = this;
         if (list == null) {
             adapter.list = new Select().from(Targets.class).execute();

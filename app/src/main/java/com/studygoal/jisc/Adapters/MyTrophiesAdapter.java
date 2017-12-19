@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Fragments.Settings.MyTrophiesFragment;
+import com.studygoal.jisc.Fragments.Settings.Submenu.Trophies.MyTrophiesFragment;
 import com.studygoal.jisc.Models.TrophyMy;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
@@ -18,9 +18,16 @@ import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 import java.util.List;
 
 /**
- * Created by MarcelC on 1/14/16.
+ * My Throphies Adapter
+ * <p>
+ * Handles the users trophies list.
+ *
+ * @author Therapy Box - MarcelC
+ * @version 1.5
+ * @date 14/01/16
  */
 public class MyTrophiesAdapter extends BaseAdapter implements View.OnClickListener {
+
     private static final String TAG = MyTrophiesAdapter.class.getSimpleName();
 
     private LayoutInflater inflater;
@@ -49,7 +56,6 @@ public class MyTrophiesAdapter extends BaseAdapter implements View.OnClickListen
     public long getItemId(int position) {
         return 0;
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

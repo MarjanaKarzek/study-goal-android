@@ -15,7 +15,17 @@ import com.studygoal.jisc.R;
 
 import java.util.List;
 
+/**
+ * Activity Point Adapter
+ * <p>
+ * Handles list of activity points.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class ActivityPointsAdapter extends BaseAdapter {
+
     private static final String TAG = ActivityPointsAdapter.class.getSimpleName();
 
     public List<Attainment> list;
@@ -29,7 +39,6 @@ public class ActivityPointsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-
         return DataManager.getInstance().user.points.size() + 1;
     }
 
@@ -45,11 +54,9 @@ public class ActivityPointsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-
         convertView = inflater.inflate(R.layout.list_item_activity_points, parent, false);
 
-        if(position == 0) {
+        if (position == 0) {
             convertView.setBackgroundColor(Color.parseColor("#eeeeee"));
         } else {
             convertView.setBackgroundColor(Color.parseColor("#f6f6f6"));
@@ -64,10 +71,10 @@ public class ActivityPointsAdapter extends BaseAdapter {
         TextView pointsTitle = (TextView) convertView.findViewById(R.id.points_title);
         pointsTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
 
-        if(position > 0) {
-            ActivityPoints activityPoints = DataManager.getInstance().user.points.get(position-1);
+        if (position > 0) {
+            ActivityPoints activityPoints = DataManager.getInstance().user.points.get(position - 1);
 
-            if(activityPoints.activity.equals("Loggedin")){
+            if (activityPoints.activity.equals("Loggedin")) {
                 activityTitle.setText(context.getString(R.string.logged_in));
             } else {
                 activityTitle.setText(activityPoints.activity);
@@ -78,5 +85,4 @@ public class ActivityPointsAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 }

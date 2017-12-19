@@ -1,4 +1,4 @@
-package com.studygoal.jisc.Fragments.Settings;
+package com.studygoal.jisc.Fragments.Settings.Submenu;
 
 
 import android.os.Bundle;
@@ -12,11 +12,17 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.R;
 
 /**
- * Created by Marjana-Tbox on 07/09/17.
+ * Terms Settings Fragment
+ * <p>
+ * Displays the terms and conditions of Study Goal
+ *
+ * @author Therapy Box - Marjana Karzek
+ * @version 1.5
+ * @date 07/09/17
  */
+public class TermsSettingsFragment extends Fragment {
 
-public class TermsScreenFragment extends Fragment {
-    private static final String TAG = TermsScreenFragment.class.getSimpleName();
+    private static final String TAG = TermsSettingsFragment.class.getSimpleName();
 
     @Override
     public void onResume() {

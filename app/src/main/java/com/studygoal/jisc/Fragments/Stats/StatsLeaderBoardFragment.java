@@ -29,7 +29,17 @@ import com.studygoal.jisc.R;
 
 import java.util.List;
 
+/**
+ * Stats Leader Board Fragment
+ * <p>
+ * Displays the leader information.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class StatsLeaderBoardFragment extends BaseFragment {
+
     private static final String TAG = StatsLeaderBoardFragment.class.getSimpleName();
 
     private AppCompatTextView module;
@@ -77,6 +87,11 @@ public class StatsLeaderBoardFragment extends BaseFragment {
         return mainView;
     }
 
+    /**
+     * Sets up the module selection.
+     *
+     * @param mainView view to be modified
+     */
     private void setUpModule(View mainView) {
         module = (AppCompatTextView) mainView.findViewById(R.id.module_list);
         module.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));

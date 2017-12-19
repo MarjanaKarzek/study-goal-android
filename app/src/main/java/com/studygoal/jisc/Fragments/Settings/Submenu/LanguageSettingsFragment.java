@@ -1,4 +1,4 @@
-package com.studygoal.jisc.Fragments.Settings;
+package com.studygoal.jisc.Fragments.Settings.Submenu;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,8 +25,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class LanguageScreenFragment extends Fragment {
-    private static final String TAG = LanguageScreenFragment.class.getSimpleName();
+/**
+ * Language Settings Fragment
+ * <p>
+ * Provides the possibility to select the language settings for the following languages:
+ * <p>
+ * English
+ * Welsh
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
+public class LanguageSettingsFragment extends Fragment {
+
+    private static final String TAG = LanguageSettingsFragment.class.getSimpleName();
 
     public String selectedValue;
 
@@ -58,7 +71,7 @@ public class LanguageScreenFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LanguageScreenFragment.this.getActivity());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LanguageSettingsFragment.this.getActivity());
                     alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_changeappsettings) + "</font>"));
                     alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -69,7 +82,7 @@ public class LanguageScreenFragment extends Fragment {
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                     return;
-                } else if(ConnectionHandler.isConnected(getContext())) {
+                } else if (ConnectionHandler.isConnected(getContext())) {
                     if (!((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().equals(selectedValue)) {
 
                         String lang = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().toLowerCase().equals(getActivity().getString(R.string.english).toLowerCase()) ? "english" : "welsh";
@@ -78,7 +91,6 @@ public class LanguageScreenFragment extends Fragment {
                         map.put("setting_type", "language");
                         map.put("setting_value", lang);
                         if (NetworkManager.getInstance().changeAppSettings(map)) {
-//                        lang = ((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString().toLowerCase();
                             DataManager.getInstance().language = lang;
                             SharedPreferences preferences = DataManager.getInstance().mainActivity.getSharedPreferences("jisc", Context.MODE_PRIVATE);
                             preferences.edit().putString("language", DataManager.getInstance().language).apply();
@@ -99,9 +111,6 @@ public class LanguageScreenFragment extends Fragment {
                                         getActivity().getBaseContext().getResources().getDisplayMetrics());
                             }
                             DataManager.getInstance().reload();
-                            //if (DataManager.getInstance().mainActivity != null)
-                                //DataManager.getInstance().mainActivity.refreshDrawer();
-                            //DataManager.getInstance().fragment = null;
                             DataManager.getInstance().languageChanged = true;
                             DataManager.getInstance().mainActivity.recreate();
                         }
@@ -124,5 +133,4 @@ public class LanguageScreenFragment extends Fragment {
 
         return mainView;
     }
-
 }

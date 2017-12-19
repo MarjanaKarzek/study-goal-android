@@ -1,4 +1,4 @@
-package com.studygoal.jisc.Fragments.Settings;
+package com.studygoal.jisc.Fragments.Settings.Submenu.Trophies;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +13,13 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.R;
 
 /**
- * Created by MarcelC on 1/14/16.
+ * Trophies Fragment
+ * <p>
+ * Displays all and the users trophies.
+ *
+ * @author Therapy Box - MarcelC
+ * @version 1.5
+ * @date 14/01/16
  */
 public class TrophiesFragment extends Fragment {
     private static final String TAG = TrophiesFragment.class.getSimpleName();
@@ -24,7 +30,6 @@ public class TrophiesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.layout_trophies, container, false);
 
-//        fragmentTabHost = new FragmentTabHost(getActivity());
         fragmentTabHost = (FragmentTabHost) mainView.findViewById(R.id.tabhost);
 
         fragmentTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);

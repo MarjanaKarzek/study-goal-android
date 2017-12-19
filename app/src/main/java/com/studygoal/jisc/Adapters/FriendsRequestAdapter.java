@@ -30,7 +30,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Friends Request Adapter
+ * <p>
+ * Handles friends request items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FriendsRequestAdapter extends BaseAdapter {
+
     private static final String TAG = FriendsRequestAdapter.class.getSimpleName();
 
     private LayoutInflater inflater;
