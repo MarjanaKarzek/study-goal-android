@@ -61,18 +61,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.CustomSplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="studygoal"
-                    android:scheme="jisc" />
-            </intent-filter>
-        </activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
