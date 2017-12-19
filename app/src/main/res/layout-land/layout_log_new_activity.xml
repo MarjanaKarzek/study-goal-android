@@ -32,7 +32,7 @@
                         android:id="@+id/left"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:background="@color/pink">
+                        android:background="@color/colorPrimary">
 
                         <TextView
                             android:id="@+id/header_1"
@@ -264,7 +264,7 @@
                         android:id="@+id/right"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:background="@color/pink">
+                        android:background="@color/colorPrimary">
 
                         <RelativeLayout
                             android:layout_width="60dp"
