@@ -48,7 +48,7 @@ public class LogActivityDetailsFragment extends Fragment {
         super.onResume();
         DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.activity_details));
         DataManager.getInstance().mainActivity.hideAllButtons();
-        DataManager.getInstance().mainActivity.showCertainButtons(5);
+        DataManager.getInstance().mainActivity.showCertainButtons(8);
     }
 
     @Override
