@@ -45,11 +45,13 @@ public class TargetDetailsFragment extends Fragment {
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(4);
 
-        adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
-        adapter.reference = this;
-        adapter.list = new Select().from(Targets.class).execute();
-        adapter.notifyDataSetChanged();
-        pager.setAdapter(adapter);
+        if(adapter == null) {
+            adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
+            adapter.reference = this;
+            adapter.list = new Select().from(Targets.class).execute();
+            adapter.notifyDataSetChanged();
+            pager.setAdapter(adapter);
+        }
 
         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.NavigateTargetsGraphs);
     }
