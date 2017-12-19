@@ -264,16 +264,11 @@ public class MainActivity extends FragmentActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLandscape) {
-                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                } else {
-                    settingsFragment = new SettingsFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, settingsFragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
+                settingsFragment = new SettingsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_fragment, settingsFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
         addTarget = (RelativeLayout) findViewById(R.id.main_screen_addtarget);

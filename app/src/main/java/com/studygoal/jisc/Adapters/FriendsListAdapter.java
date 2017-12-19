@@ -12,12 +12,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.studygoal.jisc.Activities.SettingsActivity;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.Friend;
@@ -151,14 +149,7 @@ public class FriendsListAdapter extends BaseAdapter {
                             dialog.dismiss();
                             Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.successfully_tochangefriend, Snackbar.LENGTH_LONG).show();
                         } else {
-                            if (DataManager.getInstance().isLandscape)
-                                try {
-                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
-                                } catch (Exception ignored) {
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
-                                }
-                            else
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_tochangefriend, Snackbar.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                     });
@@ -212,23 +203,9 @@ public class FriendsListAdapter extends BaseAdapter {
                             attendant.delete();
                             list.remove(attendant);
                             notifyDataSetChanged();
-                            if (!DataManager.getInstance().isLandscape)
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
-                            else
-                                try {
-                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
-                                } catch (Exception ignored) {
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
-                                }
+                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_deleted_successfully, Snackbar.LENGTH_LONG).show();
                         } else {
-                            if (!DataManager.getInstance().isLandscape)
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
-                            else
-                                try {
-                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
-                                } catch (Exception ignored) {
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout).findViewById(R.id.whole_container), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
-                                }
+                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.not_deleted_friend_message, Snackbar.LENGTH_LONG).show();
                         }
                     });
                     dialog.findViewById(R.id.dialog_no).setOnClickListener(v13 -> dialog.dismiss());
@@ -257,14 +234,7 @@ public class FriendsListAdapter extends BaseAdapter {
                         hide.setVisibility(View.INVISIBLE);
                         unhide.setVisibility(View.VISIBLE);
                     } else {
-                        if (!DataManager.getInstance().mainActivity.isLandscape)
-                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_hide_friend, Snackbar.LENGTH_LONG).show();
-                        else
-                            try {
-                                Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.failed_to_hide_friend, Snackbar.LENGTH_LONG).show();
-                            } catch (Exception ignored) {
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_hide_friend, Snackbar.LENGTH_LONG).show();
-                            }
+                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_hide_friend, Snackbar.LENGTH_LONG).show();
                     }
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
@@ -290,14 +260,7 @@ public class FriendsListAdapter extends BaseAdapter {
                         unhide.setVisibility(View.INVISIBLE);
                         hide.setVisibility(View.VISIBLE);
                     } else {
-                        if (!DataManager.getInstance().mainActivity.isLandscape)
-                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_unhide_friend, Snackbar.LENGTH_LONG).show();
-                        else
-                            try {
-                                Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.failed_to_unhide_friend, Snackbar.LENGTH_LONG).show();
-                            } catch (Exception ignored) {
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_unhide_friend, Snackbar.LENGTH_LONG).show();
-                            }
+                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_unhide_friend, Snackbar.LENGTH_LONG).show();
                     }
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();

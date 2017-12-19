@@ -23,7 +23,6 @@ import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.Models.PendingRequest;
 import com.studygoal.jisc.Models.ReceivedRequest;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
 import com.studygoal.jisc.Utils.CircleTransform;
 import com.studygoal.jisc.Utils.GlideConfig.GlideApp;
 
@@ -159,15 +158,7 @@ public class FriendsSearchAdapter extends BaseAdapter {
                             pendingRequest.setVisibility(View.VISIBLE);
                             notifyDataSetChanged();
                         } else {
-                            if(DataManager.getInstance().isLandscape) {
-                                try {
-                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.fail_sendFriendRequest, Snackbar.LENGTH_LONG).show();
-                                } catch (Exception ignored) {
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_sendFriendRequest, Snackbar.LENGTH_LONG).show();
-                                }
-                            } else {
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_sendFriendRequest, Snackbar.LENGTH_LONG).show();
-                            }
+                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_sendFriendRequest, Snackbar.LENGTH_LONG).show();
                             list.remove(attendant1);
                             dialog.dismiss();
                             notifyDataSetChanged();
@@ -220,15 +211,7 @@ public class FriendsSearchAdapter extends BaseAdapter {
                             receivingRequest.setVisibility(View.GONE);
                             friends.setVisibility(View.GONE);
                         } else {
-                            if(DataManager.getInstance().isLandscape) {
-                                try {
-                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.fail_cancelFriendRequest, Snackbar.LENGTH_LONG).show();
-                                } catch (Exception ignored) {
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_cancelFriendRequest, Snackbar.LENGTH_LONG).show();
-                                }
-                            } else {
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_cancelFriendRequest, Snackbar.LENGTH_LONG).show();
-                            }
+                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_cancelFriendRequest, Snackbar.LENGTH_LONG).show();
 
                             dialog.dismiss();
                         }

@@ -27,7 +27,6 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import com.studygoal.jisc.Utils.Utils;
 
@@ -42,19 +41,9 @@ public class FriendsSearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (DataManager.getInstance().mainActivity.isLandscape) {
-            try {
-                ((SettingsActivity) getActivity()).fragmentTitle.setText(getActivity().getString(R.string.friends));
-            } catch (Exception ignored) {
-                DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.friends));
-                DataManager.getInstance().mainActivity.hideAllButtons();
-                DataManager.getInstance().mainActivity.showCertainButtons(5);
-            }
-        } else {
-            DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.friends));
-            DataManager.getInstance().mainActivity.hideAllButtons();
-            DataManager.getInstance().mainActivity.showCertainButtons(5);
-        }
+        DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.friends));
+        DataManager.getInstance().mainActivity.hideAllButtons();
+        DataManager.getInstance().mainActivity.showCertainButtons(5);
 
         new Thread(new Runnable() {
             @Override
@@ -84,7 +73,7 @@ public class FriendsSearchFragment extends Fragment {
         ((TextView) mainView.findViewById(R.id.send_friend_request_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
 
         adapter = new FriendsSearchAdapter(getContext());
-        list = (ListView)mainView.findViewById(R.id.list);
+        list = (ListView) mainView.findViewById(R.id.list);
         list.setAdapter(adapter);
 
         final EditText search = (EditText) mainView.findViewById(R.id.friends_search_edittext);
@@ -110,15 +99,7 @@ public class FriendsSearchFragment extends Fragment {
                 if(ConnectionHandler.isConnected(getContext())) {
                     final String email = search.getText().toString();
                     if (!Utils.validate_email(email)) {
-                        if (DataManager.getInstance().isLandscape) {
-                            try {
-                                Snackbar.make(getActivity().findViewById(R.id.whole_container), R.string.please_search_for_friend, Snackbar.LENGTH_LONG).show();
-                            } catch (Exception ignored) {
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.please_search_for_friend, Snackbar.LENGTH_LONG).show();
-                            }
-                        } else {
-                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.please_search_for_friend, Snackbar.LENGTH_LONG).show();
-                        }
+                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.please_search_for_friend, Snackbar.LENGTH_LONG).show();
                     } else {
                         InputMethodManager imm = (InputMethodManager) FriendsSearchFragment.this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(search.getWindowToken(), 0);
@@ -184,14 +165,7 @@ public class FriendsSearchFragment extends Fragment {
                                     if (NetworkManager.getInstance().sendFriendRequest(params)) {
                                         dialog.dismiss();
                                     } else {
-                                        if (DataManager.getInstance().isLandscape)
-                                            try {
-                                                Snackbar.make(getActivity().findViewById(R.id.whole_container), R.string.friend_request_sent, Snackbar.LENGTH_LONG).show();
-                                            } catch (Exception ignored) {
-                                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_request_sent, Snackbar.LENGTH_LONG).show();
-                                            }
-                                        else
-                                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_sendFriendRequest, Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_request_sent, Snackbar.LENGTH_LONG).show();
                                         dialog.dismiss();
                                     }
                                 }
@@ -204,15 +178,7 @@ public class FriendsSearchFragment extends Fragment {
                             params.put("language", DataManager.getInstance().language);
 
                             NetworkManager.getInstance().sendFriendRequest(params);
-                            if (DataManager.getInstance().isLandscape) {
-                                try {
-                                    Snackbar.make(getActivity().findViewById(R.id.whole_container), R.string.friend_request_sent, Snackbar.LENGTH_LONG).show();
-                                } catch (Exception ignored) {
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_request_sent, Snackbar.LENGTH_LONG).show();
-                                }
-                            } else {
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_request_sent, Snackbar.LENGTH_LONG).show();
-                            }
+                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.friend_request_sent, Snackbar.LENGTH_LONG).show();
                         }
                     }
                 } else {

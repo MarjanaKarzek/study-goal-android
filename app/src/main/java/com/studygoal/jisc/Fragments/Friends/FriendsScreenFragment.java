@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.studygoal.jisc.Adapters.FriendsGenericAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
 
 public class FriendsScreenFragment extends Fragment {
     private static final String TAG = FriendsScreenFragment.class.getSimpleName();
@@ -19,13 +18,9 @@ public class FriendsScreenFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(DataManager.getInstance().mainActivity.isLandscape) {
-            ((SettingsActivity)getActivity()).fragmentTitle.setText(DataManager.getInstance().mainActivity.getString(R.string.my_friends));
-        } else {
-            DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.my_friends));
-            DataManager.getInstance().mainActivity.hideAllButtons();
-            DataManager.getInstance().mainActivity.showCertainButtons(7);
-        }
+        DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.my_friends));
+        DataManager.getInstance().mainActivity.hideAllButtons();
+        DataManager.getInstance().mainActivity.showCertainButtons(7);
     }
 
     @Override

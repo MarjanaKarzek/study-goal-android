@@ -18,7 +18,6 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
 
 public class FriendsListFragment extends Fragment {
     private static final String TAG = FriendsListFragment.class.getSimpleName();
@@ -29,39 +28,18 @@ public class FriendsListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(!DataManager.getInstance().isLandscape) {
-            DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.my_friends_title));
-            DataManager.getInstance().mainActivity.hideAllButtons();
-            DataManager.getInstance().mainActivity.showCertainButtons(5);
+        DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.my_friends_title));
+        DataManager.getInstance().mainActivity.hideAllButtons();
+        DataManager.getInstance().mainActivity.showCertainButtons(5);
 
-            new Thread(() -> {
-                NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
+        new Thread(() -> {
+            NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
 
-                DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                    adapter = new FriendsListAdapter(DataManager.getInstance().mainActivity);
-                    list.setAdapter(adapter);
-                });
-            }).start();
-        } else {
-            try {
-                ((SettingsActivity) getActivity()).fragmentTitle.setText(getActivity().getString(R.string.my_friends_title));
-            } catch (Exception ignored) {
-                DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.my_friends_title));
-                DataManager.getInstance().mainActivity.hideAllButtons();
-                DataManager.getInstance().mainActivity.showCertainButtons(5);
-            }
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkManager.getInstance().getFriends(DataManager.getInstance().user.id);
-
-                    DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                        adapter = new FriendsListAdapter(getActivity());
-                        list.setAdapter(adapter);
-                    });
-                }
-            }).start();
-        }
+            DataManager.getInstance().mainActivity.runOnUiThread(() -> {
+                adapter = new FriendsListAdapter(DataManager.getInstance().mainActivity);
+                list.setAdapter(adapter);
+            });
+        }).start();
     }
 
     @Override

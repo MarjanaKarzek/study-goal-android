@@ -9,7 +9,6 @@ import android.webkit.WebView;
 
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
 
 public class PrivacyWebViewFragment extends Fragment {
     private static final String TAG = PrivacyWebViewFragment.class.getSimpleName();

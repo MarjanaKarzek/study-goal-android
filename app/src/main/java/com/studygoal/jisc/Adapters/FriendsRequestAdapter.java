@@ -15,11 +15,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.studygoal.jisc.Activities.SettingsActivity;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.ReceivedRequest;
@@ -175,15 +173,7 @@ public class FriendsRequestAdapter extends BaseAdapter {
                             FriendsRequestAdapter.this.notifyDataSetChanged();
                             dialog.dismiss();
                         } else {
-                            if (DataManager.getInstance().isLandscape) {
-                                try {
-                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.fail_to_accept_friend_request, Snackbar.LENGTH_LONG).show();
-                                } catch (Exception ignored) {
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_to_accept_friend_request, Snackbar.LENGTH_LONG).show();
-                                }
-                            } else {
-                                Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_to_accept_friend_request, Snackbar.LENGTH_LONG).show();
-                            }
+                            Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.fail_to_accept_friend_request, Snackbar.LENGTH_LONG).show();
                         }
                     });
                     dialog.show();
@@ -236,20 +226,10 @@ public class FriendsRequestAdapter extends BaseAdapter {
                         if (NetworkManager.getInstance().deleteFriendRequest(params)) {
                             list.remove(position);
                             attendant.delete();
-
-//                                if (DataManager.getInstance().isLandscape) {
-//                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.deleted_successfully, Snackbar.LENGTH_LONG).show();
-//                                } else {
-//                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.deleted_successfully, Snackbar.LENGTH_LONG).show();
-//                                }
-
+//                          Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.deleted_successfully, Snackbar.LENGTH_LONG).show();
                             notifyDataSetChanged();
                         } else {
-//                                if (DataManager.getInstance().isLandscape) {
-//                                    Snackbar.make(((SettingsActivity) context).findViewById(R.id.whole_container), R.string.not_deleted_friend_request_message, Snackbar.LENGTH_LONG).show();
-//                                } else {
-//                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.not_deleted_friend_request_message, Snackbar.LENGTH_LONG).show();
-//                                }
+//                          Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.not_deleted_friend_request_message, Snackbar.LENGTH_LONG).show();
                             notifyDataSetChanged();
                         }
                     });

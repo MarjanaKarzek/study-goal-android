@@ -13,7 +13,6 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,16 +65,13 @@ public class FriendsGenericAdapter extends BaseAdapter {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("from_student_id", DataManager.getInstance().user.id);
                 map.put("to_student_id", friend.id);
-                if(NetworkManager.getInstance().unhideFriend(map)) {
+                if (NetworkManager.getInstance().unhideFriend(map)) {
                     friend.hidden = false;
                     friend.save();
                     unhide.setVisibility(View.INVISIBLE);
                     hide.setVisibility(View.VISIBLE);
                 } else {
-                    if(!DataManager.getInstance().mainActivity.isLandscape)
-                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_unhide_friend, Snackbar.LENGTH_LONG).show();
-                    else
-                        Snackbar.make(((SettingsActivity)context).findViewById(R.id.drawer_layout), R.string.failed_to_unhide_friend, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_unhide_friend, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -92,10 +88,7 @@ public class FriendsGenericAdapter extends BaseAdapter {
                     hide.setVisibility(View.INVISIBLE);
                     unhide.setVisibility(View.VISIBLE);
                 } else {
-                    if(!DataManager.getInstance().mainActivity.isLandscape)
-                        Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_hide_friend, Snackbar.LENGTH_LONG).show();
-                    else
-                        Snackbar.make(((SettingsActivity)context).findViewById(R.id.drawer_layout), R.string.failed_to_hide_friend, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.failed_to_hide_friend, Snackbar.LENGTH_LONG).show();
                 }
             }
         });

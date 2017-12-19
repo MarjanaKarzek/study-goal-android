@@ -10,7 +10,6 @@ import android.widget.GridView;
 
 import com.activeandroid.query.Select;
 import com.studygoal.jisc.Activities.MainActivity;
-import com.studygoal.jisc.Activities.SettingsActivity;
 import com.studygoal.jisc.Activities.TrophyDetailsActivity;
 import com.studygoal.jisc.Adapters.MyTrophiesAdapter;
 import com.studygoal.jisc.Managers.DataManager;

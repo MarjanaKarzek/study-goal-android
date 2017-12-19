@@ -13,7 +13,6 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.ReceivedRequest;
 import com.studygoal.jisc.R;
-import com.studygoal.jisc.Activities.SettingsActivity;
 
 public class FriendsRequestsFragment extends Fragment {
     private static final String TAG = FriendsRequestsFragment.class.getSimpleName();
@@ -23,47 +22,23 @@ public class FriendsRequestsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!DataManager.getInstance().isLandscape) {
-            DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.my_requests_title));
-            DataManager.getInstance().mainActivity.hideAllButtons();
-            DataManager.getInstance().mainActivity.showCertainButtons(5);
+        DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.my_requests_title));
+        DataManager.getInstance().mainActivity.hideAllButtons();
+        DataManager.getInstance().mainActivity.showCertainButtons(5);
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkManager.getInstance().getFriendRequests(DataManager.getInstance().user.id);
-                    DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.list = new Select().from(ReceivedRequest.class).execute();
-                            adapter.notifyDataSetChanged();
-    //                                DataManager.getInstance().mainActivity.hideProgressBar();
-                        }
-                    });
-                }
-            }).start();
-        } else {
-            try {
-                ((SettingsActivity) getActivity()).fragmentTitle.setText(getActivity().getString(R.string.my_requests_title));
-            } catch (Exception ignored) {
-                DataManager.getInstance().mainActivity.setTitle(DataManager.getInstance().mainActivity.getString(R.string.my_requests_title));
-                DataManager.getInstance().mainActivity.hideAllButtons();
-                DataManager.getInstance().mainActivity.showCertainButtons(5);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NetworkManager.getInstance().getFriendRequests(DataManager.getInstance().user.id);
+                DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.list = new Select().from(ReceivedRequest.class).execute();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkManager.getInstance().getFriendRequests(DataManager.getInstance().user.id);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.list = new Select().from(ReceivedRequest.class).execute();
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-            }).start();
-        }
+        }).start();
     }
 
     @Override
