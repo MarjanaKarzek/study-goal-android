@@ -523,7 +523,7 @@ public class SettingsFragment extends Fragment {
         );
 
         DataManager manager = DataManager.getInstance();
-        manager.mainActivity.mCurrentPhotoPath = image.getAbsolutePath();
+        manager.mainActivity.currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 }

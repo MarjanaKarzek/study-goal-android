@@ -110,8 +110,8 @@ public class MainActivity extends FragmentActivity {
     private View menu, blackout;
     public boolean displaySingleTarget = false;
 
-    public String mCurrentPhotoPath;
-    private int backpressed = 0;
+    public String currentPhotoPath;
+    private int backPressed = 0;
     private int lastSelected = 1;
 
     @Override
@@ -608,6 +608,7 @@ public class MainActivity extends FragmentActivity {
             DataManager.getInstance().fromTargetDetailPosition = -1;
             return;
         }
+
         if (DataManager.getInstance().fromTargetItem) {
             DataManager.getInstance().fragment = 3;
             selectedPosition = 3;
@@ -622,6 +623,7 @@ public class MainActivity extends FragmentActivity {
                     .commit();
             return;
         }
+
         if (DataManager.getInstance().addTarget == 1) {
             selectedPosition = 4;
             DataManager.getInstance().fragment = 4;
@@ -635,17 +637,18 @@ public class MainActivity extends FragmentActivity {
             DataManager.getInstance().addTarget = 0;
             return;
         }
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                backpressed = 0;
+                backPressed = 0;
                 getSupportFragmentManager().popBackStackImmediate();
                 selectedPosition = lastSelected;
                 DataManager.getInstance().fragment = lastSelected;
                 adapter.notifyDataSetChanged();
-            } else if (backpressed == 0) {
-                backpressed = 1;
+            } else if (backPressed == 0) {
+                backPressed = 1;
                 Snackbar.make(findViewById(R.id.main_fragment), R.string.press_back_again_to_exit_app, Snackbar.LENGTH_LONG).show();
             } else
                 super.onBackPressed();
@@ -883,7 +886,7 @@ public class MainActivity extends FragmentActivity {
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             showProgressBar(null);
             Bitmap bitmap = null;
-            String path = mCurrentPhotoPath;
+            String path = currentPhotoPath;
 
             if (path != null) {
                 bitmap = BitmapFactory.decodeFile(path);
@@ -907,7 +910,7 @@ public class MainActivity extends FragmentActivity {
                 }).start();
             }
 
-            mCurrentPhotoPath = null;
+            currentPhotoPath = null;
         } else if (requestCode == 101) {
             if (intent != null && intent.getData() != null) {
                 showProgressBar(null);
