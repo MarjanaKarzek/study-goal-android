@@ -323,7 +323,7 @@
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginRight="5dp"
                                     android:text="@string/hours"
-                                    android:textColor="@color/colorPrimary"
+                                    android:textColor="@color/text_dark_purple"
                                     android:textSize="@dimen/text_size_small" />
 
                                 <EditText
@@ -344,7 +344,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
                                     android:text="@string/minutes"
-                                    android:textColor="@color/colorPrimary"
+                                    android:textColor="@color/text_dark_purple"
                                     android:textSize="@dimen/text_size_small" />
 
                             </LinearLayout>
@@ -371,7 +371,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/text_dark_purple"
+                                android:text="Tuesday 19th December 2017"
                                 android:textSize="@dimen/text_size_large" />
 
                         </LinearLayout>
