@@ -147,6 +147,10 @@ public class SingleTargetAdapter extends BaseAdapter {
         textView.setText(text);
 
         final com.daimajia.swipe.SwipeLayout swipeLayout = (com.daimajia.swipe.SwipeLayout) convertView.findViewById(R.id.swipelayout);
+        if(item.isAccepted.equals("0") && item.fromTutor.equals("yes")){
+            swipeLayout.setSwipeEnabled(false);
+        }
+
         if (item.isEditable.equals("1")) {
             convertView.findViewById(R.id.edit).setOnClickListener(v -> {
                 swipeLayout.close(true);
