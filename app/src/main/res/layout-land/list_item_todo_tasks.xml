@@ -122,8 +122,8 @@
 
                 <ImageView
                     android:id="@+id/activity_icon"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:src="@drawable/activity_icon_1" />
 
             </LinearLayout>
