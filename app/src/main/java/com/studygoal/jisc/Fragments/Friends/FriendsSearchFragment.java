@@ -32,6 +32,15 @@ import com.studygoal.jisc.Utils.Utils;
 
 import java.util.HashMap;
 
+/**
+ * Friends Search Fragment class
+ * <p>
+ * Provides the handling of the subview "Friends Search" in the view "Friends".
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FriendsSearchFragment extends Fragment {
     private static final String TAG = FriendsSearchFragment.class.getSimpleName();
 
@@ -56,17 +65,6 @@ public class FriendsSearchFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-
-        super.onPause();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View mainView = inflater.inflate(R.layout.layout_friends_search, container, false);
 
@@ -82,7 +80,7 @@ public class FriendsSearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")){
+                if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FriendsSearchFragment.this.getActivity());
                     alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_sendfriendrequest) + "</font>"));
                     alertDialogBuilder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
@@ -96,7 +94,7 @@ public class FriendsSearchFragment extends Fragment {
                     return;
                 }
 
-                if(ConnectionHandler.isConnected(getContext())) {
+                if (ConnectionHandler.isConnected(getContext())) {
                     final String email = search.getText().toString();
                     if (!Utils.validate_email(email)) {
                         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.please_search_for_friend, Snackbar.LENGTH_LONG).show();
@@ -188,5 +186,16 @@ public class FriendsSearchFragment extends Fragment {
         });
 
         return mainView;
+    }
+
+    @Override
+    public void onPause() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        super.onPause();
     }
 }

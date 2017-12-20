@@ -4,8 +4,18 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+/**
+ * Friend Model
+ * <p>
+ * Provides model "Friend" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 @Table(name = "FriendTabel")
 public class Friend extends Model {
+
     @Column(name = "friend_id")
     public String id;
     @Column(name = "jisc_student_id")
@@ -31,20 +41,21 @@ public class Friend extends Model {
     @Column(name = "hidden")
     public boolean hidden;
 
-    public Friend(){
+    public Friend() {
         super();
 
-        id="";
-        jisc_student_id="";
-        pid="";
-        name="";
-        email="";
-        eppn="";
-        affiliation="";
-        profile_pic="";
-        modules="";
-        created_date="";
-        modified_date="";
-        hidden=true;
+        id = "";
+        jisc_student_id = "";
+        pid = "";
+        name = "";
+        email = "";
+        eppn = "";
+        affiliation = "";
+        profile_pic = "";
+        modules = "";
+        created_date = "";
+        modified_date = "";
+        hidden = true;
     }
+
 }

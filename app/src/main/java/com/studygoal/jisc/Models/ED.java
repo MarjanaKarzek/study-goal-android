@@ -2,7 +2,17 @@ package com.studygoal.jisc.Models;
 
 import java.util.Date;
 
+/**
+ * Engagement Data Model
+ * <p>
+ * Provides model "Engagement Data" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class ED {
+
     public String date;
     public String student_id;
     public String position;
@@ -15,17 +25,17 @@ public class ED {
     public Integer activity_points;
     public Integer other_activity_points;
 
-
-    public ED(String day, Integer activity_points){
+    public ED(String day, Integer activity_points) {
         this.day = day;
         this.activity_points = activity_points;
     }
 
-    public ED(){
+    public ED() {
 
     }
 
-    public String toString(){
+    public String toString() {
         return "" + date + " " + student_id + " " + position + " " + month + " " + week + " " + day + " " + realDate + " " + activity_points;
     }
+
 }

@@ -32,6 +32,15 @@ import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Logs Fragment class
+ * <p>
+ * Provides the handling of the view "Logs". Lists all logs and handles their CRUD.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class LogFragment extends Fragment {
     private static final String TAG = LogFragment.class.getSimpleName();
 
@@ -153,8 +162,13 @@ public class LogFragment extends Fragment {
         return mainView;
     }
 
+    /**
+     * Provides check dialog on deletion. Prevents deletion for demo user.
+     *
+     * @param activityHistory log to be deleted
+     * @param finalPosition position in list
+     */
     public void deleteLog(final ActivityHistory activityHistory, final int finalPosition) {
-
         if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LogFragment.this.getActivity());
             alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_deleteactivitylog) + "</font>"));
@@ -208,6 +222,10 @@ public class LogFragment extends Fragment {
         }
     }
 
+    /**
+     * Displays the dialog to choose what kind of activity log should be added.
+     * This can be a newly tracked one or the reporting of a completed activity.
+     */
     public void showDialog() {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

@@ -14,6 +14,15 @@ import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.ReceivedRequest;
 import com.studygoal.jisc.R;
 
+/**
+ * Friends Request Fragment class
+ * <p>
+ * Provides the handling of the subview "Friends Requests" in the view "Friends".
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FriendsRequestsFragment extends Fragment {
     private static final String TAG = FriendsRequestsFragment.class.getSimpleName();
 
@@ -50,7 +59,7 @@ public class FriendsRequestsFragment extends Fragment {
 //            NetworkManager.getInstance().getSentFriendRequests(DataManager.getInstance().user.id);
 
         final ListView list = (ListView) mainView.findViewById(R.id.list);
-        if(DataManager.getInstance().isLandscape)
+        if (DataManager.getInstance().isLandscape)
             adapter = new FriendsRequestAdapter(getActivity());
         else
             adapter = new FriendsRequestAdapter(DataManager.getInstance().mainActivity);

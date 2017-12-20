@@ -49,7 +49,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Logs Log Activity class
+ * <p>
+ * Provides the possibility to add an already completed activity to the logs.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class LogLogActivityFragment extends Fragment implements View.OnClickListener {
+
     private static final String TAG = LogLogActivityFragment.class.getSimpleName();
 
     private View mainView;

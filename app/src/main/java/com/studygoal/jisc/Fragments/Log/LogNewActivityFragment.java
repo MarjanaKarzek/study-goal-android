@@ -52,7 +52,17 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Log New Activity class
+ * <p>
+ * Provides the possibility to track a new activity.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class LogNewActivityFragment extends Fragment implements View.OnClickListener {
+
     private static final String TAG = LogNewActivityFragment.class.getSimpleName();
 
     private View mainView;
@@ -64,11 +74,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
     private TextView countdownTextView;
 
     private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
     private Timer timer;
     private TimerTask timerTask;
     private Long timestamp;
-    private Long pause;
 
     private SharedPreferences sharedPreferences;
 
@@ -215,7 +223,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
         mainView.findViewById(R.id.new_activity_btn_pause).setOnClickListener(this);
 
         if (sharedPreferences.contains("pause")) {
-            pause = sharedPreferences.getLong("pause", 0);
+            Long pause = sharedPreferences.getLong("pause", 0);
             if (timestamp == 0) {
                 pause = (long) 0;
                 sharedPreferences.edit().putLong("pause", 0).apply();
@@ -278,7 +286,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.new_activity_btn_stop: {
+            case R.id.new_activity_btn_stop:
+                PendingIntent pendingIntent;
+            {
                 if (sharedPreferences.getLong("pause", 0) > 0) {
                     Long pause = System.currentTimeMillis() - sharedPreferences.getLong("pause", 0);
                     timestamp -= pause;

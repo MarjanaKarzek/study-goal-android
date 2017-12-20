@@ -4,8 +4,18 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+/**
+ * Pending Request Model
+ * <p>
+ * Provides model "Pending Request" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 @Table(name = "PendingRequest")
 public class PendingRequest extends Model {
+
     @Column(name = "pr_id")
     public String id;
     @Column(name = "institution_id")
@@ -53,5 +63,8 @@ public class PendingRequest extends Model {
     @Column(name = "photo")
     public String photo;
 
-    public PendingRequest(){super();}
+    public PendingRequest() {
+        super();
+    }
+
 }

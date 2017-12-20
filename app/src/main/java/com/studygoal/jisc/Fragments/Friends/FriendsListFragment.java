@@ -19,7 +19,17 @@ import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Models.Friend;
 import com.studygoal.jisc.R;
 
+/**
+ * Friends List Fragment class
+ * <p>
+ * Provides the handling of the subview "Friends List" in the view "Friends".
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FriendsListFragment extends Fragment {
+
     private static final String TAG = FriendsListFragment.class.getSimpleName();
 
     private FriendsListAdapter adapter;
@@ -40,16 +50,6 @@ public class FriendsListFragment extends Fragment {
                 list.setAdapter(adapter);
             });
         }).start();
-    }
-
-    @Override
-    public void onPause() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-        super.onPause();
     }
 
     @Override
@@ -77,5 +77,15 @@ public class FriendsListFragment extends Fragment {
         list = (ListView) mainView.findViewById(R.id.list);
 
         return mainView;
+    }
+
+    @Override
+    public void onPause() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+        super.onPause();
     }
 }

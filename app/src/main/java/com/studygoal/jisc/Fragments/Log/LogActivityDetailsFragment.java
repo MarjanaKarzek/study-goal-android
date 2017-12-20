@@ -34,7 +34,17 @@ import com.studygoal.jisc.Utils.Utils;
 
 import java.util.HashMap;
 
+/**
+ * Log Activity Details Fragment class
+ * <p>
+ * Displays the details of the selected log.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class LogActivityDetailsFragment extends Fragment {
+
     private static final String TAG = LogActivityDetailsFragment.class.getSimpleName();
 
     private View mainView;

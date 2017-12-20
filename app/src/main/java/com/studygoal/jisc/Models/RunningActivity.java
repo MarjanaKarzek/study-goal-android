@@ -4,6 +4,15 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+/**
+ * Running Activity Model
+ * <p>
+ * Provides model "Running Activity" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 @Table(name = "RunningActivity")
 public class RunningActivity extends Model {
 

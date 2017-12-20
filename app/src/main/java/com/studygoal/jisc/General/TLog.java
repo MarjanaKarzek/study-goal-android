@@ -4,7 +4,17 @@ import android.util.Log;
 
 import com.studygoal.jisc.BuildConfig;
 
+/**
+ * TLog class
+ * <p>
+ * Provides logging methods which give more information.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class TLog {
+
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
     public static void i(String tag, String message, Throwable throwable) {

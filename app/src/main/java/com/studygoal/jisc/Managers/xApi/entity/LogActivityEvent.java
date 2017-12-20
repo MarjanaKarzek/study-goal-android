@@ -1,9 +1,16 @@
 package com.studygoal.jisc.Managers.xApi.entity;
 
 /**
- * Created by Eugene Krasnopolskiy (eugene.krasnopolskiy@gmail.com) on 14.08.2017.
+ * Log Activity Event Enum
+ * <p>
+ * Provides the enums for log events.
+ *
+ * @author Therapy Box - Eugene Krasnopolskiy
+ * @version 1.5
+ * @date 14/08/17
  */
 public enum LogActivityEvent {
+
     SuccessfulLogin,
     NavigateActivityFeed,
     NavigateFriends,
@@ -32,4 +39,5 @@ public enum LogActivityEvent {
     DeleteRecurringTarget,
     CompleteSingleTarget,
     CompleteOverdueSingleTarget
+
 }

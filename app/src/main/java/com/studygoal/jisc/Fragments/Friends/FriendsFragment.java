@@ -1,4 +1,5 @@
 package com.studygoal.jisc.Fragments.Friends;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
@@ -13,6 +14,15 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Models.ReceivedRequest;
 import com.studygoal.jisc.R;
 
+/**
+ * Friends Fragment class
+ * <p>
+ * Provides the handling of the view "Friends" providing a fragment host.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class FriendsFragment extends Fragment {
     private static final String TAG = FriendsFragment.class.getSimpleName();
 
@@ -24,7 +34,7 @@ public class FriendsFragment extends Fragment {
 
         fragmentTabHost = (FragmentTabHost) mainView.findViewById(R.id.tabhost);
 
-        if(!DataManager.getInstance().isLandscape)
+        if (!DataManager.getInstance().isLandscape)
             fragmentTabHost.setup(DataManager.getInstance().mainActivity, getChildFragmentManager(), R.id.realtabcontent);
         else
             fragmentTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
@@ -36,21 +46,20 @@ public class FriendsFragment extends Fragment {
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("myfriends").setIndicator(DataManager.getInstance().mainActivity.getString(R.string.friends)),
                 FriendsListFragment.class, null);
 
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             View v = fragmentTabHost.getTabWidget().getChildTabViewAt(i);
-            ((TextView)v.findViewById(android.R.id.title)).setTextColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.colorPrimary));
-            ((TextView)v.findViewById(android.R.id.title)).setTypeface(DataManager.getInstance().myriadpro_regular);
-            ((TextView)v.findViewById(android.R.id.title)).setTextSize(16f);
-            ((TextView)v.findViewById(android.R.id.title)).setAllCaps(false);
+            ((TextView) v.findViewById(android.R.id.title)).setTextColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.colorPrimary));
+            ((TextView) v.findViewById(android.R.id.title)).setTypeface(DataManager.getInstance().myriadpro_regular);
+            ((TextView) v.findViewById(android.R.id.title)).setTextSize(16f);
+            ((TextView) v.findViewById(android.R.id.title)).setAllCaps(false);
             fragmentTabHost.getTabWidget().getChildAt(i).getLayoutParams().height = (int) (50 * this.getResources().getDisplayMetrics().density);
         }
 
-        if(new Select().from(ReceivedRequest.class).count() > 0)
+        if (new Select().from(ReceivedRequest.class).count() > 0)
             fragmentTabHost.setCurrentTab(1);
 
         return mainView;
     }
-
 
     @Override
     public void onDestroyView() {

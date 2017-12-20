@@ -4,10 +4,17 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+/**
+ * Targets Model
+ * <p>
+ * Provides model "Targets" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 @Table(name = "Targets")
 public class Targets extends Model {
-
-    public Targets() {super();}
 
     @Column(name = "target_id")
     public String target_id;
@@ -32,6 +39,9 @@ public class Targets extends Model {
     @Column(name = "modified_date")
     public String modified_date;
 
+    public Targets() {
+        super();
+    }
 
 }
 

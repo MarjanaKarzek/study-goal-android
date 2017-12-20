@@ -6,36 +6,45 @@ import com.activeandroid.annotation.Table;
 
 import java.util.ArrayList;
 
-@Table (name = "User")
+/**
+ * Current User Model
+ * <p>
+ * Provides model "Current User" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
+@Table(name = "User")
 public class CurrentUser extends Model {
 
-    @Column (name = "staff_id")
+    @Column(name = "staff_id")
     public String staff_id;
-    @Column (name = "uid")
+    @Column(name = "uid")
     public String id;
-    @Column (name = "jisc_student_id")
+    @Column(name = "jisc_student_id")
     public String jisc_student_id;
-    @Column (name = "pid")
+    @Column(name = "pid")
     public String pid;
-    @Column (name = "name")
+    @Column(name = "name")
     public String name;
-    @Column (name = "email")
+    @Column(name = "email")
     public String email;
-    @Column (name = "eppn")
+    @Column(name = "eppn")
     public String eppn;
-    @Column (name = "affiliation")
+    @Column(name = "affiliation")
     public String affiliation;
-    @Column (name = "profilepic")
+    @Column(name = "profilepic")
     public String profile_pic;
-    @Column (name = "modules")
+    @Column(name = "modules")
     public String modules;
-    @Column (name = "created_date")
+    @Column(name = "created_date")
     public String created_date;
-    @Column (name = "modified_date")
+    @Column(name = "modified_date")
     public String modified_date;
-    @Column (name = "isStaff")
+    @Column(name = "isStaff")
     public boolean isStaff;
-    @Column (name = "isSocial")
+    @Column(name = "isSocial")
     public boolean isSocial;
 
     public String last_week_activity_points;
@@ -74,4 +83,5 @@ public class CurrentUser extends Model {
                 ", points=" + points +
                 '}';
     }
+
 }

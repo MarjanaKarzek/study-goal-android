@@ -4,9 +4,18 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+/**
+ * Stretch Target Model
+ * <p>
+ * Provides model "Stretch Target" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 @Table(name = "StretchTarget")
 public class StretchTarget extends Model {
-    public StretchTarget(){super();}
+
     @Column(name = "stretch_id")
     public String id;
     @Column(name = "target_id")
@@ -19,4 +28,9 @@ public class StretchTarget extends Model {
     public String created_date;
     @Column(name = "student_id")
     public String student_id;
+
+    public StretchTarget() {
+        super();
+    }
+
 }

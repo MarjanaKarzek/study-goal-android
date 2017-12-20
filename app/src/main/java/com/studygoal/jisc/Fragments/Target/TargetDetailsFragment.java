@@ -28,6 +28,15 @@ import com.studygoal.jisc.Utils.PageControl;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Target Details Fragment class
+ * <p>
+ * Provides the handling of the view "Activity Details".
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class TargetDetailsFragment extends Fragment {
 
     private static final String TAG = AddTargetFragment.class.getSimpleName();
@@ -45,7 +54,7 @@ public class TargetDetailsFragment extends Fragment {
         DataManager.getInstance().mainActivity.hideAllButtons();
         DataManager.getInstance().mainActivity.showCertainButtons(4);
 
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
             adapter.reference = this;
             adapter.list = new Select().from(Targets.class).execute();
@@ -98,6 +107,12 @@ public class TargetDetailsFragment extends Fragment {
 
     }
 
+    /**
+     * Deletes the specified target.
+     *
+     * @param target        target to be deleted
+     * @param finalPosition position of target in list
+     */
     public void deleteTarget(final Targets target, final int finalPosition) {
 
         if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
@@ -114,7 +129,7 @@ public class TargetDetailsFragment extends Fragment {
             return;
         }
 
-        if(ConnectionHandler.isConnected(getContext())) {
+        if (ConnectionHandler.isConnected(getContext())) {
             final HashMap<String, String> params = new HashMap<>();
             params.put("target_id", target.target_id);
             DataManager.getInstance().mainActivity.showProgressBar(null);

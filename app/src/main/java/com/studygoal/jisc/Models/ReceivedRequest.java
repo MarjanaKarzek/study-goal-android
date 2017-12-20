@@ -4,8 +4,18 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+/**
+ * Received Request Model
+ * <p>
+ * Provides model "Received Request" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 @Table(name = "ReceivedRequest")
 public class ReceivedRequest extends Model {
+
     @Column(name = "re_id")
     public String id;
     @Column(name = "institution_id")
@@ -53,32 +63,32 @@ public class ReceivedRequest extends Model {
     @Column(name = "photo")
     public String photo;
 
-    public ReceivedRequest(){
+    public ReceivedRequest() {
         super();
 
-        id="";
-        institution_id="";
-        dob="";
-        race_code="";
-        sex_code="";
-        age="";
-        learning_difficulty_code="";
-        accommodation_code="";
-        parents_qualification="";
-        disability_code="";
-        country_code="";
-        overseas_code="";
-        first_name="";
-        last_name="";
-        address_line_1="";
-        address_line_2="";
-        address_line_3="";
-        address_line_4="";
-        postal_code="";
-        email="";
-        home_phone="";
-        mobile_phone="";
-        photo="";
+        id = "";
+        institution_id = "";
+        dob = "";
+        race_code = "";
+        sex_code = "";
+        age = "";
+        learning_difficulty_code = "";
+        accommodation_code = "";
+        parents_qualification = "";
+        disability_code = "";
+        country_code = "";
+        overseas_code = "";
+        first_name = "";
+        last_name = "";
+        address_line_1 = "";
+        address_line_2 = "";
+        address_line_3 = "";
+        address_line_4 = "";
+        postal_code = "";
+        email = "";
+        home_phone = "";
+        mobile_phone = "";
+        photo = "";
     }
 
 }

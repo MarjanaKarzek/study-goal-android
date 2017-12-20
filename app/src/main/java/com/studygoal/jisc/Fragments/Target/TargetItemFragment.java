@@ -1,9 +1,11 @@
 package com.studygoal.jisc.Fragments.Target;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -50,7 +52,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Target Item Fragment class
+ * <p>
+ * Provides the handling of the subviews of "Activity Details".
+ * Displays the details of one target item.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class TargetItemFragment extends Fragment {
+
     private static final String TAG = TargetItemFragment.class.getSimpleName();
 
     private View mainView;
@@ -59,62 +72,11 @@ public class TargetItemFragment extends Fragment {
     public int position;
     private int necessaryTime;
     private int spentTime;
-    private TextView incompleteTextView;
-    private List<ActivityHistory> activityHistoryList;
     private StretchTarget stretchTarget;
-    private View.OnClickListener setStretchTarget;
     private WebView webView;
 
     private float webViewHeight;
     private float webViewWidth;
-
-    public void showDialog() {
-        final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.snippet_custom_spinner);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        if (DataManager.getInstance().mainActivity.isLandscape) {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int width = (int) (displaymetrics.widthPixels * 0.3);
-
-            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = width;
-            dialog.getWindow().setAttributes(params);
-        }
-
-        ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-        ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.add);
-
-        ArrayList<String> items = new ArrayList<>();
-        items.add(getString(R.string.report_activity));
-        items.add(getString(R.string.log_recent_activity));
-        final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, "", items));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DataManager.getInstance().fromTargetDetail = true;
-                if (position == 0) {
-                    DataManager.getInstance().fromTargetItem = true;
-                    DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, new LogNewActivityFragment(), "newActivity")
-                            .addToBackStack(null)
-                            .commit();
-                } else {
-                    DataManager.getInstance().fromTargetItem = true;
-                    LogLogActivityFragment fragment = new LogLogActivityFragment();
-                    fragment.isInEditMode = false;
-                    DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, fragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
 
     @Override
     public void onResume() {
@@ -124,8 +86,9 @@ public class TargetItemFragment extends Fragment {
         DataManager.getInstance().mainActivity.showCertainButtons(4);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.target_item, container, false);
 
         mainView.findViewById(R.id.main_all_content).setOnTouchListener(new View.OnTouchListener() {
@@ -135,7 +98,7 @@ public class TargetItemFragment extends Fragment {
             }
         });
 
-        setStretchTarget = new View.OnClickListener() {
+        View.OnClickListener setStretchTarget = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
@@ -256,6 +219,7 @@ public class TargetItemFragment extends Fragment {
         TextView textView = mainView.findViewById(R.id.target_item_text);
         textView.setTypeface(DataManager.getInstance().myriadpro_regular);
 
+        List<ActivityHistory> activityHistoryList;
         if (module != null) {
             activityHistoryList = new Select().from(ActivityHistory.class).where("module_id = ?", target.module_id).and("activity = ?", target.activity).execute();
         } else {
@@ -263,12 +227,12 @@ public class TargetItemFragment extends Fragment {
         }
 
         Calendar date = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentDate = dateFormat.format(date.getTime());
 
         boolean dueToday = false;
 
-        SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date convertedDate = null;
         try {
             convertedDate = shortDateFormat.parse(currentDate);
@@ -302,7 +266,7 @@ public class TargetItemFragment extends Fragment {
                 }
                 activityHistoryList.clear();
                 activityHistoryList.addAll(tmp);
-                if(dueDate.get(Calendar.DAY_OF_WEEK) == 7){
+                if (dueDate.get(Calendar.DAY_OF_WEEK) == 7) {
                     dueToday = true;
                 }
                 break;
@@ -319,7 +283,7 @@ public class TargetItemFragment extends Fragment {
                 activityHistoryList.addAll(tmp);
                 dueDate.set(Calendar.DAY_OF_MONTH, dueDate.getActualMaximum(Calendar.DAY_OF_MONTH));
                 String nextDueDate = shortDateFormat.format(dueDate.getTime());
-                if(shortCurrentDate.equals(nextDueDate)){
+                if (shortCurrentDate.equals(nextDueDate)) {
                     dueToday = true;
                 }
                 break;
@@ -344,11 +308,12 @@ public class TargetItemFragment extends Fragment {
 
         try {
             Glide.with(DataManager.getInstance().mainActivity).load(LinguisticManager.getInstance().images.get(target.activity)).into((ImageView) mainView.findViewById(R.id.activity_icon));
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
         Log.d(TAG, "onCreateView: " + target.total_time);
         if (spentTime == 0 || spentTime < necessaryTime) {
-            incompleteTextView = mainView.findViewById(R.id.target_item_incomplete_textview);
+            TextView incompleteTextView = mainView.findViewById(R.id.target_item_incomplete_textview);
             incompleteTextView.setVisibility(View.VISIBLE);
             incompleteTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
 
@@ -424,10 +389,10 @@ public class TargetItemFragment extends Fragment {
             mainView.findViewById(R.id.target_reached_layout).setVisibility(View.VISIBLE);
         }
 
-        HashMap<String,String> spans = new HashMap<>();
-        spans.put("Day",getContext().getString(R.string.daily));
-        spans.put("Week",getContext().getString(R.string.Weekly));
-        spans.put("Month",getContext().getString(R.string.monthly));
+        HashMap<String, String> spans = new HashMap<>();
+        spans.put("Day", getContext().getString(R.string.daily));
+        spans.put("Week", getContext().getString(R.string.Weekly));
+        spans.put("Month", getContext().getString(R.string.monthly));
 
         String text = "";
         text += LinguisticManager.getInstance().present.get(target.activity) + " ";
@@ -515,6 +480,13 @@ public class TargetItemFragment extends Fragment {
         return mainView;
     }
 
+    // Stretch Targets
+
+    /**
+     * Checks a completed target whether it is able to be stretched, because it was finish far ahead.
+     *
+     * @return whether it is able to be streched
+     */
     private boolean canStretchTarget() {
         boolean eligible = false;
         if (target.time_span.toLowerCase().equals(getString(R.string.daily).toLowerCase())) {
@@ -532,26 +504,14 @@ public class TargetItemFragment extends Fragment {
         return eligible;
     }
 
-    protected void loadData() {
-        String html = getHighChartsHTML(false);
-        html = html.replace("Y_MAX_VALUE", "" + necessaryTime);
-        html = html.replace("Y_VALUE", "" + spentTime);
-        html = html.replace("height:1000px", "height:" + webViewHeight + "px !important");
-        html = html.replace("width:1000px", "width:" + webViewWidth + "px !important");
+    // High Chart
 
-        webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
-    }
-
-    protected void loadDataStretch() {
-        String html = getHighChartsHTML(true);
-        html = html.replace("Y_VALUE", "" + (spentTime - necessaryTime));
-        html = html.replace("Y_MAX_VALUE", "" + stretchTarget.stretch_time);
-        html = html.replace("height:1000px", "height:" + webViewHeight + "px !important");
-        html = html.replace("width:1000px", "width:" + webViewWidth + "px !important");
-
-        webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
-    }
-
+    /**
+     * Loads the high chart string according to the target type to be displayed.
+     *
+     * @param isStretch specifiying the target type
+     * @return high chart code
+     */
     public String getHighChartsHTML(boolean isStretch) {
 
         try {
@@ -574,5 +534,84 @@ public class TargetItemFragment extends Fragment {
             return "";
         }
 
+    }
+
+    /**
+     * Loads the target data into the high chart.
+     */
+    protected void loadData() {
+        String html = getHighChartsHTML(false);
+        html = html.replace("Y_MAX_VALUE", "" + necessaryTime);
+        html = html.replace("Y_VALUE", "" + spentTime);
+        html = html.replace("height:1000px", "height:" + webViewHeight + "px !important");
+        html = html.replace("width:1000px", "width:" + webViewWidth + "px !important");
+
+        webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+    }
+
+    /**
+     * Loads the stretch target data into the high chart.
+     */
+    protected void loadDataStretch() {
+        String html = getHighChartsHTML(true);
+        html = html.replace("Y_VALUE", "" + (spentTime - necessaryTime));
+        html = html.replace("Y_MAX_VALUE", "" + stretchTarget.stretch_time);
+        html = html.replace("height:1000px", "height:" + webViewHeight + "px !important");
+        html = html.replace("width:1000px", "width:" + webViewWidth + "px !important");
+
+        webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+    }
+
+    // Log Activity
+
+    /**
+     * Displays the dialog to add a new log activity or log an already completed one.
+     */
+    public void showDialog() {
+        final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.snippet_custom_spinner);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        if (DataManager.getInstance().mainActivity.isLandscape) {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int width = (int) (displaymetrics.widthPixels * 0.3);
+
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = width;
+            dialog.getWindow().setAttributes(params);
+        }
+
+        ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+        ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.add);
+
+        ArrayList<String> items = new ArrayList<>();
+        items.add(getString(R.string.report_activity));
+        items.add(getString(R.string.log_recent_activity));
+        final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
+        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, "", items));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DataManager.getInstance().fromTargetDetail = true;
+                if (position == 0) {
+                    DataManager.getInstance().fromTargetItem = true;
+                    DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, new LogNewActivityFragment(), "newActivity")
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    DataManager.getInstance().fromTargetItem = true;
+                    LogLogActivityFragment fragment = new LogLogActivityFragment();
+                    fragment.isInEditMode = false;
+                    DataManager.getInstance().mainActivity.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, fragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

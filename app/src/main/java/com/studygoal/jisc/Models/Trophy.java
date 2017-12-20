@@ -9,14 +9,16 @@ import com.activeandroid.annotation.Table;
 import junit.framework.Assert;
 
 /**
- * Created by MarcelC on 1/14/16.
+ * Trophy Model
+ * <p>
+ * Provides model "Trophy" for Active Android.
  *
- *
+ * @author Therapy Box - MarcelC
+ * @version 1.5
+ * @date 14/01/16
  */
 @Table(name = "Trophy")
-public class Trophy extends Model{
-
-    public Trophy() {super();}
+public class Trophy extends Model {
 
     @Column(name = "trophy_id")
     public String trophy_id;
@@ -33,8 +35,16 @@ public class Trophy extends Model{
     @Column(name = "statement")
     public String statement;
 
-    public String getImageName()
-    {
+    public Trophy() {
+        super();
+    }
+
+    /**
+     * Gets the image name of the trophy depending on the trophy's id.
+     *
+     * @return image name
+     */
+    public String getImageName() {
         switch (this.trophy_id) {
             case "1":
                 return "library_hawk_silver_big";
@@ -165,8 +175,12 @@ public class Trophy extends Model{
         return "";
     }
 
+    /**
+     * Gets the drawable resource of the trophy depending on the trophy's id.
+     *
+     * @return drawable identifier
+     */
     public int getImageDrawable(Context context) {
-
         String imageName = this.getImageName();
 
         Assert.assertNotNull(context);
@@ -174,4 +188,5 @@ public class Trophy extends Model{
 
         return context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
     }
+
 }

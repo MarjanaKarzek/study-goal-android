@@ -5,17 +5,24 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 /**
- * Created by Bogdan on 9/22/2016.
+ * Courses Model
+ * <p>
+ * Provides model "Courses" for Active Android.
  *
- *
+ * @author Therapy Box - Bogdan
+ * @version 1.5
+ * @date 22/09/16
  */
 @Table(name = "Courses")
-public class Courses extends Model{
-    public Courses() {super();}
+public class Courses extends Model {
 
     @Column(name = "course_id")
     public String id;
     @Column(name = "course_name")
     public String name;
+
+    public Courses() {
+        super();
+    }
 
 }

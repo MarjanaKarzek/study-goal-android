@@ -23,12 +23,17 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Synchronize class
+ * <p>
+ * Provides the intent for an intent service.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class Syncronize extends IntentService {
 
-    /**
-     * A constructor is required, and must call the super IntentService(String)
-     * constructor with a name for the worker thread.
-     */
     Timer timer;
 
     public Syncronize() {
@@ -40,6 +45,8 @@ public class Syncronize extends IntentService {
      * The IntentService calls this method from the default worker thread with
      * the intent that started the service. When this method returns, IntentService
      * stops the service, as appropriate.
+     *
+     * @param intent intent that handles the call
      */
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -122,6 +129,14 @@ public class Syncronize extends IntentService {
 
     }
 
+    /**
+     * Starts the command.
+     *
+     * @param intent intent service
+     * @param flags flags to be set
+     * @param startId starting id
+     * @return result id
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);

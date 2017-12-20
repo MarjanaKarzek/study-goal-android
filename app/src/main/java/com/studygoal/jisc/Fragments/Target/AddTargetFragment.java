@@ -54,7 +54,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Add Target Fragment class
+ * <p>
+ * Provides the handling of the view of "Target". Provides CRUD for target items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class AddTargetFragment extends BaseFragment {
+
     private static final String TAG = AddTargetFragment.class.getSimpleName();
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -367,6 +377,48 @@ public class AddTargetFragment extends BaseFragment {
         return root;
     }
 
+    /**
+     * Sets typeface for labels.
+     */
+    private void applyTypeface() {
+        if (root != null) {
+            binding.targetRecurring.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.targetSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetActivityTypeText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextChoose.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEveryTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetActivityTypeText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetChooseActivityTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEdittextBecause.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEdittextBecauseSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEdittextMyGoalSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextTimer1.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextTimer3.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextHours.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextMinutes.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addModuleEditText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addModuleButtonText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextFor.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetEveryText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInText.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInTextSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetInTextViewSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextBecauseTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextBecauseTitleSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextDateTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextDate.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetTextMyGoalTitleSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
+            binding.addtargetActivityTypeTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
+        }
+    }
+
+    // Add Module for Social Users
+
+    /**
+     * Adds a module to the module list for social service users.
+     */
     private void onAddModule() {
         EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
         final String moduleName = addModuleEditText.getText().toString();
@@ -396,6 +448,11 @@ public class AddTargetFragment extends BaseFragment {
         return;
     }
 
+    // Recurring Target
+
+    /**
+     * Provides the dialog to choose the activity type for recurring targets.
+     */
     private void onAddTargetActivityType() {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -424,6 +481,9 @@ public class AddTargetFragment extends BaseFragment {
         dialog.show();
     }
 
+    /**
+     * Provides the dialog to choose the activity for the recurring target.
+     */
     private void onAddTargetChooseActivity() {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -451,63 +511,9 @@ public class AddTargetFragment extends BaseFragment {
         dialog.show();
     }
 
-    private void onAddTargetCardView() {
-        final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.snippet_time_spent);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        if (DataManager.getInstance().mainActivity.isLandscape) {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int width = (int) (displaymetrics.widthPixels * 0.3);
-
-            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = width;
-            dialog.getWindow().setAttributes(params);
-        }
-
-        final NumberPicker hourPicker = (NumberPicker) dialog.findViewById(R.id.hour_picker);
-        hourPicker.setMinValue(0);
-
-        if (every.getText().toString().equals(getString(R.string.day))) {
-            hourPicker.setMaxValue(23);
-        } else {
-            hourPicker.setMaxValue(71);
-        }
-
-        hourPicker.setValue(Integer.parseInt(hours.getText().toString()));
-        hourPicker.setFormatter(value -> String.format("%02d", value));
-        final NumberPicker minutePicker = (NumberPicker) dialog.findViewById(R.id.minute_picker);
-        minutePicker.setMinValue(0);
-        minutePicker.setMaxValue(59);
-        minutePicker.setValue(Integer.parseInt(minutes.getText().toString()));
-        minutePicker.setFormatter(value -> {
-            if (value < 10) {
-                return "0" + value;
-            } else {
-                return value + "";
-            }
-        });
-
-        ((TextView) dialog.findViewById(R.id.timespent_save_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
-        dialog.findViewById(R.id.timespent_save_btn).setOnClickListener(v1 -> {
-            int hour = hourPicker.getValue();
-            if (hour < 10)
-                hours.setText("0" + hour);
-            else
-                hours.setText("" + hour);
-            int minute = minutePicker.getValue();
-            if (minute < 10)
-                minutes.setText("0" + minute);
-            else
-                minutes.setText("" + minute);
-            dialog.dismiss();
-        });
-
-        ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-        dialog.show();
-    }
-
+    /**
+     * Provides the dialog to choose the interval for the recurring target.
+     */
     private void onAddTargetEvery() {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -536,6 +542,10 @@ public class AddTargetFragment extends BaseFragment {
         dialog.show();
     }
 
+    /**
+     * Provides the dialog to choose a module for the recurring target.
+     * Social Service users can add modules here.
+     */
     private void onAddTargetIn() {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -585,55 +595,9 @@ public class AddTargetFragment extends BaseFragment {
         dialog.show();
     }
 
-    private void onAddTargetInSingle() {
-        final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.snippet_custom_spinner);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        if (DataManager.getInstance().mainActivity.isLandscape) {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int width = (int) (displaymetrics.widthPixels * 0.3);
-
-            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = width;
-            dialog.getWindow().setAttributes(params);
-        }
-
-        ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-        ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
-
-        final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-
-        final ArrayList<String> items = new ArrayList<>();
-        items.add(DataManager.getInstance().mainActivity.getString(R.string.any_module));
-        List<Module> modules = new Select().from(Module.class).orderBy("module_name").execute();
-
-        for (int i = 0; i < modules.size(); i++) {
-            items.add(modules.get(i).name);
-        }
-
-        if (DataManager.getInstance().user.isSocial) {
-            items.add(AddTargetFragment.this.getActivity().getString(R.string.add_module));
-        }
-
-        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, binding.addtargetInTextViewSingle.getText().toString(), items));
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (DataManager.getInstance().user.isSocial && position == items.size() - 1) {
-                EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
-                addModuleEditText.setText("");
-                addModuleLayout.setVisibility(View.VISIBLE);
-                dialog.dismiss();
-            } else {
-                binding.addtargetInTextViewSingle.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
+    /**
+     * Checks the input fields and saves the recurring target to the database.
+     */
     private void onAddTargetSave() {
         View view = getActivity().getCurrentFocus();
         if (view != null) {
@@ -804,6 +768,78 @@ public class AddTargetFragment extends BaseFragment {
         }
     }
 
+    // Single Targets
+
+    /**
+     * Provides the date picker dialog to select a due date for the single target.
+     */
+    private void onSelectDate() {
+        DatePickerForTargets newFragment = new DatePickerForTargets();
+        newFragment.setListener((view, year, monthOfYear, dayOfMonth) -> {
+            toDoDate.set(year, monthOfYear, dayOfMonth);
+            binding.addtargetTextDate.setText(Utils.formatDate(year, monthOfYear, dayOfMonth));
+            binding.addtargetTextDate.setTag(year + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
+        });
+
+        newFragment.show(DataManager.getInstance().mainActivity.getSupportFragmentManager(), "datePicker");
+    }
+
+    /**
+     * Provides the dialog to choose a module for the single target.
+     * Social Service users can add modules here.
+     */
+    private void onAddTargetInSingle() {
+        final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.snippet_custom_spinner);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        if (DataManager.getInstance().mainActivity.isLandscape) {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int width = (int) (displaymetrics.widthPixels * 0.3);
+
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = width;
+            dialog.getWindow().setAttributes(params);
+        }
+
+        ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+        ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
+
+        final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
+
+        final ArrayList<String> items = new ArrayList<>();
+        items.add(DataManager.getInstance().mainActivity.getString(R.string.any_module));
+        List<Module> modules = new Select().from(Module.class).orderBy("module_name").execute();
+
+        for (int i = 0; i < modules.size(); i++) {
+            items.add(modules.get(i).name);
+        }
+
+        if (DataManager.getInstance().user.isSocial) {
+            items.add(AddTargetFragment.this.getActivity().getString(R.string.add_module));
+        }
+
+        listView.setAdapter(new GenericAdapter(DataManager.getInstance().mainActivity, binding.addtargetInTextViewSingle.getText().toString(), items));
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            if (DataManager.getInstance().user.isSocial && position == items.size() - 1) {
+                EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
+                addModuleEditText.setText("");
+                addModuleLayout.setVisibility(View.VISIBLE);
+                dialog.dismiss();
+            } else {
+                binding.addtargetInTextViewSingle.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    /**
+     * Checks the input fields and saves the single target to the database.
+     */
     private void onAddTargetSingleSave() {
         View view = getActivity().getCurrentFocus();
 
@@ -928,50 +964,5 @@ public class AddTargetFragment extends BaseFragment {
                 }
             }).start();
         }
-    }
-
-    private void applyTypeface() {
-        if (root != null) {
-            binding.targetRecurring.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.targetSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetActivityTypeText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextChoose.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetEveryTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetActivityTypeText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetChooseActivityTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetEdittextBecause.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetEdittextBecauseSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetEdittextMyGoalSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextTimer1.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextTimer3.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextHours.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextMinutes.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addModuleEditText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addModuleButtonText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextFor.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetEveryText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetInText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetInText.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetInTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetInTextSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetInTextViewSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextBecauseTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextBecauseTitleSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextDateTitle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextDate.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetTextMyGoalTitleSingle.setTypeface(DataManager.getInstance().myriadpro_regular);
-            binding.addtargetActivityTypeTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
-        }
-    }
-
-    private void onSelectDate() {
-        DatePickerForTargets newFragment = new DatePickerForTargets();
-        newFragment.setListener((view, year, monthOfYear, dayOfMonth) -> {
-            toDoDate.set(year, monthOfYear, dayOfMonth);
-            binding.addtargetTextDate.setText(Utils.formatDate(year, monthOfYear, dayOfMonth));
-            binding.addtargetTextDate.setTag(year + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1)) + "-" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
-        });
-
-        newFragment.show(DataManager.getInstance().mainActivity.getSupportFragmentManager(), "datePicker");
     }
 }

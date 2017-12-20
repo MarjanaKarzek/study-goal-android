@@ -4,8 +4,18 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+/**
+ * Course Attendant Model
+ * <p>
+ * Provides model "Course Attendant" for Active Android.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 @Table(name = "CourseAttendant")
 public class CourseAttendant extends Model {
+
     @Column(name = "student_id")
     public String student_id;
     @Column(name = "uid")
@@ -55,32 +65,32 @@ public class CourseAttendant extends Model {
     @Column(name = "photo")
     public String photo;
 
-    public CourseAttendant(){
+    public CourseAttendant() {
         super();
 
         student_id = "";
-        id="";
-        institution_id="";
-        dob="";
-        race_code="";
-        sex_code="";
-        age="";
-        learning_difficulty_code="";
-        accommodation_code="";
-        parents_qualification="";
-        disability_code="";
-        country_code="";
-        overseas_code="";
-        first_name="";
-        last_name="";
-        address_line_1="";
-        address_line_2="";
-        address_line_3="";
-        address_line_4="";
-        postal_code="";
-        email="";
-        home_phone="";
-        mobile_phone="";
-        photo="";
+        id = "";
+        institution_id = "";
+        dob = "";
+        race_code = "";
+        sex_code = "";
+        age = "";
+        learning_difficulty_code = "";
+        accommodation_code = "";
+        parents_qualification = "";
+        disability_code = "";
+        country_code = "";
+        overseas_code = "";
+        first_name = "";
+        last_name = "";
+        address_line_1 = "";
+        address_line_2 = "";
+        address_line_3 = "";
+        address_line_4 = "";
+        postal_code = "";
+        email = "";
+        home_phone = "";
+        mobile_phone = "";
+        photo = "";
     }
 }

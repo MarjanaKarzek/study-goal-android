@@ -41,6 +41,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Target Fragment class
+ * <p>
+ * Provides the handling of the view of "Target". Provides CRUD for target items.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class TargetFragment extends BaseFragment {
     private static final String TAG = TargetFragment.class.getSimpleName();
 
@@ -93,7 +102,7 @@ public class TargetFragment extends BaseFragment {
         recurringTargetAdapter = new RecurringTargetAdapter(getActivity(), new RecurringTargetAdapter.TargetAdapterListener() {
             @Override
             public void onDelete(Targets target, int finalPosition) {
-                if(ConnectionHandler.isConnected(getContext())) {
+                if (ConnectionHandler.isConnected(getContext())) {
                     deleteTarget(target, finalPosition);
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
@@ -102,7 +111,7 @@ public class TargetFragment extends BaseFragment {
 
             @Override
             public void onEdit(Targets targets) {
-                if(ConnectionHandler.isConnected(getContext())) {
+                if (ConnectionHandler.isConnected(getContext())) {
                     editTarget(targets);
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
@@ -113,8 +122,8 @@ public class TargetFragment extends BaseFragment {
         singleTargetAdapter = new SingleTargetAdapter(getActivity(), new SingleTargetAdapter.SingleTargetAdapterListener() {
             @Override
             public void onDelete(ToDoTasks target, int finalPosition) {
-                if(ConnectionHandler.isConnected(getContext())) {
-                    deleteToDoTasks(target, finalPosition);
+                if (ConnectionHandler.isConnected(getContext())) {
+                    deleteSingleTarget(target, finalPosition);
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
@@ -122,8 +131,8 @@ public class TargetFragment extends BaseFragment {
 
             @Override
             public void onEdit(ToDoTasks targets) {
-                if(ConnectionHandler.isConnected(getContext())){
-                    editToDoTasks(targets);
+                if (ConnectionHandler.isConnected(getContext())) {
+                    editSingleTarget(targets);
                 } else {
                     ConnectionHandler.showNoInternetConnectionSnackbar();
                 }
@@ -131,14 +140,14 @@ public class TargetFragment extends BaseFragment {
 
             @Override
             public void onDone(ToDoTasks target) {
-                if(ConnectionHandler.isConnected(getContext())) {
-                    completeToDoTask(target);
+                if (ConnectionHandler.isConnected(getContext())) {
+                    completeSingleTarget(target);
 
                     DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                     Date startDate;
                     try {
                         startDate = df.parse(target.endDate);
-                        if(startDate.getTime() <= Calendar.getInstance().getTimeInMillis()){
+                        if (startDate.getTime() <= Calendar.getInstance().getTimeInMillis()) {
                             XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.CompleteSingleTarget);
                         } else {
                             XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.CompleteOverdueSingleTarget);
@@ -170,7 +179,7 @@ public class TargetFragment extends BaseFragment {
 
             if (item != null) {
                 if (item.fromTutor != null && item.isAccepted != null && item.fromTutor.toLowerCase().equals("yes") && item.isAccepted.equals("0")) {
-                    showAcceptTaskDialog(item);
+                    showAcceptSingleTargetDialog(item);
                 } else {
                     Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.swipe_for_done_edit_delete, Snackbar.LENGTH_LONG).show();
                 }
@@ -204,14 +213,14 @@ public class TargetFragment extends BaseFragment {
         layout.setColorSchemeResources(R.color.colorPrimary);
         layout.setOnRefreshListener(() -> loadData(false));
 
-        if(originalSingleTargetValue){
+        if (originalSingleTargetValue) {
             Log.d(TAG, "onCreateView: single target was originally selected");
             binding.targetSingle.setChecked(true);
             binding.targetRecurring.setChecked(false);
             binding.list.setVisibility(View.GONE);
             binding.listTodo.setVisibility(View.VISIBLE);
             DataManager.getInstance().mainActivity.displaySingleTarget = true;
-        }else {
+        } else {
             Log.d(TAG, "onCreateView: single target was originally not selected");
             binding.list.setVisibility(View.VISIBLE);
             binding.listTodo.setVisibility(View.GONE);
@@ -221,6 +230,73 @@ public class TargetFragment extends BaseFragment {
         return rootView;
     }
 
+    /**
+     * Displays tutorial message if single or recurring targets is empty.
+     */
+    private void updateTutorialMessage() {
+        runOnUiThread(() -> {
+            if (binding.targetRecurring.isChecked()) {
+                if (recurringTargetAdapter != null && recurringTargetAdapter.list.size() > 0) {
+                    tutorialMessage.setVisibility(View.GONE);
+                } else {
+                    tutorialMessage.setVisibility(View.VISIBLE);
+                }
+            } else if (binding.targetSingle.isChecked()) {
+                if (singleTargetAdapter != null && singleTargetAdapter.getCount() > 0) {
+                    tutorialMessage.setVisibility(View.GONE);
+                } else {
+                    tutorialMessage.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    // Data
+
+    /**
+     * Loads the data of single and recurring targets.
+     *
+     * @param showProgress whether the progress bar should be shown or not
+     */
+    private void loadData(boolean showProgress) {
+        if (showProgress) {
+            runOnUiThread(() -> DataManager.getInstance().mainActivity.showProgressBar(null));
+        }
+
+        new Thread(() -> {
+            NetworkManager.getInstance().getStretchTargets(DataManager.getInstance().user.id);
+            NetworkManager.getInstance().getTargets(DataManager.getInstance().user.id);
+            NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);
+
+            DataManager.getInstance().mainActivity.runOnUiThread(() -> {
+                recurringTargetAdapter.list = new Select().from(Targets.class).execute();
+                recurringTargetAdapter.notifyDataSetChanged();
+
+                List<ToDoTasks> currentTaskList = new Select().from(ToDoTasks.class).where("status != 1 and from_tutor = ? and is_accepted = 0", "yes").execute();
+                currentTaskList.addAll(new Select().from(ToDoTasks.class).where("status != 1 and is_accepted != 2 and ((from_tutor = ? and is_accepted = 1) or from_tutor = ?)", "yes", "no").execute());
+
+                singleTargetAdapter.updateList(currentTaskList);
+                singleTargetAdapter.notifyDataSetChanged();
+
+                if (showProgress) {
+                    DataManager.getInstance().mainActivity.hideProgressBar();
+                } else {
+                    layout.setRefreshing(false);
+                }
+            });
+
+            updateTutorialMessage();
+        }).start();
+    }
+
+    // Recurring targets
+
+    /**
+     * Deletes the recurring target selected.
+     *
+     * @param target        object to be deleted
+     * @param finalPosition position in list
+     */
     private void deleteTarget(final Targets target, final int finalPosition) {
         if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TargetFragment.this.getActivity());
@@ -258,7 +334,32 @@ public class TargetFragment extends BaseFragment {
         }).start();
     }
 
-    private void deleteToDoTasks(final ToDoTasks task, final int finalPosition) {
+    /**
+     * Starts editing process for the selected target.
+     *
+     * @param item target selected
+     */
+    private void editTarget(Targets item) {
+        AddTargetFragment fragment = new AddTargetFragment();
+        fragment.isInEditMode = true;
+        fragment.isSingleTarget = false;
+        fragment.item = item;
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    // Single Targets
+
+    /**
+     * Deletes the selected single target.
+     *
+     * @param task
+     * @param finalPosition
+     */
+    private void deleteSingleTarget(final ToDoTasks task, final int finalPosition) {
         if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TargetFragment.this.getActivity());
             alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_deletetarget) + "</font>"));
@@ -291,19 +392,12 @@ public class TargetFragment extends BaseFragment {
         }).start();
     }
 
-    private void editTarget(Targets item) {
-        AddTargetFragment fragment = new AddTargetFragment();
-        fragment.isInEditMode = true;
-        fragment.isSingleTarget = false;
-        fragment.item = item;
-
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, fragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    private void editToDoTasks(ToDoTasks item) {
+    /**
+     * Starts editing process for single target.
+     *
+     * @param item target to be edited
+     */
+    private void editSingleTarget(ToDoTasks item) {
         AddTargetFragment fragment = new AddTargetFragment();
         fragment.isInEditMode = true;
         fragment.isSingleTarget = true;
@@ -315,65 +409,55 @@ public class TargetFragment extends BaseFragment {
                 .commit();
     }
 
-    private void acceptToDoTask(ToDoTasks item){
-        showAcceptTaskDialog(item);
-    }
-
-    private void completeToDoTask(ToDoTasks item) {
-        processCompletionTask(item);
-    }
-
-    private void loadData(boolean showProgress) {
-        if (showProgress) {
-            runOnUiThread(() -> DataManager.getInstance().mainActivity.showProgressBar(null));
+    /**
+     * Sets the selected target to completed.
+     *
+     * @param item target to be completed
+     */
+    private void completeSingleTarget(ToDoTasks item) {
+        if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TargetFragment.this.getActivity());
+            alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_completetarget) + "</font>"));
+            alertDialogBuilder.setNegativeButton("Ok", (dialog, which) -> dialog.dismiss());
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            return;
         }
+        runOnUiThread(() -> DataManager.getInstance().mainActivity.showProgressBar(null));
 
         new Thread(() -> {
-            NetworkManager.getInstance().getStretchTargets(DataManager.getInstance().user.id);
-            NetworkManager.getInstance().getTargets(DataManager.getInstance().user.id);
-            NetworkManager.getInstance().getToDoTasks(DataManager.getInstance().user.id);
+            final HashMap<String, String> params = new HashMap<>();
+            params.put("student_id", DataManager.getInstance().user.id);
+            params.put("end_date", item.endDate);
+            params.put("record_id", item.taskId);
+            params.put("module", item.module);
+            params.put("description", item.description);
+            params.put("reason", item.reason);
+            params.put("is_completed", "1");
 
-            DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                recurringTargetAdapter.list = new Select().from(Targets.class).execute();
-                recurringTargetAdapter.notifyDataSetChanged();
-                
-                List<ToDoTasks> currentTaskList = new Select().from(ToDoTasks.class).where("status != 1 and from_tutor = ? and is_accepted = 0","yes").execute();
-                currentTaskList.addAll(new Select().from(ToDoTasks.class).where("status != 1 and is_accepted != 2 and ((from_tutor = ? and is_accepted = 1) or from_tutor = ?)","yes","no").execute());
-
-                singleTargetAdapter.updateList(currentTaskList);
-                singleTargetAdapter.notifyDataSetChanged();
-
-                if (showProgress) {
+            if (NetworkManager.getInstance().editToDoTask(params)) {
+                loadData(true);
+                DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
-                } else {
-                    layout.setRefreshing(false);
-                }
-            });
-
-            updateTutorialMessage();
+                });
+            } else {
+                DataManager.getInstance().mainActivity.runOnUiThread(() -> {
+                    DataManager.getInstance().mainActivity.hideProgressBar();
+                    Snackbar.make(rootView, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                });
+            }
         }).start();
     }
 
-    private void updateTutorialMessage() {
-        runOnUiThread(() -> {
-            if (binding.targetRecurring.isChecked()) {
-                if (recurringTargetAdapter != null && recurringTargetAdapter.list.size() > 0) {
-                    tutorialMessage.setVisibility(View.GONE);
-                } else {
-                    tutorialMessage.setVisibility(View.VISIBLE);
-                }
-            } else if (binding.targetSingle.isChecked()) {
-                if (singleTargetAdapter != null && singleTargetAdapter.getCount() > 0) {
-                    tutorialMessage.setVisibility(View.GONE);
-                } else {
-                    tutorialMessage.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-    }
+    // Single Targets from Tutor
 
-    private void showAcceptTaskDialog(ToDoTasks item) {
-        if(ConnectionHandler.isConnected(getContext())) {
+    /**
+     * Shows dialog to accept the single target from a tutor.
+     *
+     * @param item single target to be accepted
+     */
+    private void showAcceptSingleTargetDialog(ToDoTasks item) {
+        if (ConnectionHandler.isConnected(getContext())) {
             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.layout_dialog_accept_task);
@@ -406,12 +490,12 @@ public class TargetFragment extends BaseFragment {
 
             dialog.findViewById(R.id.dialog_ok).setOnClickListener(v1 -> {
                 dialog.dismiss();
-                processAcceptTask(item);
+                processAcceptSingleTarget(item);
             });
 
             dialog.findViewById(R.id.dialog_no).setOnClickListener(v12 -> {
                 dialog.dismiss();
-                showDeclineTaskDialog(item);
+                showDeclineSingleTargetDialog(item);
             });
 
             dialog.findViewById(R.id.dialog_cancel).setOnClickListener(v12 -> {
@@ -424,7 +508,12 @@ public class TargetFragment extends BaseFragment {
         }
     }
 
-    private void showDeclineTaskDialog(ToDoTasks item) {
+    /**
+     * Shows dialog to decline a single target from a tutor.
+     *
+     * @param item single target to be declined
+     */
+    private void showDeclineSingleTargetDialog(ToDoTasks item) {
         final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_decline_task);
@@ -458,7 +547,7 @@ public class TargetFragment extends BaseFragment {
         final EditText reason = ((EditText) dialog.findViewById(R.id.reason));
         dialog.findViewById(R.id.dialog_ok).setOnClickListener(v1 -> {
             dialog.dismiss();
-            processDeclineTask(item, reason.getText().toString());
+            processDeclineSingleTarget(item, reason.getText().toString());
         });
 
         dialog.findViewById(R.id.dialog_no).setOnClickListener(v12 -> {
@@ -468,7 +557,12 @@ public class TargetFragment extends BaseFragment {
         dialog.show();
     }
 
-    private void processAcceptTask(ToDoTasks item) {
+    /**
+     * Sets the single target from a tutor to accepted.
+     *
+     * @param item target to be accepted
+     */
+    private void processAcceptSingleTarget(ToDoTasks item) {
         runOnUiThread(() -> DataManager.getInstance().mainActivity.showProgressBar(null));
 
         new Thread(() -> {
@@ -502,7 +596,12 @@ public class TargetFragment extends BaseFragment {
         }).start();
     }
 
-    private void processDeclineTask(ToDoTasks item, String declineReason) {
+    /**
+     * Sets the single target from a tutor to declined.
+     *
+     * @param item target to be declined
+     */
+    private void processDeclineSingleTarget(ToDoTasks item, String declineReason) {
         runOnUiThread(() -> DataManager.getInstance().mainActivity.showProgressBar(null));
 
         new Thread(() -> {
@@ -534,41 +633,6 @@ public class TargetFragment extends BaseFragment {
                     DataManager.getInstance().mainActivity.hideProgressBar();
                 });
                 XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.DeclineSingleTarget);
-            } else {
-                DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                    DataManager.getInstance().mainActivity.hideProgressBar();
-                    Snackbar.make(rootView, R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
-                });
-            }
-        }).start();
-    }
-
-    private void processCompletionTask(ToDoTasks item) {
-        if (DataManager.getInstance().user.email.equals("demouser@jisc.ac.uk")) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TargetFragment.this.getActivity());
-            alertDialogBuilder.setTitle(Html.fromHtml("<font color='#3791ee'>" + getString(R.string.demo_mode_completetarget) + "</font>"));
-            alertDialogBuilder.setNegativeButton("Ok", (dialog, which) -> dialog.dismiss());
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-            return;
-        }
-        runOnUiThread(() -> DataManager.getInstance().mainActivity.showProgressBar(null));
-
-        new Thread(() -> {
-            final HashMap<String, String> params = new HashMap<>();
-            params.put("student_id", DataManager.getInstance().user.id);
-            params.put("end_date", item.endDate);
-            params.put("record_id", item.taskId);
-            params.put("module", item.module);
-            params.put("description", item.description);
-            params.put("reason", item.reason);
-            params.put("is_completed", "1");
-
-            if (NetworkManager.getInstance().editToDoTask(params)) {
-                loadData(true);
-                DataManager.getInstance().mainActivity.runOnUiThread(() -> {
-                    DataManager.getInstance().mainActivity.hideProgressBar();
-                });
             } else {
                 DataManager.getInstance().mainActivity.runOnUiThread(() -> {
                     DataManager.getInstance().mainActivity.hideProgressBar();
