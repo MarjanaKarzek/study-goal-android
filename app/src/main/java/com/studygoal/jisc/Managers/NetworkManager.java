@@ -3199,6 +3199,7 @@ public class NetworkManager {
                         target.reasonForIgnoring = jsonObject.getString("reason_for_ignoring");
                         target.created = jsonObject.getString("created");
                         target.modified = jsonObject.getString("modified");
+                        target.isEditable = jsonObject.getString("is_editable");
                         target.save();
                     }
                     ActiveAndroid.setTransactionSuccessful();

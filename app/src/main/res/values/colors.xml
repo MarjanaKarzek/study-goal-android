@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Android colors -->
     <color name="colorPrimary">#3791ee</color>
     <color name="colorPrimaryDark">#3d83cb</color>
@@ -18,7 +19,6 @@
     <color name="text_grey">#cacaca</color>
     <color name="text_medium_grey">#555555</color>
     <color name="text_black">#000000</color>
-
 
     <!-- Color constants -->
     <color name="white">#ffffff</color>
@@ -40,4 +40,5 @@
     <color name="checkinButtonActive">#a47cea</color>
     <color name="checkinButtonInactive">#aaaaaa</color>
     <color name="login_btn_purple">#8864C8</color>
+
 </resources>

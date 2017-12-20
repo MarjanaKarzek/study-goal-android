@@ -2,6 +2,8 @@ package com.studygoal.jisc.Adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -145,13 +147,19 @@ public class SingleTargetAdapter extends BaseAdapter {
         textView.setText(text);
 
         final com.daimajia.swipe.SwipeLayout swipeLayout = (com.daimajia.swipe.SwipeLayout) convertView.findViewById(R.id.swipelayout);
-        convertView.findViewById(R.id.edit).setOnClickListener(v -> {
-            swipeLayout.close(true);
+        if (item.isEditable.equals("1")) {
+            convertView.findViewById(R.id.edit).setOnClickListener(v -> {
+                swipeLayout.close(true);
 
-            if (listener != null) {
-                listener.onEdit(item);
-            }
-        });
+                if (listener != null) {
+                    listener.onEdit(item);
+                }
+            });
+        } else {
+            convertView.findViewById(R.id.edit).setBackgroundColor(Color.parseColor("#666666"));
+            ((ImageView) convertView.findViewById(R.id.edit_image)).getDrawable().setColorFilter(Color.parseColor("#bbbbbb"), PorterDuff.Mode.MULTIPLY);
+            ((TextView) convertView.findViewById(R.id.edit_text)).setTextColor(Color.parseColor("#bbbbbb"));
+        }
 
         convertView.findViewById(R.id.done).setOnClickListener(v -> {
             final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);

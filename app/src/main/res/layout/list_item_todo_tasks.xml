@@ -25,7 +25,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/done_image" />
 
                 <TextView
@@ -53,12 +53,14 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/edit_image"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/edit_image" />
 
                 <TextView
+                    android:id="@+id/edit_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

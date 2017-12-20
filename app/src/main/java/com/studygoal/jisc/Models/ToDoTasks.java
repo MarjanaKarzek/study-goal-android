@@ -42,6 +42,8 @@ public class ToDoTasks extends Model {
     public String created;
     @Column(name = "modified")
     public String modified;
+    @Column(name = "is_editing")
+    public String isEditable;
 
     public ToDoTasks() {
         super();
