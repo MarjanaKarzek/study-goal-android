@@ -99,6 +99,8 @@ public class TargetFragment extends BaseFragment {
         tutorialMessage = rootView.findViewById(R.id.tutorial_message);
         layout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipelayout);
 
+        NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
+
         recurringTargetAdapter = new RecurringTargetAdapter(getActivity(), new RecurringTargetAdapter.TargetAdapterListener() {
             @Override
             public void onDelete(Targets target, int finalPosition) {

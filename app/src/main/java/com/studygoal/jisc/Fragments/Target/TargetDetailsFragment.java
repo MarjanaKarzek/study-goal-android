@@ -71,6 +71,8 @@ public class TargetDetailsFragment extends Fragment {
 
         mainView = inflater.inflate(R.layout.target_details, container, false);
 
+        NetworkManager.getInstance().getActivityHistory(DataManager.getInstance().user.id);
+
         pager = (ViewPager) mainView.findViewById(R.id.pager);
         adapter = new RecurringTargetPagerAdapter(DataManager.getInstance().mainActivity.getSupportFragmentManager());
         adapter.reference = this;
