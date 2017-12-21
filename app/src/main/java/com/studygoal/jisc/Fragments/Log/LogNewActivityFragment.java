@@ -38,13 +38,13 @@ import com.studygoal.jisc.Adapters.ChooseActivityAdapter;
 import com.studygoal.jisc.Adapters.LogModuleAdapter;
 import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.Managers.NetworkManager;
-import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Managers.xApi.XApiManager;
+import com.studygoal.jisc.Managers.xApi.entity.LogActivityEvent;
 import com.studygoal.jisc.Models.Activity;
 import com.studygoal.jisc.Models.Module;
 import com.studygoal.jisc.Models.RunningActivity;
-import com.studygoal.jisc.Receivers.NotificationAlarm;
 import com.studygoal.jisc.R;
+import com.studygoal.jisc.Receivers.NotificationAlarm;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -174,9 +174,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                Long elapsed_time = System.currentTimeMillis() - timestamp;
-                Long seconds = (elapsed_time / 1000) % 60;
-                Long minutes = elapsed_time / 60000;
+                Long elapsedTime = System.currentTimeMillis() - timestamp;
+                Long seconds = (elapsedTime / 1000) % 60;
+                Long minutes = elapsedTime / 60000;
 
                 String value = "";
                 if (minutes < 10)
@@ -229,9 +229,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 sharedPreferences.edit().putLong("pause", 0).apply();
             }
             if (pause > 0) {
-                Long elapsed_time = pause - timestamp;
-                Long seconds = (elapsed_time / 1000) % 60;
-                Long minutes = elapsed_time / 60000;
+                Long elapsedTime = pause - timestamp;
+                Long seconds = (elapsedTime / 1000) % 60;
+                Long minutes = elapsedTime / 60000;
 
                 String value = "";
                 if (minutes < 10)
@@ -242,11 +242,11 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     value += "0" + seconds;
                 else
                     value += seconds;
-                final String f_value = value;
+                final String fValue = value;
                 DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        countdownTextView.setText(f_value);
+                        countdownTextView.setText(fValue);
                     }
                 });
 
@@ -289,6 +289,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             case R.id.new_activity_btn_stop:
                 PendingIntent pendingIntent;
             {
+                reminderEditText.setEnabled(true);
                 if (sharedPreferences.getLong("pause", 0) > 0) {
                     Long pause = System.currentTimeMillis() - sharedPreferences.getLong("pause", 0);
                     timestamp -= pause;
@@ -376,6 +377,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 break;
             }
             case R.id.new_activity_btn_pause: {
+                reminderEditText.setEnabled(true);
                 if (((TextView) mainView.findViewById(R.id.new_activity_btn_pause_text)).getText().toString().equals(DataManager.getInstance().mainActivity.getString(R.string.pause))) {
                     Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
                     pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
@@ -390,11 +392,12 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
                     ((TextView) mainView.findViewById(R.id.new_activity_btn_pause_text)).setText(DataManager.getInstance().mainActivity.getString(R.string.resume));
                 } else {
+                    reminderEditText.setEnabled(false);
                     Long _pause = System.currentTimeMillis() - sharedPreferences.getLong("pause", 0);
                     timestamp += _pause;
                     sharedPreferences.edit().putLong("pause", 0).apply();
-                    if (!reminderEditText.getText().toString().equals("") && !reminderEditText.getText().toString().equals("00")) {
-                        int reminder = (Integer.parseInt(reminderEditText.getText().toString().split(":")[0]) * 60) + Integer.parseInt(reminderEditText.getText().toString().split(":")[1]);
+                    if (!reminderEditText.getText().toString().equals("")){
+                        int reminder = Integer.parseInt(reminderEditText.getText().toString());
                         if (reminder != 0) {
                             Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
                             pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
@@ -471,6 +474,8 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 int reminder = 0;
                 if (!reminderEditText.getText().toString().equals(""))
                     reminder = Integer.parseInt(reminderEditText.getText().toString());
+                reminderEditText.setEnabled(false);
+
                 timer = new Timer();
                 timerTask = new TimerTask() {
                     @Override
@@ -488,11 +493,11 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                             value += "0" + seconds;
                         else
                             value += seconds;
-                        final String f_value = value;
+                        final String fValue = value;
                         DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                countdownTextView.setText(f_value);
+                                countdownTextView.setText(fValue);
                             }
                         });
 
