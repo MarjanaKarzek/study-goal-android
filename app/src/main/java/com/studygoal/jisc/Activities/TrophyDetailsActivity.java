@@ -72,7 +72,7 @@ public class TrophyDetailsActivity extends AppCompatActivity implements View.OnC
 
         GlideApp.with(this)
                 .load(this.getResources().getIdentifier(imageName, "drawable", this.getPackageName()))
-                .transform(new CircleTransform(this))
+                .transform(new CircleTransform())
                 .into(image);
 
         RelativeLayout closeButton = (RelativeLayout) findViewById(R.id.close_button);

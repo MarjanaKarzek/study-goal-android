@@ -122,7 +122,7 @@ public class MainActivity extends FragmentActivity {
         try {
             GlideApp.with(DataManager.getInstance().mainActivity)
                     .load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic)
-                    .transform(new CircleTransform(DataManager.getInstance().mainActivity))
+                    .transform(new CircleTransform())
                     .into(DataManager.getInstance().mainActivity.adapter.profilePicture);
         } catch (Exception ignored) {
         }

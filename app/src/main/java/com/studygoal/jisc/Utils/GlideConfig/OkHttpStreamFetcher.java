@@ -15,70 +15,103 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/**
+ * Glide Ok Http Stream Fetcher Class
+ * <p>
+ * Provides the http stream fetching if the connection is ok.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class OkHttpStreamFetcher implements DataFetcher<InputStream> {
-    private final OkHttpClient mClient;
-    private final GlideUrl mUrl;
-    private InputStream mStream;
-    private ResponseBody mResponseBody;
+
+    private final OkHttpClient client;
+    private final GlideUrl url;
+    private InputStream stream;
+    private ResponseBody responseBody;
 
     public OkHttpStreamFetcher(OkHttpClient client, GlideUrl url) {
-        mClient = client;
-        mUrl = url;
+        this.client = client;
+        this.url = url;
     }
 
+    /**
+     * Loads the data from the stream.
+     *
+     * @param priority priority of the call
+     * @param callback callback after it finished
+     */
     @Override
     public void loadData(Priority priority, DataCallback<? super InputStream> callback) {
         try {
             Request.Builder requestBuilder = new Request.Builder()
-                    .url(mUrl.toStringUrl());
+                    .url(url.toStringUrl());
 
-            for (Map.Entry<String, String> headerEntry : mUrl.getHeaders().entrySet()) {
+            for (Map.Entry<String, String> headerEntry : url.getHeaders().entrySet()) {
                 String key = headerEntry.getKey();
                 requestBuilder.addHeader(key, headerEntry.getValue());
             }
 
             Request request = requestBuilder.build();
 
-            Response response = mClient.newCall(request).execute();
-            mResponseBody = response.body();
+            Response response = client.newCall(request).execute();
+            responseBody = response.body();
             if (!response.isSuccessful()) {
                 throw new IOException("Request failed with code: " + response.code());
             }
 
-            long contentLength = mResponseBody.contentLength();
-            mStream = ContentLengthInputStream.obtain(mResponseBody.byteStream(), contentLength);
-            callback.onDataReady(mStream);
+            long contentLength = responseBody.contentLength();
+            stream = ContentLengthInputStream.obtain(responseBody.byteStream(), contentLength);
+            callback.onDataReady(stream);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Cleans the stream.
+     */
     @Override
     public void cleanup() {
-        if (mStream != null) {
+        if (stream != null) {
             try {
-                mStream.close();
+                stream.close();
             } catch (IOException e) {
                 // Ignored
             }
         }
-        if (mResponseBody != null) {
-            mResponseBody.close();
+        if (responseBody != null) {
+            responseBody.close();
         }
     }
 
+    /**
+     * Overridden to do nothing on cancel.
+     */
     @Override
     public void cancel() {
         // do nothing
     }
 
+    /**
+     * Overridden to return null.
+     *
+     * @return null
+     */
     @Override
     public Class<InputStream> getDataClass() {
         return null;
     }
 
+    /**
+     * Gets remote data source.
+     *
+     * @return remote data source object
+     */
     @Override
     public DataSource getDataSource() {
         return DataSource.REMOTE;
     }
+
 }

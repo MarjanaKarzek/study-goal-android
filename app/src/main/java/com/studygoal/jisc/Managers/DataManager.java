@@ -19,6 +19,15 @@ import com.studygoal.jisc.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Data Manager class
+ * <p>
+ * Provides the user data.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class DataManager {
 
     public static boolean isTestBuild = false;
@@ -67,32 +76,44 @@ public class DataManager {
     public boolean fromTargetDetail = false;
     public int fromTargetDetailPosition = -1;
 
+    private DataManager() {
+
+    }
+
+    /**
+     * Provides the DataManager object as a singleton.
+     *
+     * @return data manager object
+     */
     public static DataManager getInstance() {
         return ourInstance;
     }
 
-    private DataManager() {
-    }
+    // JWT
 
+    /**
+     * Gets the current jwt.
+     *
+     * @return jwt
+     */
     public String get_jwt() {
         return jwt;
     }
 
+    /**
+     * Sets the current jwt to the given parameter.
+     *
+     * @param jwt new jwt string
+     */
     public void set_jwt(String jwt) {
         this.jwt = jwt;
-
     }
 
-    public void reload() {
-        LinguisticManager.getInstance().reload(context);
+    // Loading
 
-        activity_type.clear();
-        choose_activity.clear();
-        period.clear();
-        api_values.clear();
-        display_values.clear();
-        init();
-    }
+    /**
+     * Initialises data.
+     */
     public void init() {
         api_values = new HashMap<>();
         display_values = new HashMap<>();
@@ -194,14 +215,40 @@ public class DataManager {
         api_values.put(context.getString(R.string.Overall).toLowerCase(), "overall");
     }
 
+    /**
+     * Reinitialises data.
+     */
+    public void reload() {
+        LinguisticManager.getInstance().reload(context);
+
+        activity_type.clear();
+        choose_activity.clear();
+        period.clear();
+        api_values.clear();
+        display_values.clear();
+        init();
+    }
+
+    // Fonts
+
+    /**
+     * Loads the font objects for the app.
+     */
     public void loadFonts() {
         oratorstd_typeface = Typeface.createFromAsset(context.getAssets(), "fonts/oratorstd.ttf");
         myriadpro_bold = Typeface.createFromAsset(context.getAssets(), "fonts/MyriadPro-Bold.ttf");
         myriadpro_regular = Typeface.createFromAsset(context.getAssets(), "fonts/MyriadPro-Regular.ttf");
     }
 
+    // Trophy Notification
+
+    /**
+     * Displays earned trophy.
+     *
+     * @param trophyMy trophy object to be displayed
+     */
     public void showTrophyNotification(final TrophyMy trophyMy) {
-        if(DataManager.getInstance().mainActivity != null)
+        if (DataManager.getInstance().mainActivity != null) {
             DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -209,7 +256,7 @@ public class DataManager {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.snippet_trophy_notification);
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                    TextView title = (TextView)dialog.findViewById(R.id.dialog_title);
+                    TextView title = (TextView) dialog.findViewById(R.id.dialog_title);
                     title.setTypeface(DataManager.getInstance().oratorstd_typeface);
                     title.setText(DataManager.getInstance().mainActivity.getString(R.string.trophy));
 
@@ -217,9 +264,10 @@ public class DataManager {
                     message.setTypeface(DataManager.getInstance().myriadpro_regular);
                     message.setText(DataManager.getInstance().mainActivity.getString(R.string.you_have_earned) + " " + trophyMy.trophy_name);
 
-                    Glide.with(DataManager.getInstance().mainActivity).load(DataManager.getInstance().mainActivity.getResources().getIdentifier(trophyMy.getImageName(), "drawable", DataManager.getInstance().mainActivity.getPackageName())).into((ImageView)dialog.findViewById(R.id.trophy_image));
+                    Glide.with(DataManager.getInstance().mainActivity).load(DataManager.getInstance().mainActivity.getResources().getIdentifier(trophyMy.getImageName(), "drawable", DataManager.getInstance().mainActivity.getPackageName())).into((ImageView) dialog.findViewById(R.id.trophy_image));
                     dialog.show();
                 }
             });
+        }
     }
 }

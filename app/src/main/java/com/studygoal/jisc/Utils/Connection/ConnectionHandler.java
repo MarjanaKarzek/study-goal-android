@@ -9,11 +9,22 @@ import com.studygoal.jisc.Managers.DataManager;
 import com.studygoal.jisc.R;
 
 /**
- * Created by Marjana-Tbox on 20/09/17.
+ * Connection Handler class
+ * <p>
+ * Provides the functionality to check the internet connection status and show a no connection snackbar.
+ *
+ * @author Therapy Box - Marjana Karzek
+ * @version 1.5
+ * @date 20/09/17
  */
-
 public class ConnectionHandler {
 
+    /**
+     * Checks for the internet connection
+     *
+     * @param context application context
+     * @return connection status
+     */
     public static boolean isConnected(Context context) {
         boolean result = false;
 
@@ -27,7 +38,10 @@ public class ConnectionHandler {
         return result;
     }
 
-    public static void showNoInternetConnectionSnackbar(){
+    /**
+     * Displays snackbar with "no internet" message.
+     */
+    public static void showNoInternetConnectionSnackbar() {
         Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.no_internet_connection_hint, Snackbar.LENGTH_LONG).show();
     }
 }

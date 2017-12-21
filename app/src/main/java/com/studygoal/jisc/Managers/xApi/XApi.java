@@ -12,9 +12,15 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 /**
- * Created by Eugene Krasnopolskiy (eugene.krasnopolskiy@gmail.com) on 14.08.2017.
+ * Retrofit - XApi HTTP API Interface
+ *
+ * Provides the Retrofit interface for the API calls.
+ *
+ * @author Therapy Box - Eugene Krasnopolskiy
+ * @version 1.5
+ * @date 14/08/17
  */
-interface XApi {
+public interface XApi {
     @GET("/sg/log")
     Call<ResponseBody> getLogActivity(@Header("authorization") String token,
                                       @Query("verb") String verb);

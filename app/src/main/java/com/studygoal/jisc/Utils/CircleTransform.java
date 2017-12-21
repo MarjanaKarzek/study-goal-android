@@ -1,6 +1,5 @@
 package com.studygoal.jisc.Utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -11,16 +10,42 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
 import java.security.MessageDigest;
 
+/**
+ * Circle Transform Class
+ * <p>
+ * Provides the functionality to crop a bitmap into a circle.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class CircleTransform extends BitmapTransformation {
-    public CircleTransform(Context context) {
-        super(context);
+
+    public CircleTransform() {
+        super();
     }
 
+    /**
+     * Transforms the bitmap into a circle by calling the method circlecrop.
+     *
+     * @param pool        bitmap pool
+     * @param toTransform bitmap to be transformed
+     * @param outWidth    width of the bitmap
+     * @param outHeight   height of the bitmap
+     * @return transformed bitmap
+     */
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
         return circleCrop(pool, toTransform);
     }
 
+    /**
+     * Transforms the bitmap into a circle.
+     *
+     * @param pool   bitmap pool
+     * @param source bitmap to be transformed
+     * @return transformed bitmap
+     */
     private static Bitmap circleCrop(BitmapPool pool, Bitmap source) {
         if (source == null) return null;
 
@@ -45,8 +70,14 @@ public class CircleTransform extends BitmapTransformation {
         return result;
     }
 
+    /**
+     * Overriden to do nothing.
+     *
+     * @param messageDigest unused parameter
+     */
     @Override
     public void updateDiskCacheKey(MessageDigest messageDigest) {
         // no need to implement
     }
+
 }

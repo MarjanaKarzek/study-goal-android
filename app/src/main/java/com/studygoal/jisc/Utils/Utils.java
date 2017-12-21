@@ -129,7 +129,7 @@ public class Utils {
     public static String getDate(String activity_date) {
         String[] split = activity_date.split("-");
 
-        return split[2] + " " + LinguisticManager.getInstance().convertMonth(split[1]) + " " + split[0];
+        return split[2] + " " + LinguisticManager.getInstance().getShortMonth(split[1]) + " " + split[0];
     }
 
     public static String getTime(String created_date) {

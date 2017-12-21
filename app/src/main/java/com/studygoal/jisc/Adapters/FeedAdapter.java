@@ -42,7 +42,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -126,7 +125,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                                 }
                             })
                             .placeholder(R.drawable.profilenotfound)
-                            .transform(new CircleTransform(context))
+                            .transform(new CircleTransform())
                             .into(feedViewHolder.profilePic);
                 } else {
                     GlideApp.with(context).load(R.drawable.profilenotfound).into(feedViewHolder.profilePic);
@@ -218,7 +217,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             else
                 GlideApp.with(context)
                         .load(NetworkManager.getInstance().host + photo)
-                        .transform(new CircleTransform(context))
+                        .transform(new CircleTransform())
                         .into(feedViewHolder.profilePic);
         }
 
@@ -248,7 +247,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             feedViewHolder.timeAgo.setText(
                     context.getString(R.string.on) + " "
                             + item.created_date.split(" ")[0].split("-")[2] + " "
-                            + LinguisticManager.getInstance().convertMonth(item.created_date.split(" ")[0].split("-")[1]) + " " + item.created_date.split(" ")[0].split("-")[0]);
+                            + LinguisticManager.getInstance().getShortMonth(item.created_date.split(" ")[0].split("-")[1]) + " " + item.created_date.split(" ")[0].split("-")[0]);
 
         feedViewHolder.feed.setText(item.message);
 

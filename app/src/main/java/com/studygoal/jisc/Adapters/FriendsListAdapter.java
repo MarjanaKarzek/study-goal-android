@@ -83,9 +83,9 @@ public class FriendsListAdapter extends BaseAdapter {
             final Friend attendant = list.get(position);
 
             if (attendant.profile_pic.equals(""))
-                GlideApp.with(context).load(R.drawable.profilenotfound).transform(new CircleTransform(context)).into(((ImageView) convertView.findViewById(R.id.portrait)));
+                GlideApp.with(context).load(R.drawable.profilenotfound).transform(new CircleTransform()).into(((ImageView) convertView.findViewById(R.id.portrait)));
             else
-                GlideApp.with(context).load(NetworkManager.getInstance().host + attendant.profile_pic).transform(new CircleTransform(context)).placeholder(R.drawable.profilenotfound).into(((ImageView) convertView.findViewById(R.id.portrait)));
+                GlideApp.with(context).load(NetworkManager.getInstance().host + attendant.profile_pic).transform(new CircleTransform()).placeholder(R.drawable.profilenotfound).into(((ImageView) convertView.findViewById(R.id.portrait)));
 
             TextView name = (TextView) convertView.findViewById(R.id.name);
             name.setTypeface(DataManager.getInstance().myriadpro_regular);

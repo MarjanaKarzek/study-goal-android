@@ -23,7 +23,13 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Eugene Krasnopolskiy (eugene.krasnopolskiy@gmail.com) on 14.08.2017.
+ * Retrofit - XApiManager
+ * <p>
+ * Provides the Retrofit interface for the API calls.
+ *
+ * @author Therapy Box - Eugene Krasnopolskiy
+ * @version 1.5
+ * @date 14/08/17
  */
 public class XApiManager {
     private static final String TAG = XApiManager.class.getSimpleName();
@@ -39,6 +45,11 @@ public class XApiManager {
     private static XApiManager sInstance = null;
     private boolean developerMode = false;
 
+    /**
+     * Provides the instance of XAPIManager as a singleton.
+     *
+     * @return instance of XAPIManager
+     */
     public static XApiManager getInstance() {
         if (sInstance == null) {
             sInstance = new XApiManager();
@@ -47,6 +58,13 @@ public class XApiManager {
         return sInstance;
     }
 
+    // Settings
+
+    /**
+     * Checks the server for the setting of attendance data.
+     *
+     * @return whether to show or not the attendance menu item
+     */
     public boolean getSettingAttendanceData() {
         boolean result = true;
 
@@ -63,6 +81,11 @@ public class XApiManager {
         return result;
     }
 
+    /**
+     * Checks the server for the setting of Study Goal attendance data.
+     *
+     * @return whether the setting is true or false
+     */
     public boolean getSettingStudyGoalAttendance() {
         boolean result = true;
 
@@ -79,6 +102,11 @@ public class XApiManager {
         return result;
     }
 
+    /**
+     * Checks the server for the setting of attainment data.
+     *
+     * @return whether to show or not the attainment menu item
+     */
     public boolean getSettingAttainmentData() {
         boolean result = true;
 
@@ -95,6 +123,47 @@ public class XApiManager {
         return result;
     }
 
+    /**
+     * Checks the server for the settings and handles it result.
+     *
+     * @return result
+     */
+    private String getSetting(String settingName) {
+        String result = null;
+
+        try {
+            if (settingName != null) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(SERVER_BASE)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                XApi api = retrofit.create(XApi.class);
+                String token = TOKEN_PREFIX + DataManager.getInstance().get_jwt();
+                Call<ResponseSetting> call = api.getSetting(token, settingName);
+                Response<ResponseSetting> response = call.execute();
+
+                if (response != null && response.code() == 200) {
+                    result = response.body().getValue();
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return result;
+    }
+
+    // Attendance Data
+
+    /**
+     * Calls the attendance data.
+     *
+     * @param skip  amount of entries to be skipped
+     * @param limit maximum amount of entries to be retrieved
+     * @param reset reset flag
+     * @return whether the call was successful or not
+     */
     public boolean getAttendance(int skip, int limit, boolean reset) {
         boolean result = true;
 
@@ -140,8 +209,8 @@ public class XApiManager {
 
                             if (dataInfo != null && dataInfo.length > 1) {
                                 dateString = dataInfo[dataInfo.length - 1] + " " + dataInfo[dataInfo.length - 2];
-                                if(dataInfo.length > 2){
-                                    for(int i = 0; i < dataInfo.length - 2; i++){
+                                if (dataInfo.length > 2) {
+                                    for (int i = 0; i < dataInfo.length - 2; i++) {
                                         moduleName += dataInfo[i] + " ";
                                     }
                                 }
@@ -175,10 +244,23 @@ public class XApiManager {
         return result;
     }
 
+    // Logs
+
+    /**
+     * Calls the method to send event logs of the app to the server.
+     *
+     * @param event event that gets tracked
+     */
     public void sendLogActivityEvent(LogActivityEvent event) {
         sendLogActivityEvent(event, null);
     }
 
+    /**
+     * Handles the log event and calls accordingly the method to send the log to the server.
+     *
+     * @param event event that gets tracked
+     * @param modId modId of the event
+     */
     public void sendLogActivityEvent(LogActivityEvent event, String modId) {
         if (event != null) {
             switch (event) {
@@ -227,9 +309,9 @@ public class XApiManager {
                     break;
                 }
                 case NavigateTargetsMain: {
-                    if(DataManager.getInstance().mainActivity.displaySingleTarget)
+                    if (DataManager.getInstance().mainActivity.displaySingleTarget)
                         sendLogActivity("viewed", "targets-main", "SingleTargetsPage");
-                    if(DataManager.getInstance().mainActivity.displaySingleTarget)
+                    if (DataManager.getInstance().mainActivity.displaySingleTarget)
                         sendLogActivity("viewed", "targets-main", "RecurringTargetsPage");
                     break;
                 }
@@ -305,6 +387,11 @@ public class XApiManager {
         }
     }
 
+    /**
+     * Sends log with the event only.
+     *
+     * @param verb event
+     */
     private void sendLogActivity(String verb) {
         Observable<Boolean> observable = Observable.create(subscriber -> {
             boolean result = false;
@@ -336,6 +423,13 @@ public class XApiManager {
         observable.subscribeOn(Schedulers.io()).retry(1).subscribe();
     }
 
+    /**
+     * Sends log with event, content id and name to the server.
+     *
+     * @param verb        event
+     * @param contentId   content's id
+     * @param contentName content's name
+     */
     private void sendLogActivity(String verb, String contentId, String contentName) {
         Observable<Boolean> observable = Observable.create(subscriber -> {
             boolean result = false;
@@ -367,6 +461,14 @@ public class XApiManager {
         observable.subscribeOn(Schedulers.io()).retry(1).subscribe();
     }
 
+    /**
+     * Sends log with event, content id, name and mod id to the server.
+     *
+     * @param verb        event
+     * @param contentId   content's ide
+     * @param contentName content's name
+     * @param modId       mod's id
+     */
     private void sendLogActivity(String verb, String contentId, String contentName, String modId) {
         Observable<Boolean> observable = Observable.create(subscriber -> {
 
@@ -399,34 +501,13 @@ public class XApiManager {
         observable.subscribeOn(Schedulers.io()).retry(1).subscribe();
     }
 
-    private String getSetting(String settingName) {
-        String result = null;
+    // Developer Mode
 
-        try {
-            if (settingName != null) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(SERVER_BASE)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                XApi api = retrofit.create(XApi.class);
-                String token = TOKEN_PREFIX + DataManager.getInstance().get_jwt();
-                Call<ResponseSetting> call = api.getSetting(token, settingName);
-                Response<ResponseSetting> response = call.execute();
-
-                if (response != null && response.code() == 200) {
-                    result = response.body().getValue();
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-
-        return result;
-    }
-
+    /**
+     * Changes the developer mode to on or off after the user tapped on the switch button.
+     */
     public void changeDeveloperMode() {
-        if(developerMode){
+        if (developerMode) {
             SERVER_BASE = "https://api.datax.jisc.ac.uk";
         } else {
             SERVER_BASE = "https://api.x-dev.data.alpha.jisc.ac.uk";

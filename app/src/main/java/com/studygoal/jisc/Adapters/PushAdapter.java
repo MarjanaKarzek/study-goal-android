@@ -92,7 +92,7 @@ public class PushAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             feedViewHolder.timeAgo.setText(
                     context.getString(R.string.on) + " "
                             + item.created_date.split(" ")[0].split("-")[2] + " "
-                            + LinguisticManager.getInstance().convertMonth(item.created_date.split(" ")[0].split("-")[1]) + " " + item.created_date.split(" ")[0].split("-")[0]);
+                            + LinguisticManager.getInstance().getShortMonth(item.created_date.split(" ")[0].split("-")[1]) + " " + item.created_date.split(" ")[0].split("-")[0]);
 
         feedViewHolder.feed.setText(item.message);
     }

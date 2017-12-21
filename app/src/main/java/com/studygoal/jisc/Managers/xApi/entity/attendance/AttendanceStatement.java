@@ -3,9 +3,9 @@ package com.studygoal.jisc.Managers.xApi.entity.attendance;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Attendance Statement class
+ * Retrofit Gson - AttendanceStatement
  * <p>
- * Provides the object for attendance xAPI call.
+ * Provides the Retrofit Gson object for the attendance statement.
  *
  * @author Therapy Box
  * @version 1.5
@@ -46,4 +46,5 @@ public class AttendanceStatement {
     public AttendanceStatementContext getContext() {
         return context;
     }
+
 }

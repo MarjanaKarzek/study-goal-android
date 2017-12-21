@@ -1,6 +1,5 @@
 package com.studygoal.jisc.Utils.SegmentController;
 
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -13,11 +12,15 @@ import com.studygoal.jisc.R;
 
 import java.util.ArrayList;
 
-
 /**
- * Created by Marjana-Tbox on 25/09/17.
+ * Segment Click Listener
+ * <p>
+ * Custom segment click listener to provide a segment controller.
+ *
+ * @author Therapy Box - Marjana Karzek
+ * @version 1.5
+ * @date 25.09.17
  */
-
 public class SegmentClickListener implements View.OnClickListener {
 
     private ViewFlipper viewFlipper;
@@ -32,6 +35,11 @@ public class SegmentClickListener implements View.OnClickListener {
         this.previousPosition = firstSelection;
     }
 
+    /**
+     * Switches the last active segment to inactive and activates the new one.
+     *
+     * @param view view to be handled
+     */
     @Override
     public void onClick(View view) {
         //deactivate previous segment

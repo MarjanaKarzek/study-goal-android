@@ -122,12 +122,12 @@ public class DrawerAdapter extends BaseAdapter {
             if (DataManager.getInstance().user.profile_pic.equals("")) {
                 GlideApp.with(context)
                         .load(R.drawable.profilenotfound2)
-                        .transform(new CircleTransform(context))
+                        .transform(new CircleTransform())
                         .into(profilePicture);
             } else {
                 GlideApp.with(context)
                         .load(NetworkManager.getInstance().host + DataManager.getInstance().user.profile_pic)
-                        .transform(new CircleTransform(context))
+                        .transform(new CircleTransform())
                         .into(profilePicture);
             }
         } else {

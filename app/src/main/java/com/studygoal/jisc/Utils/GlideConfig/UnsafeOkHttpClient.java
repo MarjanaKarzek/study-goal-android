@@ -19,7 +19,23 @@ import javax.net.ssl.TrustManagerFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 
+/**
+ * Glide unsafe Ok Http Client Class
+ * <p>
+ * Provides an unsafe http client if the connection is ok.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class UnsafeOkHttpClient {
+
+    /**
+     * Gets the unsafe http client.
+     *
+     * @param appContext application context
+     * @return client object
+     */
     public static OkHttpClient getUnsafeOkHttpClient(final Context appContext) {
         try {
             final SSLContext sslContext = setCertificate(appContext);
@@ -41,6 +57,12 @@ public class UnsafeOkHttpClient {
         }
     }
 
+    /**
+     * Sets the certificate for the client.
+     *
+     * @param appContext application context
+     * @return SSL context object
+     */
     private static SSLContext setCertificate(Context appContext) {
         SSLContext result = null;
 

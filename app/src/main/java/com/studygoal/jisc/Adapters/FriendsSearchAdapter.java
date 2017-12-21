@@ -79,12 +79,12 @@ public class FriendsSearchAdapter extends BaseAdapter {
         if (attendant.profile_pic.equals("")) {
             GlideApp.with(context)
                     .load(R.drawable.profilenotfound)
-                    .transform(new CircleTransform(context))
+                    .transform(new CircleTransform())
                     .into(((ImageView) convertView.findViewById(R.id.portrait)));
         } else {
             GlideApp.with(context)
                     .load(NetworkManager.getInstance().host + attendant.profile_pic)
-                    .transform(new CircleTransform(context))
+                    .transform(new CircleTransform())
                     .placeholder(R.drawable.profilenotfound)
                     .into(((ImageView) convertView.findViewById(R.id.portrait)));
         }
