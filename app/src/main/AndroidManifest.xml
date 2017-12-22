@@ -67,7 +67,7 @@
             />
 
         <service
-            android:name="com.studygoal.jisc.Utils.PushNotifications.MyGcmListenerService"
+            android:name="com.studygoal.jisc.Utils.PushNotifications.GcmListenerService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -76,7 +76,7 @@
         </service>
 
         <service
-            android:name="com.studygoal.jisc.Utils.PushNotifications.MyInstanceIDListenerService"
+            android:name="com.studygoal.jisc.Utils.PushNotifications.InstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

@@ -1,5 +1,6 @@
 package com.studygoal.jisc.Fragments.Log;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -93,6 +94,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.AddTimedLog, moduleName);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -284,8 +286,8 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View buttonView) {
+        switch (buttonView.getId()) {
             case R.id.new_activity_btn_stop:
                 PendingIntent pendingIntent;
             {
@@ -410,9 +412,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     timerTask = new TimerTask() {
                         @Override
                         public void run() {
-                            Long elapsed_time = System.currentTimeMillis() - timestamp;
-                            Long seconds = (elapsed_time / 1000) % 60;
-                            Long minutes = elapsed_time / 60000;
+                            Long elapsedTime = System.currentTimeMillis() - timestamp;
+                            Long seconds = (elapsedTime / 1000) % 60;
+                            Long minutes = elapsedTime / 60000;
 
                             String value = "";
                             if (minutes < 10)
@@ -423,11 +425,11 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                                 value += "0" + seconds;
                             else
                                 value += seconds;
-                            final String f_value = value;
+                            final String fValue = value;
                             DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    countdownTextView.setText(f_value);
+                                    countdownTextView.setText(fValue);
                                 }
                             });
 

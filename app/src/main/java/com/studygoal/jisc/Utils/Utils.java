@@ -1,10 +1,7 @@
 package com.studygoal.jisc.Utils;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Base64;
 
 import com.studygoal.jisc.Managers.DataManager;
@@ -25,8 +22,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utils class
+ * <p>
+ * Provides several helper methods.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class Utils {
 
+    /**
+     * Validates the given email address.
+     *
+     * @param email address to be checked
+     * @return validation statuss
+     */
     public static boolean validate_email(String email) {
         if (email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
             return true;
@@ -34,6 +46,14 @@ public class Utils {
         return false;
     }
 
+    /**
+     * Gets the string n between two strings.
+     *
+     * @param from     beginning string
+     * @param to       end string
+     * @param original original string
+     * @return string in between
+     */
     public static String getStringBetween(String from, String to, String original) {
         if (original.contains(from)) {
             String[] _aux = original.split(from);
@@ -52,6 +72,16 @@ public class Utils {
         }
     }
 
+    /**
+     * Calculates the distance in between two coordinates
+     *
+     * @param lat1 latitude of first location
+     * @param lon1 longitude of first location
+     * @param lat2 latitude of second location
+     * @param lon2 longitude of second location
+     * @param unit unit of the distance
+     * @return distance as a string
+     */
     public static String calculate_distance(double lat1, double lon1, double lat2, double lon2, String unit) {
         Location locationA = new Location("gps");
 
@@ -71,6 +101,12 @@ public class Utils {
             return df.format((locationA.distanceTo(locationB) / 1000));
     }
 
+    /**
+     * Generates MD5 string of given string.
+     *
+     * @param md5 to be converted string
+     * @return converted string
+     */
     public static String MD5(String md5) {
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
@@ -85,24 +121,32 @@ public class Utils {
         return null;
     }
 
+    /**
+     * Converts dp to px.
+     *
+     * @param dp display points to be converted
+     * @return pixel
+     */
     public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
+    /**
+     * Converts px to dp.
+     *
+     * @param px pixel to be converted
+     * @return display points
+     */
     public static int pxToDp(int px) {
         return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
 
-    public static boolean isOnline(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-
-    public static String getMinutesToHour(String time_spent) {
-        Long minutes = Long.parseLong(time_spent);
+    /**
+     * @param timeSpent
+     * @return
+     */
+    public static String getMinutesToHour(String timeSpent) {
+        Long minutes = Long.parseLong(timeSpent);
         Long hours = minutes / 60;
         minutes = minutes % 60;
         if (hours == 0 && minutes == 0)

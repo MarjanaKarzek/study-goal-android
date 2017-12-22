@@ -7,23 +7,28 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Created by therapybox on 07/12/17.
+ * Recycler Item Click Listener
+ * <p>
+ * Provides the handling of the view "Activity Feed". Displays push notifications and feed items.
+ *
+ * @author Therapy Box - Marjana Karzek
+ * @version 1.5
+ * @date 07.12.17
  */
-
 public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
-    private OnItemClickListener mListener;
+
+    private OnItemClickListener listener;
+    private GestureDetector gestureDetector;
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
 
-        public void onLongItemClick(View view, int position);
+        void onLongItemClick(View view, int position);
     }
 
-    GestureDetector mGestureDetector;
-
     public RecyclerItemClickListener(Context context, final RecyclerView recyclerView, OnItemClickListener listener) {
-        mListener = listener;
-        mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+        this.listener = listener;
+        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
@@ -32,24 +37,49 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
             @Override
             public void onLongPress(MotionEvent e) {
                 View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                if (child != null && mListener != null) {
-                    mListener.onLongItemClick(child, recyclerView.getChildAdapterPosition(child));
+                if (child != null && RecyclerItemClickListener.this.listener != null) {
+                    RecyclerItemClickListener.this.listener.onLongItemClick(child, recyclerView.getChildAdapterPosition(child));
                 }
             }
         });
     }
 
-    @Override public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+    /**
+     * Captures the touch event.
+     *
+     * @param view view object
+     * @param e    motion event
+     * @return
+     */
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
         View childView = view.findChildViewUnder(e.getX(), e.getY());
-        if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
-            mListener.onItemClick(childView, view.getChildAdapterPosition(childView));
+        if (childView != null && listener != null && gestureDetector.onTouchEvent(e)) {
+            listener.onItemClick(childView, view.getChildAdapterPosition(childView));
             return true;
         }
         return false;
     }
 
-    @Override public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
-
+    /**
+     * Overridden to do nothing.
+     *
+     * @param view        unused parameter
+     * @param motionEvent unused parameter
+     */
     @Override
-    public void onRequestDisallowInterceptTouchEvent (boolean disallowIntercept){}
+    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
+        // do nothing
+    }
+
+    /**
+     * Overridden to do nothing.
+     *
+     * @param disallowIntercept unused parameter
+     */
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        // do nothing
+    }
+
 }

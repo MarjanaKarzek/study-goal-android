@@ -8,27 +8,32 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.studygoal.jisc.BuildConfig;
-import com.studygoal.jisc.Managers.NetworkManager;
 import com.studygoal.jisc.Managers.DataManager;
+import com.studygoal.jisc.Managers.NetworkManager;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
-public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
+/**
+ * Instance ID Listener Service
+ * <p>
+ * Called if InstanceID token is updated. This may occur if the security of
+ * the previous token had been compromised. This call is initiated by the
+ * InstanceID provider.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
+public class InstanceIDListenerService extends FirebaseInstanceIdService {
 
     private static final String TAG = "MyInstanceIDLS";
 
     /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. This call is initiated by the
-     * InstanceID provider.
+     * Refreshes the token.
      */
-
-
     @Override
-
     public void onTokenRefresh() {
-
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.e(TAG, "Refreshed token: " + refreshedToken);

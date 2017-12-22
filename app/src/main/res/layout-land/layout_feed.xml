@@ -57,7 +57,7 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <com.studygoal.jisc.Utils.EditTextCustom
+        <com.studygoal.jisc.Utils.CustomEditText
             android:id="@+id/message"
             android:layout_width="match_parent"
             android:layout_height="150dp"

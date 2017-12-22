@@ -17,28 +17,29 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 public class PageControl extends LinearLayout {
-    private int mIndicatorSize = 7;
+
+    private int indicatorSize = 7;
 
     private Drawable activeDrawable;
     private Drawable inactiveDrawable;
 
     private ArrayList<ImageView> indicators;
 
-    private int mPageCount = 0;
-    private int mCurrentPage = 0;
+    private int pageCount = 0;
+    private int currentPage = 0;
 
-    private Context mContext;
-    private OnPageControlClickListener mOnPageControlClickListener = null;
+    private Context context;
+    private OnPageControlClickListener onPageControlClickListener = null;
 
     public PageControl(Context context) {
         super(context);
-        mContext = context;
+        this.context = context;
         initPageControl();
     }
 
     public PageControl(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
+        this.context = context;
     }
 
     @Override
@@ -53,19 +54,19 @@ public class PageControl extends LinearLayout {
         activeDrawable = new ShapeDrawable();
         inactiveDrawable = new ShapeDrawable();
 
-        activeDrawable.setBounds(0, 0, mIndicatorSize, mIndicatorSize);
-        inactiveDrawable.setBounds(0, 0, mIndicatorSize, mIndicatorSize);
+        activeDrawable.setBounds(0, 0, indicatorSize, indicatorSize);
+        inactiveDrawable.setBounds(0, 0, indicatorSize, indicatorSize);
 
         Shape s1 = new OvalShape();
-        s1.resize(mIndicatorSize, mIndicatorSize);
+        s1.resize(indicatorSize, indicatorSize);
 
         Shape s2 = new OvalShape();
-        s2.resize(mIndicatorSize, mIndicatorSize);
+        s2.resize(indicatorSize, indicatorSize);
 
         int i[] = new int[2];
         i[0] = android.R.attr.textColorSecondary;
         i[1] = android.R.attr.textColorSecondaryInverse;
-        TypedArray a = mContext.getTheme().obtainStyledAttributes(i);
+        TypedArray a = context.getTheme().obtainStyledAttributes(i);
 
         ((ShapeDrawable) activeDrawable).getPaint().setColor(a.getColor(0, Color.DKGRAY));
         ((ShapeDrawable) inactiveDrawable).getPaint().setColor(a.getColor(1, Color.LTGRAY));
@@ -73,36 +74,36 @@ public class PageControl extends LinearLayout {
         ((ShapeDrawable) activeDrawable).setShape(s1);
         ((ShapeDrawable) inactiveDrawable).setShape(s2);
 
-        mIndicatorSize = (int) (mIndicatorSize * getResources().getDisplayMetrics().density);
+        indicatorSize = (int) (indicatorSize * getResources().getDisplayMetrics().density);
 
         setOnTouchListener(new OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
-                if (mOnPageControlClickListener != null) {
+                if (onPageControlClickListener != null) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_UP:
 
                             if (PageControl.this.getOrientation() == LinearLayout.HORIZONTAL) {
                                 if (event.getX() < (PageControl.this.getWidth() / 2)) //if on left of view
                                 {
-                                    if (mCurrentPage > 0) {
-                                        mOnPageControlClickListener.goBackwards();
+                                    if (currentPage > 0) {
+                                        onPageControlClickListener.goBackwards();
                                     }
                                 } else //if on right of view
                                 {
-                                    if (mCurrentPage < (mPageCount - 1)) {
-                                        mOnPageControlClickListener.goForwards();
+                                    if (currentPage < (pageCount - 1)) {
+                                        onPageControlClickListener.goForwards();
                                     }
                                 }
                             } else {
                                 if (event.getY() < (PageControl.this.getHeight() / 2)) //if on top half of view
                                 {
-                                    if (mCurrentPage > 0) {
-                                        mOnPageControlClickListener.goBackwards();
+                                    if (currentPage > 0) {
+                                        onPageControlClickListener.goBackwards();
                                     }
                                 } else //if on bottom half of view
                                 {
-                                    if (mCurrentPage < (mPageCount - 1)) {
-                                        mOnPageControlClickListener.goForwards();
+                                    if (currentPage < (pageCount - 1)) {
+                                        onPageControlClickListener.goForwards();
                                     }
                                 }
                             }
@@ -124,7 +125,7 @@ public class PageControl extends LinearLayout {
     public void setActiveDrawable(Drawable d) {
         activeDrawable = d;
 
-        indicators.get(mCurrentPage).setBackgroundDrawable(activeDrawable);
+        indicators.get(currentPage).setBackgroundDrawable(activeDrawable);
 
     }
 
@@ -145,11 +146,11 @@ public class PageControl extends LinearLayout {
     public void setInactiveDrawable(Drawable d) {
         inactiveDrawable = d;
 
-        for (int i = 0; i < mPageCount; i++) {
+        for (int i = 0; i < pageCount; i++) {
             indicators.get(i).setBackgroundDrawable(inactiveDrawable);
         }
 
-        indicators.get(mCurrentPage).setBackgroundDrawable(activeDrawable);
+        indicators.get(currentPage).setBackgroundDrawable(activeDrawable);
     }
 
     /**
@@ -167,11 +168,11 @@ public class PageControl extends LinearLayout {
      * @param pageCount The number of pages this PageControl should have
      */
     public void setPageCount(int pageCount) {
-        mPageCount = pageCount;
+        this.pageCount = pageCount;
         for (int i = 0; i < pageCount; i++) {
-            final ImageView imageView = new ImageView(mContext);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mIndicatorSize, mIndicatorSize);
-            params.setMargins(mIndicatorSize / 2, mIndicatorSize, mIndicatorSize / 2, mIndicatorSize);
+            final ImageView imageView = new ImageView(context);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(indicatorSize, indicatorSize);
+            params.setMargins(indicatorSize / 2, indicatorSize, indicatorSize / 2, indicatorSize);
             imageView.setLayoutParams(params);
             imageView.setBackgroundDrawable(inactiveDrawable);
 
@@ -186,7 +187,7 @@ public class PageControl extends LinearLayout {
      * @return Returns the number of pages this PageControl has
      */
     public int getPageCount() {
-        return mPageCount;
+        return pageCount;
     }
 
     /**
@@ -195,10 +196,10 @@ public class PageControl extends LinearLayout {
      * @param currentPage The current page the PageControl should be on
      */
     public void setCurrentPage(int currentPage) {
-        if (currentPage < mPageCount) {
-            indicators.get(mCurrentPage).setBackgroundDrawable(inactiveDrawable);//reset old indicator
+        if (currentPage < pageCount) {
+            indicators.get(this.currentPage).setBackgroundDrawable(inactiveDrawable);//reset old indicator
             indicators.get(currentPage).setBackgroundDrawable(activeDrawable);//set up new indicator
-            mCurrentPage = currentPage;
+            this.currentPage = currentPage;
         }
     }
 
@@ -208,7 +209,7 @@ public class PageControl extends LinearLayout {
      * @return Returns the current page the PageControl is on
      */
     public int getCurrentPage() {
-        return mCurrentPage;
+        return currentPage;
     }
 
     /**
@@ -217,9 +218,9 @@ public class PageControl extends LinearLayout {
      * @param indicatorSize The size of the page indicator drawables
      */
     public void setIndicatorSize(int indicatorSize) {
-        mIndicatorSize = indicatorSize;
-        for (int i = 0; i < mPageCount; i++) {
-            indicators.get(i).setLayoutParams(new LayoutParams(mIndicatorSize, mIndicatorSize));
+        this.indicatorSize = indicatorSize;
+        for (int i = 0; i < pageCount; i++) {
+            indicators.get(i).setLayoutParams(new LayoutParams(this.indicatorSize, this.indicatorSize));
         }
     }
 
@@ -229,7 +230,7 @@ public class PageControl extends LinearLayout {
      * @return Returns the size of the page indicator drawables
      */
     public int getIndicatorSize() {
-        return mIndicatorSize;
+        return indicatorSize;
     }
 
     /**
@@ -255,7 +256,7 @@ public class PageControl extends LinearLayout {
      * @param onPageControlClickListener The OnPageControlClickListener you wish to set
      */
     public void setOnPageControlClickListener(OnPageControlClickListener onPageControlClickListener) {
-        mOnPageControlClickListener = onPageControlClickListener;
+        this.onPageControlClickListener = onPageControlClickListener;
     }
 
     /**
@@ -264,6 +265,6 @@ public class PageControl extends LinearLayout {
      * @return Returns the OnPageControlClickListener that has been set on this PageControl
      */
     public OnPageControlClickListener getOnPageControlClickListener() {
-        return mOnPageControlClickListener;
+        return onPageControlClickListener;
     }
 }

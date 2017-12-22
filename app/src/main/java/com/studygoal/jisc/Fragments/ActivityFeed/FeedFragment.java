@@ -25,7 +25,7 @@ import com.studygoal.jisc.Models.Feed;
 import com.studygoal.jisc.Models.News;
 import com.studygoal.jisc.R;
 import com.studygoal.jisc.Utils.Connection.ConnectionHandler;
-import com.studygoal.jisc.Utils.EditTextCustom;
+import com.studygoal.jisc.Utils.CustomEditText;
 
 import java.util.HashMap;
 
@@ -98,7 +98,7 @@ public class FeedFragment extends Fragment {
         layout = (SwipeRefreshLayout) mainView.findViewById(R.id.swipelayout);
         tutorialMessage = mainView.findViewById(R.id.tutorial_message);
 
-        final EditTextCustom myEditText = (EditTextCustom) mainView.findViewById(R.id.message);
+        final CustomEditText myEditText = (CustomEditText) mainView.findViewById(R.id.message);
         myEditText.fragment = FeedFragment.this;
 
         final View floating_btn = mainView.findViewById(R.id.floating_btn);
