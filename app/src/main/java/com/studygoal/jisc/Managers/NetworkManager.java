@@ -784,9 +784,15 @@ public class NetworkManager {
 
     // Feed items
 
-    public boolean getFeed(String student_id) {
+    /**
+     * Gets the feed for the given student.
+     *
+     * @param studentId id of the current student
+     * @return success
+     */
+    public boolean getFeed(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Boolean> future = executorService.submit(new getFeed(student_id));
+        Future<Boolean> future = executorService.submit(new getFeed(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -795,6 +801,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server for the feed.
+     */
     private class getFeed implements Callable<Boolean> {
 
         String student_id;
@@ -864,6 +873,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Deletes the feed item with the given id.
+     *
+     * @param feedId item to be deleted
+     * @return success
+     */
     public boolean deleteFeed(String feedId) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future = executorService.submit(new deleteFeed(feedId));
@@ -875,6 +890,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to delete a given feed.
+     */
     private class deleteFeed implements Callable<Boolean> {
         String feedId;
 
@@ -931,6 +949,11 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Gets the news feed.
+     *
+     * @return success
+     */
     public boolean getNewsFeed() {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future = executorService.submit(new getNewsFeed());
@@ -942,6 +965,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Gets the news feed from the server.
+     */
     private class getNewsFeed implements Callable<Boolean> {
 
         getNewsFeed() {
@@ -1006,6 +1032,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Marks the given news feed item as read.
+     *
+     * @param item to be marked as read
+     * @return success
+     */
     public boolean markNewsAsRead(News item) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future = executorService.submit(new markNewsAsRead(item.id));
@@ -1017,6 +1049,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to mark a specified news feed item as read.
+     */
     private class markNewsAsRead implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1077,6 +1112,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Posts a notification message.
+     *
+     * @param params parameter for the call
+     * @return success
+     */
     public boolean postNotificationMessage(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new postNotificationMessage(params));
@@ -1088,6 +1129,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to post a notification message.
+     */
     private class postNotificationMessage implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1139,6 +1183,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Posts a feed message.
+     *
+     * @param params parameters for the call
+     * @return success
+     */
     public boolean postFeedMessage(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new postFeedMessage(params));
@@ -1150,6 +1200,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to post a feed message.
+     */
     private class postFeedMessage implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1202,6 +1255,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Hides a post of the feed.
+     *
+     * @param params parameters used to hide the post.
+     * @return success
+     */
     public boolean hidePost(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new hidePost(params));
@@ -1213,6 +1272,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to hide a specified post.
+     */
     private class hidePost implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1266,9 +1328,15 @@ public class NetworkManager {
 
     // Friends
 
-    public boolean getFriends(String student_id) {
+    /**
+     * Gets the friends for the current user.
+     *
+     * @param studentId id of the current user
+     * @return success
+     */
+    public boolean getFriends(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Boolean> future = executorService.submit(new getFriends(student_id));
+        Future<Boolean> future = executorService.submit(new getFriends(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -1277,6 +1345,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server for the friends of the current user.
+     */
     private class getFriends implements Callable<Boolean> {
 
         String student_id;
@@ -1401,6 +1472,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Hides the specified friend.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean hideFriend(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new hideFriend(params));
@@ -1412,6 +1489,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to hide a specified friend.
+     */
     private class hideFriend implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1463,6 +1543,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Unhides the specified friend.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean unhideFriend(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new unhideFriend(params));
@@ -1474,6 +1560,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to unhide a specified friend.
+     */
     private class unhideFriend implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1525,6 +1614,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Deletes the specified friend.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean deleteFriend(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new deleteFriend(params));
@@ -1536,6 +1631,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to delete a specified friend.
+     */
     private class deleteFriend implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1570,6 +1668,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Changes the friends settings.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean changeFriendSettings(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new changeFriendSettings(params));
@@ -1581,6 +1685,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to change the friend settings of a specified friend.
+     */
     private class changeFriendSettings implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1632,6 +1739,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Gets a friend by its email.
+     *
+     * @param email email used to search for it
+     * @return friend object
+     */
     public Friend getStudentByEmail(String email) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Friend> future = executorService.submit(new getStudentByEmail(email));
@@ -1643,6 +1756,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to find a student by its email.
+     */
     private class getStudentByEmail implements Callable<Friend> {
 
         String student_id;
@@ -1730,9 +1846,15 @@ public class NetworkManager {
 
     // Friend Request
 
-    public boolean getFriendRequests(String student_id) {
+    /**
+     * Gets the friends requests for the current student.
+     *
+     * @param studentId id of the student
+     * @return success
+     */
+    public boolean getFriendRequests(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Boolean> future = executorService.submit(new getFriendRequests(student_id));
+        Future<Boolean> future = executorService.submit(new getFriendRequests(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -1741,6 +1863,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the friend requests of the current user.
+     */
     private class getFriendRequests implements Callable<Boolean> {
 
         String student_id;
@@ -1872,6 +1997,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Accepts a friend request.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean acceptFriendRequest(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new acceptFriendRequest(params));
@@ -1883,6 +2014,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to accept a specified friends request.
+     */
     private class acceptFriendRequest implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1934,6 +2068,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Deletes a friend request.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean deleteFriendRequest(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new deleteFriendRequest(params));
@@ -1945,6 +2085,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to delete a friend request.
+     */
     private class deleteFriendRequest implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -1979,9 +2122,15 @@ public class NetworkManager {
         }
     }
 
-    public boolean getSentFriendRequests(String student_id) {
+    /**
+     * gets the sent friend requests of the current user.
+     *
+     * @param studentId id of the current user
+     * @return success
+     */
+    public boolean getSentFriendRequests(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Boolean> future = executorService.submit(new getSentFriendRequests(student_id));
+        Future<Boolean> future = executorService.submit(new getSentFriendRequests(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -1990,6 +2139,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all sent friend requests.
+     */
     private class getSentFriendRequests implements Callable<Boolean> {
 
         String student_id;
@@ -2120,6 +2272,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Sends a friends request.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean sendFriendRequest(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new sendFriendRequest(params));
@@ -2131,6 +2289,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to send a friend request.
+     */
     private class sendFriendRequest implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -2194,6 +2355,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Cancels a friend request.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean cancelFriendRequest(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new cancelFriendRequest(params));
@@ -2205,6 +2372,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to cancel a friend request.
+     */
     private class cancelFriendRequest implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -2243,6 +2413,12 @@ public class NetworkManager {
 
     // Activity Points
 
+    /**
+     * Gets the students activity points in a given scope.
+     *
+     * @param scope scope defined
+     * @return success
+     */
     public boolean getStudentActivityPoint(String scope) {
         Future<Boolean> future = executorService.submit(new getStudentActivityPoint(scope));
         try {
@@ -2253,6 +2429,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the students activity points.
+     */
     private class getStudentActivityPoint implements Callable<Boolean> {
 
         String scope;
@@ -2351,6 +2530,11 @@ public class NetworkManager {
 
     // Weekly Attendance
 
+    /**
+     * Gets the weekly attendance of the current user.
+     *
+     * @return success
+     */
     public boolean getWeeklyAttendance() {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<String> futureResult = executorService.submit(new getWeeklyAttendance());
@@ -2363,6 +2547,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the weekly attendance of the current user.
+     */
     private class getWeeklyAttendance implements Callable<String> {
 
         getWeeklyAttendance() {
@@ -2435,6 +2622,11 @@ public class NetworkManager {
 
     // Demo Attendance
 
+    /**
+     * Gets the demo attendance for the demo account.
+     *
+     * @return event list
+     */
     public List<Event> getDemoAttendance() {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<List<Event>> future = executorService.submit(new getDemoAttendance());
@@ -2446,6 +2638,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the demo attendance data.
+     */
     private class getDemoAttendance implements Callable<List<Event>> {
         ArrayList<Event> attendanceList;
 
@@ -2531,6 +2726,13 @@ public class NetworkManager {
 
     // App Usage
 
+    /**
+     * Gets the app usage for the current user.
+     *
+     * @param startDate start date of app usage
+     * @param endDate   end date of app usage
+     * @return success
+     */
     public boolean getAppUsage(String startDate, String endDate) {
         Future<Boolean> future_result = executorService.submit(new GetAppUsage(startDate, endDate));
         try {
@@ -2541,6 +2743,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the app usage of the current user.
+     */
     private class GetAppUsage implements Callable<Boolean> {
 
         private String startDate;
@@ -2612,6 +2817,11 @@ public class NetworkManager {
 
     // Assingment Ranking
 
+    /**
+     * Gets the assignment ranking.
+     *
+     * @return success
+     */
     public boolean getAssignmentRanking() {
         Future<Boolean> future = executorService.submit(new getAssigmentRanking());
         try {
@@ -2622,6 +2832,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the assingment ranking.
+     */
     private class getAssigmentRanking implements Callable<Boolean> {
 
         getAssigmentRanking() {
@@ -2685,9 +2898,15 @@ public class NetworkManager {
         }
     }
 
-    public String getCurrentOverallRanking(String student_id) {
+    /**
+     * gets the overall ranking for the current user.
+     *
+     * @param studentId id of the current user
+     * @return success
+     */
+    public String getCurrentOverallRanking(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<String> future = executorService.submit(new getCurrentOverallRanking(student_id));
+        Future<String> future = executorService.submit(new getCurrentOverallRanking(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -2696,6 +2915,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the current overall ranking.
+     */
     private class getCurrentOverallRanking implements Callable<String> {
 
         String student_id;
@@ -2771,8 +2993,14 @@ public class NetworkManager {
         }
     }
 
-    public String getCurrentRanking(String student_id) {
-        Future<String> future = executorService.submit(new getCurrentRanking(student_id));
+    /**
+     * Gets the current ranking for the current user.
+     *
+     * @param studentId id of the current user.
+     * @return success
+     */
+    public String getCurrentRanking(String studentId) {
+        Future<String> future = executorService.submit(new getCurrentRanking(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -2781,6 +3009,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the current ranking.
+     */
     private class getCurrentRanking implements Callable<String> {
 
         String student_id;
@@ -2858,6 +3089,17 @@ public class NetworkManager {
 
     // VLE Activity
 
+    /**
+     * Gets the VLE activity data.
+     *
+     * @param scope        scope defined
+     * @param compareType  compare type defined
+     * @param compareValue compare value defined
+     * @param filterType   filter type defined
+     * @param filterValue  filter value defined
+     * @param isCourse     is course or not
+     * @return list of VLE activity data
+     */
     public List<ED> getEngagementGraph(String scope, String compareType, String compareValue, String filterType, String filterValue, boolean isCourse) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<List<ED>> future = executorService.submit(new getEngagementGraph(scope, compareType, compareValue, filterType, filterValue, isCourse));
@@ -2869,6 +3111,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get the VLE activity data.
+     */
     private class getEngagementGraph implements Callable<List<ED>> {
 
         ArrayList<ED> engagement_list;
@@ -3072,8 +3317,15 @@ public class NetworkManager {
 
     // Check in Pin
 
-    public boolean setUserPin(String pin_text_edit_text, String location) {
-        Future<Boolean> futureResult = executorService.submit(new setUserPin(pin_text_edit_text, location));
+    /**
+     * Checks the pin and location.
+     *
+     * @param pin      pin given by the user
+     * @param location current location of the user
+     * @return success
+     */
+    public boolean setUserPin(String pin, String location) {
+        Future<Boolean> futureResult = executorService.submit(new setUserPin(pin, location));
         try {
             return futureResult.get();
         } catch (Exception e) {
@@ -3082,6 +3334,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to check the pin and location of the current user.
+     */
     private class setUserPin implements Callable<Boolean> {
 
         String pin;
@@ -3164,14 +3419,14 @@ public class NetworkManager {
     // Logs (Activities)
 
     /**
-     * getActivityHistory(String student_id)
+     * Gets all logged activities.
      *
-     * @param student_id => the ID of the student for which his mList of activities to be retrieved
-     * @return true/false if operation has succeed
+     * @param studentId id of the current user
+     * @return success
      */
-    public boolean getActivityHistory(String student_id) {
+    public boolean getActivityHistory(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Boolean> future = executorService.submit(new getActivityHistory(student_id));
+        Future<Boolean> future = executorService.submit(new getActivityHistory(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -3180,6 +3435,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all logged activities.
+     */
     private class getActivityHistory implements Callable<Boolean> {
 
         String student_id;
@@ -3252,6 +3510,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Adds an activity for the current user.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public String addActivity(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<String> future_result = executorService.submit(new addActivity(params));
@@ -3263,6 +3527,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to add a new activity.
+     */
     private class addActivity implements Callable<String> {
 
         HashMap<String, String> params;
@@ -3327,6 +3594,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Edits an activity.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean editActivity(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new editActivity(params));
@@ -3338,6 +3611,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to edit an activity.
+     */
     private class editActivity implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -3389,6 +3665,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Deletes an activity.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean deleteActivity(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new deleteActivity(params));
@@ -3400,6 +3682,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to delete an activity.
+     */
     private class deleteActivity implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -3436,9 +3721,15 @@ public class NetworkManager {
 
     // Recurring Targets
 
-    public boolean getTargets(String student_id) {
+    /**
+     * Gets the recurring targets for the current user.
+     *
+     * @param studentId id of the current user
+     * @return success
+     */
+    public boolean getTargets(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Boolean> future = executorService.submit(new getTargets(student_id));
+        Future<Boolean> future = executorService.submit(new getTargets(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -3447,6 +3738,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all recurring targets.
+     */
     private class getTargets implements Callable<Boolean> {
 
         String student_id;
@@ -3523,6 +3817,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Adds a recurring target for the current user.
+     *
+     * @param params parameters used.
+     * @return success
+     */
     public boolean addTarget(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new addTarget(params));
@@ -3534,6 +3834,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to add a new recurring target.
+     */
     private class addTarget implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -3586,6 +3889,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Edits a recurring target.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean editTarget(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new editTarget(params));
@@ -3597,6 +3906,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to edit a recurring target.
+     */
     private class editTarget implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -3648,6 +3960,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Deletes a recurring target.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean deleteTarget(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new deleteTarget(params));
@@ -3659,6 +3977,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to delete a recurring target.
+     */
     private class deleteTarget implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -3712,9 +4033,15 @@ public class NetworkManager {
 
     // Single Targets
 
-    public boolean getToDoTasks(String student_id) {
+    /**
+     * Gets all single targets of the current user.
+     *
+     * @param studentId id of the current user
+     * @return success
+     */
+    public boolean getToDoTasks(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Boolean> future = executorService.submit(new getToDoTasks(student_id));
+        Future<Boolean> future = executorService.submit(new getToDoTasks(studentId));
 
         try {
             return future.get();
@@ -3724,6 +4051,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all single targets.
+     */
     private class getToDoTasks implements Callable<Boolean> {
         String student_id;
 
@@ -3803,6 +4133,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Adds a single target.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean addToDoTask(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new addTodoTask(params));
@@ -3815,6 +4151,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to add a single target.
+     */
     private class addTodoTask implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -3867,6 +4206,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Edits a single target.
+     *
+     * @param params parameters used.
+     * @return success
+     */
     public boolean editToDoTask(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new editToDoTask(params));
@@ -3879,6 +4224,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to edit a single target.
+     */
     private class editToDoTask implements Callable<Boolean> {
         HashMap<String, String> params;
 
@@ -3929,6 +4277,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Deletes a single target.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean deleteToDoTask(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new deleteToDoTask(params));
@@ -3941,6 +4295,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to delete a single target.
+     */
     private class deleteToDoTask implements Callable<Boolean> {
         HashMap<String, String> params;
 
@@ -3978,9 +4335,15 @@ public class NetworkManager {
 
     // Stretch Targets
 
-    public boolean getStretchTargets(String student_id) {
+    /**
+     * Gets all stretch targets for the current user.
+     *
+     * @param studentId id of the current user
+     * @return success
+     */
+    public boolean getStretchTargets(String studentId) {
         language = LinguisticManager.getInstance().getLanguageCode();
-        Future<Boolean> future = executorService.submit(new getStretchTargets(student_id));
+        Future<Boolean> future = executorService.submit(new getStretchTargets(studentId));
         try {
             return future.get();
         } catch (Exception e) {
@@ -3989,6 +4352,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all stretch targets.
+     */
     private class getStretchTargets implements Callable<Boolean> {
 
         String student_id;
@@ -4057,6 +4423,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Adds a stretch target for the current user.
+     *
+     * @param params parameters used
+     * @return success
+     */
     public boolean addStretchTarget(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future_result = executorService.submit(new addStretchTarget(params));
@@ -4068,6 +4440,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to add a stretch target.
+     */
     private class addStretchTarget implements Callable<Boolean> {
 
         HashMap<String, String> params;
@@ -4124,6 +4499,11 @@ public class NetworkManager {
 
     // Trophies
 
+    /**
+     * Gets all accomplished trophies.
+     *
+     * @return success
+     */
     public boolean getMyTrophies() {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future = executorService.submit(new getMyTrophies());
@@ -4135,6 +4515,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all accomplished trophies.
+     */
     private class getMyTrophies implements Callable<Boolean> {
 
         @Override
@@ -4202,6 +4585,11 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Gets all trophies.
+     *
+     * @return success
+     */
     public boolean getAllTrophies() {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future = executorService.submit(new getAllTrophies());
@@ -4213,6 +4601,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all trophies.
+     */
     private class getAllTrophies implements Callable<Boolean> {
 
         @Override
@@ -4280,6 +4671,12 @@ public class NetworkManager {
 
     // Profile Picture
 
+    /**
+     * Updates the profile image.
+     *
+     * @param path path to the image
+     * @return success
+     */
     public boolean updateProfileImage(String path) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future = executorService.submit(new uploadProfileImage(path));
@@ -4290,6 +4687,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to upload a profile image.
+     */
     private class uploadProfileImage implements Callable<Boolean> {
 
         final String api = "fn_edit_profile_picture";
@@ -4399,11 +4799,10 @@ public class NetworkManager {
     // Institutions
 
     /**
-     * downloadInstitution() => Downloads institutions and saves in database
+     * Gets all institutions available.
      *
-     * @return true/false => depends if it has successfully downloaded institutions
+     * @return success
      */
-
     public boolean downloadInstitutions() {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<String> futureResult = executorService.submit(new downloadInstitutions());
@@ -4416,6 +4815,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all institutions available.
+     */
     private class downloadInstitutions implements Callable<String> {
 
         downloadInstitutions() {
@@ -4483,9 +4885,9 @@ public class NetworkManager {
     // Modules
 
     /**
-     * getModules()
+     * Gets all available modules for the user.
      *
-     * @return true/false if operation has succeeded
+     * @return success
      */
     public boolean getModules() {
         language = LinguisticManager.getInstance().getLanguageCode();
@@ -4498,6 +4900,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all available modules.
+     */
     private class getModules implements Callable<Boolean> {
 
         getModules() {
@@ -4595,6 +5000,11 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Gets all available modules for a social user.
+     *
+     * @return success
+     */
     public boolean getSocialModules() {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future = executorService.submit(new getSocialModules());
@@ -4606,6 +5016,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to get all modules for a social user.
+     */
     private class getSocialModules implements Callable<Boolean> {
 
         getSocialModules() {
@@ -4683,6 +5096,12 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Adds a module for a social user.
+     *
+     * @param params used parameters
+     * @return success
+     */
     public boolean addModule(HashMap<String, String> params) {
         language = LinguisticManager.getInstance().getLanguageCode();
         Future<Boolean> future = executorService.submit(new addModule(params));
@@ -4695,6 +5114,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Calls the server to add a module for a social user.
+     */
     private class addModule implements Callable<Boolean> {
         HashMap<String, String> params;
 
