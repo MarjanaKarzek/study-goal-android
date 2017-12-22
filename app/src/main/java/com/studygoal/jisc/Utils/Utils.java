@@ -2,6 +2,8 @@ package com.studygoal.jisc.Utils;
 
 import android.content.res.Resources;
 import android.location.Location;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Base64;
 
 import com.studygoal.jisc.Managers.DataManager;
@@ -37,7 +39,7 @@ public class Utils {
      * Validates the given email address.
      *
      * @param email address to be checked
-     * @return validation statuss
+     * @return validation status
      */
     public static boolean validate_email(String email) {
         if (email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
@@ -107,6 +109,7 @@ public class Utils {
      * @param md5 to be converted string
      * @return converted string
      */
+    @Nullable
     public static String MD5(String md5) {
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
@@ -142,9 +145,12 @@ public class Utils {
     }
 
     /**
-     * @param timeSpent
-     * @return
+     * Gets a formatted string about the spent time from time in minutes.
+     *
+     * @param timeSpent time spent in minutes
+     * @return formatted time string
      */
+    @NonNull
     public static String getMinutesToHour(String timeSpent) {
         Long minutes = Long.parseLong(timeSpent);
         Long hours = minutes / 60;
@@ -170,17 +176,39 @@ public class Utils {
 
     }
 
-    public static String getDate(String activity_date) {
-        String[] split = activity_date.split("-");
+    /**
+     * Gets a formatted String from a date string.
+     *
+     * @param activityDate date string to be formatted
+     * @return formatted date string
+     */
+    @NonNull
+    public static String getDate(String activityDate) {
+        String[] split = activityDate.split("-");
 
         return split[2] + " " + LinguisticManager.getInstance().getShortMonth(split[1]) + " " + split[0];
     }
 
-    public static String getTime(String created_date) {
-        String[] split = created_date.split(" ")[1].split(":");
+    /**
+     * Gets a formatted time String from a date string.
+     *
+     * @param createdDate date string to be formatted
+     * @return formatted time string
+     */
+    @NonNull
+    public static String getTime(String createdDate) {
+        String[] split = createdDate.split(" ")[1].split(":");
         return split[0] + ":" + split[1];
     }
 
+    /**
+     * Formats date to a string with details.
+     *
+     * @param year  year number
+     * @param month month number
+     * @param day   day number
+     * @return formatted date string
+     */
     public static String formatDate(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
@@ -200,6 +228,12 @@ public class Utils {
         return result;
     }
 
+    /**
+     * Formats time in milliseconds to a detailed date string.
+     *
+     * @param time time in milliseconds
+     * @return formatted date string
+     */
     public static String formatDate(long time) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
@@ -220,84 +254,102 @@ public class Utils {
         return result;
     }
 
-    public static boolean isInSameWeek(String s) {
-        Calendar c = Calendar.getInstance();
-        Long current_date_in_ms = c.getTimeInMillis();
+    /**
+     * Checks whether the current date string is in the current week.
+     *
+     * @param dateString string to be checked
+     * @return whether or not it is in the same week
+     */
+    public static boolean isInSameWeek(String dateString) {
+        Calendar calendar = Calendar.getInstance();
+        Long currentDateInMs = calendar.getTimeInMillis();
         ArrayList<String> dates = new ArrayList<>();
 
-        switch (c.get(Calendar.DAY_OF_WEEK)) {
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
             case Calendar.SUNDAY: {
-                dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 break;
             }
             case Calendar.MONDAY: {
-                dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
-                c.setTimeInMillis(current_date_in_ms - 86400000);
-                dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
+                calendar.setTimeInMillis(currentDateInMs - 86400000);
+                dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 break;
             }
             case Calendar.TUESDAY: {
-                dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 for (int i = 1; i < Calendar.TUESDAY; i++) {
-                    c.setTimeInMillis(current_date_in_ms -= 86400000);
-                    dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                    calendar.setTimeInMillis(currentDateInMs -= 86400000);
+                    dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 }
                 break;
             }
             case Calendar.WEDNESDAY: {
-                dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 for (int i = 1; i < Calendar.WEDNESDAY; i++) {
-                    c.setTimeInMillis(current_date_in_ms -= 86400000);
-                    dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                    calendar.setTimeInMillis(currentDateInMs -= 86400000);
+                    dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 }
                 break;
             }
             case Calendar.THURSDAY: {
-                dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 for (int i = 1; i < Calendar.THURSDAY; i++) {
-                    c.setTimeInMillis(current_date_in_ms -= 86400000);
-                    dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                    calendar.setTimeInMillis(currentDateInMs -= 86400000);
+                    dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 }
                 break;
             }
             case Calendar.FRIDAY: {
-                dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 for (int i = 1; i < Calendar.FRIDAY; i++) {
-                    c.setTimeInMillis(current_date_in_ms -= 86400000);
-                    dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                    calendar.setTimeInMillis(currentDateInMs -= 86400000);
+                    dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 }
                 break;
             }
             case Calendar.SATURDAY: {
-                dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 for (int i = 1; i < Calendar.SATURDAY; i++) {
-                    c.setTimeInMillis(current_date_in_ms -= 86400000);
-                    dates.add(c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH));
+                    calendar.setTimeInMillis(currentDateInMs -= 86400000);
+                    dates.add(calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
                 }
                 break;
             }
         }
-        s = Integer.parseInt(s.split("-")[0]) + "-" + Integer.parseInt(s.split("-")[1]) + "-" + Integer.parseInt(s.split("-")[2]);
-        return dates.contains(s);
+        dateString = Integer.parseInt(dateString.split("-")[0]) + "-" + Integer.parseInt(dateString.split("-")[1]) + "-" + Integer.parseInt(dateString.split("-")[2]);
+        return dates.contains(dateString);
     }
 
-    public static String convertToHour(int neccesary_time) {
-        String hour = neccesary_time / 60 + "";
-        neccesary_time = neccesary_time % 60;
-        if (neccesary_time == 0) return hour;
+    /**
+     * Converts the given time in minutes to hours.
+     *
+     * @param necessaryTime to be converted time
+     * @return time in hours
+     */
+    public static String convertToHour(int necessaryTime) {
+        String hour = necessaryTime / 60 + "";
+        necessaryTime = necessaryTime % 60;
+        if (necessaryTime == 0) return hour;
 
         hour += ".";
-        String tmp = ((float) neccesary_time / 60 + "").split("\\.")[1];
+        String tmp = ((float) necessaryTime / 60 + "").split("\\.")[1];
         if (tmp.length() > 2) hour += tmp.substring(0, 2);
         else hour += tmp;
         return hour;
     }
 
-    public static Map<String, Integer> sortByValues(Map<String, Integer> unsortMap) {
+    /**
+     * Sorts the given map by values.
+     *
+     * @param unsortedMap to be sorted map
+     * @return sorted map
+     */
+    public static Map<String, Integer> sortByValues(Map<String, Integer> unsortedMap) {
 
         // Convert Map to List
         List<Map.Entry<String, Integer>> list =
-                new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+                new LinkedList<Map.Entry<String, Integer>>(unsortedMap.entrySet());
 
         // Sort mList with comparator, to compare the Map values
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
@@ -316,6 +368,13 @@ public class Utils {
         return sortedMap;
     }
 
+    /**
+     * Gets the time period from the given time in milliseconds.
+     *
+     * @param timeInMillis time to be checked
+     * @return time period
+     */
+    @NonNull
     public static String getWeekPeriod(long timeInMillis) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTimeInMillis(timeInMillis);
@@ -332,11 +391,25 @@ public class Utils {
             return ((firstDay.get(Calendar.MONTH) + 1) < 10 ? "0" + (firstDay.get(Calendar.MONTH) + 1) : (firstDay.get(Calendar.MONTH) + 1)) + "/" + firstDay.get(Calendar.DAY_OF_MONTH) + "-" + ((lastDay.get(Calendar.MONTH) + 1) < 10 ? "0" + (lastDay.get(Calendar.MONTH) + 1) : (lastDay.get(Calendar.MONTH) + 1)) + "/" + lastDay.get(Calendar.DAY_OF_MONTH);
     }
 
+    /**
+     * Gets the attainment date from a date string.
+     *
+     * @param date date to be converted
+     * @return formatted date string
+     */
+    @NonNull
     public static String attainmentDate(String date) {
         String[] _one = date.split("T")[0].split("-");
         return _one[2] + "-" + _one[1] + "-" + _one[0].substring(2, 4);
     }
 
+    /**
+     * Decodes the given JWT.
+     *
+     * @param JWTEncoded JWT encoded
+     * @return JWT decoded
+     */
+    @NonNull
     public static String jwtDecoded(String JWTEncoded) {
         try {
             String[] split = JWTEncoded.split("\\.");
@@ -346,6 +419,14 @@ public class Utils {
         }
     }
 
+    /**
+     * Decodes Json with the given json encoding.
+     *
+     * @param strEncoded encoding used
+     * @return json decoded
+     * @throws UnsupportedEncodingException gets thrown if the encoding is not supported
+     */
+    @NonNull
     private static String getJson(String strEncoded) throws UnsupportedEncodingException {
         byte[] decodedBytes = Base64.decode(strEncoded, Base64.URL_SAFE);
         return new String(decodedBytes, "UTF-8");

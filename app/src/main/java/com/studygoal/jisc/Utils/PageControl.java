@@ -16,6 +16,15 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+/**
+ * Page Control class
+ * <p>
+ * Provides the functionality for a page controller.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class PageControl extends LinearLayout {
 
     private int indicatorSize = 7;

@@ -4,12 +4,22 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+/**
+ * AppCore class
+ * <p>
+ * Used to provide the app core as a singleton.
+ *
+ * @author Therapy Box
+ * @version 1.5
+ * @date unknown
+ */
 public class AppCore extends MultiDexApplication {
+
     private static final String TAG = AppCore.class.getSimpleName();
 
-    private static Context sContext = null;
+    private static Context context = null;
 
-    private Preferences mPreferences = null;
+    private Preferences preferences = null;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -20,24 +30,29 @@ public class AppCore extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppCore.sContext = getApplicationContext();
+        AppCore.context = getApplicationContext();
     }
 
     /**
-     * Return instance of AppCore.
+     * Gets the singleton object of AppCore.
+     *
+     * @return instance of AppCore
      */
     public static AppCore getInstance() {
-        return (AppCore) AppCore.sContext;
+        return (AppCore) AppCore.context;
     }
 
     /**
-     * Return application preferences.
+     * Gets the application preferences.
+     *
+     * @return application preferences
      */
     public Preferences getPreferences() {
-        if (mPreferences == null) {
-            mPreferences = new Preferences(this);
+        if (preferences == null) {
+            preferences = new Preferences(this);
         }
 
-        return mPreferences;
+        return preferences;
     }
+
 }
