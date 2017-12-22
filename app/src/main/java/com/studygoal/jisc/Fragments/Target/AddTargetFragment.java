@@ -1,5 +1,6 @@
 package com.studygoal.jisc.Fragments.Target;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -172,6 +173,7 @@ public class AddTargetFragment extends BaseFragment {
         XApiManager.getInstance().sendLogActivityEvent(LogActivityEvent.AddTarget, moduleName);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.target_add_target, container, false);
@@ -866,6 +868,7 @@ public class AddTargetFragment extends BaseFragment {
             params.put("student_id", DataManager.getInstance().user.id);
             params.put("end_date", endDate);
             params.put("record_id", itemToDo.taskId);
+            params.put("is_accepted", itemToDo.isAccepted);
 
             if (!binding.addtargetInTextViewSingle.getText().toString().toLowerCase().equals(DataManager.getInstance().mainActivity.getString(R.string.any_module).toLowerCase())) {
                 Module module = new Select().from(Module.class).where("module_name = ?", binding.addtargetInTextViewSingle.getText().toString()).executeSingle();
