@@ -312,8 +312,11 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() != 0) {
                     int value = Integer.parseInt(s.toString());
-                    if (value < 0 || value > 60) {
-                        reminderEditText.setText("");
+                    if (value < 0) {
+                        reminderEditText.setText("0");
+                        reminderEditText.setSelection(reminderEditText.getText().length());
+                    } else if (value > 60) {
+                        reminderEditText.setText("59");
                         reminderEditText.setSelection(reminderEditText.getText().length());
                     }
                 }
@@ -508,9 +511,9 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 }
 
                 String[] durationArray = countdownTextView.getText().toString().split(":");
-                if(durationArray.length == 2) {
+                if (durationArray.length == 2) {
                     duration = (Long.valueOf(durationArray[0]) * 60 + Long.valueOf(durationArray[1])) / 60;
-                } else if (durationArray.length == 3){
+                } else if (durationArray.length == 3) {
                     duration = (Long.valueOf(durationArray[0]) * 60 * 60 + Long.valueOf(durationArray[1]) * 60 + Long.valueOf(durationArray[2])) / 60;
                 }
 
@@ -578,14 +581,14 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     Long _pause = System.currentTimeMillis() - sharedPreferences.getLong("pause", 0);
                     timestamp += _pause;
                     sharedPreferences.edit().putLong("pause", 0).apply();
-                    if (!reminderEditText.getText().toString().equals("")){
+                    if (!reminderEditText.getText().toString().equals("")) {
                         int reminder = Integer.parseInt(reminderEditText.getText().toString());
                         if (reminder != 0) {
                             Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
                             pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
                                     intent, PendingIntent.FLAG_UPDATE_CURRENT);
                             alarmManager.set(AlarmManager.RTC_WAKEUP,
-                                    System.currentTimeMillis() + reminder * 1000, pendingIntent);
+                                    System.currentTimeMillis() + reminder * 60000, pendingIntent);
                         }
                     }
                     timer = new Timer();
@@ -654,10 +657,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_started, Snackbar.LENGTH_LONG).show();
 
                 timestamp = System.currentTimeMillis();
-                int reminder = 0;
-                if (!reminderEditText.getText().toString().equals(""))
-                    reminder = Integer.parseInt(reminderEditText.getText().toString());
-                reminderEditText.setEnabled(false);
 
                 timer = new Timer();
                 timerTask = new TimerTask() {
@@ -705,12 +704,19 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 ((CardView) mainView.findViewById(R.id.new_activity_btn_start)).setCardBackgroundColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.light_grey));//getResources().getColor(R.color.light_grey));
                 mainView.findViewById(R.id.new_activity_btn_start).setOnClickListener(null);
 
-                if (reminder != 0) {
-                    Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
-                    pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
-                            intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + reminder * 1000, pendingIntent);
+                if (!reminderEditText.getText().toString().equals("")) {
+                    int reminder = Integer.parseInt(reminderEditText.getText().toString());
+                    if (reminder != 0) {
+                        Intent intent = new Intent(DataManager.getInstance().mainActivity, NotificationAlarm.class);
+                        pendingIntent = PendingIntent.getBroadcast(DataManager.getInstance().mainActivity, 0,
+                                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                                System.currentTimeMillis() + reminder * 60000, pendingIntent);
+                    }
                 }
+
+                reminderEditText.setEnabled(false);
+
                 break;
             }
             case R.id.new_activity_text_timer_1: {
