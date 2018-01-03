@@ -508,7 +508,11 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 }
 
                 String[] durationArray = countdownTextView.getText().toString().split(":");
-                duration = (int)((Long.valueOf(durationArray[0]) * 60 + Long.valueOf(durationArray[1])) / 60);
+                if(durationArray.length == 2) {
+                    duration = (Long.valueOf(durationArray[0]) * 60 + Long.valueOf(durationArray[1])) / 60;
+                } else if (durationArray.length == 3){
+                    duration = (Long.valueOf(durationArray[0]) * 60 * 60 + Long.valueOf(durationArray[1]) * 60 + Long.valueOf(durationArray[2])) / 60;
+                }
 
                 params.put("time_spent", duration + "");
 
