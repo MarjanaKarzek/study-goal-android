@@ -107,7 +107,47 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
         ((EditText) mainView.findViewById(R.id.add_module_edit_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
         ((TextView) mainView.findViewById(R.id.add_module_button_text)).setTypeface(DataManager.getInstance().myriadpro_regular);
-        mainView.findViewById(R.id.add_module_button_text).setOnClickListener(this);
+        mainView.findViewById(R.id.add_module_button_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
+                final String moduleName = addModuleEditText.getText().toString();
+                if (moduleName.length() == 0) {
+                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.module_name_invalid, Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        final HashMap<String, String> params = new HashMap<>();
+                        params.put("student_id", DataManager.getInstance().user.id);
+                        params.put("module", moduleName);
+                        params.put("is_social", "yes");
+
+                        if (NetworkManager.getInstance().addModule(params)) {
+
+                            DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                }
+                            });
+                        } else {
+                            DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    (DataManager.getInstance().mainActivity).hideProgressBar();
+                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+                }).start();
+
+                addModuleLayout.setVisibility(View.GONE);
+            }
+        });
 
         countdownTextView = ((TextView) mainView.findViewById(R.id.new_activity_text_timer_2));
         countdownTextView.setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -119,17 +159,143 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
         module = (AppCompatTextView) mainView.findViewById(R.id.new_activity_module_textView);
         module.setTypeface(DataManager.getInstance().myriadpro_regular);
         module.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
-        module.setOnClickListener(this);
+        module.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (DataManager.getInstance().mainActivity.isLandscape) {
+                    DisplayMetrics displaymetrics = new DisplayMetrics();
+                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                    int width = (int) (displaymetrics.widthPixels * 0.3);
+
+                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                    params.width = width;
+                    dialog.getWindow().setAttributes(params);
+                }
+
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
+
+                final LogModuleAdapter moduleAdapter = new LogModuleAdapter(DataManager.getInstance().mainActivity, module.getText().toString());
+                final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
+                listView.setAdapter(moduleAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        if (DataManager.getInstance().user.isSocial
+                                && position == moduleAdapter.moduleList.size() - 1) {
+                            EditText add_module_edit_text = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
+                            add_module_edit_text.setText("");
+                            addModuleLayout.setVisibility(View.VISIBLE);
+                            dialog.dismiss();
+                        } else {
+                            module.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                            RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
+                            if (activity != null) {
+                                activity.student_id = DataManager.getInstance().user.id;
+                                activity.module_id = ((Module) (new Select().from(Module.class).where("module_name = ?", module.getText().toString()).executeSingle())).id;
+                                activity.save();
+                            }
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+                dialog.show();
+            }
+        });
 
         activityType = (AppCompatTextView) mainView.findViewById(R.id.new_activity_activitytype_textView);
         activityType.setTypeface(DataManager.getInstance().myriadpro_regular);
         activityType.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
-        activityType.setOnClickListener(this);
+        activityType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (DataManager.getInstance().mainActivity.isLandscape) {
+                    DisplayMetrics displaymetrics = new DisplayMetrics();
+                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                    int width = (int) (displaymetrics.widthPixels * 0.3);
+
+                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                    params.width = width;
+                    dialog.getWindow().setAttributes(params);
+                }
+
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_activity_type);
+
+                final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
+                listView.setAdapter(new ActivityTypeAdapter(DataManager.getInstance().mainActivity, activityType.getText().toString()));
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        activityType.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+                        chooseActivity.setText(DataManager.getInstance().choose_activity.get(activityType.getText().toString()).get(0));
+
+                        RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
+                        if (activity != null) {
+                            activity.activity_type = activityType.getText().toString();
+                            activity.activity = chooseActivity.getText().toString();
+                            activity.save();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
 
         chooseActivity = (AppCompatTextView) mainView.findViewById(R.id.new_activity_choose_textView);
         chooseActivity.setTypeface(DataManager.getInstance().myriadpro_regular);
         chooseActivity.setSupportBackgroundTintList(ColorStateList.valueOf(0xFF8a63cc));
-        chooseActivity.setOnClickListener(this);
+        chooseActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.snippet_custom_spinner);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (DataManager.getInstance().mainActivity.isLandscape) {
+                    DisplayMetrics displaymetrics = new DisplayMetrics();
+                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                    int width = (int) (displaymetrics.widthPixels * 0.3);
+
+                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                    params.width = width;
+                    dialog.getWindow().setAttributes(params);
+                }
+
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
+                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_activity);
+
+                final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
+                listView.setAdapter(new ChooseActivityAdapter(DataManager.getInstance().mainActivity, chooseActivity.getText().toString(), activityType.getText().toString()));
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        chooseActivity.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
+
+                        RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
+                        if (activity != null) {
+                            activity.activity = chooseActivity.getText().toString();
+                            activity.save();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
 
         reminderEditText = ((EditText) mainView.findViewById(R.id.new_activity_text_timer_1));
         reminderEditText.setTypeface(DataManager.getInstance().myriadpro_regular);
@@ -340,6 +506,10 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     mainView.findViewById(R.id.new_activity_btn_stop).setAlpha(0.5f);
                     return;
                 }
+
+                String[] durationArray = countdownTextView.getText().toString().split(":");
+                duration = (int)((Long.valueOf(durationArray[0]) * 60 + Long.valueOf(durationArray[1])) / 60);
+
                 params.put("time_spent", duration + "");
 
                 String responseCode = NetworkManager.getInstance().addActivity(params);
@@ -608,169 +778,6 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
                 dialog.show();
                 break;
-            }
-            case R.id.new_activity_module_textView: {
-                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.snippet_custom_spinner);
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                if (DataManager.getInstance().mainActivity.isLandscape) {
-                    DisplayMetrics displaymetrics = new DisplayMetrics();
-                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                    int width = (int) (displaymetrics.widthPixels * 0.3);
-
-                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                    params.width = width;
-                    dialog.getWindow().setAttributes(params);
-                }
-
-                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_module);
-
-                final LogModuleAdapter moduleAdapter = new LogModuleAdapter(DataManager.getInstance().mainActivity, module.getText().toString());
-                final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-                listView.setAdapter(moduleAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        if (DataManager.getInstance().user.isSocial
-                                && position == moduleAdapter.moduleList.size() - 1) {
-                            EditText add_module_edit_text = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
-                            add_module_edit_text.setText("");
-                            addModuleLayout.setVisibility(View.VISIBLE);
-                            dialog.dismiss();
-                        } else {
-                            module.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
-                            RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
-                            if (activity != null) {
-                                activity.student_id = DataManager.getInstance().user.id;
-                                activity.module_id = ((Module) (new Select().from(Module.class).where("module_name = ?", module.getText().toString()).executeSingle())).id;
-                                activity.save();
-                            }
-                            dialog.dismiss();
-                        }
-                    }
-                });
-
-                dialog.show();
-                break;
-            }
-            case R.id.new_activity_activitytype_textView: {
-                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.snippet_custom_spinner);
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                if (DataManager.getInstance().mainActivity.isLandscape) {
-                    DisplayMetrics displaymetrics = new DisplayMetrics();
-                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                    int width = (int) (displaymetrics.widthPixels * 0.3);
-
-                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                    params.width = width;
-                    dialog.getWindow().setAttributes(params);
-                }
-
-                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_activity_type);
-
-                final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-                listView.setAdapter(new ActivityTypeAdapter(DataManager.getInstance().mainActivity, activityType.getText().toString()));
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        activityType.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
-                        chooseActivity.setText(DataManager.getInstance().choose_activity.get(activityType.getText().toString()).get(0));
-
-                        RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
-                        if (activity != null) {
-                            activity.activity_type = activityType.getText().toString();
-                            activity.activity = chooseActivity.getText().toString();
-                            activity.save();
-                        }
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-                break;
-            }
-            case R.id.new_activity_choose_textView: {
-                final Dialog dialog = new Dialog(DataManager.getInstance().mainActivity);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.snippet_custom_spinner);
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                if (DataManager.getInstance().mainActivity.isLandscape) {
-                    DisplayMetrics displaymetrics = new DisplayMetrics();
-                    DataManager.getInstance().mainActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                    int width = (int) (displaymetrics.widthPixels * 0.3);
-
-                    WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                    params.width = width;
-                    dialog.getWindow().setAttributes(params);
-                }
-
-                ((TextView) dialog.findViewById(R.id.dialog_title)).setTypeface(DataManager.getInstance().oratorstd_typeface);
-                ((TextView) dialog.findViewById(R.id.dialog_title)).setText(R.string.choose_activity);
-
-                final ListView listView = (ListView) dialog.findViewById(R.id.dialog_listview);
-                listView.setAdapter(new ChooseActivityAdapter(DataManager.getInstance().mainActivity, chooseActivity.getText().toString(), activityType.getText().toString()));
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        chooseActivity.setText(((TextView) view.findViewById(R.id.dialog_item_name)).getText().toString());
-
-                        RunningActivity activity = new Select().from(RunningActivity.class).executeSingle();
-                        if (activity != null) {
-                            activity.activity = chooseActivity.getText().toString();
-                            activity.save();
-                        }
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-                break;
-            }
-            case R.id.add_module_button_text: {
-                EditText addModuleEditText = (EditText) addModuleLayout.findViewById(R.id.add_module_edit_text);
-                final String moduleName = addModuleEditText.getText().toString();
-                if (moduleName.length() == 0) {
-                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.module_name_invalid, Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        final HashMap<String, String> params = new HashMap<>();
-                        params.put("student_id", DataManager.getInstance().user.id);
-                        params.put("module", moduleName);
-                        params.put("is_social", "yes");
-
-                        if (NetworkManager.getInstance().addModule(params)) {
-
-                            DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                }
-                            });
-                        } else {
-                            DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    (DataManager.getInstance().mainActivity).hideProgressBar();
-                                    Snackbar.make(DataManager.getInstance().mainActivity.findViewById(R.id.drawer_layout), R.string.something_went_wrong, Snackbar.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                    }
-                }).start();
-
-                addModuleLayout.setVisibility(View.GONE);
-
-                return;
             }
         }
     }
