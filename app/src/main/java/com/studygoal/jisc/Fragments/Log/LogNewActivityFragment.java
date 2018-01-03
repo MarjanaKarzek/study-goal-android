@@ -223,6 +223,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
 
         mainView.findViewById(R.id.new_activity_btn_start).setOnClickListener(this);
         mainView.findViewById(R.id.new_activity_btn_pause).setOnClickListener(this);
+        mainView.findViewById(R.id.new_activity_btn_stop).setAlpha(0.5f);
 
         if (sharedPreferences.contains("pause")) {
             Long pause = sharedPreferences.getLong("pause", 0);
@@ -255,20 +256,23 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 mainView.findViewById(R.id.new_activity_btn_pause).setVisibility(View.VISIBLE);
                 mainView.findViewById(R.id.new_activity_btn_start).setVisibility(View.GONE);
                 mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(this);
+                mainView.findViewById(R.id.new_activity_btn_stop).setAlpha(1.f);
                 ((TextView) mainView.findViewById(R.id.new_activity_btn_pause_text)).setText(DataManager.getInstance().mainActivity.getString(R.string.resume));
             } else {
-                mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(this);
                 mainView.findViewById(R.id.new_activity_btn_start).setVisibility(View.VISIBLE);
                 mainView.findViewById(R.id.new_activity_btn_pause).setVisibility(View.GONE);
                 if (timestamp > 0) {
                     mainView.findViewById(R.id.new_activity_btn_start).setVisibility(View.GONE);
                     mainView.findViewById(R.id.new_activity_btn_pause).setVisibility(View.VISIBLE);
+                    mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(this);
+                    mainView.findViewById(R.id.new_activity_btn_stop).setAlpha(1.f);
                     timer.schedule(timerTask, 0, 1000);
                 }
             }
         } else {
             if (timestamp > 0) {
                 mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(this);
+                mainView.findViewById(R.id.new_activity_btn_stop).setAlpha(1.f);
                 mainView.findViewById(R.id.new_activity_btn_start).setVisibility(View.GONE);
                 mainView.findViewById(R.id.new_activity_btn_pause).setVisibility(View.VISIBLE);
                 if (timestamp > 0)
@@ -333,6 +337,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                     ((CardView) mainView.findViewById(R.id.new_activity_btn_start)).setCardBackgroundColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.blue));//getResources().getColor(R.color.default_blue));
                     mainView.findViewById(R.id.new_activity_btn_start).setOnClickListener(this);
                     mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(null);
+                    mainView.findViewById(R.id.new_activity_btn_stop).setAlpha(0.5f);
                     return;
                 }
                 params.put("time_spent", duration + "");
@@ -369,6 +374,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 ((CardView) mainView.findViewById(R.id.new_activity_btn_start)).setCardBackgroundColor(ContextCompat.getColor(DataManager.getInstance().mainActivity, R.color.blue));//getResources().getColor(R.color.default_blue));
                 mainView.findViewById(R.id.new_activity_btn_start).setOnClickListener(this);
                 mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(null);
+                mainView.findViewById(R.id.new_activity_btn_stop).setAlpha(0.5f);
 
                 DataManager.getInstance().mainActivity.runOnUiThread(new Runnable() {
                     @Override
@@ -469,6 +475,7 @@ public class LogNewActivityFragment extends Fragment implements View.OnClickList
                 mainView.findViewById(R.id.new_activity_btn_start).setVisibility(View.GONE);
                 mainView.findViewById(R.id.new_activity_btn_pause).setVisibility(View.VISIBLE);
                 mainView.findViewById(R.id.new_activity_btn_stop).setOnClickListener(this);
+                mainView.findViewById(R.id.new_activity_btn_stop).setAlpha(1.f);
 
                 Snackbar.make(mainView.findViewById(R.id.container), R.string.activity_started, Snackbar.LENGTH_LONG).show();
 
